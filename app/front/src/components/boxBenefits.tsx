@@ -1,5 +1,5 @@
 import React from "react";
-import storeImg from '../Assets/store.png';
+import storeImg from '../assets/store.png';
 
 type BenefitsDatas = {
     title:string,
@@ -18,7 +18,7 @@ type TypeBoxBenefits = {
 }
 export const ListBenefits = ( {benefits,scrollToForm}:List )=>{
 
-    return   benefits.map(({title,img,content},ind)=>{
+    return  benefits.map(({title,img,content},ind)=>{
         return <div key={ind}  className="benefit-box" onClick={scrollToForm}>
             {img &&<img src={img}></img>}
             <h2>{title}</h2>
