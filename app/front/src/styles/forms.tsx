@@ -79,7 +79,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1%;
   align-items: center;
   text-align:center
 }
