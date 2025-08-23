@@ -6,8 +6,8 @@ import { StyleBtn, UserFormStyles } from "../../styles/forms";
 import { isAValidString, isValidEmail } from "../../utils/checkIsValid";
 import type { TypeSubmitRegister } from "../../pages/register";
 import type { TypeSubmitLogin } from "../../pages/login";
-import { useMessage } from "../../context/messageContext";
-import { BoxMessage } from "../boxMessages";
+
+import { useBoxMessage } from "../boxMessages";
 import { PasswordInput } from "./passwordInput";
 import { InputWithLabel } from "./inputWithLabel";
 
@@ -19,7 +19,7 @@ type SubmitEvent = TypeSubmitRegister | TypeSubmitLogin
 type PropsForm = {
   type: TypeForm;
   submitEvent:(datas:SubmitEvent)=>void; 
-  formRef: React.RefObject<HTMLInputElement | null>; 
+  formRef: React.RefObject<HTMLFormElement | null>; 
 };
 export const LoginOrRegister = ({option}:PropsTypeForm):JSX.Element=>
 option === "Login" ?
@@ -35,21 +35,22 @@ export const FormLoginOrRegister = ({submitEvent,type,formRef}:PropsForm)=>{
   const refUserPassword = useRef<HTMLInputElement>(null);
   const refRepeatUserPassword = useRef<HTMLInputElement>(null);
   const titleText = type === "Login" ? "Login" : "Cadastro"
-  const {setMessage} = useMessage();
+  const {setMessage,BoxMessage} = useBoxMessage()
   
-  const onClick = ():void=>{
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>):void=>{
+    e.preventDefault()
     const [email,name,password,repeatPassword] =  getMultiInputValues(
       refUserEmail,refUserName,refUserPassword,refRepeatUserPassword,
     );
     if(!isValidEmail(email)){
-      return setMessage({content:'Digite um email valido',type:'info'});
+      return setMessage({content:'Digite um e-mail válido',type:'info'});
     }
     if(!isAValidString(password)){
-      return  setMessage({content:'Digite uma senha valida',type:'info'});
+      return  setMessage({content:'Digite uma senha válida',type:'info'});
     }
     if(type === "Register"){
       if(!isAValidString(name) ){
-        return setMessage({content:'Digite um nome valido',type:'info'});;
+        return setMessage({content:'Digite um nome válido',type:'info'});;
       }
       if(password !== repeatPassword)return setMessage({content:'As senhas não coincidem',type:'info'});
     }
@@ -58,7 +59,7 @@ export const FormLoginOrRegister = ({submitEvent,type,formRef}:PropsForm)=>{
   }
   return (
     <UserFormStyles>
-         <div className="form" ref={formRef}>
+         <form aria-label={titleText} ref={formRef} onSubmit={handleSubmit}>
               <h1 className="type_form" data-testid="type_form">{titleText}</h1>
               <BoxMessage/>
 
@@ -67,7 +68,7 @@ export const FormLoginOrRegister = ({submitEvent,type,formRef}:PropsForm)=>{
                 id="email" 
                 ref={refUserEmail} type="email" 
                 className="input-form"
-                required minLength={3}
+                minLength={3}
                 placeholder="Ex: joao@gmail.com"
                 autoComplete="email"/>
               </InputWithLabel>
@@ -78,7 +79,7 @@ export const FormLoginOrRegister = ({submitEvent,type,formRef}:PropsForm)=>{
                   ref={refUserName}
                   type="text" 
                   className="input-form" 
-                  required minLength={3} 
+                  minLength={3} 
                   placeholder="Ex: joao"
                   maxLength={15}
                   />
@@ -103,9 +104,9 @@ export const FormLoginOrRegister = ({submitEvent,type,formRef}:PropsForm)=>{
                 placeholder={"Igual a do campo senha"}/>
                </InputWithLabel>}
           
-              <StyleBtn data-testid="btn_send" onClick={onClick}>{'Enviar'}</StyleBtn>
+              <StyleBtn data-testid="btn_send" type="submit">{'Enviar'}</StyleBtn>
               <LoginOrRegister option={type}/>
-          </div>
+          </form>
     </UserFormStyles>
   )
 }
