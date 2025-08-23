@@ -17,7 +17,7 @@ export const PasswordInput = ({ placeholder, refPassword ,id }: Props) => {
         type={show ? "text" : "password"}
         ref={refPassword}
         placeholder={placeholder}
-        required
+        
         minLength={3}
         className="input-form"
         maxLength={15}
