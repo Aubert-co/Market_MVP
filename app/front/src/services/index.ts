@@ -1,4 +1,6 @@
-export const  headers ={'Content-Type':'application/json'}
-export const url = "http://localhost:8080"
+import { api } from "../constants/urls"
 
-export const loadImage = (imageName:string)=>url+`/images/${imageName}`
+export const  headers ={'Content-Type':'application/json'}
+
+
+export const loadImage = (imageName:string)=>api+`/images/${imageName}`
