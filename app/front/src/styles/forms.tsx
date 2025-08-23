@@ -30,7 +30,7 @@ justify-content: center;
 min-height: 97vh;
 background-color: #F7F7F7; 
 
-.form {
+form {
   display: flex;
   flex-direction: column;
   align-items: center;
