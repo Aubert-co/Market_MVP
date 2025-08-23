@@ -1,18 +1,17 @@
 import { useNavigate } from "react-router-dom"
-import type { Message } from "../context/messageContext";
 import { useRef } from "react"
 import { serviceLoginOrRegister } from "../services/loginOrRegister"
 import { FormLoginOrRegister } from "../components/forms/formLoginOrRegister";
-
+import type { Message } from "../components/boxMessages";
 export type TypeSubmitLogin = {
         email:string,
         password:string,
-        setMessageParams:(msg:Message,duration?:number)=>void,
+        setMessageParams:(msg:Message)=>void,
         name:string
 }
 
 export const Login = ()=>{
-    const formRef = useRef<HTMLInputElement>(null);
+    const formRef = useRef<HTMLFormElement>(null);
     const navigate = useNavigate()
 
     const submitForm = async(submitUserDatas:TypeSubmitLogin):Promise<void>=>{
@@ -21,9 +20,14 @@ export const Login = ()=>{
             email:submitUserDatas.email,
             typeForm:'login'
         } )
-        if(status !== 201){
-            return submitUserDatas.setMessageParams({content:'Falha ao realizar login',type:'error'})
+        if(status >= 500){
+            return   submitUserDatas.setMessageParams({content:'Erro interno, tente novamente',type:'error'})
+      
         }
+        if(status === 401){
+            return submitUserDatas.setMessageParams({content:'Usuário ou senha inválidos',type:'info'})
+        }
+      
         submitUserDatas.setMessageParams({content:"Você fez login com sucesso, você será redirecionado",type:'success'})
         setTimeout(()=>{
             navigate('/');

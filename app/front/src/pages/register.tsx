@@ -2,7 +2,7 @@ import {useRef} from "react";
 import { useNavigate } from "react-router-dom";
 import { serviceLoginOrRegister } from "../services/loginOrRegister";
 import { FormLoginOrRegister } from "../components/forms/formLoginOrRegister";
-import type { Message } from "../context/messageContext";
+import type { Message } from "../components/boxMessages";
 import { StyleCreateStore } from "../styles/registerPage";
 import { BoxBenefits } from "../components/boxBenefits";
 import { adLinkRegister, adTextRegister, benefitsRegister } from "../constants/benefitsRegister";
@@ -17,7 +17,7 @@ export type TypeSubmitRegister ={
 
 }
 export const Register = ()=>{
-    const formRef = useRef<HTMLInputElement>(null);
+    const formRef = useRef<HTMLFormElement>(null);
     const navigate = useNavigate()
     
     const submitForm = async({name,password,email,setMessageParams}:TypeSubmitRegister):Promise<void>=>{
@@ -35,7 +35,11 @@ export const Register = ()=>{
         }
        
         if(status === 409){
-            return setMessageParams({content:'Este email já está cadastrado.',type:'info'})
+            return setMessageParams({
+                content: 'Confira seus dados e tente novamente. Caso já tenha uma conta, faça login.',
+                type: 'info'
+            });
+
         }
         setMessageParams({content:'Ocorreu um erro inesperado.'+status,type:'info'});
     }
