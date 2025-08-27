@@ -1,8 +1,8 @@
-import { BrowserRouter as Router ,Routes,Route, Outlet} from "react-router-dom"
+import { BrowserRouter as Router ,Routes,Route} from "react-router-dom"
 import { Register } from "./register"
 
 import { Login } from "./login"
-
+import { Index } from "."
 
 
 
@@ -14,6 +14,7 @@ export const App = ()=>{
             <Route>
                 <Route path="/registro" element={<Register/>}/>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/" element={<Index/>}/>
             </Route>
         </Routes>
     </Router>
