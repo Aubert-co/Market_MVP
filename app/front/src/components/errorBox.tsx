@@ -13,12 +13,9 @@ export const ErrorBox = ({ message = "Ocorreu um erro ao carregar os dados.",ret
     <div className="error">
       <p>{message}</p>
    
-     (
       {retry &&  <StyleBtn $hoverBg="#f80929ff" $bg="#b3182cff" onClick={onRetry} >
         Tentar novamente
       </StyleBtn>}
-     )
-     
     </div>
   );
 };

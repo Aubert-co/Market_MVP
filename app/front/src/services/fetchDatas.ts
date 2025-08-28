@@ -157,7 +157,7 @@ export const fetchProducts = async({setPages,setProducts,service,pages}:FetchPro
     setPages({currentPage:1,totalPages:2})
   }catch(err){
     setProducts({datas:[] as Product[],status:500})
-    setPages({currentPage:1,totalPages:1})
+    setPages({currentPage:0,totalPages:0})
   }
 }
 /*
