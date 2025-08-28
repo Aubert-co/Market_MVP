@@ -1,10 +1,5 @@
 import {  render } from "@testing-library/react"
-<<<<<<< HEAD
 import { BoxProducts } from "@/components/product/boxProducts"
-=======
-import { BoxProducts } from "../../components/product/boxProducts"
-import { mockProducts } from "../mock/products"
->>>>>>> feat/list-products
 import  {BrowserRouter} from "react-router-dom"
 import { mockProducts } from "../mock/products"
 

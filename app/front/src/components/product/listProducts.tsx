@@ -1,13 +1,7 @@
 import { Link } from "react-router-dom"
-<<<<<<< HEAD
 import type { Product } from "@/types/products.types"
 import { loadImage } from "@/services"
-import { useEffect, useState } from "react"
-import { ProductSkeleton } from "./boxProductSkeleton"
-=======
-import type { Product } from "../../types/products.types"
-import { loadImage } from "../../services"
->>>>>>> feat/list-products
+
 
 
 type ListType = 'Product' | 'Cart'
