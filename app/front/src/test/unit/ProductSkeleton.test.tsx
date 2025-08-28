@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react"
-import { ProductSkeleton } from "../../components/product/boxProductSkeleton"
+import { ProductSkeleton } from "@/components/product/boxProductSkeleton"
 
 describe("Component ProductSkeleton",()=>{
 

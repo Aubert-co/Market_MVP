@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@testing-library/react";
-import { SearchBar } from "../../components/header/seachBar";
+import { SearchBar } from "@/components/header/seachBar";
 import  {BrowserRouter} from "react-router-dom"
 
 const mockedUsedNavigate = jest.fn()

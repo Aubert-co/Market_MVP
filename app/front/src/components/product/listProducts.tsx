@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
-import type { Product } from "../../types/products.types"
-import { loadImage } from "../../services"
+import type { Product } from "@/types/products.types"
+import { loadImage } from "@/services"
 import { useEffect, useState } from "react"
 import { ProductSkeleton } from "./boxProductSkeleton"
 

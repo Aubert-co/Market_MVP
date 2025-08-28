@@ -1,9 +1,9 @@
 import '@testing-library/jest-dom';
 import {   render ,fireEvent} from "@testing-library/react";
 import { BrowserRouter as Router ,Routes,Route} from "react-router-dom"
-import * as service from  '../../services/loginOrRegister'
+import * as service from  '@/services/loginOrRegister'
 import { act } from 'react';
-import { Register } from '../../pages/register';
+import { Register } from '@/pages/register';
 
 
 
@@ -170,7 +170,6 @@ describe("should handle service response",()=>{
 describe("when the input are invalids",()=>{
     const email = "lucas@gmail.com"
     const password = "123456"
-    const name = "josef"
     const invalidName = ""
     beforeEach(()=>{
         jest.clearAllMocks()

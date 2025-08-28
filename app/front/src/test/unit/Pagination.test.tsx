@@ -1,5 +1,5 @@
-import { act, fireEvent, render, renderHook } from "@testing-library/react"
-import { usePagination } from "../../components/pagination"
+import { act, fireEvent, render } from "@testing-library/react"
+import { usePagination } from "@/components/pagination"
 import { useEffect } from "react"
 
 describe("test pagination",()=>{
@@ -9,7 +9,7 @@ describe("test pagination",()=>{
     })
     it('should render the buttons correctly, with page 1 having the active class',()=>{
         const MockComponent = ()=>{
-            const {setPagesInfos,pageInfos,Pagination} = usePagination(mockNavigate)
+            const {setPagesInfos,Pagination} = usePagination(mockNavigate)
             useEffect(()=>{
                 setPagesInfos({
                 currentPage:1,
@@ -52,7 +52,7 @@ describe("test pagination",()=>{
     })
     it("should activate the class and call mockNavigate with the correct page number when changing to page 2",()=>{
          const MockComponent = ()=>{
-            const {setPagesInfos,pageInfos,Pagination} = usePagination(mockNavigate)
+            const {setPagesInfos,Pagination} = usePagination(mockNavigate)
             useEffect(()=>{
                 setPagesInfos({
                 currentPage:1,
@@ -61,7 +61,7 @@ describe("test pagination",()=>{
             },[])
             return <Pagination/>
         }
-        const {container,getAllByTestId,getByText} = render(
+        const {getAllByTestId,getByText} = render(
             <MockComponent/>
         )
         act(()=>{

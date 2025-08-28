@@ -1,4 +1,4 @@
-import { StyleBtn } from "../styles/forms";
+import { StyleBtn } from "@/styles/forms";
 
 type ErrorProps = {
   message?: string;

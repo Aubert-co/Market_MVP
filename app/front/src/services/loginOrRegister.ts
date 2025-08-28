@@ -1,6 +1,6 @@
 import { headers } from ".";
-import { loginApi, registerApi } from "../constants/urls";
-import type { Response } from "../types/services";
+import { loginApi, registerApi } from "@/constants/urls";
+import type { Response } from "@/types/services";
 
 type LoginOrRegister ={
     name?:string,

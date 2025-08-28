@@ -1,11 +1,11 @@
-import { usePagination } from "../components/pagination"
+import { usePagination } from "@/components/pagination"
 import { useNavigate } from "react-router-dom"
-import { Container } from "../components/layoutContainer"
-import { BoxProducts } from "../components/product/boxProducts"
-import type { Product } from "../types/products.types"
+import { Container } from "@/components/layoutContainer"
+import { BoxProducts } from "@/components/product/boxProducts"
+import type { Product } from "@/types/products.types"
 import { useState,useEffect } from "react"
-import { serviceGetProducts } from "../services/productsService"
-import { fetchProducts } from "../services/fetchDatas"
+import { serviceGetProducts } from "@/services/productsService"
+import { fetchProducts } from "@/services/fetchDatas"
 
 type ProductState ={
   datas: Product[];

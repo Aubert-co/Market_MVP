@@ -1,6 +1,6 @@
 import { ListProducts } from "./listProducts"
-import type { Product } from "../../types/products.types"
-import { ProductSection } from "../../styles/index"
+import type { Product } from "@/types/products.types"
+import { ProductSection } from "@/styles/index"
 import { ErrorBox } from "../errorBox"
 
 type Props = {

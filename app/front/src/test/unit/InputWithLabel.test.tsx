@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render } from "@testing-library/react";
-import { InputWithLabel } from "../../components/forms/inputWithLabel";
+import { InputWithLabel } from "@/components/forms/inputWithLabel";
 
 
 describe("InputWithLabel",()=>{

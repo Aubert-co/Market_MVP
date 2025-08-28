@@ -1,4 +1,4 @@
-import { isValidEmail } from "../../utils/checkIsValid"
+import { isValidEmail } from "@/utils/checkIsValid"
 
 
 describe("isValidEmail",()=>{

@@ -1,6 +1,6 @@
 import { useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import { getInputValue } from "../../utils"
+import { getInputValue } from "@/utils"
 
 export const SearchBar = ()=>{
     const navigate = useNavigate()

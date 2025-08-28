@@ -1,4 +1,4 @@
-import { api } from "../constants/urls"
+import { api } from "@/constants/urls"
 
 export const  headers ={'Content-Type':'application/json'}
 

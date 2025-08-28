@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom';
 import {   render ,fireEvent} from "@testing-library/react";
 import { BrowserRouter as Router ,Routes,Route} from "react-router-dom"
-import {Login} from '../../pages/login'
-import * as service from  '../../services/loginOrRegister'
+import {Login} from '@/pages/login'
+import * as service from  '@/services/loginOrRegister'
 import { act } from 'react';
 
 const serviceMoked = jest.spyOn(service,'serviceLoginOrRegister')
@@ -116,7 +116,7 @@ describe("when the input are invalids",()=>{
     it("should display the error message when the email is invalid",async()=>{
         let invalidEmail = ""
         serviceMoked.mockResolvedValue({status:201,message:'Sucess'})
-        const {queryByPlaceholderText,getByText,container,getByTestId}= render(
+        const {queryByPlaceholderText,getByText,getByTestId}= render(
                  
                    <Router>
                    <Routes>

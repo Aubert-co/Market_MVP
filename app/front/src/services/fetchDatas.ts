@@ -1,5 +1,5 @@
-import type { Product } from "../types/products.types"
-import type { PageInfo } from "../types/pagination.types"
+import type { Product } from "@/types/products.types"
+import type { PageInfo } from "@/types/pagination.types"
 
 
 export const products: Product[] = [

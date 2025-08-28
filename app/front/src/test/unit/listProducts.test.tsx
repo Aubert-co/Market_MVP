@@ -1,6 +1,6 @@
 import {  render } from "@testing-library/react";
 import  {BrowserRouter} from "react-router-dom"
-import { ListProducts } from "../../components/product/listProducts";
+import { ListProducts } from "@/components/product/listProducts";
 import { mockProducts } from "../mock/products";
 
 

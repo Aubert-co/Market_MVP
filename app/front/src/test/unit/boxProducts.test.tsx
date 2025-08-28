@@ -1,7 +1,7 @@
-import { fireEvent, render } from "@testing-library/react"
-import { BoxProducts } from "../../components/product/boxProducts"
-import { mockProducts } from "../mock/products"
+import {  render } from "@testing-library/react"
+import { BoxProducts } from "@/components/product/boxProducts"
 import  {BrowserRouter} from "react-router-dom"
+import { mockProducts } from "../mock/products"
 
 describe('component BoxProducts',()=>{
 

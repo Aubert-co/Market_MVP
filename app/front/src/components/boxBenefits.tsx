@@ -1,5 +1,5 @@
 import React from "react";
-import storeImg from '../assets/store.png';
+import storeImg from '@/assets/store.png';
 
 type BenefitsDatas = {
     title:string,

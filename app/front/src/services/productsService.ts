@@ -1,5 +1,5 @@
-import type { Product } from "../types/products.types";
-import { api } from "../constants/urls";
+import type { Product } from "@/types/products.types";
+import { api } from "@/constants/urls";
 type GetProducts = {
     datas:Product[],
     status:number,

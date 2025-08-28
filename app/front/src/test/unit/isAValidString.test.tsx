@@ -1,4 +1,4 @@
-import { isAValidString } from "../../utils/checkIsValid"
+import { isAValidString } from "@/utils/checkIsValid"
 
 
 describe("function isAValidString",()=>{

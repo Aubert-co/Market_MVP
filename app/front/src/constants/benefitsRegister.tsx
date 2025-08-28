@@ -1,10 +1,10 @@
-import descontoImg from '../assets/desconto.png'
-import freteGratisImg from '../assets/delivery.png'
-import entregaRapidaImg from '../assets/deliveryMoto.png'
-import analiseImg from '../assets/analise.png';
-import facilImg from '../assets/facil.png';
-import segImg from '../assets/seg.png';
-import storeImg from '../assets/store.png'
+import descontoImg from '@/assets/desconto.png'
+import freteGratisImg from '@/assets/delivery.png'
+import entregaRapidaImg from '@/assets/deliveryMoto.png'
+import analiseImg from '@/assets/analise.png';
+import facilImg from '@/assets/facil.png';
+import segImg from '@/assets/seg.png';
+import storeImg from '@/assets/store.png'
 
 export const storeImage = storeImg;
 export const adTextRegister = "Por que criar uma conta na nossa plataforma de e-commerce?";
