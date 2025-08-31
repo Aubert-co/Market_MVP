@@ -35,14 +35,15 @@ const SkeletonText = styled(Skeleton)<{ $short?: "active"| "" }>`
 
 type Props ={
   length:number,
-  className:string
+  className:string,
+  classNameImg?:string
 }
-export const ProductSkeleton = ({length,className}:Props) => {
+export const ProductSkeleton = ({length,className,classNameImg}:Props) => {
   return Array.from({length:length})
   .map((_,index)=>{
     return (
-      <div key={index} className={className}>
-        <SkeletonImg />
+      <div data-testid="skeleton" key={index} className={className}>
+        <SkeletonImg className={classNameImg} />
         <SkeletonText />
         <SkeletonText $short={"active"} />
       </div>
