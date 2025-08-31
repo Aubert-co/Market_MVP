@@ -23,8 +23,6 @@ export const Index = ()=>{
     })
     useEffect(() => {
         fetchProducts({setPages:setPagesInfos,setProducts,service:serviceGetProducts,pages:pageInfos.currentPage})
-        
-        setPagesInfos({currentPage:0,totalPages:0})
     }, [pageInfos.currentPage,setPagesInfos]);
     return (
         <Container>
