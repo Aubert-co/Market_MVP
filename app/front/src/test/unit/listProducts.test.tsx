@@ -22,7 +22,7 @@ describe("component ListProducts",()=>{
         
         products.map((val,index)=>{
             expect( val ).toHaveClass('product')
-            expect(val).toHaveAttribute('href',`/product/${mockProducts[index].id}`)
+            expect(val).toHaveAttribute('href',`/produto/${mockProducts[index].id}`)
             expect(image[index]).toHaveAttribute('src',mockProducts[index].imageUrl)
             expect(getByText(mockProducts[index].name)).toBeInTheDocument()
             expect(getByText(`R$${mockProducts[index].price}`)).toBeInTheDocument( )
@@ -42,7 +42,7 @@ describe("component ListProducts",()=>{
         
         products.map((val,index)=>{
             expect( val ).toHaveClass('product')
-            expect(val).toHaveAttribute('href',`/product/${mockProducts[index].id}`)
+            expect(val).toHaveAttribute('href',`/produto/${mockProducts[index].id}`)
             expect(image[index]).toHaveAttribute('src',mockProducts[index].imageUrl)
             expect(getByText(mockProducts[index].name)).toBeInTheDocument()
             expect(queryByText(`R$${mockProducts[index].price}`)).not.toBeInTheDocument( )
