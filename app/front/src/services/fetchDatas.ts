@@ -152,9 +152,9 @@ type FetchProducts = {
 }
 export const fetchProducts = async({setPages,setProducts,service,pages}:FetchProducts)=>{
   try{
-    //const {datas,status,currentPage,totalPages} = await service(pages)
-    setProducts({datas:products,status:200})
-    setPages({currentPage:1,totalPages:2})
+    const {datas,status,currentPage,totalPages} = await service(pages)
+    setProducts({datas,status})
+    setPages({currentPage,totalPages})
   }catch(err){
     setProducts({datas:[] as Product[],status:500})
     setPages({currentPage:0,totalPages:0})
