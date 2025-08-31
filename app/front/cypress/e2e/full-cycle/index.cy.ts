@@ -1,4 +1,5 @@
 import {loginApi, registerApi} from '../../../src/constants/urls'
+import { products, productById } from '../../fixtures/products'
 describe("Page Registro",()=>{
     beforeEach(()=>{
         cy.visit('/registro')
@@ -44,6 +45,24 @@ describe("Page Registro",()=>{
         cy.get('.message_success')
         .should('contain.text', 'Você fez login com sucesso, você será redirecionado');
 
+        cy.intercept('GET','/product/page/1',{
+            statusCode:201,
+            body:{
+                datas:products,
+                currentPage:1,
+                totalPages:2
+            }
+        })
         cy.location('pathname').should('eq', '/');
+
+        cy.wait(3000)
+        cy.get(".product").should('exist').and('be.visible').first().click();
+
+        cy.intercept('GET','/product/1',{
+            statusCode:200,
+            body:{
+                datas:productById
+            }
+        })
     })
 })
