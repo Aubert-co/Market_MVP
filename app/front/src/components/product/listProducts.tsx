@@ -23,7 +23,7 @@ export const ListProducts = ({ products, listType }: Props) => {
       {
        products.map(({ id, name, imageUrl, price }: any) => (
             <Link
-              to={`/product/${id}`}
+              to={`/produto/${id}`}
               key={id}
               className="product"
               data-testid="product"
