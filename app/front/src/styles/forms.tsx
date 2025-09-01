@@ -21,6 +21,28 @@ export const StyleBtn = styled.button<BtnProps>`
     background: ${({ $hoverBg }) => $hoverBg || '#0056b3'};
   }
 `;
+export const SmallButton = styled.button`
+   display: inline-block;
+  padding: 0.4rem 1rem;
+  font-size: 0.875rem; /* 14px */
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #0070f3;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+
+  &:hover {
+    background-color: #005bb5;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    background-color: #004494;
+    transform: translateY(0);
+  }
+`
 export const UserFormStyles = styled.div`
 
 display: flex;
