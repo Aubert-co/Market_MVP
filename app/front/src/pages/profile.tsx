@@ -1,0 +1,84 @@
+import { useNavigate, useParams } from "react-router-dom";
+import orderhistory from '@/assets/orderhistory.png'
+import couponImg from '@/assets/coupon.png'
+import cartImg from '@/assets/cart.png'
+import storeImg from '@/assets/store2.png'
+import { UserCoupons } from "@/components/profile/userCoupons";
+import { Cart } from "@/components/profile/userCart";
+import { UserStore } from "@/components/profile/userStore";
+import { useEffect, useRef } from "react";
+import { Container } from "@/components/layoutContainer";
+import { ProfileStyle } from "@/styles/profile.style";
+
+export const Profile = () => {
+  const redirect = useNavigate()
+  const {action} = useParams()
+  const goToForm = useRef<HTMLInputElement>(null)
+  
+  const scrollToForm = () => {
+    if (goToForm.current) {
+      goToForm.current.scrollIntoView({
+        behavior: 'smooth',
+        block:"nearest"
+      });
+    }
+  };
+
+  useEffect(() => {
+   
+    const timeout = setTimeout(() => {
+    if (action && goToForm.current) {
+      goToForm.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100); 
+
+    return () => clearTimeout(timeout);
+  }, [action]);
+  
+  const onChangeActions = (page:string)=>{
+    redirect(`/perfil/${page}`)
+    scrollToForm()
+  }
+  return (
+    <Container>
+        <ProfileStyle>
+          <div className="boxes">
+            <div className="box" onClick={() => redirect('/perfil/ordens')}>
+              <img src={orderhistory} alt="Ícone de histórico de compras" />
+              <p>Histórico de Compras</p>
+            </div>
+
+            <div className="box" onClick={() => onChangeActions('cupons')}>
+              <img src={couponImg} alt="Ícone de histórico de compras" />
+              <p>Meus cupons</p>
+            </div>
+
+            <div className="box" onClick={() => onChangeActions('carrinho')}>
+              <img src={cartImg} alt="Ícone de histórico de compras" />
+              <p>Meu carrinho</p>
+            </div>
+            <div className="box" onClick={() => onChangeActions('loja')}>
+              <img src={storeImg} alt="Ícone de histórico de compras" />
+              <p>Minha loja</p>
+            </div>
+            
+          </div>
+  
+        </ProfileStyle>
+      {action === "ordens" && <Orders />}
+      {action ==="carrinho" && <Cart formRef={goToForm}/>}
+      {action === "cupons" && <UserCoupons formRef={goToForm} />}
+      {action === "loja"  && <UserStore formRef={goToForm}/>}
+    </Container>
+  );
+};
+ 
+
+
+const Orders = () => <p>Histórico de compras aparecerá aqui.</p>;
+
+
+
+
+
+
