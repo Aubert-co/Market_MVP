@@ -55,9 +55,9 @@ box-sizing: border-box;
 
 .product {
   margin: 10px;
-  width: 300px;          /* largura desejada */
-  min-width: 250px;      /* nunca vai encolher além disso */
-  flex-shrink: 0;        /* impede que encolha */
+  width: 300px;         
+  min-width: 250px;     
+  flex-shrink: 0;        
   border: 1px solid #ccc;
   border-radius: 10px;
   text-align: start;
