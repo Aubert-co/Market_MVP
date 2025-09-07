@@ -29,10 +29,10 @@ export const serviceCreateStore = async ({ name, description, image }: CreateSto
     if (!response.ok) throw new Error();
 
     const data = await response.json();
-    console.log('success');
+    
     return { message: data.message, status: response.status };
   } catch (err: unknown) {
-    console.log('error', err);
+  
     return { message: 'Algo deu errado', status: 500 };
   }
 };
@@ -45,7 +45,7 @@ export const mockStore: Store[] = [{
 
 export const serviceGetStores = async():Promise<ResponseGetStore>=>{
     try{
-        const getFromLocal = getStorageStore();
+       /* const getFromLocal = getStorageStore();
        
         if(getFromLocal.length !== 0){
           return {
@@ -54,7 +54,7 @@ export const serviceGetStores = async():Promise<ResponseGetStore>=>{
           
           }
         }
-       /* const response = await fetch(url+'/store/mystores',{
+        const response = await fetch(url+'/store/mystores',{
           credentials:'include'
         })
         if(!response.ok)throw new Error();
@@ -65,7 +65,7 @@ export const serviceGetStores = async():Promise<ResponseGetStore>=>{
           saveStorageStore( datas as Store[] )
         }
 
-        return {status:200 , datas:datas}
+        return {status:200 , datas:[]}
     }catch(err:any){
       return {status:500,datas:[]}
     }
