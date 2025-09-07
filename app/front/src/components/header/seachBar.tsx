@@ -2,7 +2,10 @@ import { useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { getInputValue } from "@/utils"
 
-export const SearchBar = ()=>{
+type Props = {
+    type?:"useSearch" | "admSearch",
+}
+export const SearchBar = ({type}:Props)=>{
     const navigate = useNavigate()
     const searchRef = useRef<HTMLInputElement >(null)
 
@@ -13,7 +16,9 @@ export const SearchBar = ()=>{
         if( !search ){
             return;
         }
-      
+        if(type === "admSearch"){
+            
+        }
         navigate(`/buscas/${search}`)
         
     }
