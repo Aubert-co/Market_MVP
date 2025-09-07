@@ -58,7 +58,7 @@ export const RenderConditionsStore = ({store,status,formRef}:Props &PropsUserSto
     if( isEmpty ){
         return (
             <div ref={formRef} className="text">
-                <h1>Você ainda não tem uma loja ,<Link to={"/loja/criar"}>crie uma agora mesmo</Link> </h1>
+                <h1>Você ainda não tem uma loja ,<Link to={"/abrir-loja"}>crie uma agora mesmo</Link> </h1>
             </div>
         )
     }
