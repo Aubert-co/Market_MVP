@@ -1,5 +1,5 @@
 import { useBoxMessage } from "@/components/boxMessages"
-import { Container } from "@/components/layoutContainer"
+import { Container } from "@/components/layouts/container"
 import { BoxProductDetail } from "@/components/product/boxProductDetail"
 import { fetchProductDetail } from "@/services/productDetail.service"
 import { ProductStyle } from "@/styles/productDetail.style"
