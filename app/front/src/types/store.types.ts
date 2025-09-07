@@ -4,3 +4,8 @@ export type Store = {
     photo:string,
     id:number
 }
+
+export type PropsFormCreateStore = {
+    formRef: React.RefObject<HTMLFormElement | null>,
+
+}
