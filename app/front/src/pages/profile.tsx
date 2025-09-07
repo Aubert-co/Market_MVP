@@ -7,7 +7,7 @@ import { UserCoupons } from "@/components/profile/userCoupons";
 import { Cart } from "@/components/profile/userCart";
 import { UserStore } from "@/components/profile/userStore";
 import { useEffect, useRef } from "react";
-import { Container } from "@/components/layoutContainer";
+import { Container } from "@/components/layouts/container"
 import { ProfileStyle } from "@/styles/profile.style";
 
 export const Profile = () => {
