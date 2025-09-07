@@ -1,16 +1,16 @@
-import type { Coupon } from "@/types/coupons.types"
+import type { BaseCoupon } from "@/types/coupons.types"
 import { useEffect, useState } from "react"
 
 import couponImg from '@/assets/coupon.png'
 import { ListContainer } from "@/styles/profile.style"
 type StateCoupon = {
-    datas:Coupon[],
+    datas:BaseCoupon<number>[],
     status:number
 }
 type PropsList ={
-    datas:Coupon[]
+    datas:BaseCoupon<number>[]
 }
-export const mockCoupons: Coupon[] = [
+export const mockCoupons: BaseCoupon<number>[] = [
   {
     code: "DESCONTO10",
     discount: 10,
