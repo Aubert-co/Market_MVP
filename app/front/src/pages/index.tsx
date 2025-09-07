@@ -1,6 +1,6 @@
 import { usePagination } from "@/components/pagination"
 import { useNavigate } from "react-router-dom"
-import { Container } from "@/components/layoutContainer"
+import { Container } from "@/components/layouts/container"
 import { BoxProducts } from "@/components/product/boxProducts"
 import type { Product } from "@/types/products.types"
 import { useState,useEffect } from "react"
