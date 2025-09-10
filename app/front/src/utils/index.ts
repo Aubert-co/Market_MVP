@@ -1,3 +1,5 @@
+import type { OrderStatus } from "@/types/orders.types";
+
 export type RefValue = React.RefObject<HTMLInputElement | null | HTMLTextAreaElement | HTMLSelectElement>;
 
 export const getInputValue = (ref:RefValue):string =>{
@@ -9,3 +11,18 @@ export const getMultiInputValues = (...refs:RefValue[]):string[]=>refs.map((val)
 
 export const shortDescription = (description:string):string=>
     description.split(" ").slice(0,20).join(" ");
+
+
+export const getLocalDate = (date:number):string=>{
+    const value = new Date(date)
+    const localDate = value.toLocaleDateString()
+    const [month,day,year] = localDate.split('/')
+    return `${day}/${month}/${year}`
+}
+
+export const getOrderStatus = (order:OrderStatus):string=>{
+    if(order === "completed")return "completa"
+    if(order ==="cancelled")return "cancelada"
+
+    return "pendente"
+}
