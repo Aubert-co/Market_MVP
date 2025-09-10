@@ -1,8 +1,7 @@
 
-import { api } from "@/constants/urls";
 import { getItemsFromCart, saveCart } from "@/storage/cart.storage"
 import type { UserCart } from "@/types/cart.types"
-import { headers } from ".";
+
 
 type Response = {
     datas:UserCart[],
@@ -59,7 +58,7 @@ export const userCartMocks: UserCart[] = [
     stock: 20,
     name: "Cabo HDMI 2m"
   }
-];
+];/*
 const syncCart = async(cart:UserCart[]):Promise<number>=>{
   try{
     const response = await fetch(api+'/user/cart/update',{
@@ -74,7 +73,7 @@ const syncCart = async(cart:UserCart[]):Promise<number>=>{
   }catch(err:unknown){
     return 501;
   }
-}
+}*/
 export const getUserCart = async():Promise<Response>=>{
     const savedCart = getItemsFromCart()
     if( savedCart.cart.length >0){

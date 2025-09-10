@@ -1,5 +1,4 @@
-import { api } from "@/constants/urls"
-import { headers } from "."
+
 import type { ProductDetails } from "@/types/productDetail.types"
 
 type FetchProductDetail = {
@@ -67,9 +66,11 @@ export const fetchProductDetail = async({setDatas,productId}:FetchProductDetail)
 
 export const productDetailService = async(productId:string):Promise<Response>=>{
     try{
-        const response = await fetch(api+`/product/${productId}`,{
+        const response = await fetch(`/product/${productId}`,{
             method:'GET',
-            headers
+            headers: {
+              'Content-Type': 'application/json'
+            }
         })
         if(!response.ok)throw new Error();
         const values = await response.json()

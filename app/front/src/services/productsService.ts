@@ -1,5 +1,6 @@
 import type { Product } from "@/types/products.types";
-import { api } from "@/constants/urls";
+
+
 type GetProducts = {
     datas:Product[],
     status:number,
@@ -8,8 +9,11 @@ type GetProducts = {
 }
 export const serviceGetProducts = async(pageNumber:number):Promise<GetProducts>=>{
     try{
-        const response = await fetch(api+`/product/page/${pageNumber}`,{
-            credentials:'include'
+        const response = await fetch(`/product/page/${pageNumber}`,{
+            method:'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         })
         if(!response.ok)throw new Error();
         const {datas,currentPage,totalPages} = await response.json()

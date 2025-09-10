@@ -1,9 +1,7 @@
-import { api } from "@/constants/urls"
-
 export const  headers ={'Content-Type':'application/json'}
 
 
-export const loadImage = (imageName:string)=>api+`/images/${imageName}`
+export const loadImage = (imageName:string)=>`/images/${imageName}`
 export type Response ={
     message:string,
     status:number

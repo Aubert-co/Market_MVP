@@ -1,4 +1,4 @@
-import { headers } from ".";
+
 import { loginApi, registerApi } from "@/constants/urls";
 import type { Response } from "@/types/services";
 
@@ -14,7 +14,9 @@ export const serviceLoginOrRegister = async({name,email,password,typeForm}:Login
         const response = await fetch(url,{
             method:'POST',
             body:JSON.stringify({name,email,password}),
-            headers
+            headers: {
+            'Content-Type': 'application/json'
+            }
         })
         if(!response.ok)throw new Error();
 

@@ -1,6 +1,7 @@
-import { api } from "@/constants/urls";
+
 import { getStorageStore, saveStorageStore } from "@/storage/store.storage";
 import type { Store } from '@/types/store.types'
+
 
 export type CreateStore = {
   name: string;
@@ -19,11 +20,10 @@ export const serviceCreateStore = async ({ name, description, image }: CreateSto
     formData.append('description', description);
     formData.append('image', image);
 
-    const response = await fetch(api + '/store/create', {
+    const response = await fetch('/store/create', {
       method: 'POST',
       body: formData,
       credentials: 'include',
-      
     });
 
     if (!response.ok) throw new Error();
@@ -45,8 +45,8 @@ export const mockStore: Store[] = [{
 
 export const serviceGetStores = async():Promise<ResponseGetStore>=>{
     try{
-       /* const getFromLocal = getStorageStore();
-       
+        const getFromLocal = getStorageStore();
+        
         if(getFromLocal.length !== 0){
           return {
             datas:getFromLocal as Store[],
@@ -54,18 +54,22 @@ export const serviceGetStores = async():Promise<ResponseGetStore>=>{
           
           }
         }
-        const response = await fetch(url+'/store/mystores',{
-          credentials:'include'
+        const response = await fetch('/store/mystores',{
+          method:'GET',
+          credentials:'include',
+          headers: {
+            'Content-Type': 'application/json'
+          }
         })
         if(!response.ok)throw new Error();
-        const {datas} = await response.json()
-        */
-       const datas = mockStore
+        //const {datas} = await response.json()
+          const datas = mockStore
+      
         if(Array.isArray(datas) && datas.length >0){
           saveStorageStore( datas as Store[] )
         }
 
-        return {status:200 , datas:[]}
+        return {status:200 , datas}
     }catch(err:any){
       return {status:500,datas:[]}
     }
