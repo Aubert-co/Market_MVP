@@ -8,3 +8,6 @@ export type Product ={
     description:string
 }
 
+export type ProductView = Omit<Product,|"description">& {
+    views:number
+}
