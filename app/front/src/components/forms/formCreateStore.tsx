@@ -37,7 +37,7 @@ export const FormCreateStore = ({formRef}:PropsFormCreateStore)=>{
         const {status} = await serviceCreateStore({name,description,image:file})
         if(status === 201){
             setMessage({content:'Loja criada com sucesso!',type:'success'});
-            navigate('/loja')
+            navigate('/perfil/loja')
             return
         }
         if(status === 422){
