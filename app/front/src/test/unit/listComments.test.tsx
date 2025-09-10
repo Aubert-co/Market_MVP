@@ -1,5 +1,5 @@
 import { ListComments } from "@/components/product/listComments";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 describe("Component ListComments",()=>{
     it("should return an error message when the comments array is empty",()=>{

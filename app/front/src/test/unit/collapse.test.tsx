@@ -1,5 +1,5 @@
 import { Collapse } from "@/components/collapse"
-import { fireEvent, getByText, render } from "@testing-library/react"
+import { fireEvent, render } from "@testing-library/react"
 
 describe("Component collapse",()=>{
     it("should toggle the content visibility when the title is clicked",()=>{

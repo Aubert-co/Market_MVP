@@ -1,6 +1,6 @@
 import { BoxProductDetail } from "@/components/product/boxProductDetail"
-import { ListProductDetail } from "@/components/product/listProductDetail"
-import { render, screen } from "@testing-library/react"
+
+import { render } from "@testing-library/react"
 
 describe("Component ListProductDetail",()=>{
     const setMessage = jest.fn()
