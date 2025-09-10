@@ -22,7 +22,7 @@ type PropsListStore = {
 }
 export const ListStore =  ({store,formRef}:PropsListStore & PropsUserStore)=>{
     const navigate = useNavigate()
-    const redirect =()=> navigate(`/loja/gerenciar/${store[0].id}`)
+    const redirect =()=> navigate(`/loja`)
     return(
         <div onClick={redirect} className="list-container">
             {store.map(({photo,description,name,id})=>{
