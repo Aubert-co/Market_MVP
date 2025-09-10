@@ -21,15 +21,15 @@ const ToggleButton = styled.button<{$open:boolean}>`
 `
 export const Toggle = ({isOpen,setOpen}:Props)=>{
   if(isOpen)return(
-    <ToggleButton $open={isOpen} onClick={()=>setOpen(false)}>
+    <ToggleButton data-testid="close-toggle" $open={isOpen} onClick={()=>setOpen(false)}>
       X
     </ToggleButton>
 
   );
   return (
-       <ToggleButton $open={isOpen} onClick={()=>setOpen(true)}>
+       <ToggleButton data-testid="open-toggle" $open={isOpen} onClick={()=>setOpen(true)}>
         <FaBars/>
-    </ToggleButton>
+      </ToggleButton>
   
   )
   
