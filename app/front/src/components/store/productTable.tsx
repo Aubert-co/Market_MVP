@@ -1,74 +1,34 @@
 import type { Product } from "@/types/products.types";
-import styled from "styled-components";
-
-
-
-
-
-
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-
-  th,
-  td {
-    padding: 12px;
-    border-bottom: 1px solid #e2e8f0;
-    text-align: left;
-    color: #334155;
-  }
-
-  th {
-    background-color: #f8fafc;
-    color: #0f172a;
-    font-weight: 600;
-  }
-
-  tr:hover {
-    background-color: #f1f5f9;
-  }
-
-  img {
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    margin-right: 8px;
-    vertical-align: middle;
-  }
-`;
-
+import { BaseTable } from "../baseTable";
+import { loadImage } from "@/services";
 
 type Props = {
   products:Product[]
 }
+const Theader = ()=>{
+  const values = ["Produto","Categoria","Preço","Estoque"]
+  return values.map((val,ind)=><th key={ind}>{val}</th>)
+}
+const Tbody = ({products}:Props)=>{
+  return products.map((p) => (
+            <tr key={p.id}>
+              <td data-label="Produto">
+                <img src={loadImage(p.imageUrl)} width="40" height="40" alt={p.name} />
+                {p.name}
+              </td>
+              <td data-label="Categoria">{p.category}</td>
+              <td data-label="Preço">R$ {p.price.toFixed(2)}</td>
+              <td data-label="Estoque">{p.stock}</td>
+
+            </tr>
+          ))
+}
 export const ProductTable = ({products}:Props) => {
   
   return (
-      <Table>
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Categoria</th>
-            <th>Preço</th>
-            <th>Estoque</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((p) => (
-            <tr key={p.id}>
-              <td>
-                <img src={p.imageUrl} width="40" height="40" alt={p.name} />
-                {p.name}
-              </td>
-              <td>{p.category}</td>
-              <td>R$ {p.price.toFixed(2)}</td>
-              <td>{p.stock}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    
+      <BaseTable 
+        thead={<Theader/>}
+        tbody={<Tbody products={products}/>}
+      />
   );
 };
