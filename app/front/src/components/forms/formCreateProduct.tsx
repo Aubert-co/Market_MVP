@@ -8,10 +8,8 @@ import { InputWithLabel } from "./inputWithLabel"
 import { serviceCreateProduct } from "@/services/admStore.services"
 import { useBoxMessage } from "../boxMessages"
 
-type Props = {
-    storeId:string
-}
-export const FormCreateProduct = ({storeId}:Props)=>{
+
+export const FormCreateProduct = ()=>{
     const nameRef = useRef<HTMLInputElement>(null)
     const descriptionRef = useRef<HTMLTextAreaElement>(null)
     const imageRef = useRef<HTMLInputElement>(null);
@@ -50,7 +48,7 @@ export const FormCreateProduct = ({storeId}:Props)=>{
             setMessage({content:'Adicione uma imagem válida',type:'info'})
             return
         }
-        const {message,status} = await serviceCreateProduct({name,description,price,stock,category,storeId,image:file})
+        const {message,status} = await serviceCreateProduct({name,description,price,stock,category,image:file})
         
         if(status === 201){
             setMessage({content:'Produto criado com sucesso',type:'success'})
