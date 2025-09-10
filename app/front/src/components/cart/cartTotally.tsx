@@ -1,6 +1,6 @@
 import type {UpdateCartState} from "@/context/cart.context"
 import { getItemsFromCart } from "@/storage/cart.storage"
-import { SmallButton, StyleBtn } from "@/styles/forms"
+import { SmallButton } from "@/styles/forms"
 import { useEffect ,useState} from "react"
 import styled from "styled-components"
 
