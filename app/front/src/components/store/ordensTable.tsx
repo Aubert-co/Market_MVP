@@ -1,0 +1,42 @@
+import { Table } from "@/styles/dashboardStore.style";
+import type { Order } from "@/types/orders.types";
+import  {getLocalDate, getOrderStatus} from  "@/utils/index"
+import { BaseTable } from "../baseTable";
+import { loadImage } from "@/services";
+import load from "@/assets/large.jpg"
+
+type Props = {
+  orders:Order[]
+}
+export const Theader = ()=>{
+    const values = ["Produto","Status","Total","Criada em"]
+    return values.map((val,ind)=><th key={ind}>{val}</th>)
+}
+
+export const TbodyOrders = ({orders}:Props)=>{
+    return orders.map((val)=>{
+        const createdAt = getLocalDate(val.createdAt)
+        const status = getOrderStatus(val.status)
+        return(
+            <tr key={val.id}>
+               <td data-label="Produto">
+                <img src={load} alt={val.product.name} />
+                {val.product.name}
+                </td>
+                <td data-label="Status">{status}</td>
+                <td data-label="Total">R$ {val.total.toFixed(2)}</td>
+                <td data-label="Criado em">{createdAt}</td>
+
+            </tr>
+        )
+    })
+}
+export const OrdersTable = ({orders}:Props) => {
+  
+  return (
+      <Table>
+            <BaseTable  thead={<Theader/>} tbody={<TbodyOrders orders={orders}/>}/>
+      </Table>
+    
+  );
+};
