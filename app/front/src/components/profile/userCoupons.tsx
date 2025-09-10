@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 
 import couponImg from '@/assets/coupon.png'
 import { ListContainer } from "@/styles/profile.style"
+
 type StateCoupon = {
     datas:BaseCoupon<number>[],
     status:number
@@ -12,6 +13,7 @@ type PropsList ={
 }
 export const mockCoupons: BaseCoupon<number>[] = [
   {
+    id:5,
     code: "DESCONTO10",
     discount: 10,
     discountType: "percent",
@@ -19,6 +21,7 @@ export const mockCoupons: BaseCoupon<number>[] = [
     quantity: 100
   },
   {
+    id:67,
     code: "FRETEGRATIS",
     discount: 15,
     discountType: "fixed",
@@ -26,6 +29,7 @@ export const mockCoupons: BaseCoupon<number>[] = [
     quantity: 50
   },
   {
+    id:88,
     code: "BLACK50",
     discount: 50,
     discountType: "percent",
@@ -33,6 +37,7 @@ export const mockCoupons: BaseCoupon<number>[] = [
     quantity: 200
   },
   {
+    id:155,
     code: "WELCOME20",
     discount: 20,
     discountType: "fixed",
@@ -40,6 +45,7 @@ export const mockCoupons: BaseCoupon<number>[] = [
     quantity: 80
   },
   {
+    id:99,
     code: "FLASH5",
     discount: 5,
     discountType: "percent",
@@ -51,8 +57,8 @@ export const mockCoupons: BaseCoupon<number>[] = [
 export const ListCoupons = ({ datas }: PropsList) => {
   return (
     <div className="list-container">
-      {datas.map((val, index) => (
-        <div className="list-item" key={val.code + index}>
+      {datas.map((val) => (
+        <div className="list-item" key={val.id}>
             <div className="list-image">
                 <img src={couponImg} alt="" />
             </div>
