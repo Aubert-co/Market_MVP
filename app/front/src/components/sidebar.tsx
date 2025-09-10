@@ -14,8 +14,6 @@ type SidebarProps = {
 
 
 const Sidebar = ({ items,storeName ,setOpen,isOpen}:SidebarProps) => {
-  
-  
   return (
     <>
       <Toggle isOpen={isOpen} setOpen={setOpen} />
@@ -25,12 +23,10 @@ const Sidebar = ({ items,storeName ,setOpen,isOpen}:SidebarProps) => {
           <h3>{storeName}</h3>
         </div>
         <ul className="menu">
-        
-         
           {items.map((item, index) => (
-            <Link key={index} to={item.linkTo} style={{ outline: "none", textDecoration: "none" }}>
+            <Link data-testid="sidebar-link" key={index} to={item.linkTo} style={{ outline: "none", textDecoration: "none" }}>
               <li  className={`menu-item ${item.isActive ? "active" : ""}`} onClick={item.onClick}>
-                {item.icon && <span className="icon-wraper">{item.icon}</span>}
+                <span className="icon-wraper">{item.icon}</span>
                 <span className="item-label">{item.label}</span>
               </li>
             </Link>
