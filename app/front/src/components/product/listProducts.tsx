@@ -29,7 +29,7 @@ export const ListProducts = ({ products, listType }: Props) => {
               data-testid="product"
             >
               <div className="img">
-                <img alt={name} src={imageUrl} />
+                <img alt={name} src={loadImage(imageUrl )} />
               </div>
              <RenderPrice price={price} type={listType}/>
               <p className="item_name">{name}</p>
