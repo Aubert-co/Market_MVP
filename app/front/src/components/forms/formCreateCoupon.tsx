@@ -43,12 +43,20 @@ export const FormCreateCoupon = ()=>{
             setMessage({content:"",type:'info'})
             return;
         }
-        const {status} = await createCouponService({
+        const {status,message} = await createCouponService({
             code:cupomCode,quantity:Number(quantity),discount:Number('discount'),
             discountType:selectDiscount,expiresAt
         })
         if(status === 201){
             setMessage({content:"Cupom criado com sucesso",type:"success"})
+            return
+        }
+        if(status === 409){
+            setMessage({content:"Já existe um cupom com esse nome",type:'info'})
+            return
+        }
+        if(message === "Limit of active coupons reached for this store."){
+            setMessage({content:'Sua loja já possui mais de 5 cupons ativos',type:'info'})
             return
         }
         if(status > 420){
