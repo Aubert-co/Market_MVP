@@ -1,10 +1,9 @@
-
-import type { PageInfo } from "@/types/pagination.types";
+import type { Response, ResponseWithPages } from "@/types/services.types";
 import type { Product } from "@/types/products.types";
-import type { Response } from "@/types/services";
-import { headers } from ".";
+
 import type { BaseCoupon } from "@/types/coupons.types";
 import { getStorageStore } from "@/storage/store.storage";
+import type { GetStoreCoupons, GetStoreOrders, GetStoreProducts, Order } from "@/types/storeDashboard.types";
 
 
  const mockProducts: Product[] = [
@@ -65,8 +64,8 @@ type CreateProduct = {
     image:File
 }
 export const serviceCreateProduct = async({name,description,price,
-    stock,image,category}:CreateProduct):Promise<Response>=>{
-    const store = getStorageStore()
+    stock,image,category}:CreateProduct):Promise<Response >=>{
+    const [store] = getStorageStore()
     const formData = new FormData()
     formData.append('name',name)
     //formData.append('storeId',storeId)
@@ -75,7 +74,7 @@ export const serviceCreateProduct = async({name,description,price,
     formData.append('price',price)
     formData.append('stock',stock)
     formData.append('description',description)
-    formData.append('storeId',store[0].id.toString())
+    formData.append('storeId',store.id.toString())
     try{
         const response = await fetch('/product/create',{
             method:'POST',
@@ -91,23 +90,17 @@ export const serviceCreateProduct = async({name,description,price,
     }
 }
 
-type GetProducts = {
-    name?:string,
-    category?:string,
-    currentPage?:number
-}
-type ResGetProducts = PageInfo & {
-    datas:Product[],
-    status:number
-}
-export const getStoreProducts = async({name,category,currentPage}:
-    GetProducts):Promise<ResGetProducts>=>{
+
+export const getStoreProducts = async({name,category,nextPage}:
+    GetStoreProducts):Promise<ResponseWithPages<Product[]>>=>{
        try{     
             const [store] = getStorageStore()
-            const response = await fetch(`/admin/store/products/${store.id}/${currentPage}`,{
+            const response = await fetch(`/admin/store/products/${store.id}/${nextPage}`,{
                 method:'GET',
-                body:JSON.stringify({name,category,currentPage}),
-                headers,
+                body:JSON.stringify({name,category,currentPage:nextPage}),
+                headers: {
+                'Content-Type': 'application/json'
+                },
                 credentials:'include'
             })  
             if(!response.ok)throw new Error()
@@ -116,31 +109,15 @@ export const getStoreProducts = async({name,category,currentPage}:
             return {datas:responseValues.datas
                 ,currentPage:responseValues.currentPage
                 ,totalPages:responseValues.totalPages,
-                status:response.status
+                status:response.status,message:''
             }
           
         }catch(err:unknown){
-            return {datas:[],currentPage:1,totalPages:1,status:500}
+            return {datas:[],currentPage:1,totalPages:1,status:500,message:''}
         }
 
 }
 
-type FetchProducts = {
-    setPages:(params:PageInfo)=>void,
-    body:GetProducts,
-    setProducts:(params:{datas:Product[],status:number})=>void
-}
-export const fetchStoreProducts = async({setPages,setProducts,body}:FetchProducts)=>{
-   try{
-        //const {datas,currentPage,status,totalPages} = await getStoreProducts(body)
-
-        setProducts({datas:mockProducts,status:201})
-        setPages({currentPage:4,totalPages:5})
-   }catch(err:unknown){
-        setProducts({datas:[],status:500})
-        setPages({currentPage:1,totalPages:1})
-   }
-}
 
 export const createCouponService = async({code,expiresAt,
     discount,discountType,quantity}:Omit<BaseCoupon<string>,'id'>):Promise<Response>=>{
@@ -148,7 +125,9 @@ export const createCouponService = async({code,expiresAt,
             const response = await fetch('/store/create/coupon',{
                 method:'POST',
                 credentials:'include',
-                headers,
+                headers: {
+                'Content-Type': 'application/json'
+                },
                 body:JSON.stringify({code,expiresAt,discount,discountType,quantity})
             })
             if(!response.ok)throw new Error()
@@ -160,22 +139,18 @@ export const createCouponService = async({code,expiresAt,
             return {status:500,message:"Algo deu errado!"}
         }
 }
-export type GetStoreCoupons = {
-    currentPage:number,
-    totalPages:number,
-    datas:BaseCoupon<number>[],
-    message:string,
-    status:number
-}
-export const getStoreCoupons = async (
-  args: { body: any; pages: PageInfo }
-): Promise<GetStoreCoupons> => {
+
+export const getStoreCoupons = async ({nextPage}:GetStoreCoupons
+): Promise<ResponseWithPages<BaseCoupon<number>[]>> => {
     const [store] = getStorageStore()
     try{
         const response = await fetch('/store/coupons',{
             method:'POST',
             credentials:'include',
-            body:JSON.stringify({currentPage:args.pages.currentPage,storeId:store.id})
+            body:JSON.stringify({currentPage:nextPage,storeId:store.id}),
+            headers: {
+            'Content-Type': 'application/json'
+            }
         })
         if(!response.ok)throw new Error()
         const values = await response.json()
@@ -188,6 +163,37 @@ export const getStoreCoupons = async (
             totalPages:values.totalPages
         }
     }catch(err:any){
-        return {datas:[] as BaseCoupon<number>[],currentPage:1,totalPages:1,message:'Algo deu errado!',status:500}
+        return {datas:[] as BaseCoupon<number>[] ,currentPage:1,totalPages:1,message:'Algo deu errado!',status:500}
+    }
+}
+
+
+export const getStoreOrders = async({status,nextPage}:GetStoreOrders)
+:Promise<ResponseWithPages<Order[]> >=>{
+    try{
+        const response = await fetch('',{
+            method:'POST',
+            body:JSON.stringify({status,currentPage:nextPage})
+        })
+        if(!response.ok)throw new Error()
+
+        const json = await response.json()
+
+        return {
+            status:response.status,
+            datas:json.datas,
+            message:'',
+            currentPage:json.currentPage,
+            totalPages:json.totalPages
+            
+        }
+    }catch(err:any){
+        return {
+            status:500,
+            message:'Algo deu errado!',
+            currentPage:1,
+            totalPages:1,
+            datas:[] 
+        }
     }
 }

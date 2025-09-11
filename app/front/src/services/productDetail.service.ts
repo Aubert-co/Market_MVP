@@ -1,14 +1,7 @@
-
 import type { ProductDetails } from "@/types/productDetail.types"
+import type { ResponseDatas} from '@/types/services.types'
 
-type FetchProductDetail = {
-    setDatas:(params:{datas:ProductDetails,status:number})=>void,
-    productId:string
-}
-type Response = {
-    datas:ProductDetails
-    status:number
-}
+
 /*
 const selectedProduct: ProductDetails = {
   product: [
@@ -58,13 +51,12 @@ const selectedProduct: ProductDetails = {
   ]
 }
   */
-export const fetchProductDetail = async({setDatas,productId}:FetchProductDetail)=>{
-  const { datas , status} = await productDetailService(productId)
-   
-  setDatas({datas,status})
-}
 
-export const productDetailService = async(productId:string):Promise<Response>=>{
+
+export type ProductDetailBody = {
+  productId?:number | string 
+}
+export const productDetail =  async ({productId}:ProductDetailBody):Promise<ResponseDatas<ProductDetails>>=>{
     try{
         const response = await fetch(`/product/${productId}`,{
             method:'GET',
@@ -73,8 +65,8 @@ export const productDetailService = async(productId:string):Promise<Response>=>{
             }
         })
         if(!response.ok)throw new Error();
-        const values = await response.json()
-        return {datas:values.datas,status:response.status}
+        const {datas,message} = await response.json()
+        return {datas,status:response.status,message}
     }catch(err:unknown){
         return {datas:{
             comments:[],
@@ -89,6 +81,9 @@ export const productDetailService = async(productId:string):Promise<Response>=>{
             },
             product:[],
             reviews:[]
-        },status:500}
+        },
+        status:500,
+        message:'Algo deu errado!'
+      }
     }
 }

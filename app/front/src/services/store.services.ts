@@ -1,19 +1,14 @@
-
 import { getStorageStore, saveStorageStore } from "@/storage/store.storage";
+import type { Response, ResponseDatas } from "@/types/services.types";
 import type { Store } from '@/types/store.types'
 
 
-export type CreateStore = {
-  name: string;
-  description: string;
-  image: File;
+type CreateStore = Omit<Store,"photo" | "id"> &{
+  image:File
 }
-
-export type ResponseGetStore = {
-  status:number
-  datas:Store[]
-}
-export const serviceCreateStore = async ({ name, description, image }: CreateStore) => {
+export const serviceCreateStore = 
+  async ({ name, description, image }: CreateStore)
+  :Promise<Response> => {
   try {
     const formData = new FormData();
     formData.append('name', name);
@@ -28,12 +23,12 @@ export const serviceCreateStore = async ({ name, description, image }: CreateSto
 
     if (!response.ok) throw new Error();
 
-    const data = await response.json();
+    const {message} = await response.json();
     
-    return { message: data.message, status: response.status };
+    return { message, status: response.status };
   } catch (err: unknown) {
   
-    return { message: 'Algo deu errado', status: 500 };
+    return { message: 'Algo deu errado', status: 500};
   }
 };
 export const mockStore: Store[] = [{
@@ -43,7 +38,7 @@ export const mockStore: Store[] = [{
   photo: "https://via.placeholder.com/300x200?text=Super+Loja+Gamer"
 }];
 
-export const serviceGetStores = async():Promise<ResponseGetStore>=>{
+export const serviceGetStores = async():Promise<ResponseDatas<Store[]>>=>{
     try{
         const getFromLocal = getStorageStore();
         
@@ -51,7 +46,7 @@ export const serviceGetStores = async():Promise<ResponseGetStore>=>{
           return {
             datas:getFromLocal as Store[],
             status:200,
-          
+            message:'sucess'
           }
         }
         const response = await fetch('/store/mystores',{
@@ -69,8 +64,8 @@ export const serviceGetStores = async():Promise<ResponseGetStore>=>{
           saveStorageStore( datas as Store[] )
         }
 
-        return {status:200 , datas}
+        return {status:200 , datas,message:'sucess'}
     }catch(err:any){
-      return {status:500,datas:[]}
+      return {status:500,datas:[],message:'Algo deu errado!'}
     }
 }

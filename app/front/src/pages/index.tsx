@@ -4,12 +4,14 @@ import { Container } from "@/components/layouts/container"
 import { BoxProducts } from "@/components/product/boxProducts"
 import type { Product } from "@/types/products.types"
 import { useState,useEffect } from "react"
-import { serviceGetProducts } from "@/services/productsService"
-import { fetchProducts } from "@/services/fetchDatas"
+import { serviceGetProducts, type GetProductsIndex } from "@/services/productsService"
+import { usableFetchWithPages } from "@/services/fetchs"
+
 
 type ProductState ={
   datas: Product[];
   status: number;
+  message:string
 }
 export const Index = ()=>{
     const navigate = useNavigate()
@@ -18,11 +20,17 @@ export const Index = ()=>{
     }
     const {setPagesInfos,pageInfos,Pagination} = usePagination(changePage)
     const [products,setProducts] = useState<ProductState>({
-        datas:[],
-        status:0
+        datas:[] as Product[],
+        status:0,
+        message:''
     })
     useEffect(() => {
-        fetchProducts({setPages:setPagesInfos,setProducts,service:serviceGetProducts,pages:pageInfos.currentPage})
+        usableFetchWithPages<Product[],GetProductsIndex>({
+            setPages:setPagesInfos,
+            setDatas:setProducts,
+            service:serviceGetProducts,
+            body:{nextPage:pageInfos.currentPage}
+        })
     }, [pageInfos.currentPage,setPagesInfos]);
     return (
         <Container>

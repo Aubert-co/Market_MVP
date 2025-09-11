@@ -1,7 +1,9 @@
 import { useBoxMessage } from "@/components/boxMessages"
 import { Container } from "@/components/layouts/container"
 import { BoxProductDetail } from "@/components/product/boxProductDetail"
-import { fetchProductDetail } from "@/services/productDetail.service"
+import { usableFetch } from "@/services/fetchs"
+import { productDetail, type ProductDetailBody } from "@/services/productDetail.service"
+
 import { ProductStyle } from "@/styles/productDetail.style"
 import type { ProductDetails } from "@/types/productDetail.types"
 
@@ -32,7 +34,13 @@ export const ProductDetail = ()=>{
         status:0
     })
     useEffect(()=>{
-        if(productid)fetchProductDetail({setDatas:setProducts,productId:productid})
+        if(productid){
+           usableFetch<ProductDetails,ProductDetailBody>({
+            setDatas:setProducts,
+            service:productDetail,
+            body:{productId:productid}
+           })
+        }
     },[productid])
   
     return(

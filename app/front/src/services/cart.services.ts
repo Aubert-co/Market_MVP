@@ -1,12 +1,9 @@
 
 import { getItemsFromCart, saveCart } from "@/storage/cart.storage"
 import type { UserCart } from "@/types/cart.types"
+import type {  ResponseDatas } from "@/types/services.types";
 
 
-type Response = {
-    datas:UserCart[],
-    status:number
-}
 export const userCartMocks: UserCart[] = [
   {
     id:1,
@@ -74,11 +71,11 @@ const syncCart = async(cart:UserCart[]):Promise<number>=>{
     return 501;
   }
 }*/
-export const getUserCart = async():Promise<Response>=>{
+export const getUserCart = async():Promise<ResponseDatas<UserCart[]>>=>{
     const savedCart = getItemsFromCart()
     if( savedCart.cart.length >0){
       return {
-        datas:savedCart.cart,status:200
+        datas:savedCart.cart,status:200,message:'sucess'
       }
     }
     
@@ -100,9 +97,9 @@ export const getUserCart = async():Promise<Response>=>{
       if(Array.isArray( datas) && datas.length >0){
         saveCart( { cart: datas as UserCart[],updatedAt:Date.now()})
       }
-      return {datas:datas as UserCart[],status:200}
+      return {datas:datas as UserCart[],status:200,message:'success'}
     }catch(err:any){
-      return {datas:[],status:500}
+      return {datas:[],status:500,message:'Algo deu errado!'}
     }
   
 }

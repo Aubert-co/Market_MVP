@@ -1,6 +1,6 @@
 
 import { loginApi, registerApi } from "@/constants/urls";
-import type { Response } from "@/types/services";
+import type { Response } from "@/types/services.types";
 
 type LoginOrRegister ={
     name?:string,

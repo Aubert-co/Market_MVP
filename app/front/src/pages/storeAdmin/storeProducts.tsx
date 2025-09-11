@@ -2,35 +2,37 @@ import { FormCreateProduct } from "@/components/forms/formCreateProduct"
 import { ContainerDashboard } from "@/components/layouts/containerDashboard"
 import { usePagination } from "@/components/pagination"
 import {  ProductTable } from "@/components/store/productTable"
-
 import { Box } from "@/styles/dashboardStore.style"
 import { SearchBar } from "@/components/header/seachBar"
 import { useSearchByCategory } from "@/components/useSearchByCategory"
 import { Controls } from "@/styles/dashboardStore.style"
 import { useEffect, useState } from "react"
-import { fetchStoreProducts } from "@/services/admStore.services"
 import type { Product } from "@/types/products.types"
 import { selectMenuItem } from "@/constants/menuItems"
-import { useParams } from "react-router-dom"
-
+import {  usableFetchWithPages } from "@/services/fetchs"
+import { getStoreProducts } from "@/services/admStore.services"
+import type { GetStoreProducts } from "@/types/storeDashboard.types"
 
 type StateProducts = {
     datas:Product[],
-    status:number
+    status:number,
+    message:string
 }
 export const StoreProducts = ()=>{
     const changePage = ()=>{}
     const {Pagination,setPagesInfos,pageInfos} = usePagination(changePage)
     const {SearhByCategory,category} = useSearchByCategory()
-    const {storeid} = useParams()
+   
     const [products,setProducts] = useState<StateProducts>({
-        datas:[] ,status:0
+        datas:[] ,status:0,message:''
     })
     useEffect(()=>{
-        fetchStoreProducts({
+        usableFetchWithPages<Product[],GetStoreProducts>({
+            body:{category,nextPage:pageInfos.currentPage,name:''},
+            setDatas:setProducts,
+            service:getStoreProducts,
             setPages:setPagesInfos,
-            body:{category,currentPage:pageInfos.currentPage},
-            setProducts:setProducts
+            
         })
     },[category])
 
@@ -45,7 +47,7 @@ export const StoreProducts = ()=>{
                 <Pagination/>
             </Box>
            
-            <FormCreateProduct storeId={storeid}/>
+            <FormCreateProduct />
         </ContainerDashboard>
     )
 }
