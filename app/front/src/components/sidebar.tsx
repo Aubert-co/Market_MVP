@@ -1,12 +1,13 @@
 import { Toggle } from "./toggle"
 import { SiderStyle } from "@/styles/dashboardStore.style"
+import type { SideBarItem } from "@/types/storeDashboard.types"
 import { Link } from "react-router-dom"
-import type { MenuItem } from "@/types/admStore.types"
+
 
 
 
 type SidebarProps = {
-  items: MenuItem[],
+  items: SideBarItem[],
   storeName:string,
   isOpen:boolean,
   setOpen:(param:boolean)=>void
