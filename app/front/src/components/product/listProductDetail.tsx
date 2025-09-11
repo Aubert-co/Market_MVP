@@ -1,4 +1,4 @@
-import { loadImage } from "@/services";
+import { loadImage } from "@/utils/index";
 import type { Product } from "@/types/products.types";
 import { ListRatings } from "./listRatings";
 import { Collapse } from "../collapse";

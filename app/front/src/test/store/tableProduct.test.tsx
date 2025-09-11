@@ -1,7 +1,7 @@
 import { ProductTable } from "@/components/store/productTable"
 import { mockProducts } from "../mock/products"
 import {  render } from "@testing-library/react"
-import { loadImage } from "@/services"
+import { loadImage } from "@/utils/index"
 
 describe("Component ProcutTable",()=>{
     it("should render the product table correctly",()=>{

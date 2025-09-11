@@ -1,6 +1,6 @@
 import type { Product } from "@/types/products.types";
 import { BaseTable } from "../baseTable";
-import { loadImage } from "@/services";
+import { loadImage } from "@/utils/index";
 
 type Props = {
   products:Product[]

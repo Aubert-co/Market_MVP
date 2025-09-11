@@ -1,11 +1,11 @@
-import { loadImage, usableFetch } from "@/services"
+import { usableFetch } from "@/services/fetchs"
 import { serviceGetStores } from "@/services/store.services"
 import { ListContainer } from "@/styles/profile.style"
 import type { Store } from "@/types/store.types"
 import { shortDescription } from "@/utils"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-
+import { loadImage } from "@/utils"
 type Props={
     status:number,
     store:Store[]
@@ -74,7 +74,7 @@ export const UserStore =({formRef}:PropsUserStore)=>{
         datas:[],status:0
     })
     useEffect(()=>{
-        usableFetch<Store[]>({setDatas:setStores,service:serviceGetStores})
+        usableFetch<Store[],{}>({setDatas:setStores,service:serviceGetStores,body:{}})
     },[])
     return (
         <ListContainer>
