@@ -1,9 +1,9 @@
 import { Table } from "@/styles/dashboardStore.style";
-import type { Order } from "@/types/orders.types";
+import type { Order } from "@/types/storeDashboard.types";
 import  {getLocalDate, getOrderStatus} from  "@/utils/index"
 import { BaseTable } from "../baseTable";
-import { loadImage } from "@/services";
-import load from "@/assets/large.jpg"
+import { loadImage } from "@/utils/index";
+
 
 type Props = {
   orders:Order[]
@@ -20,7 +20,7 @@ export const TbodyOrders = ({orders}:Props)=>{
         return(
             <tr key={val.id}>
                <td data-label="Produto">
-                <img src={load} alt={val.product.name} />
+                <img src={loadImage(val.product.imageUrl)} alt={val.product.name} />
                 {val.product.name}
                 </td>
                 <td data-label="Status">{status}</td>
