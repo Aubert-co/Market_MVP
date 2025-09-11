@@ -1,4 +1,4 @@
-import type { OrderStatus } from "@/types/orders.types";
+import type { OrderStatus } from "@/types/storeDashboard.types";
 
 export type RefValue = React.RefObject<HTMLInputElement | null | HTMLTextAreaElement | HTMLSelectElement>;
 
@@ -26,3 +26,4 @@ export const getOrderStatus = (order:OrderStatus):string=>{
 
     return "pendente"
 }
+export const loadImage = (imageName:string)=>`/images/${imageName}`
