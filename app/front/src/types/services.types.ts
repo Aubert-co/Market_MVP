@@ -15,8 +15,8 @@ export type ResponseWithPages<T> =  ResponseDatas<T> & PageInfo
 
 export type UsableFetch<T,B> = {
   setDatas:(args:{datas:T,status:number,message:string})=>void,
-  service:(body?:B)=>Promise<ResponseDatas<T>>,
-  body?:B
+  service:(body:B)=>Promise<ResponseDatas<T>>,
+  body:B
 
 }
 
