@@ -1,14 +1,12 @@
 import { useState } from "react"
+import type { PageInfo } from "@/types/services.types";
 
+type CallBackChangePage = (page:number)=>void
+type RenderNumbers = PageInfo&{
+  handlePageChange:CallBackChangePage
+}
 
-type Pages = {
-    totalPages:number,
-    currentPage:number
-}
-type RenderButtons = Pages&{
-    handlePageChange:(page:number)=>void
-}
-export const renderNumbers = ({totalPages,currentPage,handlePageChange}:RenderButtons)=>{
+export const renderNumbers = ({totalPages,currentPage,handlePageChange}:RenderNumbers)=>{
     const pageNumbers = [];
     
     for (let i = 1; i <= totalPages; i++) {
@@ -35,10 +33,10 @@ export const renderNumbers = ({totalPages,currentPage,handlePageChange}:RenderBu
 
     return pageNumbers;
 }
-type ChangePage = (page:number)=>void
-export const usePagination = (changePage:ChangePage)=>{
+
+export const usePagination = (cbChangePage:CallBackChangePage)=>{
   
-    const [pageInfos,setPagesInfos] = useState<Pages>({
+    const [pageInfos,setPagesInfos] = useState<PageInfo>({
         totalPages:1,
         currentPage:1
     })
@@ -48,7 +46,7 @@ export const usePagination = (changePage:ChangePage)=>{
             ...prev,
             currentPage: newPage
         }));
-        changePage(newPage)
+        cbChangePage(newPage)
     }
     const Pagination = ()=>{
       return(  
