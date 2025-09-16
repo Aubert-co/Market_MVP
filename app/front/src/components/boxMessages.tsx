@@ -1,3 +1,4 @@
+import { ToastMessage,NormalMessage } from "@/styles";
 import { useEffect, useState } from "react";
 
 export type Message ={
@@ -5,8 +6,10 @@ export type Message ={
     type:'error' | 'info' | 'success'
 }
 
-
-export const useBoxMessage = ()=>{
+export type Props = {
+    styledType?:"toast" | "" 
+}
+export const useBoxMessage = ({styledType}:Props)=>{
     const [message,setMessage] = useState<Message>({
         content:'',type:'info'
     })
@@ -18,15 +21,15 @@ export const useBoxMessage = ()=>{
         }
     },[message])
     const BoxMessage = ()=>{
-   
+        const Wrapper = styledType === "toast" ? ToastMessage : NormalMessage
         return (
-            <>
+            <Wrapper>
                 {message?.content && (
                     <div className={"message_"+message.type} >
                         <p data-testid="message_content">{message.content}</p>
                     </div>
                 )}
-            </>
+            </Wrapper>
         );
     
     };
