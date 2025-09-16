@@ -71,23 +71,6 @@ form {
 }
 
 
-.message {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.message_success {
-  color: #28a745;
-}
-
-.message_error {
-  color: #dc3545; 
-}
-
-.message_info {
-  color: #007bff; 
-}
 .type_form {
   font-size: 1.5rem;         
   font-weight: 700;         
