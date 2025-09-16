@@ -196,6 +196,7 @@ export const ListInfo = styled.div`
 
 
 export const ProfileStyle = styled.div`
+text-align:center;
 .boxes{
   justify-self:center;
   display: flex;
@@ -254,4 +255,5 @@ export const ProfileStyle = styled.div`
   text-align: center;
   margin: 2px 0 0 0; /* Margem superior pequena, sem margem embaixo */
 }
+  
 `
