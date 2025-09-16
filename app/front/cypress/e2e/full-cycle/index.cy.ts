@@ -61,8 +61,21 @@ describe("Page Registro",()=>{
         cy.intercept('GET','/product/1',{
             statusCode:200,
             body:{
-                datas:productById
+                datas:productById,
+                message:'success'
             }
-        })
+        }).as("getproduct")
+        cy.wait("@getproduct")
+        cy.get('button').first().should('be.visible').click()
+
+        cy.intercept('GET','/user/cart/add',{
+            statusCode:201,
+            body:{
+                message:'success'
+            }
+        }).as('add/cart')
+        cy.wait('@add/cart')
+        cy.get('.message_success')
+        .should('contain.text', 'Adicionado ao carrinho com sucesso');
     })
 })
