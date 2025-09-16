@@ -6,6 +6,7 @@ import type { Product } from "@/types/products.types"
 import { useState,useEffect } from "react"
 import { serviceGetProducts, type GetProductsIndex } from "@/services/productsService"
 import { usableFetchWithPages } from "@/services/fetchs"
+import { useSyncCart } from "@/hooks/useSyncCart"
 
 
 type ProductState ={
@@ -18,6 +19,7 @@ export const Index = ()=>{
     const changePage = (page:number)=>{
         navigate(`/products/pages?value=${page}`)
     }
+    useSyncCart()
     const {setPagesInfos,pageInfos,Pagination} = usePagination(changePage)
     const [products,setProducts] = useState<ProductState>({
         datas:[] as Product[],
