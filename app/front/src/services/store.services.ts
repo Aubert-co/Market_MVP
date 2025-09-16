@@ -31,12 +31,7 @@ export const serviceCreateStore =
     return { message: 'Algo deu errado', status: 500};
   }
 };
-export const mockStore: Store[] = [{
-  id: 1,
-  name: "Super Loja Gamer",
-  description: "A melhor loja de periféricos e jogos para PC e consoles.",
-  photo: "https://via.placeholder.com/300x200?text=Super+Loja+Gamer"
-}];
+
 
 export const serviceGetStores = async():Promise<ResponseDatas<Store[]>>=>{
     try{
@@ -57,9 +52,7 @@ export const serviceGetStores = async():Promise<ResponseDatas<Store[]>>=>{
           }
         })
         if(!response.ok)throw new Error();
-        //const {datas} = await response.json()
-          const datas = mockStore
-      
+        const {datas} = await response.json()
         if(Array.isArray(datas) && datas.length >0){
           saveStorageStore( datas as Store[] )
         }
