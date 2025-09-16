@@ -4,6 +4,7 @@ import { ListRatings } from "./listRatings";
 import { Collapse } from "../collapse";
 import { StyleBtn } from "@/styles/forms";
 import type { Message } from "../boxMessages";
+import { addToCart } from "@/services/cart.services";
 
 type Props = {
     product:Product[],
@@ -18,7 +19,17 @@ type Props = {
  setMessage: React.Dispatch<React.SetStateAction<Message>>
 }
 export const ListProductDetail = ({product,ratings,setMessage}:Props)=>{
-    const addToCart  =()=>{
+    const addCart  = async()=>{
+        const {status} = await addToCart(product[0].id)
+        
+        if(status === 401){
+            setMessage({content:'Faça login para adicionar ao carrinho',type:'error'})
+            return
+        }
+        if(status >= 500){
+            setMessage({content:'Algo deu errado!',type:'error'})
+            return;
+        }
         setMessage({content:'Adicionado ao carrinho com sucesso',type:'success'})
     }
     return product.map((val)=>{
@@ -41,7 +52,7 @@ export const ListProductDetail = ({product,ratings,setMessage}:Props)=>{
                         <h3>Preço ${val.price}</h3>
                     </div>
                     <div className="actions">
-                        <StyleBtn onClick={addToCart}>Adicionar ao carrinho</StyleBtn>
+                        <StyleBtn onClick={addCart}>Adicionar ao carrinho</StyleBtn>
                         <StyleBtn>Comprar</StyleBtn>
                     </div>
                 </div>
