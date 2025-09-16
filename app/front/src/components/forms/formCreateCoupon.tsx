@@ -14,7 +14,7 @@ export const FormCreateCoupon = ()=>{
     const discountRef = useRef(null)
     const cupomCodeRef = useRef(null)
     const quantityRef = useRef(null)
-    const {BoxMessage,setMessage}= useBoxMessage()
+    const {BoxMessage,setMessage}= useBoxMessage({styledType:''})
     const onSubmit =async (e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
         const [discount , cupomCode,quantity]=getMultiInputValues(discountRef,cupomCodeRef,quantityRef)

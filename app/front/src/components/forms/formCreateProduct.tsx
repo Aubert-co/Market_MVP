@@ -16,7 +16,7 @@ export const FormCreateProduct = ()=>{
     const priceRef = useRef<HTMLInputElement>(null)
     const stockRef = useRef<HTMLInputElement>(null)
     const categoryRef = useRef<HTMLSelectElement>(null)
-    const {setMessage,BoxMessage} = useBoxMessage()
+    const {setMessage,BoxMessage} = useBoxMessage({styledType:""})
     const submit = async(e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
         const [name,description,price,stock,category] = getMultiInputValues(

@@ -35,7 +35,7 @@ export const FormLoginOrRegister = ({submitEvent,type,formRef}:PropsForm)=>{
   const refUserPassword = useRef<HTMLInputElement>(null);
   const refRepeatUserPassword = useRef<HTMLInputElement>(null);
   const titleText = type === "Login" ? "Login" : "Cadastro"
-  const {setMessage,BoxMessage} = useBoxMessage()
+  const {setMessage,BoxMessage} = useBoxMessage({styledType:""})
   
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>):void=>{
     e.preventDefault()

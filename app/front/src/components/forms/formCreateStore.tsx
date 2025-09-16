@@ -13,7 +13,7 @@ export const FormCreateStore = ({formRef}:PropsFormCreateStore)=>{
     const nameRef = useRef<HTMLInputElement>(null)
     const descriptionRef = useRef<HTMLTextAreaElement>(null)
     const imageRef = useRef<HTMLInputElement>(null);
-    const { BoxMessage,setMessage} = useBoxMessage();
+    const { BoxMessage,setMessage} = useBoxMessage({styledType:""});
     const navigate = useNavigate()
     const submit = async(e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
