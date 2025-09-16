@@ -9,12 +9,16 @@ import { UserStore } from "@/components/profile/userStore";
 import { useEffect, useRef } from "react";
 import { Container } from "@/components/layouts/container"
 import { ProfileStyle } from "@/styles/profile.style";
+import { UserOrders } from "@/components/profile/userOrders";
+import { useBoxMessage } from "@/components/boxMessages";
+import { useSyncCart } from "@/hooks/useSyncCart";
 
 export const Profile = () => {
   const redirect = useNavigate()
   const {action} = useParams()
   const goToForm = useRef<HTMLInputElement>(null)
-  
+  const {BoxMessage,setMessage} = useBoxMessage({styledType:"toast"})
+  useSyncCart()
   const scrollToForm = () => {
     if (goToForm.current) {
       goToForm.current.scrollIntoView({
@@ -41,7 +45,9 @@ export const Profile = () => {
   }
   return (
     <Container>
+        <BoxMessage/>
         <ProfileStyle>
+          <h1 style={{ color: '#4B5563' }}>Perfil</h1>
           <div className="boxes">
             <div className="box" onClick={() => redirect('/perfil/ordens')}>
               <img src={orderhistory} alt="Ícone de histórico de compras" />
@@ -65,8 +71,8 @@ export const Profile = () => {
           </div>
   
         </ProfileStyle>
-      {action === "ordens" && <Orders />}
-      {action ==="carrinho" && <Cart formRef={goToForm}/>}
+      {action === "ordens" && <UserOrders />}
+      {action ==="carrinho" && <Cart setMessage={setMessage} formRef={goToForm}/>}
       {action === "cupons" && <UserCoupons formRef={goToForm} />}
       {action === "loja"  && <UserStore formRef={goToForm}/>}
     </Container>
@@ -75,7 +81,6 @@ export const Profile = () => {
  
 
 
-const Orders = () => <p>Histórico de compras aparecerá aqui.</p>;
 
 
 
