@@ -1,12 +1,14 @@
 import { UpdateCartQuantity } from "./updateCartQuantity"
 import { RemoveFromCart } from "./removeFromCart"
-import {  useState } from "react"
+import React, {  useState, type SetStateAction } from "react"
 import styled from "styled-components"
+import type { Message } from "../boxMessages"
 
 
 type Props = {
-    id:number,
-    quantity:number
+  id:number,
+  quantity:number,
+  setMessage: React.Dispatch<SetStateAction<Message>>
 }
 const CartStyle = styled.div`
  .cart-update {
@@ -61,14 +63,13 @@ const CartStyle = styled.div`
   transform: scale(1.1);
 }
 `
-export const CartActions = ({id,quantity}:Props)=>{
+export const CartActions = ({id,quantity,setMessage}:Props)=>{
     const [updatedQuantity,setQuantity] = useState( quantity )
   
     return (
         <CartStyle>
-               <RemoveFromCart id={id}/>
+            <RemoveFromCart id={id} setMessage={setMessage}/>
             <UpdateCartQuantity id={id} quantity={updatedQuantity} setQuantity={setQuantity}/>
-         
         </CartStyle>
     )
 }
