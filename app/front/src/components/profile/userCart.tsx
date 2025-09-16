@@ -1,31 +1,28 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, type SetStateAction } from "react"
 import type { UserCart } from "@/types/cart.types"
-import {  RenderConditions } from "@/components/cart/listCart"
+import {  CartList } from "@/components/cart/cartList"
 import { getUserCart } from "@/services/cart.services"
 import { UpdateCartContext } from "@/context/cart.context"
 import { ListContainer } from "@/styles/profile.style"
-import { CartTotally } from "../cart/cartTotally"
-
+import { CartOverview } from "../cart/cartOverview"
+import { RenderDataState } from "../RenderDataState"
+import type { Message } from "../boxMessages"
+import { Link } from "react-router-dom"
+import { usableFetch } from "@/services/fetchs"
 
 
 type CartState = {
-    datas:UserCart[],
-    status:number
+  datas:UserCart[],
+  status:number
 }
-
-export const fetchData = async(setUserCart: React.Dispatch<React.SetStateAction<CartState>>) => {
-  const {datas,status}= await getUserCart()
-  setUserCart({
-    datas:datas as UserCart[],status
-  })
-};
-
 type Props = {
-  formRef:React.RefObject<HTMLInputElement | null>
+  formRef:React.RefObject<HTMLInputElement | null>,
+  setMessage: React.Dispatch<SetStateAction<Message>>
+
 }
 
 
-export const Cart = ({formRef}:Props)=>{
+export const Cart = ({formRef,setMessage}:Props)=>{
     const [userCart,setUserCart] = useState<CartState>({
         datas:[],
         status:0
@@ -34,7 +31,11 @@ export const Cart = ({formRef}:Props)=>{
 
     useEffect(() => {
         if (updateCart) {
-          fetchData(setUserCart);
+          usableFetch<UserCart[],{}>({
+            service:getUserCart,
+            setDatas:setUserCart,
+            body:{}
+          });
           setUpdateCart(false);
         }
     }, [updateCart]);
@@ -48,8 +49,21 @@ export const Cart = ({formRef}:Props)=>{
         
 
           <div className="list-container">
-              <CartTotally setUpdateCart={setUpdateCart} updateCart={updateCart}/>
-              <RenderConditions cart={userCart.datas} status={userCart.status}/>
+            <RenderDataState<UserCart>
+                datas={userCart.datas}
+                status={userCart.status}
+                emptyMessage={
+                      <>
+                        Seu carrinho está vazio. <Link to="/">Adicionar produtos</Link>
+                      </>
+
+                }
+                errorMessage="Algo deu errado ao carregar o seu carrinho"
+              >
+              <CartOverview setMessage={setMessage} setUpdateCart={setUpdateCart} updateCart={updateCart}/>
+              <CartList setMessage={setMessage} cart={userCart.datas}/>
+            </RenderDataState>
+             
              
           </div>
           <div ref={formRef} className="end"></div>

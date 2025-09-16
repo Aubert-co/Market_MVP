@@ -6,10 +6,8 @@ import { shortDescription } from "@/utils"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { loadImage } from "@/utils"
-type Props={
-    status:number,
-    store:Store[]
-}
+import { RenderDataState } from "../RenderDataState"
+
 type StoreState = {
     datas:Store[],
     status:number
@@ -44,41 +42,32 @@ export const ListStore =  ({store,formRef}:PropsListStore & PropsUserStore)=>{
         </div>
         )
 }
-export const RenderConditionsStore = ({store,status,formRef}:Props &PropsUserStore)=>{
-    const isEmpty = store.length ===0
-    const hasError = isEmpty && status > 204
-    
-    if( hasError ){
-        return (
-        <div ref={formRef} className="text">
-            <h1>Algo deu errado ao carregar a sua loja!</h1>
-        </div>
-        )
-    }
-    if( isEmpty ){
-        return (
-            <div ref={formRef} className="text">
-                <h1>Você ainda não tem uma loja ,<Link to={"/abrir-loja"}>crie uma agora mesmo</Link> </h1>
-            </div>
-        )
-    }
-    return (
-        <>
-            <ListStore formRef={formRef} store={store}/>
-        </>
-    )
-}
+
 
 export const UserStore =({formRef}:PropsUserStore)=>{
     const [ stores,setStores] = useState<StoreState>({
         datas:[],status:0
     })
     useEffect(()=>{
-        usableFetch<Store[],{}>({setDatas:setStores,service:serviceGetStores,body:{}})
+      usableFetch<Store[],{}>({setDatas:setStores,service:serviceGetStores,body:{}})
     },[])
     return (
         <ListContainer>
-            <RenderConditionsStore formRef={formRef} status={stores.status} store={stores.datas}/>
+            <div className="text">
+              <h1>Minha loja</h1>
+            </div>
+            <RenderDataState<Store>
+                datas={stores.datas}
+                status={stores.status}
+                emptyMessage={
+                    <>
+                        Você ainda não tem uma loja ,<Link to={"/abrir-loja"}>crie uma agora mesmo</Link> 
+                    </>
+                }
+                errorMessage="Algo deu errado ao carregar a sua loja!"
+            >
+                <ListStore store={stores.datas} formRef={formRef}/>
+            </RenderDataState>
         </ListContainer>
     )
 }
