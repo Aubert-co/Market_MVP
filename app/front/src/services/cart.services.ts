@@ -1,76 +1,29 @@
-
 import { getItemsFromCart, saveCart } from "@/storage/cart.storage"
 import type { UserCart } from "@/types/cart.types"
-import type {  ResponseDatas } from "@/types/services.types";
+import type {  Response, ResponseDatas } from "@/types/services.types";
 
 
-export const userCartMocks: UserCart[] = [
-  {
-    id:1,
-    productId: 1,
-    imageUrl: "https://via.placeholder.com/150",
-    quantity: 2,
-    storeId: 101,
-    price: 49.99,
-    stock: 10,
-    name: "Fone Bluetooth"
-  },
-  {
-    id:2,
-    productId: 2,
-    imageUrl: "https://via.placeholder.com/150",
-    quantity: 1,
-    storeId: 102,
-    price: 89.9,
-    stock: 5,
-    name: "Mouse Gamer RGB"
-  },
-  {
-   id:3,
-    productId: 3,
-    imageUrl: "https://via.placeholder.com/150",
-    quantity: 3,
-    storeId: 103,
-    price: 199.99,
-    stock: 8,
-    name: "Teclado Mecânico"
-  },
-  {
-    id:4,
-    productId: 4,
-    imageUrl: "https://via.placeholder.com/150",
-    quantity: 1,
-    storeId: 104,
-    price: 599.0,
-    stock: 2,
-    name: "Monitor 24'' Full HD"
-  },
-  {
-    id:5,
-    productId: 5,
-    imageUrl: "https://via.placeholder.com/150",
-    quantity: 4,
-    storeId: 105,
-    price: 29.5,
-    stock: 20,
-    name: "Cabo HDMI 2m"
-  }
-];/*
-const syncCart = async(cart:UserCart[]):Promise<number>=>{
+export type BodySyncCart = {
+  cart:UserCart[]
+}
+export const syncCart = async({cart}:BodySyncCart):Promise<ResponseDatas<UserCart[]>>=>{
   try{
-    const response = await fetch(api+'/user/cart/update',{
+    const response = await fetch('/user/cart/update',{
       method:'PUT',
       credentials:'include',
       body:JSON.stringify({cart}),
-      headers
+      headers:{}
     })
     if(!response.ok)throw new Error()
       
-    return response.status
+    if(response.status === 201){
+      saveCart({cart,updatedAt:Date.now(),isSaved:true})
+    }
+    return {datas:[],status:response.status,message:''}
   }catch(err:unknown){
-    return 501;
+    return {status:500,message:'Algo deu errado',datas:[]}
   }
-}*/
+}
 export const getUserCart = async():Promise<ResponseDatas<UserCart[]>>=>{
     const savedCart = getItemsFromCart()
     if( savedCart.cart.length >0){
@@ -80,20 +33,14 @@ export const getUserCart = async():Promise<ResponseDatas<UserCart[]>>=>{
     }
     
     try{
-      /*if(savedCart.isSaved === false && savedCart.cart.length >0){
-          const response = await syncCart( savedCart.cart )
-          if(response >200)throw new Error()
-        
-          saveCart({cart:savedCart.cart,updatedAt:Date.now(),isSaved:true})
-      } 
-      const response = await fetch(api+'/user/cart',{
+     
+      const response = await fetch('/user/cart',{
         method:'GET',
         credentials:'include'
       })
       if(!response.ok)throw new Error();
       const {datas} = await response.json()
-      */
-     const datas = userCartMocks
+      
       if(Array.isArray( datas) && datas.length >0){
         saveCart( { cart: datas as UserCart[],updatedAt:Date.now()})
       }
@@ -102,4 +49,41 @@ export const getUserCart = async():Promise<ResponseDatas<UserCart[]>>=>{
       return {datas:[],status:500,message:'Algo deu errado!'}
     }
   
+}
+
+export const deleteFromCart = async(cart:Array<number> ):Promise<Response>=>{
+  try{
+    const response = await fetch('/user/cart/remove',{
+      method:'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials:'include',
+      body:JSON.stringify({cart})
+    })
+    if(!response.ok)throw new Error()
+    const {message} =await response.json()
+    return {message,status:response.status}
+  }catch(err:unknown){
+    return {status:500,message:'Algo deu errado!'}
+  }
+}
+
+export const addToCart = async(id:number):Promise<Response>=>{
+   try{
+    const response = await fetch('/user/cart/add',{
+      method:'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials:'include',
+      body:JSON.stringify({cart:[id]})
+    })
+    if(!response.ok)throw new Error()
+    const {message} =await response.json()
+   
+    return {message,status:response.status}
+  }catch(err:unknown){
+    return {status:500,message:'Algo deu errado!'}
+  }
 }
