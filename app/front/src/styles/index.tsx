@@ -252,3 +252,77 @@ i{
 }
  
 `;
+
+
+export const ToastMessage = styled.div`
+  .message_success,
+  .message_error,
+  .message_info {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    z-index: 9999;
+    animation: slideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+               fadeOut 0.4s ease-in forwards;
+    animation-delay: 0s, 2.6s; /* entra rápido, sai depois de ~3s */
+  }
+
+  .message_success {
+    background-color: #4caf50;
+  }
+
+  .message_error {
+    background-color: #f44336;
+  }
+
+  .message_info {
+    background-color: #2196f3;
+  }
+
+  /* entrada com leve slide + fade */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* saída suave */
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
+`
+
+
+export const NormalMessage = styled.div`
+
+.message {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.message_success {
+  color: #28a745;
+}
+
+.message_error {
+  color: #dc3545; 
+}
+
+.message_info {
+  color: #007bff; 
+}
+`
