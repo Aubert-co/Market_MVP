@@ -1,6 +1,5 @@
-import { CART_KEY ,FIVE_MINUTES} from "@/constants"
+import { CART_KEY } from "@/constants"
 import type { UserCart } from "@/types/cart.types"
-
 
 
 
@@ -9,28 +8,18 @@ type StorageCart = {
     updatedAt:number,
     isSaved?:boolean
 }
-type GetItems = {
-    needsUpdate:boolean
-}
 
-export const getItemsFromCart = ():StorageCart&GetItems =>{
-    const values =  localStorage.getItem(CART_KEY) 
+
+export const getItemsFromCart = ():StorageCart =>{
+    const values =  localStorage.getItem(CART_KEY)
     if(values){
         const parsed = JSON.parse( values) as StorageCart
-        const updatedAt = new Date(parsed.updatedAt).getTime();
-        const now = Date.now();
-        const isOutDated =  now - updatedAt > FIVE_MINUTES
-        
-        if (isOutDated) {
-            return {...parsed,needsUpdate:true}
-        }
-        return {...parsed,needsUpdate:false}
+        return {...parsed}
     }
-    return {cart:[],updatedAt:0,needsUpdate:true,isSaved:false}
+    return {cart:[],updatedAt:0,isSaved:false}
 }
 
 export const saveCart =({cart,updatedAt,isSaved}:StorageCart)=>{
-
     const items = {cart,updatedAt,isSaved}
     localStorage.setItem(CART_KEY,JSON.stringify( items ))
 }
@@ -47,16 +36,20 @@ export const updateItemCart = (id:number,quantity:number)=>{
     })
     saveCart({cart,updatedAt:Date.now(),isSaved:false})
 }
-export const removeItemFromCart = (id:number)=>{
+export const removeItemFromCart = (values:Array<number>)=>{
     const items = getItemsFromCart()
     if(items.cart.length ===0)return;
-  
-        const cart = items.cart.map((val)=>{
-            if(val.id === id){
-                return {...val,isDeleted:true}
-            }
-            return val
-        })
+    
+    if(items.cart.length === values.length){
+        saveCart({cart:[],updatedAt:Date.now(),isSaved:false})
+        return
+    }
+    const cart = items.cart.map((val)=>{
+        if(values.includes(val.id)){
+            return ;
+        }
+        return val
+    }).filter((val)=>val!=undefined) as UserCart[]
         
     saveCart({cart,updatedAt:Date.now(),isSaved:false})
 }
