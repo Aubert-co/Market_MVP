@@ -34,7 +34,7 @@ export  const UpdateCartQuantity =({id,quantity,setQuantity}:Props)=>{
         setUpdateCart(true)
     }
     return(
-        <div className="cart-update">
+        <div key={id} className="cart-update">
             <button onClick={()=>click('decrease')}>
                 -
             </button>
