@@ -1,6 +1,7 @@
 import { useBoxMessage } from "@/components/boxMessages"
 import { Container } from "@/components/layouts/container"
 import { BoxProductDetail } from "@/components/product/boxProductDetail"
+import { useSyncCart } from "@/hooks/useSyncCart"
 import { usableFetch } from "@/services/fetchs"
 import { productDetail, type ProductDetailBody } from "@/services/productDetail.service"
 
@@ -16,8 +17,9 @@ type ProductState = {
 }
 export const ProductDetail = ()=>{
     const {productid} = useParams()
-    const {BoxMessage,setMessage} = useBoxMessage()
+    const {BoxMessage,setMessage} = useBoxMessage({styledType:'toast'})
     
+    useSyncCart()
     const [ products , setProducts] = useState<ProductState>({
         datas:{
             product:[] ,
