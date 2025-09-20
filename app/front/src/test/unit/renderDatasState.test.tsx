@@ -1,4 +1,4 @@
-import { RenderDataState } from "@/components/RenderDataState"
+import { RenderDataState } from "@/components/renderDataState"
 import {  render } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
 
@@ -19,6 +19,7 @@ describe("RenderDataState component",()=>{
             datas={datas}
             errorMessage="Deu errado"
             emptyMessage="Dados vazios"
+            skeletonLoading={{classLoading:'',length:1,classImg:''}}
             >
                 <MockComponent/>
             </RenderDataState>
@@ -45,6 +46,7 @@ describe("RenderDataState component",()=>{
             datas={datas}
             errorMessage="Deu errado"
             emptyMessage="Dados vazios"
+              skeletonLoading={{classLoading:'',length:1,classImg:''}}
             >
                 <MockComponent/>
             </RenderDataState>
@@ -60,16 +62,17 @@ describe("RenderDataState component",()=>{
         expect( hasError).not.toBeInTheDocument()
         expect(isLogged).toBeInTheDocument()
     })
-    it("should render the login message when the status is 0",()=>{
+    it("should render the skeleton when the status is 0",()=>{
         const status = 0
         const datas = [{name:'jose'}] as DatasMock[]
-        const {queryByTestId,queryByText} = render(
+        const {queryByTestId} = render(
             <BrowserRouter>
                 <RenderDataState<DatasMock>
             status={status}
             datas={datas}
             errorMessage="Deu errado"
             emptyMessage="Dados vazios"
+              skeletonLoading={{classLoading:'',length:1,classImg:''}}
             >
                 <MockComponent/>
             </RenderDataState>
@@ -79,8 +82,9 @@ describe("RenderDataState component",()=>{
         const mockComponent = queryByTestId("mocked")
         const hasError = queryByTestId("render-error")
         const isLogged = queryByTestId("render-logged")
-
-        expect(queryByText("Carregando...")).toBeInTheDocument()
+        const skeleton = queryByTestId("skeleton")
+       
+        expect(skeleton).toBeInTheDocument()
         expect( emptyMessage ).not.toBeInTheDocument()
         expect( mockComponent).not.toBeInTheDocument()
         expect( hasError).not.toBeInTheDocument()
@@ -96,6 +100,7 @@ describe("RenderDataState component",()=>{
             datas={datas}
             errorMessage="Deu errado"
             emptyMessage="Dados vazios"
+              skeletonLoading={{classLoading:'',length:1,classImg:''}}
             >
                 <MockComponent/>
             </RenderDataState>
@@ -122,6 +127,7 @@ describe("RenderDataState component",()=>{
             datas={datas}
             errorMessage="Deu errado"
             emptyMessage="Dados vazios"
+              skeletonLoading={{classLoading:'',length:1,classImg:''}}
             >
                 <MockComponent/>
             </RenderDataState>
