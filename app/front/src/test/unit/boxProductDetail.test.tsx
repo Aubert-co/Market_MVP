@@ -21,11 +21,11 @@ describe("Component ListProductDetail",()=>{
         expect(queryByTestId("product-detail")).not.toBeInTheDocument()
         expect(queryByText("Ocorreu um erro ao carregar os dados.")).not.toBeInTheDocument()
     })
-     it("should render 'Ocorreu um erro ao carregar os dados' when product is empty and status is greater than 201",()=>{
+     it("should render 'Ocorreu um erro ao carregar os dados' when product is empty and status is greater than 500",()=>{
         const {queryByTestId,queryByText} = render(
             <BoxProductDetail datas={
             {product:[],ratings:{_avg:{rating:0},_count:{rating:0}},reviews:[],comments:[]}}
-            status={202} setMessage={setMessage}/>
+            status={500} setMessage={setMessage}/>
         )
         expect(queryByText("Produto não encontrado")).not.toBeInTheDocument()
         expect(queryByText("Ocorreu um erro ao carregar os dados.")).toBeInTheDocument()
