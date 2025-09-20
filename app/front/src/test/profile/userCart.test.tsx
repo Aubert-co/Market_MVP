@@ -20,7 +20,7 @@ describe('Component useCart',()=>{
     beforeEach(()=>{
         jest.clearAllMocks()
     })
-    it("should render the content correctly when the status is 200 and has data",async()=>{
+    it("should render the content correctly when the status is 201 and has data",async()=>{
         mockServices.mockResolvedValue({
             datas:userCartMocks,
             status:201,
