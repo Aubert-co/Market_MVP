@@ -10,6 +10,7 @@ import { AdminStore } from "./storeAdmin/admStore"
 import { StoreProducts } from "./storeAdmin/storeProducts"
 import { StoreCoupons } from "./storeAdmin/storeCoupons"
 import { StoreOrders } from "./storeAdmin/storeOrders"
+import { Coupon } from "./coupon"
 
 export const App = ()=>{
     return(
@@ -26,6 +27,7 @@ export const App = ()=>{
                 <Route path="/loja/produtos" element={<StoreProducts/>}/>
                 <Route path="/loja/cupons" element={<StoreCoupons/>}/>
                 <Route path="/loja/pedidos" element={<StoreOrders/>}/>
+                <Route path="/cupons" element={<Coupon/>} />
             </Route>
         </Routes>
     </Router>
