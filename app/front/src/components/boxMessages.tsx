@@ -25,7 +25,7 @@ export const useBoxMessage = ({styledType}:Props)=>{
         return (
             <Wrapper>
                 {message?.content && (
-                    <div className={"message_"+message.type} >
+                    <div data-testid={"message_"} className={"message_"+message.type} >
                         <p data-testid="message_content">{message.content}</p>
                     </div>
                 )}
