@@ -1,15 +1,26 @@
 import { Link } from "react-router-dom"
+import { BoxSkeleton } from "./Skeleton"
 
-
+type Loading = {
+    length:number,
+    classLoading:string,
+    classImg:string
+}
 export type DataState<T> ={
     datas:T[],
     status:number,
     children:React.ReactNode,
     emptyMessage:React.ReactNode,
     errorMessage:string
-    
+    skeletonLoading:Loading
 }
-export const RenderDataState = <T,>({datas,status,emptyMessage,errorMessage,children}:DataState<T>)=>{
+export const RenderDataState = <T,>({
+    datas,status,
+    emptyMessage,
+    errorMessage,
+    children,
+    skeletonLoading
+    }:DataState<T>)=>{
     const isEmpty = datas.length === 0 && status < 204;
     const hasError = !isEmpty && status > 204;
     const isLoading = status === 0;
@@ -17,9 +28,10 @@ export const RenderDataState = <T,>({datas,status,emptyMessage,errorMessage,chil
 
     if (isLoading) {
         return (
-            <div className="text">
-            <h1>Carregando...</h1>
-            </div>
+            <BoxSkeleton 
+            className={skeletonLoading.classLoading} 
+            classNameImg={skeletonLoading.classImg}
+            length={skeletonLoading.length}/>
         );
     }
 
@@ -28,7 +40,7 @@ export const RenderDataState = <T,>({datas,status,emptyMessage,errorMessage,chil
             <div className="text">
             <h1 data-testid="render-logged">
                 Você não está logado.{" "}
-                <Link to="/login">Faça login</Link> para acessar o seu perfil.
+                <Link to="/login">Faça login</Link>.
             </h1>
             </div>
         );
@@ -36,7 +48,7 @@ export const RenderDataState = <T,>({datas,status,emptyMessage,errorMessage,chil
 
     if (hasError) {
         return (
-            <div className="text">
+            <div className="text error">
                 <h1 data-testid="render-error">{errorMessage}</h1>
             </div>
         );
@@ -44,7 +56,7 @@ export const RenderDataState = <T,>({datas,status,emptyMessage,errorMessage,chil
 
     if (isEmpty) {
         return (
-            <div className="text">
+            <div className="text error">
                 <h1 data-testid="render-empty">{emptyMessage}</h1>
             </div>
         );
