@@ -6,7 +6,7 @@ import { shortDescription } from "@/utils"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { loadImage } from "@/utils"
-import { RenderDataState } from "../RenderDataState"
+import { RenderDataState } from "../renderDataState"
 
 type StoreState = {
     datas:Store[],
@@ -19,10 +19,9 @@ type PropsListStore = {
     store:Store[],
 }
 export const ListStore =  ({store,formRef}:PropsListStore & PropsUserStore)=>{
-    const navigate = useNavigate()
-    const redirect =()=> navigate(`/loja`)
+   
     return(
-        <div onClick={redirect} className="list-container">
+        <>
             {store.map(({photo,description,name,id})=>{
             return (
                 <div  className="list-item" key={id}>
@@ -39,7 +38,7 @@ export const ListStore =  ({store,formRef}:PropsListStore & PropsUserStore)=>{
             )
             })}
             <div className="end" ref={formRef}></div>
-        </div>
+        </>
         )
 }
 
@@ -48,6 +47,8 @@ export const UserStore =({formRef}:PropsUserStore)=>{
     const [ stores,setStores] = useState<StoreState>({
         datas:[],status:0
     })
+    const navigate = useNavigate()
+    const redirect =()=> navigate(`/loja`)
     useEffect(()=>{
       usableFetch<Store[],{}>({setDatas:setStores,service:serviceGetStores,body:{}})
     },[])
@@ -56,6 +57,7 @@ export const UserStore =({formRef}:PropsUserStore)=>{
             <div className="text">
               <h1>Minha loja</h1>
             </div>
+            <div onClick={redirect} className="list-container">
             <RenderDataState<Store>
                 datas={stores.datas}
                 status={stores.status}
@@ -65,9 +67,15 @@ export const UserStore =({formRef}:PropsUserStore)=>{
                     </>
                 }
                 errorMessage="Algo deu errado ao carregar a sua loja!"
+                skeletonLoading={{
+                    classImg:'list-item',
+                    classLoading:'list-image',
+                    length:1
+                }}
             >
                 <ListStore store={stores.datas} formRef={formRef}/>
             </RenderDataState>
+            </div>
         </ListContainer>
     )
 }

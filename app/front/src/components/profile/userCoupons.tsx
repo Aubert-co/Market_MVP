@@ -6,7 +6,7 @@ import { ListContainer } from "@/styles/profile.style"
 import { usableFetch } from "@/services/fetchs"
 import { userCoupons } from "@/services/userProfile.services"
 import { Link } from "react-router-dom"
-import { RenderDataState } from "../RenderDataState"
+import { RenderDataState } from "../renderDataState"
 
 type StateCoupon = {
     datas:BaseCoupon<number>[],
@@ -19,7 +19,7 @@ type PropsList ={
 
 export const ListCoupons = ({ datas }: PropsList) => {
   return (
-    <div className="list-container">
+    <>
       {datas.map((val) => (
         <div className="list-item" key={val.id}>
             <div className="list-image">
@@ -29,11 +29,11 @@ export const ListCoupons = ({ datas }: PropsList) => {
                 <h3>{val.code}</h3>
                 <p>Desconto: {val.discountType === "percent" ? `${val.discount}%` : `R$ ${val.discount}`}</p>
                 <p>Quantidade: {val.quantity}</p>
-                <p>Expira em: {new Date(val.expiresAt).toLocaleDateString()}</p>
+                <p>Expira em: {new Date(val.expiresAt).toLocaleDateString('pt-BR')}</p>
             </div>
         </div>
       ))}
-    </div>
+    </>
   )
 }
 type PropsUserCoupons = {
@@ -54,6 +54,7 @@ export const UserCoupons = ({formRef}:PropsUserCoupons)=>{
             <div className="text">
               <h1 >Meus cupons</h1>
             </div>
+            <div className="list-container">
             <RenderDataState<BaseCoupon<number> >
               datas={coupons.datas}
               status={coupons.status}
@@ -63,9 +64,16 @@ export const UserCoupons = ({formRef}:PropsUserCoupons)=>{
                 </>
               }
               errorMessage="Algo deu errado ao buscar pelo seus cupons"
+              skeletonLoading={{
+                classLoading:'list-item',
+                classImg:'list-image',
+                length:3
+              }}
             >
               <ListCoupons datas={coupons.datas}/>
+              
             </RenderDataState>
+            </div>
             <div ref={formRef} className="end"></div>
         </ListContainer>
     )

@@ -5,7 +5,7 @@ import { getUserCart } from "@/services/cart.services"
 import { UpdateCartContext } from "@/context/cart.context"
 import { ListContainer } from "@/styles/profile.style"
 import { CartOverview } from "../cart/cartOverview"
-import { RenderDataState } from "../RenderDataState"
+import { RenderDataState } from "../renderDataState"
 import type { Message } from "../boxMessages"
 import { Link } from "react-router-dom"
 import { usableFetch } from "@/services/fetchs"
@@ -59,6 +59,7 @@ export const Cart = ({formRef,setMessage}:Props)=>{
 
                 }
                 errorMessage="Algo deu errado ao carregar o seu carrinho"
+                skeletonLoading={{classLoading:'list-item',classImg:'list-image',length:3}}
               >
               <CartOverview setMessage={setMessage} setUpdateCart={setUpdateCart} updateCart={updateCart}/>
               <CartList setMessage={setMessage} cart={userCart.datas}/>
