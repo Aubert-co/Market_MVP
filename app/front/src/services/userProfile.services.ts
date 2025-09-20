@@ -8,8 +8,8 @@ export const userCoupons = async():Promise<ResponseDatas<BaseCoupon<number>[]>>=
         const response = await fetch('/user/list/coupons',{
             method:'GET',
             credentials:'include',
-            headers:{
-                'Content-type':'json'
+            headers: {
+            'Content-Type': 'application/json'
             }
         })
         if(!response.ok)throw new Error();

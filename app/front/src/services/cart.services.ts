@@ -12,7 +12,9 @@ export const syncCart = async({cart}:BodySyncCart):Promise<ResponseDatas<UserCar
       method:'PUT',
       credentials:'include',
       body:JSON.stringify({cart}),
-      headers:{}
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
     if(!response.ok)throw new Error()
       
@@ -24,7 +26,7 @@ export const syncCart = async({cart}:BodySyncCart):Promise<ResponseDatas<UserCar
     return {status:500,message:'Algo deu errado',datas:[]}
   }
 }
-export const getUserCart = async():Promise<ResponseDatas<UserCart[]>>=>{
+export const  getUserCart = async():Promise<ResponseDatas<UserCart[]>>=>{
     const savedCart = getItemsFromCart()
     if( savedCart.cart.length >0){
       return {
@@ -36,7 +38,10 @@ export const getUserCart = async():Promise<ResponseDatas<UserCart[]>>=>{
      
       const response = await fetch('/user/cart',{
         method:'GET',
-        credentials:'include'
+        credentials:'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
       if(!response.ok)throw new Error();
       const {datas} = await response.json()
@@ -44,7 +49,7 @@ export const getUserCart = async():Promise<ResponseDatas<UserCart[]>>=>{
       if(Array.isArray( datas) && datas.length >0){
         saveCart( { cart: datas as UserCart[],updatedAt:Date.now()})
       }
-      return {datas:datas as UserCart[],status:200,message:'success'}
+      return {datas:datas as UserCart[],status:response.status,message:'success'}
     }catch(err:any){
       return {datas:[],status:500,message:'Algo deu errado!'}
     }
