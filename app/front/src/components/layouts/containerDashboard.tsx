@@ -2,10 +2,11 @@ import type React from "react"
 import { useState } from "react"
 import Sidebar from "../sidebar"
 import { StoreDashboard } from "@/styles/dashboardStore.style"
-import type { MenuItem } from "@/types/admStore.types"
+import type { SideBarItem } from "@/types/storeDashboard.types"
+
 type Props={
     children:React.ReactNode,
-    sidebarMenuItems:MenuItem[],
+    sidebarMenuItems:SideBarItem[],
     storeName:string
 }
 export const ContainerDashboard = ({children,sidebarMenuItems,storeName}:Props)=>{
