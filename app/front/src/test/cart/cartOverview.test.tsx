@@ -1,7 +1,7 @@
 import { CartOverview } from "@/components/cart/cartOverview"
 import { fireEvent, render } from "@testing-library/react"
 import * as storages from '@/storage/cart.storage'
-import { userCartMocks } from "../mock"
+import { userCartMocks } from "../fixtures"
 import * as cleanCart from '@/components/cart/useRemoveFromCart'
 
 const onClick  = jest.fn()

@@ -2,7 +2,7 @@ import { loadImage } from "@/utils/index";
 import type { Product } from "@/types/products.types";
 import { ListRatings } from "./listRatings";
 import { Collapse } from "../collapse";
-import { StyleBtn } from "@/styles/forms";
+import { StyleBtn } from "@/styles/forms.style";
 import type { Message } from "../boxMessages";
 import { addToCart } from "@/services/cart.services";
 

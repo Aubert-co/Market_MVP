@@ -1,7 +1,7 @@
 import {  render } from "@testing-library/react";
 import  {BrowserRouter} from "react-router-dom"
 import { ListProducts } from "@/components/product/listProducts";
-import { mockProducts } from "../mock/products";
+import { mockProducts } from "../fixtures/products";
 import { loadImage } from "@/utils";
 
 

@@ -1,4 +1,4 @@
-import {  ContainerStyle, Header, Main } from "@/styles/index"
+import {  ContainerStyle, Header, Main } from "@/styles/index.style"
 import { TopBar } from "../header/topBar"
 import type React from "react"
 

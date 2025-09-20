@@ -2,7 +2,7 @@ import type React from "react";
 import { useRef, type JSX } from "react";
 import { Link } from "react-router-dom"
 import { getMultiInputValues } from "@/utils";
-import { StyleBtn, UserFormStyles } from "@/styles/forms";
+import { StyleBtn, UserFormStyles } from "@/styles/forms.style";
 import { isAValidString, isValidEmail } from "@/utils/checkIsValid";
 import type { TypeSubmitRegister } from "@/pages/register";
 import type { TypeSubmitLogin } from "@/pages/login";

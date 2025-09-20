@@ -3,7 +3,7 @@ import { render } from "@testing-library/react"
 import * as services from '@/services/cart.services'
 import * as storage from '@/storage/cart.storage'
 import { act } from "react"
-import { userCartMocks } from "../mock"
+import { userCartMocks } from "../fixtures"
 import { FIVE_MINUTES } from "@/constants"
 
 const  [cart] = userCartMocks

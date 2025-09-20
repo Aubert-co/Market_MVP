@@ -61,48 +61,48 @@ export const ProductStyle = styled.div`
   .desctipions {
   margin-top: 1rem;
   padding: 1rem;
-  background-color: #f9f9f9; /* fundo leve */
-  border: 1px solid #e5e7eb; /* borda suave */
+  background-color: #f9f9f9; 
+  border: 1px solid #e5e7eb; 
   border-radius: 8px;
 }
 
 .desctipions p {
   font-size: 1rem;
   line-height: 1.6;
-  color: #333; /* texto preto claro */
+  color: #333; 
   margin: 0;
-  white-space: pre-line; /* mantém quebras de linha se houver */
+  white-space: pre-line; 
 }
 
 .message_success,
 .message_error,
 .message_info {
   position: fixed;
-  top: 20px;  /* distância do topo */
-  right: 20px; /* distância da direita */
+  top: 20px;  
+  right: 20px;
   padding: 12px 18px;
   border-radius: 8px;
   color: #fff;
   font-size: 14px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  z-index: 9999; /* fica acima de tudo */
+  z-index: 9999; 
   animation: fadeIn 0.3s ease-out;
 }
 
-/* estilos diferentes por tipo */
+
 .message_success {
-  background-color: #4caf50; /* verde */
+  background-color: #4caf50; 
 }
 
 .message_error {
-  background-color: #f44336; /* vermelho */
+  background-color: #f44336; 
 }
 
 .message_info {
-  background-color: #2196f3; /* azul */
+  background-color: #2196f3; 
 }
 
-/* animação suave de entrada */
+
 @keyframes fadeIn {
   from {
     opacity: 0;

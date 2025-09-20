@@ -32,8 +32,8 @@ export const ListContainer = styled.div`
 .text h1 {
   font-size: 1.8rem;
   font-weight: 600;
-  color: #2c2c2c; /* tom mais neutro que o preto puro */
-  background-color: #f9f9f9; /* neutro suave */
+  color: #2c2c2c; 
+  background-color: #f9f9f9; s
   padding: 12px 24px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
@@ -125,11 +125,11 @@ export const ListItems = styled.div<ListItemsProps>`
   gap: 12px;
   justify-content: space-between;
 
-  /* Tamanho padrão */
+ 
   width: 280px;
   min-height: 140px;
 
-  /* Variantes de tamanho */
+
   ${(props) =>
     props.size === "small" &&
     css`
@@ -181,13 +181,13 @@ export const ListInfo = styled.div`
   text-align:center;
   h3 {
     font-size: 1.25rem;
-    color: #374151; /* cinza escuro elegante */
+    color: #374151; 
     font-weight: 600;
   }
 
   p {
     font-size: 2.5rem;
-    color: #059669; /* verde moderno para nota positiva */
+    color: #059669; 
     font-weight: 700;
     margin: 0;
   }
@@ -245,15 +245,15 @@ text-align:center;
   width: 120px;
   height: 120px;
   object-fit: contain;
-  margin-bottom: 2px; /* Pequeno espaço entre imagem e texto */
+  margin-bottom: 2px; 
 }
 
 .box p {
   font-size: 14px;
-  color: #111; /* Texto mais escuro */
+  color: #111; 
   font-weight: 600;
   text-align: center;
-  margin: 2px 0 0 0; /* Margem superior pequena, sem margem embaixo */
+  margin: 2px 0 0 0; 
 }
   
 `

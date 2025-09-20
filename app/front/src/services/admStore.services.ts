@@ -6,53 +6,6 @@ import { getStorageStore } from "@/storage/store.storage";
 import type { GetStoreCoupons, GetStoreOrders, GetStoreProducts, Order } from "@/types/storeDashboard.types";
 
 
- const mockProducts: Product[] = [
-  {
-    id: 1,
-    name: "Teclado Mecânico RGB",
-    price: 299.9,
-    imageUrl: "https://via.placeholder.com/80",
-    category: "Periféricos",
-    stock: 15,
-    description: "Teclado mecânico com iluminação RGB e switches azuis.",
-  },
-  {
-    id: 2,
-    name: "Mouse Gamer",
-    price: 159.9,
-    imageUrl: "https://via.placeholder.com/80",
-    category: "Periféricos",
-    stock: 30,
-    description: "Mouse gamer com 6 botões programáveis.",
-  },
-  {
-    id: 3,
-    name: "Monitor Full HD 24''",
-    price: 899.0,
-    imageUrl: "https://via.placeholder.com/80",
-    category: "Monitores",
-    stock: 8,
-    description: "Monitor 24 polegadas Full HD com 75Hz.",
-  },
-  {
-    id: 4,
-    name: "Headset Gamer",
-    price: 249.5,
-    imageUrl: "https://via.placeholder.com/80",
-    category: "Áudio",
-    stock: 20,
-    description: "Headset com som surround 7.1 e microfone removível.",
-  },
-  {
-    id: 5,
-    name: "Placa de Vídeo GTX 1660",
-    price: 1499.9,
-    imageUrl: "https://via.placeholder.com/80",
-    category: "Hardware",
-    stock: 5,
-    description: "Placa de vídeo NVIDIA GTX 1660 6GB GDDR5.",
-  },
-];
 
 type CreateProduct = {
     name:string,
@@ -68,7 +21,6 @@ export const serviceCreateProduct = async({name,description,price,
     const [store] = getStorageStore()
     const formData = new FormData()
     formData.append('name',name)
-    //formData.append('storeId',storeId)
     formData.append('category',category)
     formData.append('image',image)
     formData.append('price',price)

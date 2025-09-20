@@ -3,7 +3,7 @@ import { serviceCreateStore } from "@/services/store.services"
 import { getValidImageFile, isAValidString } from "@/utils/checkIsValid"
 import { getMultiInputValues } from "@/utils"
 
-import { StyleBtn, UserFormStyles } from "@/styles/forms"
+import { StyleBtn, UserFormStyles } from "@/styles/forms.style"
 import { InputWithLabel } from "./inputWithLabel"
 import { useBoxMessage } from "../boxMessages"
 import type { PropsFormCreateStore } from "@/types/store.types";

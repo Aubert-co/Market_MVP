@@ -1,6 +1,6 @@
 import {  render } from "@testing-library/react"
 import { CouponTable } from "@/components/store/couponTable"
-import { mockCoupons } from "../mock"
+import { mockCoupons } from "../fixtures"
 
 describe("Component CouponTable",()=>{
     it("should render the coupon table correctly",()=>{

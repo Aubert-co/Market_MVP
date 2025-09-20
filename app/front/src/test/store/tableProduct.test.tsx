@@ -1,5 +1,5 @@
 import { ProductTable } from "@/components/store/productTable"
-import { mockProducts } from "../mock/products"
+import { mockProducts } from "../fixtures/products"
 import {  render } from "@testing-library/react"
 import { loadImage } from "@/utils/index"
 

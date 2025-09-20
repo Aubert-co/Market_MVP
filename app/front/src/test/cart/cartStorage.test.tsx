@@ -1,6 +1,6 @@
 import { getItemsFromCart, saveCart,updateItemCart ,removeItemFromCart} from "@/storage/cart.storage"
 import { CART_KEY } from "@/constants"
-import { userCartMocks } from "../mock"
+import { userCartMocks } from "../fixtures"
 import * as storages from '@/storage/cart.storage'
 
 const getItem = jest.spyOn(window.localStorage.__proto__,'getItem')

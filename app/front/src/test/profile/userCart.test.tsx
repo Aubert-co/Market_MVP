@@ -1,7 +1,7 @@
 import { Cart } from "@/components/profile/userCart"
 import { fireEvent, render, waitFor } from "@testing-library/react"
 import * as services from "@/services/cart.services"
-import { userCartMocks } from "../mock"
+import { userCartMocks } from "../fixtures"
 import * as localS from "@/storage/cart.storage"
 import { act } from "react"
 import { BrowserRouter } from "react-router-dom"

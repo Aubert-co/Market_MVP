@@ -1,4 +1,4 @@
-import { StyleBtn, UserFormStyles } from "@/styles/forms"
+import { StyleBtn, UserFormStyles } from "@/styles/forms.style"
 import { InputWithLabel } from "./inputWithLabel"
 import { useRef, useState } from "react"
 import { useBoxMessage } from "../boxMessages"

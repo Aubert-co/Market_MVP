@@ -2,7 +2,7 @@ import { useRef } from "react"
 import { categories } from "@/constants"
 import { getMultiInputValues } from "@/utils"
 import { checkIsAValidCategory, checkIsAValidNumber, getValidImageFile, isAValidString } from "@/utils/checkIsValid"
-import { StyleBtn, UserFormStyles } from "@/styles/forms"
+import { StyleBtn, UserFormStyles } from "@/styles/forms.style"
 import { InputWithLabel } from "./inputWithLabel"
 
 import { serviceCreateProduct } from "@/services/admStore.services"

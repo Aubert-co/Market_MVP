@@ -1,4 +1,4 @@
-import { ToastMessage,NormalMessage } from "@/styles";
+import { ToastMessage,NormalMessage } from "@/styles/index.style";
 import { useEffect, useState } from "react";
 
 export type Message ={
