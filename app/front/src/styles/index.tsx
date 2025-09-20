@@ -284,7 +284,7 @@ export const ToastMessage = styled.div`
     background-color: #2196f3;
   }
 
-  /* entrada com leve slide + fade */
+ 
   @keyframes slideIn {
     from {
       opacity: 0;
@@ -296,7 +296,7 @@ export const ToastMessage = styled.div`
     }
   }
 
-  /* saída suave */
+
   @keyframes fadeOut {
     to {
       opacity: 0;
