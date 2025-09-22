@@ -1,6 +1,6 @@
 import { Router,Request,Response,NextFunction } from "express"
 import { ValidateCredentials } from "../middleware/validateCredentials"
-import { AuthUserController } from "../controller/AuthUserController"
+import { AuthUserController } from "../controller/authUser.controller"
 import { UserService } from "../services/user.services"
 import { UserRepository } from "../repository/user.repository"
 import { prisma } from "../lib/prisma"
