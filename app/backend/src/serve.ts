@@ -37,7 +37,7 @@ app.use(express.static(publicPath));
 app.use( route )
 
 app.get('/*splat',(req,res)=>{
-    res.sendFile(publicPath+'/index.html')
+  res.sendFile(publicPath+'/index.html')
 })
 app.use((error:ErrorRequestHandler,req:Request,res:Response,next:NextFunction)=>ErrorMiddleware(error,req,res,next))
 
