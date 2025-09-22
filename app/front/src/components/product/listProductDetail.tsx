@@ -21,7 +21,6 @@ type Props = {
 export const ListProductDetail = ({product,ratings,setMessage}:Props)=>{
     const addCart  = async()=>{
         const {status} = await addToCart(product[0].id)
-        
         if(status === 401){
             setMessage({content:'Faça login para adicionar ao carrinho',type:'error'})
             return
@@ -59,7 +58,9 @@ export const ListProductDetail = ({product,ratings,setMessage}:Props)=>{
             </div>
             <Collapse  title="Descrição">
                 <div className="desctipions"> 
-                    <p> {val.description }</p>
+                    <div className="description-content">
+                        <p> {val.description }</p>
+                    </div>
                 </div>
             </Collapse>
         </>
