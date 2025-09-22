@@ -83,11 +83,18 @@ box-sizing: border-box;
 
 .img {
   background-color: #e0e0e0;
-  width: 100%;
+  width: 100%;          
+  max-width: 300px;     
   height: 250px;
   border-radius: 10px 10px 0 0;
+  overflow: hidden;    
 }
- 
+
+.img img {
+  width: 100%;          
+  height: 100%;        
+  object-fit: cover;    
+}
   `
 export const Header = styled.header`
 grid-area: header;
