@@ -15,7 +15,7 @@ describe('component BoxProducts',()=>{
     })
 
     it("should render ErrorBox when status is greater than 203",()=>{
-        const {getByText,container,queryByTestId} =render(<BoxProducts datas={[]} status={205}/>)
+        const {getByText,container,queryByTestId} =render(<BoxProducts datas={[]} status={500}/>)
         
         expect( getByText("Ocorreu um erro ao carregar os dados.")).toBeInTheDocument()
         expect(container.querySelector(".product-container")).toBeInTheDocument()
