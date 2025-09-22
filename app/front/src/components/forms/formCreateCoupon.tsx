@@ -44,7 +44,7 @@ export const FormCreateCoupon = ()=>{
             return;
         }
         const {status,message} = await createCouponService({
-            code:cupomCode,quantity:Number(quantity),discount:Number('discount'),
+            code:cupomCode,quantity:Number(quantity),discount:Number(discount),
             discountType:selectDiscount,expiresAt
         })
         if(status === 201){
