@@ -16,7 +16,9 @@ export const syncCart = async({cart}:BodySyncCart):Promise<ResponseDatas<UserCar
         'Content-Type': 'application/json'
       }
     })
-    if(!response.ok)throw new Error()
+    if(!response.ok){
+      return {status:response.status,message:'',datas:[]}
+    }
       
     if(response.status === 201){
       saveCart({cart,updatedAt:Date.now(),isSaved:true})
@@ -43,7 +45,9 @@ export const  getUserCart = async():Promise<ResponseDatas<UserCart[]>>=>{
           'Content-Type': 'application/json'
         }
       })
-      if(!response.ok)throw new Error();
+      if(!response.ok){
+        return {datas:[],message:'',status:response.status}
+      }   
       const {datas} = await response.json()
       
       if(Array.isArray( datas) && datas.length >0){
@@ -66,8 +70,11 @@ export const deleteFromCart = async(cart:Array<number> ):Promise<Response>=>{
       credentials:'include',
       body:JSON.stringify({cart})
     })
-    if(!response.ok)throw new Error()
+    
     const {message} =await response.json()
+    if(!response.ok){
+      return {message,status:response.status}
+    }   
     return {message,status:response.status}
   }catch(err:unknown){
     return {status:500,message:'Algo deu errado!'}
@@ -77,16 +84,19 @@ export const deleteFromCart = async(cart:Array<number> ):Promise<Response>=>{
 export const addToCart = async(id:number):Promise<Response>=>{
    try{
     const response = await fetch('/user/cart/add',{
-      method:'PUT',
+      method:'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       credentials:'include',
-      body:JSON.stringify({cart:[id]})
+      body:JSON.stringify({productId:id,quantity:1})
     })
-    if(!response.ok)throw new Error()
-    const {message} =await response.json()
    
+   
+    const {message} =await response.json()
+    if(!response.ok){
+      return {message,status:response.status}
+    } 
     return {message,status:response.status}
   }catch(err:unknown){
     return {status:500,message:'Algo deu errado!'}

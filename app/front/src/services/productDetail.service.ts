@@ -64,11 +64,25 @@ export const productDetail =  async ({productId}:ProductDetailBody):Promise<Resp
               'Content-Type': 'application/json'
             }
         })
-        if(!response.ok)throw new Error();
+        if(!response.ok){
+          return {datas:{ comments:[],
+            ratings:{
+                _avg:{
+                    rating:0
+                },
+                _count:{
+                    rating:0
+                },
+                
+            },
+            product:[],
+            reviews:[]},message:'',status:response.status}
+        }
         const {datas,message} = await response.json()
         return {datas,status:response.status,message}
     }catch(err:unknown){
-        return {datas:{
+        return {
+          datas:{
             comments:[],
             ratings:{
                 _avg:{

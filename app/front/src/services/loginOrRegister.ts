@@ -18,7 +18,9 @@ export const serviceLoginOrRegister = async({name,email,password,typeForm}:Login
             'Content-Type': 'application/json'
             }
         })
-        if(!response.ok)throw new Error();
+        if(!response.ok){
+            return {status:response.status,message:''}
+        }
 
         const res = await response.json()
         

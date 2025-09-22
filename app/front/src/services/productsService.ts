@@ -12,7 +12,9 @@ export const serviceGetProducts = async({nextPage}:GetProductsIndex):Promise<Res
                 'Content-Type': 'application/json'
             }
         })
-        if(!response.ok)throw new Error();
+        if(!response.ok){
+            return{ datas:[],message:'',status:response.status,totalPages:1,currentPage:1}
+        }
         const {datas,currentPage,totalPages} = await response.json()
         return {datas,currentPage,totalPages,status:response.status,message:'sucesso'}
     }catch(err:unknown){

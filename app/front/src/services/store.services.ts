@@ -1,4 +1,4 @@
-import { getStorageStore, saveStorageStore } from "@/storage/store.storage";
+import {  saveStorageStore } from "@/storage/store.storage";
 import type { Response, ResponseDatas } from "@/types/services.types";
 import type { Store } from '@/types/store.types'
 
@@ -21,7 +21,7 @@ export const serviceCreateStore =
       credentials: 'include',
     });
 
-    if (!response.ok) throw new Error();
+  
 
     const {message} = await response.json();
     
@@ -35,15 +35,7 @@ export const serviceCreateStore =
 
 export const serviceGetStores = async():Promise<ResponseDatas<Store[]>>=>{
     try{
-        const getFromLocal = getStorageStore();
-        
-        if(getFromLocal.length !== 0){
-          return {
-            datas:getFromLocal as Store[],
-            status:200,
-            message:'sucess'
-          }
-        }
+       
         const response = await fetch('/store/mystores',{
           method:'GET',
           credentials:'include',
@@ -51,7 +43,9 @@ export const serviceGetStores = async():Promise<ResponseDatas<Store[]>>=>{
             'Content-Type': 'application/json'
           }
         })
-        if(!response.ok)throw new Error();
+        if(!response.ok){
+          return {message:'Algo deu errado',status:response.status,datas:[]}
+        }
         const {datas} = await response.json()
         if(Array.isArray(datas) && datas.length >0){
           saveStorageStore( datas as Store[] )

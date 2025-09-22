@@ -34,7 +34,9 @@ export const serviceCreateProduct = async({name,description,price,
             body:formData,
             
         })
-        if(!response.ok)throw new Error()
+        if(!response.ok){
+            return {status:response.status,message:''}
+        }
         const datas = await response.json()
         return {message:datas.message,status:response.status}
     }catch(err:unknown){
@@ -43,21 +45,22 @@ export const serviceCreateProduct = async({name,description,price,
 }
 
 
-export const getStoreProducts = async({name,category,nextPage}:
+export const getStoreProducts = async({nextPage}:
     GetStoreProducts):Promise<ResponseWithPages<Product[]>>=>{
        try{     
             const [store] = getStorageStore()
             const response = await fetch(`/admin/store/products/${store.id}/${nextPage}`,{
                 method:'GET',
-                body:JSON.stringify({name,category,currentPage:nextPage}),
                 headers: {
                 'Content-Type': 'application/json'
                 },
                 credentials:'include'
             })  
-            if(!response.ok)throw new Error()
-
             const responseValues = await response.json()
+          
+             if(!response.ok){
+                return {datas:[],message:responseValues.message,currentPage:1,totalPages:1,status:response.status}
+             }
             return {datas:responseValues.datas
                 ,currentPage:responseValues.currentPage
                 ,totalPages:responseValues.totalPages,
@@ -65,7 +68,7 @@ export const getStoreProducts = async({name,category,nextPage}:
             }
           
         }catch(err:unknown){
-            return {datas:[],currentPage:1,totalPages:1,status:500,message:''}
+            return {datas:[],currentPage:1,totalPages:1,status:500,message:'Deu erro'}
         }
 
 }
@@ -74,15 +77,16 @@ export const getStoreProducts = async({name,category,nextPage}:
 export const createCouponService = async({code,expiresAt,
     discount,discountType,quantity}:Omit<BaseCoupon<string>,'id'>):Promise<Response>=>{
         try{
+            const [storeId] = getStorageStore()
             const response = await fetch('/store/create/coupon',{
                 method:'POST',
                 credentials:'include',
                 headers: {
                 'Content-Type': 'application/json'
                 },
-                body:JSON.stringify({code,expiresAt,discount,discountType,quantity})
+                body:JSON.stringify({code,expiresAt,discount,discountType,quantity,storeId:storeId.id})
             })
-            if(!response.ok)throw new Error()
+          
             const datas = await response.json()
 
             return {status:response.status,message:datas.message}
@@ -96,15 +100,14 @@ export const getStoreCoupons = async ({nextPage}:GetStoreCoupons
 ): Promise<ResponseWithPages<BaseCoupon<number>[]>> => {
     const [store] = getStorageStore()
     try{
-        const response = await fetch('/store/coupons',{
+        const response = await fetch(`/store/coupons/${store.id}/${nextPage}`,{
             method:'POST',
             credentials:'include',
-            body:JSON.stringify({currentPage:nextPage,storeId:store.id}),
             headers: {
             'Content-Type': 'application/json'
             }
         })
-        if(!response.ok)throw new Error()
+        
         const values = await response.json()
         
         return {
@@ -127,7 +130,7 @@ export const getStoreOrders = async({status,nextPage}:GetStoreOrders)
             method:'POST',
             body:JSON.stringify({status,currentPage:nextPage})
         })
-        if(!response.ok)throw new Error()
+       
 
         const json = await response.json()
 

@@ -11,7 +11,9 @@ export const availableCoupons = async():Promise<ResponseDatas<Coupom>>=>{
                 'Content-Type': 'application/json'
             }
         })
-        if(!response.ok)throw new Error()
+        if(!response.ok){
+            return {datas:[],message:'',status:response.status}
+        }
         const {datas,message}  = await response.json()
         return {datas ,message,status:response.status}
     }catch(err:unknown){
@@ -20,7 +22,7 @@ export const availableCoupons = async():Promise<ResponseDatas<Coupom>>=>{
 }
 export const userAddCoupon = async(couponId:number):Promise<Response>=>{
     try{
-        const response = await fetch('',{
+        const response = await fetch('/user/add/coupon',{
             method:'POST',
             credentials:'include',
             headers:{
@@ -28,6 +30,9 @@ export const userAddCoupon = async(couponId:number):Promise<Response>=>{
             },
             body:JSON.stringify({couponId})
         })
+        if(!response.ok){
+            return {status:response.status,message:''}
+        }
         const {message} = await response.json()
         return {message,status:response.status}
     }catch(err:unknown){
