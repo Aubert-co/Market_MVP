@@ -45,6 +45,7 @@ export const removeItemFromCart = (values:Array<number>)=>{
         return
     }
     const cart = items.cart.map((val)=>{
+    
         if(values.includes(val.id)){
             return ;
         }

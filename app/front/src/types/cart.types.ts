@@ -1,12 +1,13 @@
 export type UserCart = {
     id:number,
     productId:number,
-    imageUrl:string,
-    quantity:number,
-    storeId:number,
-    price:number,
-    stock:number,
-    name:string,
     isDeleted?:boolean,
-    updatedAt?:Date
+    updatedAt?:Date,
+    quantity:number,
+    product:{
+        price:number,
+        stock:number,
+        imageUrl:string,
+        name:string
+    }
 }

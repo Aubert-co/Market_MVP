@@ -8,7 +8,8 @@ import type { Message } from "../boxMessages"
 type Props = {
   id:number,
   quantity:number,
-  setMessage: React.Dispatch<SetStateAction<Message>>
+  setMessage: React.Dispatch<SetStateAction<Message>>,
+  stock:number
 }
 const CartStyle = styled.div`
  .cart-update {
@@ -63,13 +64,13 @@ const CartStyle = styled.div`
   transform: scale(1.1);
 }
 `
-export const CartActions = ({id,quantity,setMessage}:Props)=>{
+export const CartActions = ({id,quantity,setMessage,stock}:Props)=>{
     const [updatedQuantity,setQuantity] = useState( quantity )
   
     return (
         <CartStyle>
             <RemoveFromCart id={id} setMessage={setMessage}/>
-            <UpdateCartQuantity id={id} quantity={updatedQuantity} setQuantity={setQuantity}/>
+            <UpdateCartQuantity stock={stock} id={id} quantity={updatedQuantity} setQuantity={setQuantity}/>
         </CartStyle>
     )
 }

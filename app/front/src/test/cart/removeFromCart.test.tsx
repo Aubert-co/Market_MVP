@@ -15,7 +15,7 @@ describe("Component RemoveFromCart",()=>{
         jest.clearAllMocks()
     })
     it("should remove an item from the cart successfully",async()=>{
-        deleteFromCart.mockResolvedValue({status:201,message:'ee'}as Response) 
+        deleteFromCart.mockResolvedValue({status:200,message:'ee'}as Response) 
         const {getByTestId} =render(
             <UpdateCartContext.Provider value={{
                 setUpdateCart,
@@ -30,7 +30,6 @@ describe("Component RemoveFromCart",()=>{
         fireEvent.click( btn )
         
        await waitFor(() => {});
-        
         expect(storage).toHaveBeenCalledTimes(1);
         expect(setUpdateCart).toHaveBeenCalledWith(true);
         expect(setMessage).toHaveBeenCalledTimes(1);
@@ -38,7 +37,6 @@ describe("Component RemoveFromCart",()=>{
             content: 'Removido do carrinho com sucesso!',
             type: 'success'
         });
-        
     })
     it("should not remove the item if the user is not logged in",async()=>{
         deleteFromCart.mockResolvedValue({status:401,message:'ee'}as Response) 

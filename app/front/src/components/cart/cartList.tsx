@@ -1,32 +1,33 @@
 import type { UserCart } from "@/types/cart.types"
-import orderhistory from '@/assets/orderhistory.png'
-
 import { CartActions } from "./cartActions"
 import React, { type SetStateAction } from "react"
-
 import type { Message } from "../boxMessages"
+import { loadImage } from "@/utils"
+
 type PropsCartList = {
   cart:UserCart[]
   setMessage: React.Dispatch<SetStateAction<Message>>
 }
 
 export const CartList = ({ cart ,setMessage}: PropsCartList) => {
+  
   return (
     <>
-      {cart.map((val:any) => {
+      {cart.map((val:UserCart) => {
+        
         if (val?.isDeleted) return null; 
-
+        
         return (
-          <div className="list-item" key={val.productId}>
+          <div className="list-item" key={val.id}>
             <div className="list-image">
-              <img src={orderhistory} alt="Ícone de histórico de compras" />
+              <img src={loadImage(val.product.imageUrl)} alt="Imagem do produto" />
             </div>
 
             <div className="list-info">
-              <h3>Preço:R${val.price}</h3>
-              <p>Produto: {val.name}</p>
-              <p>Estoque: {val.stock}</p>
-              <CartActions setMessage={setMessage} id={val.productId} quantity={val.quantity} />
+              <h3>Preço:R${val.product.price}</h3>
+              <p>Produto: {val.product.name}</p>
+              <p>Estoque: {val.product.stock}</p>
+              <CartActions stock={val.product.stock} setMessage={setMessage} id={val.id} quantity={val.quantity} />
             </div>
           </div>
         );

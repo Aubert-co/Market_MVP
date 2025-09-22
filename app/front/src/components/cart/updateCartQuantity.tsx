@@ -9,13 +9,17 @@ type Props = {
     id:number,
     quantity:number,
     setQuantity: React.Dispatch<React.SetStateAction<number>>;
+    stock:number
 }
 
-export  const UpdateCartQuantity =({id,quantity,setQuantity}:Props)=>{
+export  const UpdateCartQuantity =({id,quantity,setQuantity,stock}:Props)=>{
     const {setUpdateCart} = useContext(UpdateCartContext)!
     const click = (action:'increase'|'decrease')=>{
       
        if(action === "increase"){
+            if(quantity >= stock){
+                return
+            }
             if(quantity >= 5){
                 return;
             }

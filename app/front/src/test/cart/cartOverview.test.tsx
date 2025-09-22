@@ -18,7 +18,7 @@ describe("Component CartOverview",()=>{
             <CartOverview setMessage={setMessage} setUpdateCart={setUpdateCart} updateCart={false}/>
         )
         const total = userCartMocks.reduce((val,tr)=>{
-            val + tr.price * tr.quantity
+            val + tr.product.price * tr.quantity
             return val
         },0)    
         

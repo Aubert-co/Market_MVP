@@ -28,7 +28,7 @@ export const CartOverview  =({updateCart,setUpdateCart,setMessage}:Props)=>{
   useEffect(()=>{
     const values = getItemsFromCart()
     .cart.reduce((val,tr)=>{
-      if(!tr.isDeleted)return val + tr.price * tr.quantity
+      if(!tr.isDeleted)return val + tr.product.price * tr.quantity
       return val
     },0)
    

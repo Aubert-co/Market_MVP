@@ -24,7 +24,7 @@ describe('Component UpdateCartQuantity',()=>{
                             setUpdateCart,
                             updateCart:true
                         }}>
-                            <UpdateCartQuantity setQuantity={setQuantity} id={id} quantity={quantity}/>
+                            <UpdateCartQuantity stock={5} setQuantity={setQuantity} id={id} quantity={quantity}/>
                 </UpdateCartContext.Provider>
         )
 
@@ -55,7 +55,7 @@ describe('Component UpdateCartQuantity',()=>{
                             setUpdateCart,
                             updateCart:true
                         }}>
-                            <UpdateCartQuantity setQuantity={setQuantity} id={id} quantity={quantity}/>
+                            <UpdateCartQuantity stock={6} setQuantity={setQuantity} id={id} quantity={quantity}/>
                 </UpdateCartContext.Provider>
         )
 
@@ -88,7 +88,7 @@ describe('Component UpdateCartQuantity',()=>{
                             setUpdateCart,
                             updateCart:true
                         }}>
-                            <UpdateCartQuantity setQuantity={setQuantity} id={id} quantity={quantity}/>
+                            <UpdateCartQuantity stock={10} setQuantity={setQuantity} id={id} quantity={quantity}/>
                 </UpdateCartContext.Provider>
         )
 
@@ -112,7 +112,31 @@ describe('Component UpdateCartQuantity',()=>{
                             setUpdateCart,
                             updateCart:true
                         }}>
-                            <UpdateCartQuantity setQuantity={setQuantity} id={id} quantity={quantity}/>
+                            <UpdateCartQuantity stock={50} setQuantity={setQuantity} id={id} quantity={quantity}/>
+                </UpdateCartContext.Provider>
+        )
+
+      
+        const increase =getByText("+")
+
+        fireEvent.click( increase )
+        expect( setUpdateCart).toHaveBeenCalledTimes(0)
+        expect( setQuantity ).toHaveBeenCalledTimes(0)
+        expect( decreaseStorage ).toHaveBeenCalledTimes(0)
+     
+
+       
+    })
+      it("should not allow increasing quantity beyond available stock of 3",async()=>{
+        let quantity = 3
+        const stock = 3
+        const {getByText}= render(
+
+              <UpdateCartContext.Provider value={{
+                            setUpdateCart,
+                            updateCart:true
+                        }}>
+                            <UpdateCartQuantity stock={stock} setQuantity={setQuantity} id={id} quantity={quantity}/>
                 </UpdateCartContext.Provider>
         )
 

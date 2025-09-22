@@ -14,7 +14,7 @@ export const useRemoveFromCart = ({setMessage,setUpdateCart}:PropsRemove)=>{
         
             const {status} = await deleteFromCart(values)
         
-            if (status === 201) {
+            if (status === 200) {
                 removeItemFromCart(values);
                 setUpdateCart(true);
                 setMessage({ content: 'Removido do carrinho com sucesso!', type: 'success' });

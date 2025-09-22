@@ -26,7 +26,7 @@ describe('Component UpdateCartQuantity',()=>{
                             setUpdateCart,
                             updateCart:true
                         }}>
-                            <CartActions id={id} quantity={quantity} setMessage={setMessage}/>
+                            <CartActions stock={10} id={id} quantity={quantity} setMessage={setMessage}/>
                 </UpdateCartContext.Provider>
         )
 
