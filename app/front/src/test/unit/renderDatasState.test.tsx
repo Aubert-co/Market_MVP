@@ -11,7 +11,7 @@ describe("RenderDataState component",()=>{
    
     it("should render the error message when the status is 500",()=>{
         const status = 500
-        const datas = [{name:'jose'}] as DatasMock[]
+        const datas = [] as DatasMock[]
         const {queryByTestId} = render(
             <BrowserRouter>
                 <RenderDataState<DatasMock>

@@ -22,7 +22,7 @@ export const RenderDataState = <T,>({
     skeletonLoading
     }:DataState<T>)=>{
     const isEmpty = datas.length === 0 && status < 204;
-    const hasError = !isEmpty && status > 204;
+    const hasError = datas.length ===0 && status > 410;
     const isLoading = status === 0;
     const isNotLogged = status === 401;
 
