@@ -34,8 +34,7 @@ export const StoreProducts = ()=>{
             setPages:setPagesInfos,
             
         })
-    },[category])
-
+    },[])
     return (
         <ContainerDashboard storeName="StoreName" sidebarMenuItems={selectMenuItem("Produtos")}>
             <Box>
