@@ -20,10 +20,10 @@ describe('Component useCart',()=>{
     beforeEach(()=>{
         jest.clearAllMocks()
     })
-    it("should render the content correctly when the status is 201 and has data",async()=>{
+    it("should render the content correctly when the status is 200 and has data",async()=>{
         mockServices.mockResolvedValue({
             datas:userCartMocks,
-            status:201,
+            status:200,
             message:'Success'
         })
         getItems.mockReturnValue({
@@ -32,7 +32,7 @@ describe('Component useCart',()=>{
             updatedAt:Date.now()
         })
         mockDeleteService.mockResolvedValue({
-            status:201,
+            status:200,
             message:'Success'
         })
         const {getByText,queryByText,container,queryAllByTestId} = render(
@@ -61,9 +61,9 @@ describe('Component useCart',()=>{
 
         userCartMocks.map((val,index)=>{
             const cartUpdate = container.querySelectorAll(".cart-update")
-            expect( queryByText("Produto: "+val.name) ).toBeInTheDocument()
-            expect( queryByText("Preço:R$"+val.price) ).toBeInTheDocument()
-            expect(queryByText("Estoque: "+val.stock)).toBeInTheDocument()
+            expect( queryByText("Produto: "+val.product.name) ).toBeInTheDocument()
+            expect( queryByText("Preço:R$"+val.product.price) ).toBeInTheDocument()
+            expect(queryByText("Estoque: "+val.product.stock)).toBeInTheDocument()
             
             expect( cartUpdate[index]).toHaveTextContent( "-"+val.quantity+"+")
         })
@@ -124,7 +124,7 @@ describe('Component useCart',()=>{
     it("should render the content correctly when the status is 200 and has no data",async()=>{
         mockServices.mockResolvedValue({
             datas:[],
-            status:201,
+            status:200,
             message:'Success'
         })
         getItems.mockReturnValue({
