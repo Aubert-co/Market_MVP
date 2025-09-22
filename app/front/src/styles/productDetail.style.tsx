@@ -55,24 +55,27 @@ export const ProductStyle = styled.div`
    }
   }
  
- 
- 
-
-  .desctipions {
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: #f9f9f9; 
-  border: 1px solid #e5e7eb; 
+.desctipions {
+  margin: 20px 0;
+  padding: 16px;
   border-radius: 8px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
 }
 
-.desctipions p {
-  font-size: 1rem;
+.description-content {
+  max-width: 800px;
+  margin: 0 auto;
   line-height: 1.6;
-  color: #333; 
-  margin: 0;
-  white-space: pre-line; 
+  color: #333;
+  font-size: 15px;
 }
+
+.description-content p {
+  margin: 0;
+  word-wrap: break-word;
+}
+
 
 .message_success,
 .message_error,
