@@ -11,6 +11,7 @@ import { StoreProducts } from "./storeAdmin/storeProducts"
 import { StoreCoupons } from "./storeAdmin/storeCoupons"
 import { StoreOrders } from "./storeAdmin/storeOrders"
 import { Coupon } from "./coupon"
+import { NotFound } from "./not_found"
 
 export const App = ()=>{
     return(
@@ -28,6 +29,7 @@ export const App = ()=>{
                 <Route path="/loja/cupons" element={<StoreCoupons/>}/>
                 <Route path="/loja/pedidos" element={<StoreOrders/>}/>
                 <Route path="/cupons" element={<Coupon/>} />
+                <Route path="*" element={<NotFound/>}/>
             </Route>
         </Routes>
     </Router>
