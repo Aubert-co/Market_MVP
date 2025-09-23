@@ -7,7 +7,7 @@ import products from './products.route'
 import storeRoute from './store.route'
 import userCartRoute from './userCart.route'
 import { fileUpload } from "../lib/fileUpload";
-
+import productAdminRoute from './productAdmin.route'
 
 
 
@@ -17,6 +17,7 @@ route.use(authRoute)
 route.use( products)
 route.use( storeRoute )
 route.use( userCartRoute )
+route.use( productAdminRoute )
 route.get('/images/:filename', async (req, res) => {
   const { filename } = req.params;
 
