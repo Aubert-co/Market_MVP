@@ -15,13 +15,15 @@ const redis: RedisClientType = createClient({
   },
 });
 
+/*
 redis.on('error', (err) => {
   console.error('Redis error:', err);
 });
+
 redis.on('connect', () => console.log('redis connect'));
 redis.on('reconnecting', () => console.log('redis reconnecting'));
 redis.on('end', () => console.log('redis end'));
-
+*/
 let isConnected = false;
 
 export const connectRedis = async () => {
