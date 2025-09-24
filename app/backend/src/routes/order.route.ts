@@ -8,10 +8,9 @@ import { OrderService } from "../services/order.services";
 
 
 const route = Router()
-
+const couponRepository = new CouponRepository(prisma)
 const orderRepository = new OrderRepository(prisma,couponRepository)
 
-const couponRepository = new CouponRepository(prisma)
 const orderService = new OrderService( orderRepository )
 const orderController = new OrdersController( orderService)
 
