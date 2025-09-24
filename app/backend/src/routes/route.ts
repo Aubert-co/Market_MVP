@@ -10,7 +10,7 @@ import userCartRoute from './userCart.route'
 import productAdminRoute from './productAdmin.route'
 import orderRoute from './order.route'
 import couponRoute from './coupon.route'
-
+import reviewsRoute from './reviews.route'
 const route = Router();
 
 route.use(authRoute)
@@ -20,6 +20,7 @@ route.use( userCartRoute )
 route.use( productAdminRoute )
 route.use( orderRoute)
 route.use( couponRoute)
+route.use(reviewsRoute)
 route.get('/images/:filename', async (req, res) => {
   const { filename } = req.params;
 
