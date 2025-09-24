@@ -1,11 +1,5 @@
-import {  PrismaClient } from "@prisma/client";
-import { checkIsAValidNumber } from "../helpers";
-import { ErrorMessage } from "../helpers/ErrorMessage";
-import {  ICouponRepository } from "../repository/CouponRepository";
 import { IOrderRepository } from "../repository/order.repository";
-import { IProductRepository } from "../repository/ProductRepository";
-import { DatasCreateOrderDto, Order, OrderProductInput } from "../types/order";
-import { GetCouponDto,DiscountType } from "../types/coupon";
+import { DatasCreateOrderDto } from "../types/order.types";
 
 
 interface IOrderServices  {
@@ -16,7 +10,7 @@ export class OrderService implements IOrderServices{
     ){}
 
     public async createOrder({userId,items}:DatasCreateOrderDto): Promise<void> {
-        await this.createOrder({userId,items})       
+        await this.order.createOrder({userId,items})       
     }
   
     
