@@ -1,12 +1,12 @@
 import request from 'supertest'
 import app from '../../serve'
 import { addItemToCart, cleanAllDb, cleanUserCart, createUserStoreAndProducts ,users} from '../__mocks__'
-import { products } from '../__mocks__/products'
+import { products } from '../__fixtures__/products'
 import { prisma } from '../../lib/prisma'
 import { generateAccessToken } from '../../helpers/AuthTokens'
 const [user1,user2] = users
 
-
+ 
 const cookies  = generateAccessToken(user2.id)
 const cookies2 = generateAccessToken(user1.id)
 

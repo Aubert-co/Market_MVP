@@ -3,7 +3,7 @@ import redis from '../../lib/redis'
 import app from '../../serve'
 import { cleanAllDb, createUserStoreAndProducts } from '../__mocks__'
 import { prisma } from '../../lib/prisma'
-import { ProductRepository } from '../../repository/product.repository'
+
 import { ProductRedisRepository } from '../../repository/redis.repository'
 
 describe("db actions",()=>{

@@ -1,9 +1,9 @@
 import { prisma } from "../../lib/prisma";
-import { cleanAllDb, cleanCoupons,createCoupons,createUserStoreAndProducts,oneStore } from "../../tests/__mocks__";
+import { cleanAllDb, cleanCoupons,createCoupons,createUserStoreAndProducts,oneStore } from "../__mocks__";
 import request from "supertest";
 import app from "../../serve";
 import { fiveDaysFromNow, oneMonthFromNow, oneWeekFromNow } from "../../helpers/dates";
-import {couponsDatas} from '../../tests/__mocks__/coupons'
+import {couponsDatas} from '../__fixtures__/coupons'
 import { generateAccessToken } from '../../helpers/AuthTokens'
 const cookies  = generateAccessToken(oneStore.id)
 

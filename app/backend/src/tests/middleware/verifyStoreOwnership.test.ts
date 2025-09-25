@@ -1,7 +1,6 @@
 import {VerifyStoreOwnership} from '../../middleware/verifyStoreOwnership'
 
 import { Request, Response, NextFunction } from 'express';
-import {prisma} from '../../lib/prisma'
 
 const userId = 1
 describe("VerifyStoreOwnership",()=>{

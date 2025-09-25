@@ -1,9 +1,9 @@
 import { prisma } from "../../lib/prisma";
 import { addCouponUsage, cleanAllDb, cleanCoupons,
-    createCoupons,createUserStoreAndProducts,oneStore,ParamsCoupons,users } from "../__mocks__";
+    createCoupons,createUserStoreAndProducts,oneStore,users } from "../__mocks__";
 import request from "supertest";
 import app from "../../serve";
-import {couponsDatas} from '../__mocks__/coupons'
+import {couponsDatas} from '../__fixtures__/coupons'
 import { generateAccessToken } from '../../helpers/AuthTokens'
 
 const userId = users[1].id

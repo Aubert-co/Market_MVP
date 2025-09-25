@@ -1,9 +1,9 @@
 import request from 'supertest'
 import app from '../../serve'
 import { addItemToCart, cleanAllDb, cleanUserCart, createUserStoreAndProducts ,users} from '../__mocks__'
-import { products } from '../__mocks__/products'
+import { products } from '../__fixtures__/products'
 import { prisma } from '../../lib/prisma'
-import { routes } from '../__mocks__/configs'
+
 import { generateAccessToken } from '../../helpers/AuthTokens'
 
 const [user1,user2] = users
@@ -26,7 +26,7 @@ describe("API POST:/user/cart/add",()=>{
     })
     it("should correctly add an item to the user's cart",async()=>{
         const response =await request(app)
-        .post(routes.postUserCartAdd)
+        .post('/user/cart/add')
         .set('Cookie', [`token=${cookies}`])
         .send({productId:products[0].id,quantity:1})
         expect(response.body.message).toBe('Sucess')
@@ -34,7 +34,7 @@ describe("API POST:/user/cart/add",()=>{
     })
     it("should return an  error when sending a quantity greater than 5",async()=>{
         const response =await request(app)
-        .post(routes.postUserCartAdd)
+        .post('/user/cart/add')
         .set('Cookie', [`token=${cookies}`])
         .send({productId:products[0].id,quantity:6})
         expect(response.body.message).toBe('You can only add up to 5 items of this product to the cart.')
@@ -42,7 +42,7 @@ describe("API POST:/user/cart/add",()=>{
     })
     it("should return  an error when sending an invalid quantity",async()=>{
         const response =await request(app)
-        .post(routes.postUserCartAdd)
+        .post('/user/cart/add')
         .set('Cookie', [`token=${cookies}`])
         .send({productId:products[0].id,quantity:'e5'})
         expect(response.body.message).toBe('Invalid quantity. Please provide a valid number.')
@@ -50,7 +50,7 @@ describe("API POST:/user/cart/add",()=>{
     })
     it("should return an error when sending an invalid productId",async()=>{
         const response =await request(app)
-        .post(routes.postUserCartAdd)
+        .post('/user/cart/add')
         .set('Cookie', [`token=${cookies}`])
         .send({productId:'abc',quantity:5})
         expect(response.body.message).toBe('Invalid product ID. Please provide a valid number.')
@@ -58,7 +58,7 @@ describe("API POST:/user/cart/add",()=>{
     })
     it("should return an error when the product does not exist",async()=>{
         const response =await request(app)
-        .post(routes.postUserCartAdd)
+        .post('/user/cart/add')
         .set('Cookie', [`token=${cookies}`])
         .send({productId:1000,quantity:5})
         expect(response.body.message).toBe('Product not found.')
@@ -67,7 +67,7 @@ describe("API POST:/user/cart/add",()=>{
     it("should return an error when trying to create the cart item",async()=>{
         jest.spyOn(prisma.cartitem,'create').mockRejectedValueOnce(()=>new Error('something went wrong'))
         const response =await request(app)
-        .post(routes.postUserCartAdd)
+        .post('/user/cart/add')
         .set('Cookie', [`token=${cookies}`])
         .send({productId:products[0].id,quantity:5})
         expect(response.body.message).toBe('An internal error occurred while trying to add the item to the cart.')
@@ -76,7 +76,7 @@ describe("API POST:/user/cart/add",()=>{
     it("should return an error when an error occurs while counting the cart",async()=>{
         jest.spyOn(prisma.cartitem,'count').mockRejectedValueOnce(()=>new Error('something went wrong'))
         const response =await request(app)
-        .post(routes.postUserCartAdd)
+        .post('/user/cart/add')
         .set('Cookie', [`token=${cookies}`])
         .send({productId:products[0].id,quantity:5})
         expect(response.body.message).toBe('Failed to count cart')
@@ -85,7 +85,7 @@ describe("API POST:/user/cart/add",()=>{
     it("should return an error when an error occurs while searching for a product",async()=>{
         jest.spyOn(prisma.product,'findUnique').mockRejectedValueOnce(()=>new Error('something went wrong'))
         const response =await request(app)
-        .post(routes.postUserCartAdd)
+        .post('/user/cart/add')
         .set('Cookie', [`token=${cookies}`])
         .send({productId:products[0].id,quantity:5})
         expect(response.body.message).toBe('Failed to find product.')
@@ -116,7 +116,7 @@ describe("when the cart is full",()=>{
     })
     it("should return an error when the cart already has 5 items",async()=>{
         const response =await request(app)
-        .post(routes.postUserCartAdd)
+        .post('/user/cart/add')
         .set('Cookie', [`token=${cookies}`])
         .send({productId:product7.id,quantity:3})
         expect(response.body.message).toBe('Cart limit reached. You can only have up to 5 items in your cart.')

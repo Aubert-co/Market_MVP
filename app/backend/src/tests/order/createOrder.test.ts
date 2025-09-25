@@ -1,10 +1,13 @@
-import { addCouponUsage, cleanAllDb,cleanOrders, cleanCoupons, createCoupons, createUserStoreAndProducts,oneStore,users } from "../__mocks__"
+import { addCouponUsage, cleanAllDb,cleanOrders,
+    cleanCoupons, createCoupons,
+    createUserStoreAndProducts,oneStore,
+    users } from "../__mocks__"
 import request from 'supertest'
 import app from '../../serve'
-import { couponsDatas } from "../__mocks__/coupons"
+import { couponsDatas } from "../__fixtures__/coupons"
 import { generateAccessToken } from "../../helpers/AuthTokens"
 import { prisma } from "../../lib/prisma"
-import { products } from "../__mocks__/products"
+import { products } from "../__fixtures__/products"
 import {applyDiscount} from '../../helpers/applyDiscount'
 import {Order} from '../../types/order.types'
 import { roundTottaly } from "../../helpers"

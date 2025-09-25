@@ -1,6 +1,5 @@
 import request from "supertest"
 import app from "../../serve"
-import jwt from "jsonwebtoken"
 import { cleanAllDb,createUserStoreAndProducts } from "../__mocks__"
 import { prisma } from '../../lib/prisma'
 import { generateAccessToken } from '../../helpers/AuthTokens'

@@ -1,27 +1,23 @@
 import {  cleanAllDb,cleanOrders,
-      createUserStoreAndProducts,oneStore,users, createOrder,deleteReviewAndComments
+      createUserStoreAndProducts,users, createOrder,deleteReviewAndComments
      } from "../__mocks__"
 import request from 'supertest'
 import app from '../../serve'
-import { couponsDatas } from "../__mocks__/coupons"
 import { generateAccessToken } from "../../helpers/AuthTokens"
 import { prisma } from "../../lib/prisma"
-import { products } from "../__mocks__/products"
-import {applyDiscount} from '../../helpers/applyDiscount'
-import {Order} from '../../types/order.types'
-import { roundTottaly } from "../../helpers"
-const {validCoupons,expiredCoupons} = couponsDatas(oneStore.id)
+import { products } from "../__fixtures__/products"
+
 
 const [product] = products
 const [user1,user2] = users
 const userId = user2.id
 const cookies = generateAccessToken(userId)
 
-describe("Api POST:/order/create",()=>{
+describe("Api POST:/reviews/create",()=>{
     const orderId = 50
     beforeAll(async()=>{
      
-           await deleteReviewAndComments()
+        await deleteReviewAndComments()
         await cleanOrders()
      
         await cleanAllDb()
