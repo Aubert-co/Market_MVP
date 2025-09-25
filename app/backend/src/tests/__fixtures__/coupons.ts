@@ -1,4 +1,4 @@
-import { ParamsCoupons } from "."
+import { ParamsCoupons } from "../test.types"
 
 export const couponsDatas = (storeId:number)=>{
 const validCoupons:ParamsCoupons[]= [
