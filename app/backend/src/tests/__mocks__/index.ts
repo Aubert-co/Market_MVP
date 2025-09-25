@@ -1,8 +1,8 @@
-
-import { Prisma, PrismaClient } from "@prisma/client"
 import { prisma } from "../../lib/prisma"
-import { products } from "./products"
-
+import { products } from "../__fixtures__/products"
+import { CreateOrderDto,ParamsCoupons 
+    ,ParamsCart,ParamCouponUsage,DatasCouponUsage,itemCoupon,itemsCart
+} from "../test.types"
 export const users = [{id:1,name:'lucas',password:'12345667e',email:'lucsssas@gmail.com'},
     {id:4,name:'jose',password:'123456eee',email:'jossse@gmail.com'}
 ]
@@ -65,15 +65,7 @@ export const cleanOrders = async():Promise<void>=>{
         }
     })
 }
-type CreateOrderDto = {
-    productId:number,
-    price:number,
-    userId:number,
-    total:number,
-    quantity:number,
-    id:number,
-    status:string
-}
+
 export const createOrder = async({productId,price,id,userId,total,quantity,status}:CreateOrderDto):Promise<void>=>{
     await prisma.order.create({
         data:{
@@ -99,28 +91,16 @@ export const cleanCoupons = async():Promise<void>=>{
    
 }
 
-type ParamsCart = {
-    userId:number,
-    productId:number,
-    quantity:number
-}
-type itemsCart = Prisma.CartitemGetPayload<{}>
+
+
 export const addItemToCart = async(data:ParamsCart[]):Promise<itemsCart[]>=>{
     return await prisma.cartitem.createManyAndReturn({
         data
         
     })
 }
-export type ParamsCoupons = {
-    expiresAt:Date,
-    quantity:number,
-    code:string,
-    discount:number,
-    discountType: "fixed" | "percent",
-    storeId:number,
-    id:number
-}
-type itemCoupon = Prisma.CouponGetPayload<{}>
+
+
 export const createCoupons = async(data:ParamsCoupons[]):Promise<itemCoupon[]>=>{
     return await prisma.coupon.createManyAndReturn({
         data
@@ -131,13 +111,7 @@ export const createUserStoreAndProducts = async():Promise<void>=>{
     await prisma.store.create({data:oneStore})
     await prisma.product.createMany({data:products})
 }
-type ParamCouponUsage = {
-    userId:number,
-    couponId:number
-}
-type DatasCouponUsage = ParamCouponUsage &{
-    id:number
-}
+
 export const addCouponUsage = async(data:ParamCouponUsage[]):Promise<DatasCouponUsage[]>=>{
     return await prisma.couponUsage.createManyAndReturn({
         data
