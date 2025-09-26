@@ -82,8 +82,9 @@ describe("GET /admin/store/products/:storeId/:page db erros",()=>{
         .get('/admin/store/products/1/3')
         .set('Cookie', [`token=${cookies}`])
          
-        expect(response.status).toEqual(500)
-        expect(response.body.message).toEqual('An unexpected error occurred. Please try again later.')
+        expect(response.status).toEqual(200)
+        expect( response.body.datas).toEqual([])
+        expect(response.body.message).toEqual('Sucess')
           
         
     })

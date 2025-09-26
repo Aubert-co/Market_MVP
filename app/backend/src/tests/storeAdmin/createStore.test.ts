@@ -7,12 +7,24 @@ import { cleanAllDb, deleteStore, deleteUser } from "../__mocks__"
 import { generateAccessToken } from '../../helpers/AuthTokens'
 
 const cookies =  generateAccessToken(1)
+const cookieWithouStore = generateAccessToken(2)
 
+const checkExistsStore = async()=>{
+    const count = await prisma.store.count()
+    return count
+}
 describe("Post:/store/create try to create a store without token",()=>{
     let spyFileUpload:any;
     beforeAll(async()=>{
         await cleanAllDb()
         spyFileUpload = jest.spyOn(FileUpload,"uploadFileToGCS").mockResolvedValue("sucess")
+    })
+    afterAll(async()=>{
+        try{
+            await checkExistsStore()
+        }catch(err:any){
+            throw new Error("Some test created a store");
+        }
     })
     it("should return 'Acess denied' and status 401 when try to create a store withou login",async()=>{
         const response = await request(app)
@@ -28,8 +40,9 @@ describe("Post:/store/create try to create a store without token",()=>{
 
 describe("Post:/store/create  DB actions",()=>{
     let googleStorage:any;
+    const data = { id:1,name:'lucas',password:'123456',email:'lucas@gmail.com'}
     beforeAll(async ()=>{
-        const data = { id:1,name:'lucas',password:'123456',email:'lucas@gmail.com'}
+      
         await deleteStore()
         await prisma.user.create({data})
         googleStorage = jest.spyOn(FileUpload,"uploadFileToGCS").mockResolvedValue("sucess")
@@ -38,25 +51,37 @@ describe("Post:/store/create  DB actions",()=>{
         await deleteStore()
         await deleteUser()
      })
-     it("should sucessfully create a new store",async()=>{
-         
-         
-        
+     it("should sucessfully create a new store",async()=>{  
+        const name = 'Minha Loja'
+        const description = 'Lorem iptus testing'
         const response = await request(app)
         .post('/store/create')
         .set('Cookie', [`token=${cookies}`])
-        .field('name', 'Minha Loja')
-        .field('description', 'Descrição da loja')
+        .field('name', name)
+        .field('description', description)
         .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
         
         expect(response.statusCode).toEqual(201)
         expect(response.body.message).toEqual('Store sucessfully created')
     
         expect(googleStorage).toHaveBeenCalledTimes(1)
+
+        const selectStore = await prisma.store.findMany({where:{userId:data.id}})
+        const [newStore] = selectStore
+        expect( selectStore ).toHaveLength(1)
+        expect( newStore.name).toEqual(name)
+        expect( newStore.description ).toEqual( description )
     })
 })
 
 describe("Post:/store/create - Invalid store name",()=>{
+    afterAll(async()=>{
+        try{
+            await checkExistsStore()
+        }catch(err:any){
+            throw new Error("Some test created a store");
+        }
+    })
     it("should return status 422 and message 'Invalid name. Please check and try again.' when name is empty.",async()=>{
         const response = await request(app)
         .post('/store/create')
@@ -97,6 +122,13 @@ describe("Post:/store/create - Invalid store name",()=>{
 })
 
 describe("Post:/store/create - Invalid store description ",()=>{
+    afterAll(async()=>{
+        try{
+            await checkExistsStore()
+        }catch(err:any){
+            throw new Error("Some test created a store");
+        }
+    })
     it("should return status 422 and message 'Invalid store description. Please check and try again.' when description is empty.",async()=>{
         
         
@@ -139,7 +171,13 @@ describe("Post:/store/create - Invalid store description ",()=>{
 })
 
 describe("Post:/store/create - Invalid image",()=>{
-   
+     afterAll(async()=>{
+        try{
+            await checkExistsStore()
+        }catch(err:any){
+            throw new Error("Some test created a store");
+        }
+    })
     
     it("should return 'Invalid or missing image file.' when not send a image",async()=>{
         const response = await request(app)
@@ -188,31 +226,29 @@ describe("Post:/store/create - Invalid image",()=>{
 })
 
 describe("Post:/store/create - db actions",()=>{
-    const data = { id:2,name:'lucas',password:'123456',email:'lucas@gmail.com'}
-    const storeData = {id:111,name:'stores',description:'description',userId:2}
+    const data = [{ id:1,name:'lucas',password:'123456',email:'lucas@gmail.com'},{ id:2,name:'joseff',password:'123456',email:'lucas@gmail.com.br'}]
+    const storeData = {id:111,name:'stores',description:'description',userId:1}
     let googleStorage:any;
     beforeEach(()=>{
         googleStorage= jest.spyOn(FileUpload,"uploadFileToGCS").mockResolvedValue("sucess")
-          
         jest.clearAllMocks()
-    
     })
     beforeAll(async ()=>{
-        
-            await deleteStore()
-            
-            await prisma.user.create({data})
-            await prisma.store.create({data:storeData})
-        })
-    afterAll(async()=>{
-        await deleteStore()
-        await deleteUser()
-           
-     
-            
-    }) 
+        await cleanAllDb()
+        await prisma.user.createMany({data})
+        await prisma.store.create({data:storeData})
+    })
+     afterAll(async()=>{
+        try{
+            await checkExistsStore()
+              await cleanAllDb()    
+        }catch(err:any){
+            throw new Error("Some test created a store");
+        }
+    })
+   
     it("should return the message 'A store with this name already exists.' when trying to use an existing name.",async()=>{
-          googleStorage.mockResolvedValue("sucess")
+        googleStorage.mockResolvedValue("sucess")
           
         const response = await request(app)
         .post('/store/create')
@@ -231,7 +267,7 @@ describe("Post:/store/create - db actions",()=>{
         
         const response = await request(app)
         .post('/store/create')
-        .set('Cookie', [`token=${cookies}`])
+        .set('Cookie', [`token=${cookieWithouStore}`])
         .field('name', 'newName')
         .field('description', 'Descrição da loja')
         .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
@@ -241,5 +277,19 @@ describe("Post:/store/create - db actions",()=>{
         expect(response.statusCode).toEqual(409)
        
     })
-})
-   
+    it("should return an error when the user already have a store",async()=>{
+        const googleStorage = jest.spyOn(FileUpload,"uploadFileToGCS").mockResolvedValue("sucess")
+        
+        const response = await request(app)
+        .post('/store/create')
+        .set('Cookie', [`token=${cookies}`])
+        .field('name', 'tesing')
+        .field('description', 'Descrição da loja')
+        .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
+        
+        expect(googleStorage).not.toHaveBeenCalled()
+        expect(response.body.message).toEqual('User already has a store')
+        expect(response.statusCode).toEqual(409)
+    })
+}) 
+    

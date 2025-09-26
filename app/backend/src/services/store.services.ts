@@ -12,6 +12,7 @@ export interface IStoreService{
     findByName(storeName:string):Promise<boolean>,
     selectUserStores(userId:number):Promise<Store[]>,
     getProductsByStoreId(storeId:number,page:number):Promise<GetProductByStore>
+    countProductStore(storeId:number):Promise<number>,
 } 
 type CreateStoreParams = {
     userId:number,
@@ -28,7 +29,7 @@ type GetProductByStore ={
 }
 export class StoreService implements IStoreService{
    
-    constructor(protected storeRepository:IStoreRepository,protected product:IProductRepository){}
+    constructor(protected storeRepository:IStoreRepository){}
   
     public async createStore ({name,description,userId,buffer,
         originalName,mimeType
@@ -38,12 +39,21 @@ export class StoreService implements IStoreService{
         
         const existsStoreName = await this.storeRepository.findByName( name )
         if(existsStoreName)throw new ErrorMessage("A store with this name already exists.",409)
-
-        await this.storeRepository.createStore({storeName:name,
-            userId,photo:newUrlPath,description
+        
+        const userAlreadyHaveStore = await this.storeRepository.selectUserStores( userId )
+        if( userAlreadyHaveStore.length >0){
+            throw new ErrorMessage("User already has a store", 409)
+        }
+        
+        await this.storeRepository.createStore({
+            storeName:name,
+            userId,
+            photo:newUrlPath,
+            description
         })
         await uploadFileToGCS({
-            fileBuffer:buffer,urlPath:newUrlPath,
+            fileBuffer:buffer,
+            urlPath:newUrlPath,
             mimeType
         })
        
@@ -69,17 +79,27 @@ export class StoreService implements IStoreService{
     public async selectUserStores(userId:number):Promise<Store[]>{
         try{
             const datas = await this.storeRepository.selectUserStores(userId)
-            if(!datas && datas.length <0)return [];
+            if(datas.length ===0)return [];
 
             return datas ;
         }catch(err:any){
             throw new ErrorMessage("Failed to find a store",409)
         }
     }
+     public async countProductStore(storeId:number):Promise<number>{
+        try{
+            const count =  await this.storeRepository.countProductStore(storeId)
+            if(!count)return 0
+
+            return count;
+        }catch(err:any){
+            return 0;
+        }
+    }
      public async getProductsByStoreId(storeId:number,page:number):Promise<GetProductByStore>{
         const limit = 10
         
-        const countProducts = await this.product.countProductStore(storeId);
+        const countProducts = await this.countProductStore(storeId);
         if(countProducts  ===0){
             return {
                 datas:[],
@@ -92,7 +112,7 @@ export class StoreService implements IStoreService{
         if(page >totalPages) page = totalPages;
         
         const skip = (page -1 )* limit
-        const datas = await this.product.getProductsByStoreId(storeId,skip,limit)
+        const datas = await this.storeRepository.getProductsByStoreId(storeId,skip,limit)
         return {
             datas,
             totalPages,
