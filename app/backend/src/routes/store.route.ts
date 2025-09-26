@@ -5,14 +5,14 @@ import { Auth } from '../middleware/auth'
 import { StoreService } from '../services/store.services'
 import { prisma } from '../lib/prisma'
 import { StoreRepository } from '../repository/store.repository'
-import { ProductRepository } from '../repository/product.repository'
+
 import { VerifyStoreOwnership } from '../middleware/verifyStoreOwnership'
 import { fileUpload } from '../lib/fileUpload'
 
 const validateImageAndFields = new  ValidateImageAndFields
-const productRepository = new ProductRepository(prisma)
+
 const storeRepository = new StoreRepository(prisma)
-const storeService = new StoreService(storeRepository,productRepository)
+const storeService = new StoreService(storeRepository)
 const storeAdminController = new StoreAdminController(storeService)
 const verifyStoreOwnershipMiddle = new VerifyStoreOwnership(storeService)
 const route = Router()

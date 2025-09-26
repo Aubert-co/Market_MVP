@@ -7,14 +7,14 @@ import { prisma } from "../lib/prisma"
 import { StoreService } from "../services/store.services"
 import { StoreRepository } from "../repository/store.repository"
 import { Auth } from "../middleware/auth"
-import { ProductRepository } from "../repository/product.repository"
+
 
 const route = Router()
 const couponRepository = new CouponRepository(prisma,)
 const couponService = new CouponServices(couponRepository)
 const storeRepository = new StoreRepository(prisma)
-const productRepository = new ProductRepository(prisma)
-const storeService = new StoreService(storeRepository,productRepository)
+
+const storeService = new StoreService(storeRepository)
 const verifyStoreOwnershipMiddle = new VerifyStoreOwnership(storeService)
 const couponController = new CouponController(couponService)
 route.post('/store/create/coupon',[
