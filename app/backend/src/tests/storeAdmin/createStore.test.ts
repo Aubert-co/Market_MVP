@@ -277,7 +277,7 @@ describe("Post:/store/create - db actions",()=>{
         expect(response.statusCode).toEqual(409)
        
     })
-    it("should return an error when the user already have a store",async()=>{
+    it("should return an error when the user already has a store",async()=>{
         const googleStorage = jest.spyOn(FileUpload,"uploadFileToGCS").mockResolvedValue("sucess")
         
         const response = await request(app)
