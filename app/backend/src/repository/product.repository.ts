@@ -11,8 +11,6 @@ export interface IProductRepository{
     selectByCategory(category:string,limit:number,skip:number):Promise<Product[] >,
     getProductById(id:number):Promise< GetProductById>,
     countProducts():Promise<number >,
-    getProductsByStoreId(storeId:number,skip:number,limit:number):Promise< ProductWithCountsAndRatings[] >,
-    countProductStore(storeId:number):Promise<number >,
     deleteProduct(storeId:number,productId:number):Promise<void>,
     selectProductPrice(productId:number):Promise<ProductWithPriceAndStock | null>,
     decreaseStock(productId:number,stock:number):Promise<void>
@@ -160,32 +158,8 @@ export class ProductRepository  implements IProductRepository{
     }
     
     
-    public async getProductsByStoreId(storeId:number,skip:number=0,limit:number=10):Promise<ProductWithCountsAndRatings[] >{
-        try{
-        return await this.prisma.product.findMany({
-            where:{storeId},
-            skip,
-            take:limit,
-            include:{
-                _count:{
-                    select:{views:true,comments:true,reviews:true},                   
-                },
-                reviews:{
-                    select:{
-                        rating:true
-                    }
-                }
-            }
-        })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to get products",500)
-        }
-    }
-    public async countProductStore(storeId:number):Promise<number>{
-        return await this.prisma.product.count({
-            where:{storeId}
-        })
-    }
+    
+   
     public async deleteProduct(storeId:number,productId:number):Promise<void>{
         await this.prisma.product.deleteMany({where:{id:productId,storeId}})
     }

@@ -4,17 +4,17 @@ import { Router,Request,Response,NextFunction } from "express"
 import { fileUpload } from "../lib/fileUpload";
 import { Auth } from "../middleware/auth";
 import { VerifyStoreOwnership } from "../middleware/verifyStoreOwnership";
-import { ProductRepository } from "../repository/product.repository";
+
 import { StoreRepository } from "../repository/store.repository";
 import { ProductAdminRepository } from "../repository/productAdmin.repository";
 import { StoreService } from "../services/store.services";
 import { ProductAdminService } from "../services/productAdmin.services";
 
 const storeRepository = new StoreRepository(prisma)
-const productRepository = new ProductRepository(prisma)
+
 const productAdminRepository = new ProductAdminRepository(prisma)
 const productAdminService = new ProductAdminService(productAdminRepository)
-const storeService = new StoreService(storeRepository,productRepository)
+const storeService = new StoreService(storeRepository)
 
 const verifyStoreOwnershipMiddle = new VerifyStoreOwnership(storeService)
 const productAdmin = new ProductAdminController(productAdminService)

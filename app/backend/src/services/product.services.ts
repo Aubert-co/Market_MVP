@@ -15,8 +15,6 @@ export interface IProductService{
     getProducts(page:number):Promise<GetProducts>,
     getProductById(id:number):Promise< GetProductById>,
     countProducts():Promise<number>,
-    countProductStore(storeId:number):Promise<number>,
- 
     deleteProduct(productIds:any,storeId:number):Promise<void>
 }
 
@@ -115,16 +113,7 @@ export class ProductService  implements IProductService{
 
     }
    
-    public async countProductStore(storeId:number):Promise<number>{
-        try{
-            const count =  await this.product.countProductStore(storeId)
-            if(!count)return 0
-
-            return count;
-        }catch(err:any){
-            return 0;
-        }
-    }
+   
     public async deleteProduct(productIds:any,storeId:number):Promise<void>{
         if (!Array.isArray(productIds) || productIds.length === 0) {
             throw new ErrorMessage("Invalid product IDs provided.",400)
