@@ -1,5 +1,7 @@
 import { prisma } from "../../lib/prisma"
+import { orders } from "../__fixtures__/orders"
 import { products } from "../__fixtures__/products"
+import { views } from "../__fixtures__/views"
 import { CreateOrderDto,ParamsCoupons 
     ,ParamsCart,ParamCouponUsage,DatasCouponUsage,itemCoupon,itemsCart
 } from "../test.types"
@@ -132,5 +134,33 @@ export const deleteReviewAndComments = async():Promise<void>=>{
                 gt:0
             }
         }
+    })
+}
+export const deleteOrders = async()=>{
+    await prisma.order.deleteMany({
+        where:{
+            id:{
+                gt:0
+            }
+        }
+    })
+}
+export const deleteViews = async()=>{
+    await prisma.view.deleteMany({
+        where:{
+            id:{
+                gt:0
+            }
+        }
+    })
+}
+export const createOrders = async():Promise<void>=>{
+    await prisma.order.createMany({
+        data:orders
+    })
+}
+export const createViews = async():Promise<void>=>{
+    await prisma.view.createMany({
+        data:views
     })
 }
