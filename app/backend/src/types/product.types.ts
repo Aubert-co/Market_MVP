@@ -35,3 +35,31 @@ export type ProductWithPriceAndStock = Prisma.ProductGetPayload<{
     price:true,stock:true
   }
 }>
+
+export type GetProductById = {
+  product: Prisma.ProductGetPayload<{
+    include: {
+        reviews:{
+            select:{
+                rating:true
+            }
+        }
+      comments: {
+        select:{
+           
+            content:true,
+            user:{
+                select:{
+                    name:true
+                }
+            }
+        }
+      }
+    }
+  }> | null,
+  ratings: {
+  _avg: { rating: number | null },
+  _count: { rating: number }
+}
+ 
+}

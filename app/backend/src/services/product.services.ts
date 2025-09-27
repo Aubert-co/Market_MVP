@@ -2,8 +2,8 @@ import {  pagination } from "../helpers";
 import { generateImgPath } from "../helpers/checkIsValidImage";
 import { ErrorMessage } from "../helpers/ErrorMessage";
 import { uploadFileToGCS } from "../lib/googleStorage";
-import {  IProductRepository,GetProductById } from "../repository/product.repository";
-import { Product, Products, SelectedProduct } from "../types/product.types";
+import {  IProductRepository } from "../repository/product.repository";
+import { Product, Products, SelectedProduct ,GetProductById} from "../types/product.types";
 import { IProductRedisService } from "./redis.services";
 
 export interface IProductService{
