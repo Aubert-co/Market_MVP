@@ -1,6 +1,4 @@
-import { prisma } from "../lib/prisma";
-import redis from "../lib/redis";
-import { Router,NextFunction,Request,Response } from "express";
+import { Router } from "express";
 import { generateSignedUrl } from "../lib/googleStorage";
 import authRoute from './auth.route'
 import products from './products.route'
@@ -11,6 +9,7 @@ import productAdminRoute from './productAdmin.route'
 import orderRoute from './order.route'
 import couponRoute from './coupon.route'
 import reviewsRoute from './reviews.route'
+import storeDashboard from './storeDash.route'
 const route = Router();
 
 route.use(authRoute)
@@ -21,6 +20,7 @@ route.use( productAdminRoute )
 route.use( orderRoute)
 route.use( couponRoute)
 route.use(reviewsRoute)
+route.use(storeDashboard)
 route.get('/images/:filename', async (req, res) => {
   const { filename } = req.params;
 
