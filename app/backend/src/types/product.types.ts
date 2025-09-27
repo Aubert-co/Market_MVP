@@ -27,11 +27,6 @@ export type ProductWithCountsAndRatings = Prisma.ProductGetPayload<{
         comments: true,
         reviews: true,
       }
-    },
-    reviews: {
-      select: {
-        rating: true
-      }
     }
   }
 }>

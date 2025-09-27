@@ -15,7 +15,7 @@ export interface IStoreRepository{
 
 export class StoreRepository implements IStoreRepository{
     
-    constructor(private prisma:PrismaClient){}
+    constructor(protected prisma:PrismaClient){}
  
     public async createStore(data:{storeName:string,userId:number,description:string,photo:string}):Promise<void>{
        
@@ -65,11 +65,6 @@ export class StoreRepository implements IStoreRepository{
                     _count:{
                         select:{views:true,comments:true,reviews:true},                   
                     },
-                    reviews:{
-                        select:{
-                            rating:true
-                        }
-                    }
                 }
             })
         }catch(err:any){
