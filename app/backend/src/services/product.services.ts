@@ -1,10 +1,12 @@
+import { ProductRedisRepository } from "../repository/redis.repository";
 import {  pagination } from "../helpers";
 import { generateImgPath } from "../helpers/checkIsValidImage";
 import { ErrorMessage } from "../helpers/ErrorMessage";
 import { uploadFileToGCS } from "../lib/googleStorage";
 import {  IProductRepository } from "../repository/product.repository";
 import { Product, Products, SelectedProduct ,GetProductById, FilteredProduct,FilterProductsInput} from "../types/product.types";
-import { IProductRedisService } from "./redis.services";
+import { IProductRedisService, ProductRedisService } from "../services/redis.services";
+import redis from "../lib/redis";
 
 export interface IProductService{
     createProduct( {category, name, description,
@@ -31,7 +33,11 @@ type GetProducts = {
     fromCache:boolean
 }
 export class ProductService  implements IProductService{
-    constructor(protected product:IProductRepository,protected redis:IProductRedisService){}
+    protected redis: IProductRedisService
+    constructor(protected product:IProductRepository){
+        const redisRep = new ProductRedisRepository(redis)
+        this.redis = new ProductRedisService(redisRep)
+    }
 
     public async createProduct( {category, name, description,
         storeId, price, 
@@ -113,8 +119,6 @@ export class ProductService  implements IProductService{
         }
 
     }
-   
-   
     public async deleteProduct(productIds:any,storeId:number):Promise<void>{
         if (!Array.isArray(productIds) || productIds.length === 0) {
             throw new ErrorMessage("Invalid product IDs provided.",400)
