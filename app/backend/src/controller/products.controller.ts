@@ -1,13 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { IProductService } from "../services/product.services";
 import { checkIsAValidCategory, checkIsAValidNumber, isAValidString } from "../helpers";
-import { Product } from "../types/product.types";
-import { IProductRedisService } from "../services/redis.services";
 import { ErrorMessage } from "../helpers/ErrorMessage";
 
 
 export class ProductsController{
-    constructor(protected products:IProductService,protected productCache:IProductRedisService){}
+    constructor(protected products:IProductService){}
     public async GetProducts(req:Request,res:Response,next:NextFunction):Promise<any>{
         let page = Number(req.params?.page)
        
