@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { ErrorMessage } from "../helpers/ErrorMessage";
-import { Product, GetProductById, SelectedProduct } from "../types/product.types";
+import { Product, GetProductById, SelectedProduct, FilteredProduct,FilterProductsInput } from "../types/product.types";
 
 export interface IProductRepository{
     createProduct(data:{category:string,name:string,description:string,
@@ -11,6 +11,7 @@ export interface IProductRepository{
     getProductById(id:number):Promise< GetProductById>,
     countProducts():Promise<number >,
     deleteProduct(storeId:number,productId:number):Promise<void>,
+    filterProducts({name,category,maxPrice,minPrice,storeId,skip,take}:FilterProductsInput):Promise<FilteredProduct[]>
 }
 
 export class ProductRepository  implements IProductRepository{
@@ -116,4 +117,33 @@ export class ProductRepository  implements IProductRepository{
     public async deleteProduct(storeId:number,productId:number):Promise<void>{
         await this.prisma.product.deleteMany({where:{id:productId,storeId}})
     }
+    public async filterProducts({
+        name,
+        category,
+        maxPrice,
+        minPrice,
+        storeId,
+        take=10,
+        skip=0
+        }: FilterProductsInput): Promise<FilteredProduct[]> {
+       
+        return await this.prisma.product.findMany({
+                where: {
+                    storeId ,
+                ...(name && { name: { contains: name, mode: 'insensitive' } }),
+                ...(category && { category: { contains: category, mode: 'insensitive' } }),
+                ...(minPrice || maxPrice
+                    ? {
+                        price: {
+                        ...(minPrice && { gte: minPrice }),
+                        ...(maxPrice && { lte: maxPrice })
+                        }
+                    }
+                    : {})
+                },
+                take,
+                skip
+            });
+        }
+
 }

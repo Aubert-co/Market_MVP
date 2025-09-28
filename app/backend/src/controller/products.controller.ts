@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { IProductService } from "../services/product.services";
-import { checkIsAValidCategory, checkIsAValidNumber } from "../helpers";
+import { checkIsAValidCategory, checkIsAValidNumber, isAValidString } from "../helpers";
 import { Product } from "../types/product.types";
 import { IProductRedisService } from "../services/redis.services";
+import { ErrorMessage } from "../helpers/ErrorMessage";
 
 
 export class ProductsController{
@@ -43,24 +44,37 @@ export class ProductsController{
         }
             
     }
-    public async GetProductsByCategory(req:Request,res:Response,next:NextFunction):Promise<any>{
-         const category = req.params?.category
-        if(!checkIsAValidCategory(category)){
-            return res.status(422).send({message:"Invalid category. Please check and try again."})
-        }
-       
+    public async filterProducts(req:Request,res:Response,next:NextFunction):Promise<any>{
         try{
-            const key = `product:category:${category}`
-            const getCachedProduct = await this.productCache.getProductInCache( key );
-            if(getCachedProduct.length <=0 ){
-                return res.status(200).send({message:'Sucess',datas:getCachedProduct,fromCache:true})
+            const name = req.body?.name
+            const category = req.body?.category
+            const minPrice = req.body?.minPrice
+            const maxPrice = req.body?.maxPrice
+            const take = 10
+            const skip =0
+           
+           if (category && !checkIsAValidCategory(category)) {
+                throw new ErrorMessage("Invalid category provided", 400);
             }
-            const datas = await this.products.selectByCategory(category,10,0)
-        
-            res.status(200).send({message:'Sucess',datas,fromCache:false})
 
-            if(datas.length > 0)await this.productCache.saveProductInCache(key,datas as Product[]);
-            
+            if (name && !isAValidString(name)) {
+                throw new ErrorMessage("Invalid name format", 400);
+            }
+
+            if (maxPrice && !checkIsAValidNumber(maxPrice)) {
+                throw new ErrorMessage("Invalid maximum price value", 400);
+            }
+
+            if (minPrice && !checkIsAValidNumber(minPrice)) {
+                throw new ErrorMessage("Invalid minimum price value", 400);
+            }
+             
+            const datas = await this.products.filterProduct({
+                name,category,maxPrice,minPrice,take,
+                skip
+            })
+       
+            res.status(200).send({message:'Sucess',datas})
         }catch(err:any){
             next(err)
         }

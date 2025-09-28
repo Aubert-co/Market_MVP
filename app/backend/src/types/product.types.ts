@@ -63,3 +63,14 @@ export type GetProductById = {
 }
  
 }
+
+export type FilterProductsInput = {
+    name?:string,
+    category?:string
+    maxPrice?:number
+    minPrice?:number,
+    storeId?:number,
+    take:number,
+    skip:number
+}
+export type FilteredProduct = Prisma.ProductGetPayload<{}>;

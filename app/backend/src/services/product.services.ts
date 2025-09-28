@@ -3,7 +3,7 @@ import { generateImgPath } from "../helpers/checkIsValidImage";
 import { ErrorMessage } from "../helpers/ErrorMessage";
 import { uploadFileToGCS } from "../lib/googleStorage";
 import {  IProductRepository } from "../repository/product.repository";
-import { Product, Products, SelectedProduct ,GetProductById} from "../types/product.types";
+import { Product, Products, SelectedProduct ,GetProductById, FilteredProduct,FilterProductsInput} from "../types/product.types";
 import { IProductRedisService } from "./redis.services";
 
 export interface IProductService{
@@ -16,6 +16,7 @@ export interface IProductService{
     getProductById(id:number):Promise< GetProductById>,
     countProducts():Promise<number>,
     deleteProduct(productIds:any,storeId:number):Promise<void>
+    filterProduct({name,category,maxPrice,minPrice,take,skip}:FilterProductsInput):Promise<FilteredProduct[]>
 }
 
 type CreateProduct = Products & {
@@ -119,5 +120,15 @@ export class ProductService  implements IProductService{
             throw new ErrorMessage("Invalid product IDs provided.",400)
         }
        
+    }
+    public async filterProduct({name,category,maxPrice,minPrice,take,skip}:FilterProductsInput):Promise<FilteredProduct[]>{
+        try{
+         
+            return await this.product.filterProducts({
+                name,category,maxPrice,minPrice,take,skip
+            })
+        }catch(err:any){
+            throw new ErrorMessage("No products found",404)
+        }
     }
 }

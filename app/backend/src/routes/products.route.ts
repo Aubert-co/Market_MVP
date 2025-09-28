@@ -18,7 +18,9 @@ const productsController = new ProductsController(productService,productRediServ
 
 const route = Router()
 
-route.get('/product/category/:category',productsController.GetProductsByCategory)
+route.post('/product/filter',
+    (req:Request,res:Response,next:NextFunction)=>productsController.filterProducts(req,res,next)
+)
 route.get('/product/page/:page',
     (req:Request,res:Response,next:NextFunction)=> productsController.GetProducts(req,res,next)
 );
