@@ -4,9 +4,6 @@ export interface IProductRedisRepository{
     saveCountProductsInCache(countProduct:number):Promise<void>,
     getCountProductsInCache():Promise<string | null>,
     getCachedProduct(key:string):Promise<string | null>,
-    saveRecentCategories(category:string,userId:number):Promise<void>,
-    getRecentCategories(userId: number): Promise<string[]>,
-    
 }
 
 export class ProductRedisRepository implements IProductRedisRepository{
@@ -31,14 +28,5 @@ export class ProductRedisRepository implements IProductRedisRepository{
     public async getCachedProduct(key:string):Promise<string | null>{
         return await this.redis.get(key)
     }
-     public async saveRecentCategories(category:string,userId:number):Promise<void>{
-        const key = `user${userId}:recent_categories`;
-        await this.redis.lRem(key, 0, category);
-        await this.redis.lPush(key,category);
-        await this.redis.lTrim(key,0,4);
-    }
-    public async getRecentCategories(userId: number): Promise<string[]> {
-        const categories = await this.redis.lRange(`user:${userId}:recent_categories`, 0, -1);
-        return categories;
-    }
+   
 }

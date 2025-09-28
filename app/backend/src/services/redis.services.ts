@@ -33,21 +33,6 @@ export class ProductRedisService implements IProductRedisService{
         }
     }
    
-    
-    public async saveRecentCategories(category:string,userId:number):Promise<void>{
-        try{
-            await this.redis.saveRecentCategories(category,userId)
-        }catch(err:any){
-            return;
-        }
-    }
-    public async getRecentCategories(userId:number):Promise<string[]>{
-        try{
-            return await this.redis.getRecentCategories(userId) 
-        }catch(err:any){
-            return [];
-        }
-    }
     public async saveCountProductsInCache(countProducts:number):Promise<void>{
         try{
             await this.redis.saveCountProductsInCache(countProducts);
