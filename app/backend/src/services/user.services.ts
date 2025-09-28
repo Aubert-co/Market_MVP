@@ -3,7 +3,7 @@ import { ErrorMessage } from "../helpers/ErrorMessage";
 import { IUserRepository } from "../repository/user.repository";
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import { User } from "types/user.types";
+import { User } from "../types/user.types";
 
 type ParamsCreate= Omit<User,'id'>
 export interface IUserService  {
