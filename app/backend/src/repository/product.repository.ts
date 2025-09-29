@@ -1,16 +1,14 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import {  PrismaClient } from "@prisma/client";
 import { ErrorMessage } from "../helpers/ErrorMessage";
-import { Product, GetProductById, SelectedProduct, FilteredProduct,FilterProductsInput } from "../types/product.types";
+import {  GetProductById, SelectedProduct, FilteredProduct,FilterProductsInput } from "../types/product.types";
 
 export interface IProductRepository{
     createProduct(data:{category:string,name:string,description:string,
         storeId:number,price:number,stock:number,imageUrl:string
     }):Promise<void>,
     getProducts(limit:number,skip:number):Promise<SelectedProduct[]>,
-    selectByCategory(category:string,limit:number,skip:number):Promise<Product[] >,
     getProductById(id:number):Promise< GetProductById>,
     countProducts():Promise<number >,
-    deleteProduct(storeId:number,productId:number):Promise<void>,
     filterProducts({name,category,maxPrice,minPrice,storeId,skip,take}:FilterProductsInput):Promise<FilteredProduct[]>
 }
 
@@ -67,17 +65,6 @@ export class ProductRepository  implements IProductRepository{
         }
     }
    
-   public async selectByCategory(category:string,limit:number=10,skip:number=0):Promise<Product[]>{
-        const datas = await this.prisma.product.findMany({
-            where:{
-                category
-            },
-            take: limit,
-            skip
-        })
-        return datas;
-       
-   }
     public async getProductById(id:number):Promise< GetProductById >{
         try{
             const product = await this.prisma.product.findUnique({
