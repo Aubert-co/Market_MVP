@@ -3,11 +3,12 @@ import { StoreRepository } from "./store.repository";
 import { StatusOrder } from "types/order.types";
 import { StoreDashOrders } from "types/storedashboard.types";
 
-export interface StoreDashboardRep {
+export interface IStoreDashboardRep {
     getStoreOrders(status:StatusOrder,storeId:number):Promise<StoreDashOrders[] | []>
     countOrders(status:StatusOrder,storeId:number):Promise<number>   
+    getTotalViews(storeId:number): Promise<number>
 }
-export class StoreDashboardRep extends StoreRepository implements StoreDashboardRep {
+export class StoreDashboardRep extends StoreRepository implements IStoreDashboardRep {
     constructor(prisma:PrismaClient){
         super(prisma)
     }
