@@ -1,4 +1,3 @@
-import { checkIsAValidNumber } from "../helpers";
 import { ErrorMessage } from "../helpers/ErrorMessage"
 import { IProductRepository } from "../repository/product.repository";
 import {  IUserCartRepository} from "../repository/userCart.repository";
@@ -29,7 +28,6 @@ export class UserCartService implements IUserCartService{
         }
         const {product} = await this.product.getProductById(productId)
         if (!product) {
-           
             throw new ErrorMessage("Product not found.", 404);
         }
 
