@@ -4,7 +4,7 @@ import { generateImgPath } from "../helpers/checkIsValidImage";
 import { ErrorMessage } from "../helpers/ErrorMessage";
 import { uploadFileToGCS } from "../lib/googleStorage";
 import {  IProductRepository } from "../repository/product.repository";
-import { Product, Products, SelectedProduct ,GetProductById, FilteredProduct,FilterProductsInput} from "../types/product.types";
+import {  Products, SelectedProduct ,GetProductById, FilteredProduct,FilterProductsInput} from "../types/product.types";
 import { IProductRedisService, ProductRedisService } from "../services/redis.services";
 import redis from "../lib/redis";
 
@@ -13,11 +13,11 @@ export interface IProductService{
         storeId, price, 
         stock ,fileBuffer,originalName ,mimeType }:CreateProduct
     ): Promise<void>
-    selectByCategory(category:string,limit:number,skip:number ):Promise<Product[]>,
+  
     getProducts(page:number):Promise<GetProducts>,
     getProductById(id:number):Promise< GetProductById>,
     countProducts():Promise<number>,
-    deleteProduct(productIds:any,storeId:number):Promise<void>
+   
     filterProduct({name,category,maxPrice,minPrice,take,skip}:FilterProductsInput):Promise<FilteredProduct[]>
 }
 
@@ -55,13 +55,7 @@ export class ProductService  implements IProductService{
             urlPath:imageUrl
         })
     }
-    public async selectByCategory( category:string,limit:number,skip:number ):Promise<Product[]>{
-        try{
-            return await this.product.selectByCategory(category,limit,skip) ;
-        }catch(err:any){
-            throw new ErrorMessage("Failed to retrieve products. Please try again later.", 500);
-        } 
-    }
+   
    
     public async getProducts( page:number):Promise<GetProducts>{
         const limit = 10
@@ -119,12 +113,7 @@ export class ProductService  implements IProductService{
         }
 
     }
-    public async deleteProduct(productIds:any,storeId:number):Promise<void>{
-        if (!Array.isArray(productIds) || productIds.length === 0) {
-            throw new ErrorMessage("Invalid product IDs provided.",400)
-        }
-       
-    }
+   
     public async filterProduct({name,category,maxPrice,minPrice,take,skip}:FilterProductsInput):Promise<FilteredProduct[]>{
         try{
          
