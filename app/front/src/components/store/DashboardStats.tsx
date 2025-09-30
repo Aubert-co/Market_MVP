@@ -24,16 +24,25 @@ const SmallBox = styled.div`
   }
 `;
 
-// Mock de dados (poderia vir do backend futuramente)
-const dashboardStats = [
-  { value: "R$ 12.450", label: "Total vendido este mês" },
-  { value: "32", label: "Ordens concluídas este mês" },
-  { value: "5", label: "Ordens canceladas este mês" },
-  { value: "8", label: "Ordens em aberto" },
-];
 
-// Componente que renderiza os boxes
-export const DashboardStats = () => {
+
+type Props = {
+  orders:{
+    completed:number,
+    pending:number,
+    cancelled:number
+  },
+  views:{
+    total:number
+  }
+}
+export const DashboardStats = ({orders,views}:Props) => {
+  const dashboardStats = [
+  { value: orders.completed, label: "Pedidos completadas" },
+  { value: orders.cancelled, label: "Pedidos canceladas" },
+  { value: orders.pending ,label: "Pedidos Pendentes" },
+  {value:views.total,label:"Total de vizualiçações"}
+];
   return (
     <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
       {dashboardStats.map((stat, index) => (
