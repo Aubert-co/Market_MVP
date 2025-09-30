@@ -1,15 +1,11 @@
 import type { SideBarItem } from "@/types/storeDashboard.types"
-import { FaBox, FaClipboardList, FaTags, FaUsers, FaHome, FaSignOutAlt, FaCog } from "react-icons/fa"
+import { FaBox, FaClipboardList, FaTags, FaUsers } from "react-icons/fa"
 
 export const sideBarMenuItems:SideBarItem[] = [
   { label: "Dashboard", icon: <FaBox />, isActive: false, linkTo: "/loja" },
   { label: "Produtos", icon: <FaClipboardList />, isActive: true, linkTo: "/loja/produtos" },
   { label: "Cupons", icon: <FaTags />, isActive: false, linkTo: "/loja/cupons" },
   { label: "Pedidos", icon: <FaUsers />, isActive: false, linkTo: "/loja/pedidos" },
-  { label: "Configurações",icon:<FaCog/>, isActive: false, linkTo: "/loja/configs" },
-
-  { label: "Voltar pro início", icon: <FaHome />, isActive: false, linkTo: "/" },
-  { label: "Sair", icon: <FaSignOutAlt />, isActive: false, linkTo: "/logout" },
 ]
 
 type Label = "Dashboard" | "Produtos" | "Cupons" | "Pedidos" | "Configurações"
