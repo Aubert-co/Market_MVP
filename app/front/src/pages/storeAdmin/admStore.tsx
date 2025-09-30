@@ -1,69 +1,104 @@
 import { ContainerDashboard } from "@/components/layouts/containerDashboard"
-import { DashboardStats } from "@/components/store/boxMostViewd"
-import { ProductsMovstViewd } from "@/components/store/productsMostViewd"
+import { DashboardStats } from "@/components/store/DashboardStats"
+import {LastPendingOrders} from '@/components/store/lastPendingOrders'
 import { selectMenuItem } from "@/constants/menuItems"
+import { usableFetch } from "@/services/fetchs"
+import { storeDashboardService } from "@/services/storeDashboard.service"
 import { Box, Controls } from "@/styles/dashboardStore.style"
+import type { GetStoreDashboard, ProductOrder } from "@/types/storeDashboard.types"
+import { useEffect, useState } from "react"
 
-
-export const mockProductViews = [
+export const productOrdersMock:ProductOrder[] = [
   {
-    id: 1,
-    name: "Tênis Nike Air",
-    price: 499.9,
-    imageUrl: "https://via.placeholder.com/100",
-    category: "Calçados",
-    stock: 12,
-    views: 1200,
+    product: {
+      name: "Camiseta Básica",
+      price: 59.9,
+      imageUrl: "https://example.com/camiseta.jpg",
+    },
+    total: 119.8,
+    quantity: 2,
+    user: {
+      name: 'true',
+    },
   },
   {
-    id: 2,
-    name: "Camiseta Adidas",
-    price: 149.9,
-    imageUrl: "https://via.placeholder.com/100",
-    category: "Roupas",
-    stock: 25,
-    views: 950,
+    product: {
+      name: "Tênis Esportivo",
+      price: 249.9,
+      imageUrl: "https://example.com/tenis.jpg",
+    },
+    total: 249.9,
+    quantity: 1,
+    user: {
+      name: 'jose',
+    },
   },
   {
-    id: 3,
-    name: "Boné Puma",
-    price: 79.9,
-    imageUrl: "https://via.placeholder.com/100",
-    category: "Acessórios",
-    stock: 30,
-    views: 870,
+    product: {
+      name: "Notebook Gamer",
+      price: 4999.99,
+      imageUrl: "https://example.com/notebook.jpg",
+    },
+    total: 4999.99,
+    quantity: 1,
+    user: {
+      name: 'maria',
+    },
   },
   {
-    id: 4,
-    name: "Calça Jeans Levis",
-    price: 299.9,
-    imageUrl: "https://via.placeholder.com/100",
-    category: "Roupas",
-    stock: 18,
-    views: 650,
+    product: {
+      name: "Fone de Ouvido Bluetooth",
+      price: 199.9,
+      imageUrl: "https://example.com/fone.jpg",
+    },
+    total: 399.8,
+    quantity: 2,
+    user: {
+      name: 'estevao',
+    },
   },
   {
-    id: 5,
-    name: "Mochila Herschel",
-    price: 399.9,
-    imageUrl: "https://via.placeholder.com/100",
-    category: "Acessórios",
-    stock: 20,
-    views: 500,
+    product: {
+      name: "Smartwatch",
+      price: 899.9,
+      imageUrl: "https://example.com/smartwatch.jpg",
+    },
+    total: 899.9,
+    quantity: 1,
+    user: {
+      name: 'suellen',
+    },
   },
 ];
-export const AdminStore= () => {
 
+type Datas = {
+  datas:GetStoreDashboard[],
+  status:number
+}
+export const AdminStore= () => {
+  const [dashboard,setDashboard] = useState<Datas>({datas:[],status:0})
+  useEffect(()=>{
+    usableFetch<GetStoreDashboard[],{}>({
+      setDatas:setDashboard,
+      service:storeDashboardService,
+      body:{},
+      
+    })
+  },[])
   return (
     <ContainerDashboard sidebarMenuItems={selectMenuItem("Dashboard")} storeName="SuperStore">
-        <Box>
-            <Controls>
-              <DashboardStats/>
-            </Controls>
-            <h3>Produtos mais vistos</h3>
-             <ProductsMovstViewd products={mockProductViews}/>
-        </Box>
-     
+      <Box>
+          <Controls>
+              <DashboardStats orders={{cancelled:500,completed:500,pending:500}} views={{total:500}}/>
+          </Controls>
+          {dashboard.datas[0]?.orders.lastPending.length > 0 && (
+            <>
+              <h3>Ordens pendentes</h3>
+              <LastPendingOrders products={productOrdersMock} />
+            </>
+          )}
+
+      </Box>
     </ContainerDashboard>
   )
 }
