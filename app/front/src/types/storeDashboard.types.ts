@@ -39,3 +39,28 @@ export type GetStoreOrders ={
 export type GetStoreCoupons = {
   nextPage?:number | string
 }
+
+export type ProductOrder = {
+  product:{
+    name:string,
+    price:number,
+    imageUrl:string
+  },
+  total:number,
+  quantity:number,
+  user:{
+    name:string
+  }
+}
+
+export type GetStoreDashboard = {
+  orders:{
+    completed:number,
+    pending:number,
+    cancelled:number,
+    lastPending:ProductOrder[]
+  },
+  views:{
+    total:number
+  }
+}
