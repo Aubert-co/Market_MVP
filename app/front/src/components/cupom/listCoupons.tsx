@@ -5,10 +5,9 @@ import type { Message } from "../boxMessages"
 import { AddCoupon } from "./AddCoupon";
 
 
-
 type Props = {
   datas:BaseCoupon<number>[],
- setMessage: React.Dispatch<SetStateAction<Message>>
+  setMessage: React.Dispatch<SetStateAction<Message>>
 }
 export const ListCoupons = ({ datas,setMessage }: Props) => {
   return (
@@ -24,9 +23,8 @@ export const ListCoupons = ({ datas,setMessage }: Props) => {
           <div className="coupon-details">
             <div><strong>Código:</strong> {val.code}</div>
             <div><strong>Quantidade:</strong> {val.quantity}</div>
-            <div>
-              <strong>Desconto:</strong> {val.discount}
-              {val.discountType === "percent" ? "%" : " R$"}
+            <div data-testid="discount">
+              <strong>Desconto:</strong> {val.discount}{val.discountType === "percent" ? "%" : " R$"}
             </div>
             <div>
               <strong>Expira em:</strong>{" "}

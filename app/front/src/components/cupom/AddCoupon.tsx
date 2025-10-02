@@ -11,7 +11,7 @@ export const AddCoupon = ({id,setMessage}:Props)=>{
         const { message,status } = await userAddCoupon(id)
         
         if(status === 201){
-            setMessage({content:'Sucesso ao adicionar',type:'success'})
+            setMessage({content:'Sucesso ao adicionar o cupom',type:'success'})
             return;
         }
         if(message === "This user already possesses the coupon."){
