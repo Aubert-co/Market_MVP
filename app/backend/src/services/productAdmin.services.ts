@@ -27,6 +27,11 @@ export class ProductAdminService  implements IProductAdminService{
         storeId, price, 
         stock ,fileBuffer,originalName ,mimeType }:CreateProduct
     ): Promise<void> {
+        
+        const countProducts = await this.product.countStoreProducts(storeId)
+        if (countProducts >= 10){
+            throw new ErrorMessage("Product creation limit reached: maximum 10 products allowed", 429);
+        }
         const imageUrl = generateImgPath(originalName)
         
         await this.product.createProduct({

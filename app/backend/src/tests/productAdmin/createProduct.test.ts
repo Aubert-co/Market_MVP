@@ -373,6 +373,25 @@ describe("db actions",()=>{
         expect(response.statusCode).toEqual(201)
         expect(googleStorage).toHaveBeenCalledTimes(1)
     })
+     it("should return an error message when the product limit is reached",async()=>{
+        const spyprisma = jest.spyOn(prisma.product,'count')
+        spyprisma.mockResolvedValueOnce(10)
+        const response = await request(app)
+        .post('/product/create')
+        .set('Cookie', [`token=${cookies}`])
+        .field('name', 'abcdee')
+        .field('description', 'a'.repeat(20))
+        .field('price',199.99)
+        .field('stock',10)
+        .field('category','Eletrônicos')
+        .field('storeId',stores[0].id)
+        .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
+        
+        expect(response.body.message).toEqual('Product creation limit reached: maximum 10 products allowed')
+        expect(response.statusCode).toEqual(429)
+        
+        
+    })
     it("should return an error when the db throwns an error",async()=>{
         googleStorage.mockResolvedValue("sucess")
         prismaProductCreate.mockRejectedValueOnce(()=>new Error('something went wrong'))
@@ -391,4 +410,7 @@ describe("db actions",()=>{
         expect(response.statusCode).toEqual(500)
         expect(googleStorage).toHaveBeenCalledTimes(0)
     })
+
 }) 
+
+

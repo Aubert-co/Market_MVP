@@ -6,6 +6,7 @@ export interface IProductAdminRepository{
         storeId:number,price:number,stock:number,imageUrl:string
     }):Promise<void>,
     deleteProduct(storeId:number,productId:number):Promise<void>,
+    countStoreProducts(storeId:number):Promise<number>
 }
 
 export class ProductAdminRepository  implements IProductAdminRepository{
@@ -19,7 +20,13 @@ export class ProductAdminRepository  implements IProductAdminRepository{
         }
         
     }
-   
+    public async countStoreProducts(storeId:number):Promise<number>{
+        const countProducts = await this.prisma.product.count({
+            where:{storeId}
+        })
+        if(!countProducts)return 0
+        return countProducts
+    }
     public async deleteProduct(storeId:number,productId:number):Promise<void>{
         await this.prisma.product.deleteMany({where:{id:productId,storeId}})
     }
