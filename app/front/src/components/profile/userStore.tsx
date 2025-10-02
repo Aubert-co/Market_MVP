@@ -19,12 +19,13 @@ type PropsListStore = {
     store:Store[],
 }
 export const ListStore =  ({store,formRef}:PropsListStore & PropsUserStore)=>{
-   
+    const navigate = useNavigate()
+    const sendToStore = ()=>navigate('/loja')
     return(
         <>
             {store.map(({photo,description,name,id})=>{
             return (
-                <div  className="list-item" key={id}>
+                <div  onClick={sendToStore} className="list-item" key={id}>
                     <div className="list-image">
                         <img src={loadImage(photo)} alt="" />
                     </div>
@@ -47,8 +48,8 @@ export const UserStore =({formRef}:PropsUserStore)=>{
     const [ stores,setStores] = useState<StoreState>({
         datas:[],status:0
     })
-    const navigate = useNavigate()
-    const redirect =()=> navigate(`/loja`)
+  
+   
     useEffect(()=>{
       usableFetch<Store[],{}>({setDatas:setStores,service:serviceGetStores,body:{}})
     },[])
@@ -57,7 +58,7 @@ export const UserStore =({formRef}:PropsUserStore)=>{
             <div className="text">
               <h1>Minha loja</h1>
             </div>
-            <div onClick={redirect} className="list-container">
+            <div  className="list-container">
             <RenderDataState<Store>
                 datas={stores.datas}
                 status={stores.status}
