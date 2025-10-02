@@ -5,11 +5,11 @@ import { Login } from "./login"
 import { Index } from "."
 import { ProductDetail } from "./productDetail"
 import { Profile } from "./profile"
-import { CreateStore } from "./storeAdmin/createStore"
-import { AdminStore } from "./storeAdmin/admStore"
-import { StoreProducts } from "./storeAdmin/storeProducts"
-import { StoreCoupons } from "./storeAdmin/storeCoupons"
-import { StoreOrders } from "./storeAdmin/storeOrders"
+import { CreateStore } from "./storeDashboard/createStore"
+import { StoreAdminDash } from "./storeDashboard/storeDashboard"
+import { StoreProducts } from "./storeDashboard/storeProducts"
+import { StoreCoupons } from "./storeDashboard/storeCoupons"
+import { StoreOrders } from "./storeDashboard/storeOrders"
 import { Coupon } from "./coupon"
 import { NotFound } from "./not_found"
 
@@ -24,7 +24,7 @@ export const App = ()=>{
                 <Route path="/perfil/:action" element={<Profile/>}/>
                 <Route path="/produto/:productid" element={<ProductDetail/>}/>
                 <Route path="/abrir-loja" element={<CreateStore/>}/>
-                <Route path="/loja" element={<AdminStore/>}/>
+                <Route path="/loja" element={<StoreAdminDash/>}/>
                 <Route path="/loja/produtos" element={<StoreProducts/>}/>
                 <Route path="/loja/cupons" element={<StoreCoupons/>}/>
                 <Route path="/loja/pedidos" element={<StoreOrders/>}/>
