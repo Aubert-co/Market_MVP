@@ -19,5 +19,4 @@ export const storeDashboardService = async():Promise<ResponseDatas<GetStoreDashb
     }
     return {message,datas,status:response.status}
 
-    
 }
