@@ -33,16 +33,21 @@ type Props = {
     cancelled:number
   },
   views:{
-    total:number
+    total:number 
   }
 }
 export const DashboardStats = ({orders,views}:Props) => {
+ 
+ const { completed = 0, cancelled = 0, pending = 0 } = orders || {};
+  const { total = 0 } = views || {};
+
   const dashboardStats = [
-  { value: orders.completed, label: "Pedidos completadas" },
-  { value: orders.cancelled, label: "Pedidos canceladas" },
-  { value: orders.pending ,label: "Pedidos Pendentes" },
-  {value:views.total,label:"Total de vizualiçações"}
-];
+    { value: completed, label: "Pedidos completados" },
+    { value: cancelled, label: "Pedidos cancelados" },
+    { value: pending, label: "Pedidos pendentes" },
+    { value: total, label: "Total de visualizações" }
+  ];
+
   return (
     <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
       {dashboardStats.map((stat, index) => (
