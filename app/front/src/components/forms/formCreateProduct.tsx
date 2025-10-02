@@ -39,21 +39,27 @@ export const FormCreateProduct = ()=>{
             return
         }
         if(!checkIsAValidCategory(category)){
-            setMessage({content:'Selecione uma cátegoria',type:'info'})
+            setMessage({content:'Selecione uma categoria',type:'info'})
             return
         }
+        
         const file = getValidImageFile(imageRef);
-               
+           
         if(!file){
             setMessage({content:'Adicione uma imagem válida',type:'info'})
             return
         }
-        const {message,status} = await serviceCreateProduct({name,description,price,stock,category,image:file})
+          
+        const {status} = await serviceCreateProduct({name,description,price,stock,category,image:file})
         
         if(status === 201){
             setMessage({content:'Produto criado com sucesso',type:'success'})
+            return;
         }   
-        setMessage({content:message,type:'info'})
+        if(status === 422){
+            return setMessage({content:"Campos inválidos!",type:"info"})
+        }
+        setMessage({content:"Algo deu errado ao criar produto!",type:"info"})
         
     }
     return(
@@ -75,6 +81,7 @@ export const FormCreateProduct = ()=>{
                         type="file" 
                         id="image" 
                         accept="image/*"
+                        data-testid="image-product"
                         />
                 </InputWithLabel>
 
@@ -106,7 +113,7 @@ export const FormCreateProduct = ()=>{
                 </InputWithLabel>
                 
                 <InputWithLabel textLabel="Selecione a categoria que mais representa o seu produto" inputName="category">
-                    <select ref={categoryRef} id="category" >
+                    <select data-testid="select-product" ref={categoryRef} id="category" >
                     <option value="">Selecione uma categoria</option>
                     {categories.map((category) => (
                         <option key={category} value={category}>
