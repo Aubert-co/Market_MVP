@@ -1,5 +1,6 @@
 import type { BaseCoupon } from "@/types/coupons.types";
 import type { UserCart } from "@/types/cart.types";
+import type { ProductOrder } from "@/types/storeDashboard.types";
 export const mockCoupons: BaseCoupon<number>[] = [
   {
     id:1,
@@ -103,4 +104,67 @@ export const userCartMocks: UserCart[] = [
    
   
   }
+];
+
+export const productOrdersMock:ProductOrder[] = [
+  {
+    product: {
+      name: "Camiseta Básica",
+      price: 59.9,
+      imageUrl: "https://example.com/camiseta.jpg",
+    },
+    total: 119.8,
+    quantity: 2,
+    user: {
+      name: 'true',
+    },
+  },
+  {
+    product: {
+      name: "Tênis Esportivo",
+      price: 249.9,
+      imageUrl: "https://example.com/tenis.jpg",
+    },
+    total: 249.9,
+    quantity: 1,
+    user: {
+      name: 'jose',
+    },
+  },
+  {
+    product: {
+      name: "Notebook Gamer",
+      price: 4999.99,
+      imageUrl: "https://example.com/notebook.jpg",
+    },
+    total: 4999.99,
+    quantity: 1,
+    user: {
+      name: 'maria',
+    },
+  },
+  {
+    product: {
+      name: "Fone de Ouvido Bluetooth",
+      price: 199.9,
+      imageUrl: "https://example.com/fone.jpg",
+    },
+    total: 399.8,
+    quantity: 2,
+    user: {
+      name: 'estevao',
+    },
+  },
+  {
+    product: {
+      name: "Smartwatch",
+      price: 899.9,
+      imageUrl: "https://example.com/smartwatch.jpg",
+    },
+    total: 899.9,
+    quantity: 1,
+    user: {
+      name: 'suellen',
+    },
+  },
 ];
