@@ -16,14 +16,12 @@ export const isAValidString =(value:any,maxLength:number = 15):boolean=>{
 export type RefValue = React.RefObject<HTMLInputElement | null>;
 
 export const getValidImageFile = (image: RefValue): File | null => {
-  if (!image.current) return null;
+  const fileInput = image.current?.files?.[0];
+  if (!fileInput) return null;
 
-  const files = image.current.files;
-  if (!files || files.length !== 1) return null;
-
-  const file = files[0];
-  return file.type.startsWith("image/") ? file : null;
+  return fileInput.type.startsWith("image/") ? fileInput : null;
 };
+
 
 export const checkIsAValidNumber = (value:any):boolean=>{
    if (typeof value === 'boolean') return false;
