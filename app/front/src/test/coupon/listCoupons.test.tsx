@@ -1,4 +1,4 @@
-import { ListCoupons } from "@/components/cupom/listCoupons"
+import { ListCoupons } from "@/components/coupon/listCoupons"
 import { fireEvent, render, waitFor } from "@testing-library/react"
 import { mockCoupons } from "../fixtures"
 import * as services from '../../services/coupons.services'

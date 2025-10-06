@@ -1,4 +1,4 @@
-import { AddCoupon } from "@/components/cupom/AddCoupon";
+import { AddCoupon } from "@/components/coupon/AddCoupon";
 import * as coupon from '../../services/coupons.services'
 import { fireEvent, render, waitFor } from "@testing-library/react";
 
