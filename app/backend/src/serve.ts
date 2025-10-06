@@ -5,9 +5,20 @@ import route from './routes/route'
 import cors from 'cors'
 import { connectRedis } from './lib/redis'
 import path from 'path'
-
+import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
 
+
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    status: 429,
+    message: "Too many requests from this IP, please try again later."
+  }
+});
 const app = express()
 
 const publicPath = path.join(__dirname,'..', "public");
@@ -33,7 +44,7 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.static(publicPath));
 
-
+app.use( globalLimiter )
 app.use( route )
 
 app.get('/*splat',(req,res)=>{
