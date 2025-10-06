@@ -7,6 +7,7 @@ import { useState,useEffect } from "react"
 import { serviceGetProducts, type GetProductsIndex } from "@/services/productsService"
 import { usableFetchWithPages } from "@/services/fetchs"
 import { useSyncCart } from "@/hooks/useSyncCart"
+import {PromoBox} from "@/components/promoBox"
 
 
 type ProductState ={
@@ -36,6 +37,7 @@ export const Index = ()=>{
     }, [pageInfos.currentPage,setPagesInfos]);
     return (
         <Container>
+            <PromoBox/>
             <BoxProducts datas={products.datas} status={products.status}/>
             <Pagination/>
         </Container>
