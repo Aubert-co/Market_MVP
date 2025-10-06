@@ -1,5 +1,5 @@
 import { useBoxMessage } from "@/components/boxMessages"
-import { ListCoupons } from "@/components/cupom/listCoupons"
+import { ListCoupons } from "@/components/coupon/listCoupons"
 import { Container } from "@/components/layouts/container"
 import { RenderDataState } from "@/components/renderDataState"
 import { availableCoupons } from "@/services/coupons.services"
