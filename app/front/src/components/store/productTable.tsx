@@ -10,6 +10,7 @@ const Theader = ()=>{
   return values.map((val,ind)=><th key={ind}>{val}</th>)
 }
 const Tbody = ({products}:Props)=>{
+  if(!products)return;
   return products.map((p) => (
             <tr key={p.id}>
               <td data-label="Produto">

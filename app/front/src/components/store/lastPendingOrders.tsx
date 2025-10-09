@@ -12,6 +12,7 @@ const Theader = () => {
 };
 
 const Tbody = ({ products }: Props) => {
+  if(!products)return;
   return products.map((p, ind) => (
     <tr key={ind}>
       <td data-label="Produto">

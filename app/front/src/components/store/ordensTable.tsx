@@ -14,6 +14,7 @@ export const Theader = ()=>{
 }
 
 export const TbodyOrders = ({orders}:Props)=>{
+    if(!orders)return;
     return orders.map((val)=>{
         const createdAt = getLocalDate(val.createdAt)
         const status = getOrderStatus(val.status)
