@@ -13,7 +13,7 @@ export const SearchBar = ({type}:Props)=>{
         e.preventDefault()
         let search = getInputValue(searchRef)
 
-        if( !search ){
+        if(search && search.length >=4){
             return;
         }
         if(type === "admSearch"){
