@@ -1,14 +1,16 @@
 import { getStorageStore } from "@/storage/store.storage"
+
 import type {  ResponseDatas } from "@/types/services.types"
 import type { GetStoreDashboard } from "@/types/storeDashboard.types"
 
 export const storeDashboardService = async():Promise<ResponseDatas<GetStoreDashboard[]>>=>{
-    const [store] = getStorageStore()
+    try{
+        const [store] = getStorageStore()
     const response = await fetch(`/store/dashboard/${store.id}`,{
         credentials:'include'
     })
     const {message,datas} = await response.json()
-    
+  
     if(!response.ok){
         return {message,
             datas:[{
@@ -18,5 +20,13 @@ export const storeDashboardService = async():Promise<ResponseDatas<GetStoreDashb
         status:response.status}
     }
     return {message,datas,status:response.status}
+    }catch(err:any){
+        return {message:'Algo deu errado!',
+            datas:[{
+            orders:{cancelled:0,completed:0,pending:0,lastPending:[]},
+            views:{total:0}
+        }] ,
+        status:500}
+    }
 
 }
