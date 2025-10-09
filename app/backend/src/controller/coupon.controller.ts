@@ -112,4 +112,15 @@ export class CouponController{
             next(err)
         }
     }
+    public async storeGetCoupons(req:Request,res:Response,next:NextFunction):Promise<any>{
+        try{
+            const storeId = Number(req.params.storeId)
+
+            const datas = await this.coupon.storeSelectCoupon(storeId,5,0)
+
+            res.status(200).send({message:'Sucess',datas})
+        }catch(err:any){
+            next(err)
+        }
+    }
 }
