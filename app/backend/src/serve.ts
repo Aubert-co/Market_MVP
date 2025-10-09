@@ -23,7 +23,10 @@ const app = express()
 
 const publicPath = path.join(__dirname,'..', "public");
 
-
+/**
+ * descomentar para produção , é para n bloquear o ip da cloudflare
+ * app.set('trust proxy',1)
+*/
 app.use(
   helmet({
     contentSecurityPolicy: {
