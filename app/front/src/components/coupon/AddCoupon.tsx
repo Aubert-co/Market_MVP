@@ -14,6 +14,10 @@ export const AddCoupon = ({id,setMessage}:Props)=>{
             setMessage({content:'Sucesso ao adicionar o cupom',type:'success'})
             return;
         }
+        if(status ===401){
+            setMessage({content:'Faça login para adicionar o cupom',type:'info'})
+            return;
+        }
         if(message === "This user already possesses the coupon."){
             setMessage({content:'Você já possui este cupom',type:'info'})
             return
