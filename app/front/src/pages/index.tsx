@@ -1,5 +1,5 @@
 import { usePagination } from "@/components/pagination"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { Container } from "@/components/layouts/container"
 import { BoxProducts } from "@/components/product/boxProducts"
 import type { Product } from "@/types/products.types"
@@ -17,8 +17,9 @@ type ProductState ={
 }
 export const Index = ()=>{
     const navigate = useNavigate()
+    const {page} = useParams() 
     const changePage = (page:number)=>{
-        navigate(`/products/pages?value=${page}`)
+        navigate(`/produtos/pagina/${page}`)
     }
     useSyncCart()
     const {setPagesInfos,pageInfos,Pagination} = usePagination(changePage)
@@ -34,7 +35,7 @@ export const Index = ()=>{
             service:serviceGetProducts,
             body:{nextPage:pageInfos.currentPage}
         })
-    }, [pageInfos.currentPage,setPagesInfos]);
+    }, [pageInfos.currentPage,setPagesInfos,page]);
     return (
         <Container>
             <PromoBox/>
