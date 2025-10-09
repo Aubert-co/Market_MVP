@@ -1,9 +1,9 @@
-import type { Response, ResponseWithPages } from "@/types/services.types";
+import type { Response, ResponseDatas, ResponseWithPages } from "@/types/services.types";
 import type { Product } from "@/types/products.types";
 
 import type { BaseCoupon } from "@/types/coupons.types";
 import { getStorageStore } from "@/storage/store.storage";
-import type { GetStoreCoupons, GetStoreOrders, GetStoreProducts, Order } from "@/types/storeDashboard.types";
+import type {  GetStoreOrders, GetStoreProducts, Order } from "@/types/storeDashboard.types";
 
 
 
@@ -96,32 +96,23 @@ export const createCouponService = async({code,expiresAt,
         }
 }
 
-export const getStoreCoupons = async ({nextPage}:GetStoreCoupons
-): Promise<ResponseWithPages<BaseCoupon<number>[]>> => {
-    const [store] = getStorageStore()
-    try{
-        const response = await fetch(`/store/coupons/${store.id}/${nextPage}`,{
-            method:'POST',
+type StoreCoupon = BaseCoupon<number>[]
+export const storeGetAvailableCoupons = async():Promise<ResponseDatas<StoreCoupon>>=>{
+   try{
+        const [store] =getStorageStore()
+        const response = await fetch(`/store/coupons/${store.id}`,{
             credentials:'include',
-            headers: {
-            'Content-Type': 'application/json'
-            }
+            method:'POST'
         })
-        
-        const values = await response.json()
-        
-        return {
-            datas:values.datas,
-            message:values.message,
-            status:response.status,
-            currentPage:values.currentPage,
-            totalPages:values.totalPages
+        const {datas,message} = await response.json()
+        if(!response.ok){
+            return {datas:[],status:response.status,message}
         }
-    }catch(err:any){
-        return {datas:[] as BaseCoupon<number>[] ,currentPage:1,totalPages:1,message:'Algo deu errado!',status:500}
-    }
+        return {datas,status:response.status,message}
+   }catch(err:any){
+        return {datas:[],status:500,message:'Algo deu errado!'}
+   }
 }
-
 
 export const getStoreOrders = async({status,nextPage}:GetStoreOrders)
 :Promise<ResponseWithPages<Order[]> >=>{
