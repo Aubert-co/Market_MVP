@@ -208,7 +208,7 @@ export const Table = styled.table`
     vertical-align: middle;
     max-width: 50px;
     max-height:50px;
-  
+    object-fit:cover;
   }
 
   /* Responsividade para mobile */

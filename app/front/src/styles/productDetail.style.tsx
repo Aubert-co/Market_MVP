@@ -33,7 +33,7 @@ export const ProductStyle = styled.div`
   .product-image img{
     height:100%;
     width:100%;
-  
+    object-fit: cover;
   }
   .actions ,.product-stocks{
     display:flex;
