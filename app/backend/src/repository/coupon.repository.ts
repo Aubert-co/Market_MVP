@@ -99,7 +99,12 @@ export class CouponRepository implements ICouponRepository{
     public async storeGetCoupons(storeId:number,limit:number=5,skip:number):Promise<Coupon[]>{
         try{
             return await this.prisma.coupon.findMany({
-                where:{storeId},
+                where:{
+                    storeId,
+                    expiresAt:{
+                        gt:now
+                    }
+                },
                 take:limit,
                 skip
             })
