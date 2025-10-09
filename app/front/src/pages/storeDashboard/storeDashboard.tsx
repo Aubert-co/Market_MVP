@@ -14,6 +14,13 @@ type Datas = {
   datas:GetStoreDashboard[],
   status:number
 }
+const getDatas = (datas:any)=>{
+
+  if(datas && datas.length>0){
+    return {datas:datas[0]}
+  }
+  return {datas:{}}
+}
 export const StoreAdminDash= () => {
   const [dashboard,setDashboard] = useState<Datas>({datas:[] as GetStoreDashboard[],status:0})
   useEffect(()=>{
@@ -24,12 +31,13 @@ export const StoreAdminDash= () => {
       
     })
   },[])
-  const { orders, views } = dashboard.datas[0] || {};
+  const {datas} = getDatas(dashboard.datas)
+  
   return (
     <ContainerDashboard sidebarMenuItems={selectMenuItem("Dashboard")} storeName="SuperStore">
       <Box>
           <Controls>
-            <DashboardStats orders={orders} views={views}/>
+            <DashboardStats orders={datas?.orders} views={datas?.views}/>
           </Controls>
     
          <RenderDataState<GetStoreDashboard>
@@ -39,7 +47,7 @@ export const StoreAdminDash= () => {
               errorMessage={"Algo deu errado ao carregar seu dashboard"}
               skeletonLoading={{classLoading:"",classImg:"",length:1}}
           >
-            <LastPendingOrders products={ orders?.lastPending} />
+            <LastPendingOrders products={ datas?.orders?.lastPending} />
          </RenderDataState>
       </Box>
     </ContainerDashboard>
