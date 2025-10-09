@@ -61,21 +61,6 @@ export const checkIsAValidCategory = (category:string)=>{
   return categories.some(cat => normalizeString(cat) === normalizedInput);
 }
 
-const matchingCategires = [
-  ["Beleza","Esporte","Roupas"],
-  ["Celulares","Informática","Eletrônicos","Automotivo"],
-  ["Jardim","Petshop","Cozinha","Mercearia"],
-  ["Brinquedos","Livros"]
-
-] 
-
-export const getMatchCategories = (category:string)=>{
-    const nrmlCategory = normalizeString(category)
-     const array = matchingCategires.filter((val: string[]) => {
-    return val.some((cat) => normalizeString(cat) === nrmlCategory);
-  });
-    return array
-}
 
 type Pagination = {
   totalItems:number,
