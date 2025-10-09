@@ -12,7 +12,7 @@ import { StoreCoupons } from "./storeDashboard/storeCoupons"
 import { StoreOrders } from "./storeDashboard/storeOrders"
 import { Coupon } from "./coupon"
 import { NotFound } from "./not_found"
-
+import { Search } from "./search"
 export const App = ()=>{
     return(
     <Router>
@@ -21,6 +21,7 @@ export const App = ()=>{
                 <Route path="/registro" element={<Register/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/" element={<Index/>}/>
+                <Route path="/produtos/pagina/:page" element={<Index/>}/>
                 <Route path="/perfil/:action" element={<Profile/>}/>
                 <Route path="/produto/:productid" element={<ProductDetail/>}/>
                 <Route path="/abrir-loja" element={<CreateStore/>}/>
@@ -30,6 +31,7 @@ export const App = ()=>{
                 <Route path="/loja/pedidos" element={<StoreOrders/>}/>
                 <Route path="/cupons" element={<Coupon/>} />
                 <Route path="*" element={<NotFound/>}/>
+                <Route path="/buscas/:product" element={<Search/>}/>
             </Route>
         </Routes>
     </Router>
