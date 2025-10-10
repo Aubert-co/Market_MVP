@@ -168,7 +168,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         }
         });
     })
-    it("should call the service when the name is invalid and return an error if the database throws",async()=>{
+    it("should call the service when the name is valid and return an error if the database throws",async()=>{
        
         mock.mockRejectedValue(new Error(""))
         const name = 'lorem ipstu'
@@ -221,7 +221,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
             }
             });
     })
-    it("should call the service when the name is invalid and return an error if the database throws",async()=>{
+    it("should call the service when the maxPrice is invalid and return an error if the database throws",async()=>{
        
         mock.mockRejectedValue(new Error(""))
         const maxPrice = 35.99
