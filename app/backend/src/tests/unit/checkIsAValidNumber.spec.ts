@@ -1,6 +1,6 @@
 import { checkIsAValidNumber } from "../../helpers"
 
-describe("",()=>{
+describe("describe function checkIsAValidNumber",()=>{
     it("check is a valid number",()=>{
         expect(checkIsAValidNumber('')).toBeFalsy()
         expect(checkIsAValidNumber(1)).toBeTruthy()
