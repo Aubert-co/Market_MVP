@@ -1,0 +1,129 @@
+Funcionalidade: Filtrar produtos por: categoria,name,maxPrice,minPrice
+  Como um usuário do sistema
+  Quero buscar produtos filtrando por categoria
+  Para visualizar apenas os produtos relevantes ao meu interesse
+
+  Cenário: Buscar produtos pela categoria "Eletrônicos"
+    Dado que existem produtos cadastrados nas categorias "Eletrônicos" , "Moda" , "Acessorios,"Informatica"
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter" com body {category:'test'}
+    Então a API deve retornar apenas os produtos da categoria "Eletrônicos"
+    E o status da resposta deve ser 200
+  
+
+  Cenário: Buscar produtos pelo nome
+    Dado que existem produtos cadastrados nas categorias "Eletrônicos" , "Moda" , "Acessorios,"Informatica"
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter" com name igual a 4 letras 
+    Então a API deve retornar um error "Invalid name format"
+    E o status da resposta deve ser 400
+
+  Cenário: Buscar produtos pelo nome
+    Dado que existem produtos cadastrados nas categorias "Eletrônicos" , "Moda" , "Acessorios,"Informatica"
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter" com body {name:} com 16 letras 
+    Então a API deve retornar um error "Invalid name format"
+    E o status da resposta deve ser 400
+
+  Cenário: Buscar produtos pelo maxPrice
+    Dado que existem produtos cadastrados com preço válido
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter" com body {maxPrice:'a15'}
+    Então a API deve retornar um error "Invalid maximum price value"
+    E o status da resposta deve ser 400
+
+  Cenário: Buscar produtos pelo minPrice
+    Dado que existem produtos cadastrados com preço válido
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter" com body {minPrice:'a15'}
+    Então a API deve retornar um error "Invalid minimum price value"
+    E o status da resposta deve ser 400
+  
+  Cenário: Buscar produtos com todos os campos inválidos
+    Dado que existem produtos cadastrados 
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter" com body {category:'tt',minPrice:'a15',name:'e',maxPrice:'ab3'}
+    Então a API deve retornar um error "Invalid category provided"
+    E o status da resposta deve ser 400
+
+
+  Cenário: Buscar produtos por categoria válida
+    Dado que existem produtos cadastrados
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter"
+      com o body :{"category": "Eletrônicos"}
+    Então a API deve retornar status 200
+    E a resposta deve conter: {datas:[...]}
+  
+
+  Cenário: Buscar produtos por categoria válida com erro no banco
+    Dado que existem produtos cadastrados
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter"
+    com o body :{"category": "Eletrônicos"}
+    Então a API deve retornar status 404
+    E a resposta deve conter: {message:"No products found", datas:undefined}
+
+  Cenário: Buscar produtos por nome válido
+    Dado que existem produtos cadastrados
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter"
+    com o body :{"name": "lorem ipstu"}
+    Então a API deve retornar status 200
+    E a resposta deve conter: {datas:[...]}
+
+  Cenário: Buscar produtos por nome válido com erro no banco
+    Dado que existem produtos cadastrados
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter"
+    com o body :{"name": "lorem ipstu"}
+    Então a API deve retornar status 404
+    E a resposta deve conter: {message:"No products found", datas:undefined}
+
+  Cenário: Buscar produtos por preço máximo válido
+    Dado que existem produtos cadastrados
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter"
+    com o body :{"maxPrice": 35.99}
+    Então a API deve retornar status 200
+    E a resposta deve conter: {datas:[...]}
+
+  Cenário: Buscar produtos por preço máximo inválido com erro no banco
+    Dado que existem produtos cadastrados
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter"
+    com o body :{"maxPrice": 35.99}
+    Então a API deve retornar status 404
+    E a resposta deve conter: {message:"No products found", datas:undefined}
+
+  Cenário: Buscar produtos por preço mínimo válido
+    Dado que existem produtos cadastrados
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter"
+    com o body :{"minPrice": 35.99}
+    Então a API deve retornar status 200
+    E a resposta deve conter: {datas:[...]}
+
+  Cenário: Buscar produtos por preço mínimo inválido com erro no banco
+    Dado que existem produtos cadastrados
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter"
+    com o body :{"minPrice": 35.99}
+    Então a API deve retornar status 404
+    E a resposta deve conter: {message:"No products found", datas:undefined}
+
+  Cenário: Buscar produtos com todos os campos inválidos e erro no banco
+    Dado que existem produtos cadastrados
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter"
+    com o body :{"minPrice": 35.99, "name": "valid name", "category": "Roupas", "maxPrice": 499.99}
+    Então a API deve retornar status 404
+    E a resposta deve conter: {message:"No products found", datas:undefined}
+
+  Cenário: Buscar produtos com todos os campos válidos
+    Dado que existem produtos cadastrados
+    E a API de filtrar produtos está disponível
+    Quando o usuário envia uma requisição POST para "/product/filter"
+    com o body :{"minPrice": 35.99, "name": "valid name", "category": "Roupas", "maxPrice": 499.99}
+    Então a API deve retornar status 200
+    E a resposta deve conter: {datas:[...]}
