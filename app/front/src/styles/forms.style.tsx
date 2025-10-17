@@ -16,7 +16,6 @@ export const StyleBtn = styled.button<BtnProps>`
   background: ${({ $bg }) => $bg || '#007BFF'};
   color: ${({ $color }) => $color || 'white'};
   transition: background 0.3s;
-
   &:hover {
     background: ${({ $hoverBg }) => $hoverBg || '#0056b3'};
   }
@@ -24,7 +23,7 @@ export const StyleBtn = styled.button<BtnProps>`
 export const SmallButton = styled.button`
    display: inline-block;
   padding: 0.4rem 1rem;
-  font-size: 0.875rem; /* 14px */
+  font-size: 0.875rem; 
   font-weight: 500;
   color: #ffffff;
   background-color: #0070f3;
