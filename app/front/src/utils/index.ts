@@ -1,3 +1,4 @@
+import type { UserTotally } from "@/types/checkout.types";
 import type { OrderStatus } from "@/types/storeDashboard.types";
 
 export type RefValue = React.RefObject<HTMLInputElement | null | HTMLTextAreaElement | HTMLSelectElement>;
@@ -27,3 +28,15 @@ export const getOrderStatus = (order:OrderStatus):string=>{
     return "pendente"
 }
 export const loadImage = (imageName:string)=>`/images/${imageName}`
+
+export const getUserTotally = ({items,discount,discountType}:UserTotally)=>{
+  if(!items || items.length ===0)return 0 
+  const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0)
+  if(!discount || !discountType){
+    return total;
+  }
+  if(discountType === "fixed"){
+    return total - discount
+  }
+  return total * (1 - discount / 100);
+}
