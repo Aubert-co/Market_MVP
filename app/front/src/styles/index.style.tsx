@@ -276,7 +276,7 @@ export const ToastMessage = styled.div`
     z-index: 9999;
     animation: slideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1),
                fadeOut 0.4s ease-in forwards;
-    animation-delay: 0s, 2.6s; /* entra rápido, sai depois de ~3s */
+    animation-delay: 0s, 2.6s; 
   }
 
   .message_success {
