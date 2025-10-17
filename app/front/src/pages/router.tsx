@@ -13,6 +13,7 @@ import { StoreOrders } from "./storeDashboard/storeOrders"
 import { Coupon } from "./coupon"
 import { NotFound } from "./not_found"
 import { Search } from "./search"
+import { Checkout } from "./checkout"
 export const App = ()=>{
     return(
     <Router>
@@ -32,6 +33,7 @@ export const App = ()=>{
                 <Route path="/cupons" element={<Coupon/>} />
                 <Route path="*" element={<NotFound/>}/>
                 <Route path="/buscas/:product" element={<Search/>}/>
+                <Route path="/pagamento" element={<Checkout/>}/>
             </Route>
         </Routes>
     </Router>
