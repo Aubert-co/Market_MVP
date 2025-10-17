@@ -5,6 +5,8 @@ import { Collapse } from "../collapse";
 import { StyleBtn } from "@/styles/forms.style";
 import type { Message } from "../boxMessages";
 import { addToCart } from "@/services/cart.services";
+import { setItemsCheckout } from "@/storage/checkout.storage";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
     product:Product[],
@@ -19,6 +21,7 @@ type Props = {
  setMessage: React.Dispatch<React.SetStateAction<Message>>
 }
 export const ListProductDetail = ({product,ratings,setMessage}:Props)=>{
+    const navigate = useNavigate()
     const addCart  = async()=>{
         const {status} = await addToCart(product[0].id)
         if(status === 401){
@@ -30,6 +33,14 @@ export const ListProductDetail = ({product,ratings,setMessage}:Props)=>{
             return;
         }
         setMessage({content:'Adicionado ao carrinho com sucesso',type:'success'})
+    }
+    const redirectCheckout = ()=>{
+        const [items] = product.map((val)=>{
+            return {...val,quantity:1}
+        })
+    
+        setItemsCheckout( [items] )
+        navigate('/pagamento')
     }
     return product.map((val)=>{
         return (
@@ -52,7 +63,7 @@ export const ListProductDetail = ({product,ratings,setMessage}:Props)=>{
                     </div>
                     <div className="actions">
                         <StyleBtn onClick={addCart}>Adicionar ao carrinho</StyleBtn>
-                        <StyleBtn>Comprar</StyleBtn>
+                        <StyleBtn onClick={redirectCheckout} >Comprar</StyleBtn>
                     </div>
                 </div>
             </div>
