@@ -1,6 +1,5 @@
-import type { Product } from "@/types/products.types";
 
-export  const mockProducts:Product[] = [
+export  const mockProducts = [
   {
     id: 1,
     name: "Wireless Noise-Canceling Headphones",
