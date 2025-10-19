@@ -31,11 +31,11 @@ export class ProductAdminController{
                 return res.status(422).send({message:"Invalid or missing image file."}) 
             }
         
-        if(!isAValidString(name)){
+        if(!isAValidString(name,50)){
             return res.status(422).send({message:"Invalid name. Please check and try again."})
             
         }
-        if(!isAValidString(description , 200)){
+        if(!isAValidString(description , 1000)){
             return res.status(422).send({message:"Invalid description. Please check and try again."})
         }
         if (!checkIsAValidNumber(stock)) {

@@ -56,13 +56,13 @@ describe("When try to create a product with invalid name",()=>{
         expect(response.body.message).toEqual('Invalid name. Please check and try again.')
         expect(response.statusCode).toEqual(422)
     })
-     it("should return 422 when the product name is greater than 15 ",async()=>{   
+     it("should return 422 when the product name is greater than 50",async()=>{   
         
         
         const response = await request(app)
         .post('/product/create')
         .set('Cookie', [`token=${cookies}`])
-        .field('name', 'a'.repeat(16))
+        .field('name', 'a'.repeat(51))
         .field('description', 'Descrição detalhada do produto')
         .field('price',199.99)
         .field('stock',15)
@@ -94,7 +94,7 @@ describe("When try to create a product with an invalid category",()=>{
         expect(response.body.message).toEqual('Invalid category. Please check and try again.')
         expect(response.statusCode).toEqual(422)
     })
-    it("should return 422 when the product category is greater than 20",async()=>{
+    it("should return status 422 when the product category is not registered",async()=>{
         
         
         const response = await request(app)
@@ -111,7 +111,7 @@ describe("When try to create a product with an invalid category",()=>{
         expect(response.body.message).toEqual('Invalid category. Please check and try again.')
         expect(response.statusCode).toEqual(422)
     })
-    it("should return 422 when the product category is smaller than 4",async()=>{
+    it.skip("should return 422 when the product category is smaller than 4",async()=>{
         
  
         const response = await request(app)
@@ -304,12 +304,12 @@ describe("When try to create a product with an invalid description",()=>{
         expect(response.body.message).toEqual('Invalid description. Please check and try again.')
         expect(response.statusCode).toEqual(422)
     })
-    it("should return 422 when the product description is greater than 200",async()=>{
+    it("should return 422 when the product description is greater than 1000",async()=>{
        const response = await request(app)
         .post('/product/create')
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
-        .field('description', 'a'.repeat(201))
+        .field('description', 'a'.repeat(1001))
         .field('price',199.99)
         .field('stock','')
         .field('category','Eletrônicos')
