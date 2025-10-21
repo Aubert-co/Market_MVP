@@ -38,4 +38,14 @@ export class OrdersController{
             next(err)
         }
     }
+    public async getUserOrders(req:Request,res:Response,next:NextFunction):Promise<any>{
+        const userId  =req.user
+        try{
+            const datas = await this.order.getUserOrder( userId )
+
+            res.status(200).send({message:'Sucess',datas})
+        }catch(err:any){
+            next(err)
+        }
+    }
 }
