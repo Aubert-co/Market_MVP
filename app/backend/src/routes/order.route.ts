@@ -18,5 +18,8 @@ route.post('/order/create',
     [Auth],
     (req:Request,res:Response,next:NextFunction)=>orderController.userCreateOrder(req,res,next)
 )
-
+route.get('/orders/me',
+    [Auth],
+    (req:Request,res:Response,next:NextFunction)=>orderController.getUserOrders(req,res,next)
+)
 export default route
