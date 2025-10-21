@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma"
+import { Order } from "../../types/order.types"
 import { orders } from "../__fixtures__/orders"
 import { products } from "../__fixtures__/products"
 import { views } from "../__fixtures__/views"
@@ -73,6 +74,11 @@ export const createOrder = async({productId,price,id,userId,total,quantity,statu
         data:{
             productId,price,userId,total,quantity,id,status
         }
+    })
+}
+export const createManyOrders = async(order:Order[]):Promise<void>=>{
+    await prisma.order.createMany({
+        data:order
     })
 }
 export const cleanCoupons = async():Promise<void>=>{
