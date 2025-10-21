@@ -9,6 +9,23 @@ export const StatusOrder = {
 
 export type StatusOrder = typeof StatusOrder[keyof typeof StatusOrder];
 
+export type GetOrder = Prisma.OrderGetPayload<{
+  select: {
+    id: true
+    coupon: {
+      select: {
+        discount: true
+        discountType: true
+      }
+    }
+    product: {
+      select: {
+        name: true
+        imageUrl: true
+      }
+    }
+  }
+}>
 
 export type CreateOrderDto = {
     productId:number,
