@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Order , StatusOrder,DatasCreateOrderDto} from "../types/order.types";
+import { Order , StatusOrder,DatasCreateOrderDto, GetOrder} from "../types/order.types";
 import { ErrorMessage } from "../helpers/ErrorMessage";
 import { applyDiscount } from "../helpers/applyDiscount";
 import { CouponRepository } from "./coupon.repository";
@@ -7,7 +7,7 @@ import { DiscountType, GetCouponDto } from "../types/coupon.types";
 
 export interface IOrderRepository {
     createOrder({userId,items}:DatasCreateOrderDto):Promise<void>,
-    getOrder(userId:number):Promise<Order[]>,
+    getOrder(userId:number):Promise<GetOrder[]>,
     getOrderItems(orderId:number):Promise<Order[]>,
     storeGetOrderItems(storeId:number):Promise<Order[]>,
     getOrderItemByIdAndUserId(userId:number,orderItemId:number,status:StatusOrder):Promise<Order | null>
@@ -28,9 +28,29 @@ export class OrderRepository implements IOrderRepository{
             discount:coupon.discount,discountType:coupon.discountType as DiscountType
         }
     }
-    public async getOrder(userId:number):Promise<Order[]>{
+    public async getOrder(userId:number):Promise<GetOrder[]>{
         return await this.prisma.order.findMany({
             where:{userId},
+            select:{
+                id:true,
+                total:true,
+                quantity:true,
+                status:true,
+                price:true,
+                createdAt:true,
+                coupon:{
+                    select:{
+                        discount:true,
+                        discountType:true
+                    }
+                },
+                product:{
+                    select:{
+                        name:true,
+                        imageUrl:true
+                    }
+                }
+            },
             take:5
         })
     }
