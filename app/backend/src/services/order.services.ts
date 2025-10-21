@@ -1,5 +1,6 @@
+import { ErrorMessage } from "../helpers/ErrorMessage";
 import { IOrderRepository } from "../repository/order.repository";
-import { DatasCreateOrderDto } from "../types/order.types";
+import { DatasCreateOrderDto, GetOrder } from "../types/order.types";
 
 
 interface IOrderServices  {
@@ -13,6 +14,13 @@ export class OrderService implements IOrderServices{
         await this.order.createOrder({userId,items})       
     }
   
-    
+    public async getUserOrder(userId:number):Promise<GetOrder[]>{
+        try{
+            const datas = await this.order.getOrder( userId )
+            return datas
+        }catch(err:any){
+            throw new ErrorMessage("Database error while fetching user orders.", 500)
+        }
+    }
    
 }
