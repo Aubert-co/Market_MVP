@@ -28,7 +28,8 @@ export interface ICouponRepository {
     decreaseCouponQuantity(couponId:number,value:number):Promise<void>,
     doesUserHaveCoupon(userId:number,couponId:number):Promise<boolean>,
     checkCouponByCode(code:string):Promise<boolean>,
-    userAddCouponUsage({userId,couponId,quantity}:UserAddCoupon):Promise<void>
+    userAddCouponUsage({userId,couponId,quantity}:UserAddCoupon):Promise<void>,
+    isUserUsedCoupon(userId:number,couponId:number):Promise<boolean>
 }
 type UserAddCoupon = {
     userId:number,
@@ -38,6 +39,17 @@ type UserAddCoupon = {
 export class CouponRepository implements ICouponRepository{
     constructor(protected prisma:PrismaClient){}
 
+    public async isUserUsedCoupon(userId:number,couponId:number):Promise<boolean>{
+        try{
+            const hasCoupon = await this.prisma.couponUsage.findFirst({
+                where:{userId,couponId,usedAt:null}
+            })
+            if(hasCoupon)return true
+            return false;
+        }catch(err:any){
+            throw new ErrorMessage("Failed to get user coupon usage",500)
+        }
+    }
     public async storeCreateCoupon({
         storeId,quantity,expiresAt,code,discount,discountType
     }:StoreCreateCoupon):Promise<void>{

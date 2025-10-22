@@ -16,13 +16,15 @@ export const userCoupons = async():Promise<ResponseDatas<BaseCoupon<number>[]>>=
         'Content-Type': 'application/json'
         }
       })
-      
+      if(!response.ok){
+        return {status:response.status,message:'',datas:[]}
+      }
       const {datas} = await response.json()
       
       return {datas,message:'Success',status:response.status}
         
     }catch(err:unknown){
-        return {status:500,message:'Algo deu errado',datas:[] as BaseCoupon<number>[]}
+      return {status:500,message:'Algo deu errado',datas:[] as BaseCoupon<number>[]}
     }
 }
 
@@ -35,11 +37,14 @@ export const userOrders = async():Promise<ResponseDatas<UserOrders[]>>=>{
         'Content-Type': 'application/json'
       }
     })
+    if(!response.ok){
+      return {status:response.status,message:'',datas:[]}
+    }
     const {datas} = await response.json()
     
     return {datas,message:'Success',status:200}
     
   }catch(err:unknown){
-      return {status:500,message:'Algo deu errado',datas:[]}
+    return {status:500,message:'Algo deu errado',datas:[]}
   }
 }
