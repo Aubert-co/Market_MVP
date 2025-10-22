@@ -103,6 +103,14 @@ export const ListContainer = styled.div`
   font-size: 14px;
   color: #333;
 }
+.list-info .name{
+   
+  white-space: wrap;       
+  overflow: hidden;          
+  text-overflow: ellipsis;   
+  max-width: 150px;      
+
+}
   
 `
 type ListItemsProps = {
