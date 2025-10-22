@@ -7,6 +7,7 @@ import type { Message } from "../boxMessages"
 import { useRemoveFromCart } from "./useRemoveFromCart"
 import { setItemsCheckout } from "@/storage/checkout.storage"
 import type { ItemsCheckout } from "@/types/checkout.types"
+import { useNavigate } from "react-router-dom"
 
 const ListInfo = styled.div`
     display:flex;
@@ -27,6 +28,7 @@ export const CartOverview  =({updateCart,setUpdateCart,setMessage}:Props)=>{
     setMessage,
     setUpdateCart
   })
+  const navigate = useNavigate()
   useEffect(()=>{
     const values = getItemsFromCart()
     .cart.reduce((val,tr)=>{
@@ -48,6 +50,7 @@ export const CartOverview  =({updateCart,setUpdateCart,setMessage}:Props)=>{
       
     }) as ItemsCheckout[]
     setItemsCheckout( items  )
+    navigate('/pagamento')
   }
   return(
     <div className="list-item">
