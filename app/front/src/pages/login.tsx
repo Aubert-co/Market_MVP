@@ -25,15 +25,13 @@ export const Login = ()=>{
             setTimeout(()=>{
                 navigate('/');
             },3000)
+            return;
         }
-        if(status >= 500){
-            return   submitUserDatas.setMessageParams({content:'Erro interno, tente novamente',type:'error'})
-      
-        }
-        if(status === 401){
+        
+        if(status>=400 && status <=410){
             return submitUserDatas.setMessageParams({content:'Usuário ou senha inválidos',type:'info'})
         }
-      
+        submitUserDatas.setMessageParams({content:'Erro interno, tente novamente',type:'error'})
         
     }
     return <FormLoginOrRegister type={"Login"} submitEvent={submitForm} formRef={formRef}></FormLoginOrRegister>
