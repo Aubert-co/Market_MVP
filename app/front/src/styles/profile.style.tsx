@@ -84,6 +84,9 @@ export const ListContainer = styled.div`
 .list-image img {
   width: 100%;
   height: 100%;
+  object-fit: cover; 
+  object-position: center; 
+
 }
 
 .list-info {
