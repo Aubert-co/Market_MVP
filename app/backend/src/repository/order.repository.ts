@@ -16,14 +16,17 @@ export interface IOrderRepository {
 export class OrderRepository implements IOrderRepository{
     constructor(protected prisma:PrismaClient,protected coupon:CouponRepository){}
 
-    protected async getCouponById(couponId:number | undefined):Promise<GetCouponDto>{
+    protected async getCouponById(couponId:number | undefined ,userId:number):Promise<GetCouponDto>{
         if(!couponId)return {discount:undefined,discountType:undefined}
 
         const coupon = await this.coupon.getCouponById(couponId)
         if (!coupon) {
             throw new ErrorMessage("Coupon not found or is invalid.", 404);
         }
-
+        const checkCouponUsage = await this.coupon.isUserUsedCoupon( userId,couponId )
+        if(!checkCouponUsage){
+            throw new ErrorMessage("Coupon has already been used", 409);
+        }
         return {
             discount:coupon.discount,discountType:coupon.discountType as DiscountType
         }
@@ -94,7 +97,7 @@ export class OrderRepository implements IOrderRepository{
                         throw new ErrorMessage("Insufficient product stock for the requested quantity.", 400);
                     }
 
-                    const {discount,discountType} = await this.getCouponById(val.couponId)
+                    const {discount,discountType} = await this.getCouponById(val.couponId ,userId)
 
                     const total = applyDiscount({
                         total: product.price * val.quantity,
@@ -117,7 +120,19 @@ export class OrderRepository implements IOrderRepository{
                         where:{id:val.productId},
                         data:{stock: product.stock -  val.quantity}
                     });
-                    
+                    if(val.couponId){
+                        await tx.couponUsage.update({
+                           where: {
+                                userId_couponId:{
+                                    userId,
+                                    couponId:val.couponId
+                                },
+                            },
+                            data:{
+                                usedAt:new Date()
+                            }
+                        })
+                    }
                 }
             });
 
