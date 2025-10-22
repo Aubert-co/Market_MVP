@@ -2,6 +2,7 @@ import type { ItemsCheckout } from "@/types/checkout.types"
 import { CheckoutActions } from "./checkoutActions"
 import type { SetStateAction } from "react";
 import { CheckoutItem } from "@/styles/checkout.style";
+import { loadImage } from "@/utils";
 
 
 type PropsList = {
@@ -9,11 +10,10 @@ type PropsList = {
   setUpdate:React.Dispatch<SetStateAction<boolean>>
 }
 export const ListCheckoutItems = ({datas,setUpdate}:PropsList)=>{
-    if(!datas ||datas.length === 0)return <h1>Adicione produtos</h1>
     return datas.map((item) => (
            <CheckoutItem key={item.id} >
                 <div className="item-content">
-                    <img src={item.imageUrl} alt={item.name} className="item-image" />
+                    <img src={loadImage(item.imageUrl)} alt={item.name} className="item-image" />
 
                     <div className="item-details">
                       <p className="item-name">{item.name}</p>
