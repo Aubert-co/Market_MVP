@@ -11,13 +11,14 @@ import { products } from "../__fixtures__/products"
 import {applyDiscount} from '../../helpers/applyDiscount'
 import {Order} from '../../types/order.types'
 import { roundTottaly } from "../../helpers"
+
 const {validCoupons,expiredCoupons} = couponsDatas(oneStore.id)
 
 const [user1,user2] = users
 const userId = user2.id
 const cookies = generateAccessToken(userId)
 
-describe("Api POST:/order/create",()=>{
+describe("Api POST:/order/create errors",()=>{
     
     beforeAll(async()=>{
         const coupons = [...validCoupons,...expiredCoupons]
@@ -137,6 +138,8 @@ describe("Api POST:/order/create",()=>{
 })
 
 describe("Api POST:/order/create",()=>{
+
+
     beforeEach(async()=>{
         const selectedCoupons = validCoupons
         const coupons = [selectedCoupons[0],selectedCoupons[1],selectedCoupons[2] ,...expiredCoupons]
@@ -146,9 +149,10 @@ describe("Api POST:/order/create",()=>{
         await createUserStoreAndProducts()
         await createCoupons(coupons)
         const couponUsage =coupons.map((val)=>{
-            return {couponId:val.id,userId}
+            return {couponId:val.id,userId,usedAt:null}
         })
         await addCouponUsage( couponUsage )
+      
     })
     afterAll(async()=>{
         await cleanCoupons()
@@ -179,7 +183,19 @@ describe("Api POST:/order/create",()=>{
             where:{
             userId
         }})
+        const couponUsage = await prisma.couponUsage.findMany({
+            where: {
+                userId,
+                couponId: { in: [coupon1.id, coupon2.id, coupon3.id] },
+            },
+        });
 
+        expect(couponUsage).toHaveLength(3)
+
+        couponUsage.map((val)=>{
+            expect( val.usedAt ).not.toBeNull()
+        })
+    
         expect(order).toHaveLength(5)
         order.map((val:Order,index:number)=>{
             const orderItem = orders[index]
@@ -193,7 +209,8 @@ describe("Api POST:/order/create",()=>{
         })
         
     })
-     it("should return an error when um dos produtos for inexistente",async()=>{
+     
+     it("should return an error when one of the products does not exist",async()=>{
         const [product1,product2,product3,product4,product5] = products
         const [coupon1,coupon2,coupon3]=validCoupons
 
@@ -219,7 +236,7 @@ describe("Api POST:/order/create",()=>{
 
         expect(order).toHaveLength(0)
     })
-    it("should return an error when um dos coupons é invalido ",async()=>{
+    it("should return an error when one of the coupons is invalid",async()=>{
         const [product1,product2,product3,product4,product5] = products
         const [coupon1,coupon2,coupon3]=validCoupons
 
@@ -245,7 +262,7 @@ describe("Api POST:/order/create",()=>{
 
         expect(order).toHaveLength(0)
     })
-    it("should return an error when um dos coupons é expirado",async()=>{
+    it("should return an error when one of the coupons is expired",async()=>{
         const [product1,product2,product3,product4,product5] = products
         const [coupon1,coupon2,coupon3]=validCoupons
 
@@ -289,6 +306,57 @@ describe("Api POST:/order/create",()=>{
 
         expect(response.body.message).toEqual("Insufficient product stock for the requested quantity.")
         expect(response.statusCode).toEqual(400)
+
+        const order = await prisma.order.findMany({
+            where:{
+            userId
+        }})
+
+        expect(order).toHaveLength(0)
+    })
+})
+
+describe("Api POST:/order/create",()=>{
+
+
+    beforeEach(async()=>{
+        const selectedCoupons = validCoupons
+        const coupons = [selectedCoupons[0],selectedCoupons[1],selectedCoupons[2] ,...expiredCoupons]
+        await cleanCoupons()
+        await cleanOrders()
+        await cleanAllDb()
+        await createUserStoreAndProducts()
+        await createCoupons(coupons)
+        const couponUsage =coupons.map((val)=>{
+            return {couponId:val.id,userId,usedAt:new Date()}
+        })
+        await addCouponUsage( couponUsage )
+      
+    })
+    afterAll(async()=>{
+        await cleanCoupons()
+        await cleanOrders()
+        await cleanAllDb()
+        
+    })
+    it("should return an error if the user has already used the coupon",async()=>{
+        const [product1,product2,product3,product4,product5] = products
+        const [coupon1,coupon2,coupon3]=validCoupons
+
+        const orders = [
+            {productId:product1.id,quantity:2,couponId:coupon1.id,price:product1.price,discount:coupon1.discount,discountType:coupon1.discountType},
+            {productId:product2.id,quantity:3,couponId:coupon2.id ,price:product2.price,discount:coupon2.discount,discountType:coupon2.discountType},
+            {productId:product3.id,quantity:2,couponId:null,price:product3.price},
+            {productId:product4.id,quantity:3,couponId:null,price:product4.price},
+            {productId:product5.id,quantity:1,couponId:coupon3.id,price:product5.price,discount:coupon3.discount,discountType:coupon3.discountType}
+        ]
+        const response = await request(app)
+        .post('/order/create')
+        .set('Cookie', [`token=${cookies}`])
+        .send({order:orders})
+
+        expect(response.body.message).toEqual("Coupon has already been used")
+        expect(response.statusCode).toEqual(409)
 
         const order = await prisma.order.findMany({
             where:{
