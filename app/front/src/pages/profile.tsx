@@ -9,7 +9,7 @@ import { UserStore } from "@/components/profile/userStore";
 import { useEffect, useRef } from "react";
 import { Container } from "@/components/layouts/container"
 import { ProfileStyle } from "@/styles/profile.style";
-import { UserOrders } from "@/components/profile/userOrders";
+import { UserOrdersComponent } from "@/components/profile/userOrders";
 import { useBoxMessage } from "@/components/boxMessages";
 import { useSyncCart } from "@/hooks/useSyncCart";
 
@@ -71,7 +71,7 @@ export const Profile = () => {
           </div>
   
         </ProfileStyle>
-      {action === "ordens" && <UserOrders />}
+      {action === "ordens" && <UserOrdersComponent />}
       {action ==="carrinho" && <Cart setMessage={setMessage} formRef={goToForm}/>}
       {action === "cupons" && <UserCoupons formRef={goToForm} />}
       {action === "loja"  && <UserStore formRef={goToForm}/>}
