@@ -28,7 +28,7 @@ export const ListCoupons = ({ datas }: PropsList) => {
             <div className="list-info">
                 <h3>{val.code}</h3>
                 <p>Desconto: {val.discountType === "percent" ? `${val.discount}%` : `R$ ${val.discount}`}</p>
-                <p>Quantidade: {val.quantity}</p>
+                <p>Quantidade: 1</p>
                 <p>Expira em: {new Date(val.expiresAt).toLocaleDateString('pt-BR')}</p>
             </div>
         </div>
