@@ -95,10 +95,10 @@ export class CouponRepository implements ICouponRepository{
     public async userListCoupons(userId:number):Promise<CouponUsage[]>{
         try{
             return await this.prisma.couponUsage.findMany({
-            where:{userId,coupon:{
+            where:{userId,usedAt:null,coupon:{
                 expiresAt:{
                     gt:now
-                }
+                },
             }},
             include:{coupon:{
                 select:{expiresAt:true,discount:true,discountType:true,code:true}
