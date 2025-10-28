@@ -1,4 +1,4 @@
-import {registerApi} from '../../../src/constants/urls'
+const registerApi = "/register"
 describe("Page Registro",()=>{
     beforeEach(()=>{
         cy.visit('/registro')

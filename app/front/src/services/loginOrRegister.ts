@@ -1,5 +1,3 @@
-
-import { loginApi, registerApi } from "@/constants/urls";
 import type { Response } from "@/types/services.types";
 
 type LoginOrRegister ={
@@ -10,7 +8,7 @@ type LoginOrRegister ={
 }
 export const serviceLoginOrRegister = async({name,email,password,typeForm}:LoginOrRegister):Promise<Response>=>{
     try{
-        const url = typeForm === 'login' ? loginApi : registerApi
+        const url = typeForm === 'login' ? '/login' : '/register'
         const response = await fetch(url,{
             method:'POST',
             body:JSON.stringify({name,email,password}),
