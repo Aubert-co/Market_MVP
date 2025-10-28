@@ -36,7 +36,9 @@ describe('Component useCart',()=>{
             message:'Success'
         })
         const {getByText,queryByText,container,queryAllByTestId} = render(
-            <Cart setMessage={setMessage} formRef={mockFormRef}/>
+            <BrowserRouter>
+                <Cart setMessage={setMessage} formRef={mockFormRef}/>
+            </BrowserRouter>
         )
       
         expect( getByText("Meu carrinho")).toBeInTheDocument()

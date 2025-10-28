@@ -3,6 +3,7 @@ import { fireEvent, render } from "@testing-library/react"
 import * as storages from '@/storage/cart.storage'
 import { userCartMocks } from "../fixtures"
 import * as cleanCart from '@/components/cart/useRemoveFromCart'
+import { BrowserRouter } from "react-router-dom"
 
 const onClick  = jest.fn()
 jest.spyOn(cleanCart, 'useRemoveFromCart').mockImplementation(() => ({
@@ -15,7 +16,10 @@ describe("Component CartOverview",()=>{
     it("should render the cart total and action buttons when the cart has items",()=>{
         jest.spyOn(storages,'getItemsFromCart').mockReturnValue({cart:userCartMocks,updatedAt:344,isSaved:false})
         const {getByText,queryByText} = render(
-            <CartOverview setMessage={setMessage} setUpdateCart={setUpdateCart} updateCart={false}/>
+            <BrowserRouter>
+                <CartOverview setMessage={setMessage} setUpdateCart={setUpdateCart} updateCart={false}/>
+            </BrowserRouter>
+            
         )
         const total = userCartMocks.reduce((val,tr)=>{
             val + tr.product.price * tr.quantity
@@ -34,7 +38,9 @@ describe("Component CartOverview",()=>{
      it("should render empty cart message when cart is empty",()=>{
         jest.spyOn(storages,'getItemsFromCart').mockReturnValue({cart:[],updatedAt:344,isSaved:false})
         const {queryByText} = render(
-            <CartOverview setMessage={setMessage} setUpdateCart={setUpdateCart} updateCart={false}/>
+           <BrowserRouter>
+                 <CartOverview setMessage={setMessage} setUpdateCart={setUpdateCart} updateCart={false}/>
+           </BrowserRouter>
         )
        
         expect( queryByText("Seu carrinho está vazio 🛒")).toBeInTheDocument()
