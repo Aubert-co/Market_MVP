@@ -1,11 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-export type User = {
-    id:number,
-    name:string,
-    password:string,
-    email:string
-}
+
 
 export type UserReviewsAndComments = Prisma.UserGetPayload<{
     select:{

@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { generateSignedUrl } from "../lib/googleStorage";
-import authRoute from './auth.route'
 import products from './products.route'
 import storeRoute from './store.route'
 import userCartRoute from './userCart.route'
@@ -12,7 +11,7 @@ import reviewsRoute from './reviews.route'
 import storeDashboard from './storeDash.route'
 const route = Router();
 
-route.use(authRoute)
+
 route.use( products)
 route.use( storeRoute )
 route.use( userCartRoute )
