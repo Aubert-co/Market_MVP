@@ -9,6 +9,11 @@ import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
 
 
+if(!process.env.NODE_ENV){
+  throw new Error("NO NODE_ENV")
+}
+const NODE_ENV =process.env.NODE_ENV;
+
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
   max: 100,
@@ -23,16 +28,18 @@ const app = express()
 
 const publicPath = path.join(__dirname,'..', "public");
 
-/**
- * descomentar para produção , é para n bloquear o ip da cloudflare
- * app.set('trust proxy',1)
-*/
+
+if(NODE_ENV ==="production"){
+  app.set('trust proxy',1)
+}
+
 app.use(
   helmet({
     contentSecurityPolicy: {
       useDefaults: true,
       directives: {
-        "img-src": ["'self'", "data:", "https://storage.googleapis.com"],
+        imgSrc: ["'self'", "data:", "https://storage.googleapis.com"],
+        connectSrc:["'self'","https://auth.aubertdev.com.br"]
       },
     },
   })
@@ -41,6 +48,7 @@ app.use(
 app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials:true,
+  origin: 'https://auth.aubertdev.com.br'
 }));
 
 app.use(cookieParser())
@@ -59,7 +67,7 @@ const startServer = async()=>{
     try {
         await connectRedis();
        
-        if(process.env.MODE !== "test"){
+        if(NODE_ENV === "production"){
             app.listen(process.env.PORT,()=>{console.log('server running'+process.env.PORT)});
         }
     } catch (err:any) {
