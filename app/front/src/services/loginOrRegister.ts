@@ -9,12 +9,13 @@ type LoginOrRegister ={
 export const serviceLoginOrRegister = async({name,email,password,typeForm}:LoginOrRegister):Promise<Response>=>{
     try{
         const url = typeForm === 'login' ? '/login' : '/register'
-        const response = await fetch(url,{
+        const response = await fetch(`https://auth.aubertdev.com.br${url}`,{
             method:'POST',
             body:JSON.stringify({name,email,password}),
             headers: {
             'Content-Type': 'application/json'
-            }
+            },
+            credentials:'include'
         })
         if(!response.ok){
             return {status:response.status,message:''}
