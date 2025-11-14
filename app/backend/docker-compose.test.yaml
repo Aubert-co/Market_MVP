@@ -54,6 +54,7 @@ services:
       - REFRESH_TOKEN=loremsss
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
       - REDIS_URL=redis://default:${REDIS_PASSWORD}@redis:6379
+      - NODE_ENV=test
     tty: true
 
 
