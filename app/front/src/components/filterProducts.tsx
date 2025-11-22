@@ -1,5 +1,5 @@
 import { InputWithLabel } from "@/components/forms/inputWithLabel"
-import { useSelect } from "@/components/useSelect"
+import { useSelect } from "@/hooks/useSelect"
 import {  mappedCateogires } from "@/constants"
 import type { Filter, OrderBy,CategoryMapped,DatasSelect } from "@/types/filters"
 import { getMultiInputValues } from "@/utils"

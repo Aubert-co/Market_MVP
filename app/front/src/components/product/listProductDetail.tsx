@@ -1,9 +1,9 @@
 import { loadImage } from "@/utils/index";
 import type { Product } from "@/types/products.types";
 import { ListRatings } from "./listRatings";
-import { Collapse } from "../collapse";
+import { Collapse } from "../shared/collapse";
 import { StyleBtn } from "@/styles/forms.style";
-import type { Message } from "../boxMessages";
+import type { Message } from "../../hooks/useBoxMessages";
 import { addToCart } from "@/services/cart.services";
 import { setItemsCheckout } from "@/storage/checkout.storage";
 import { useNavigate } from "react-router-dom";

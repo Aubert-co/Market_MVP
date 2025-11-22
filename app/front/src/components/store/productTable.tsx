@@ -1,5 +1,5 @@
 import type { Product } from "@/types/products.types";
-import { BaseTable } from "../baseTable";
+import { BaseTable } from "../templates/baseTable";
 import { loadImage } from "@/utils/index";
 
 type Props = {

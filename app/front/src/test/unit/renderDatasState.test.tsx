@@ -1,4 +1,4 @@
-import { RenderDataState } from "@/components/renderDataState"
+import { RenderDataState } from "@/components/shared/renderDataState"
 import {  render } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
 

@@ -1,6 +1,6 @@
 import type { BaseCoupon } from "@/types/coupons.types";
 import CouponAsset from '@/assets/coupon.png'
-import { BaseTable } from "../baseTable";
+import { BaseTable } from "../templates/baseTable";
 import { getLocalDate } from "@/utils";
 
 

@@ -6,7 +6,7 @@ import { shortDescription } from "@/utils"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { loadImage } from "@/utils"
-import { RenderDataState } from "../renderDataState"
+import { RenderDataState } from "@/components/shared/renderDataState"
 
 type StoreState = {
     datas:Store[],

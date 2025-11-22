@@ -1,11 +1,11 @@
 import type { ProductDetails } from "@/types/productDetail.types"
-import { Collapse } from "../collapse"
+import { Collapse } from "../shared/collapse"
 import { ListComments } from "./listComments"
 import { ListProductDetail } from "./listProductDetail"
-import type { Message } from "../boxMessages"
+import type { Message } from "../../hooks/useBoxMessages"
 
 
-import { RenderDataState } from "../renderDataState"
+import { RenderDataState } from "@/components/shared/renderDataState"
 import type { Product } from "@/types/products.types"
 
 type Props ={

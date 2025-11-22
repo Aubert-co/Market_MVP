@@ -1,4 +1,4 @@
-import { BaseTable } from "../baseTable";
+import { BaseTable } from "../templates/baseTable";
 import { loadImage } from "@/utils/index";
 import type { ProductOrder } from "@/types/storeDashboard.types";
 

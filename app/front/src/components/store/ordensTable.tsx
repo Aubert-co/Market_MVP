@@ -1,7 +1,7 @@
 import { Table } from "@/styles/dashboardStore.style";
 import type { Order } from "@/types/storeDashboard.types";
 import  {getLocalDate, getOrderStatus} from  "@/utils/index"
-import { BaseTable } from "../baseTable";
+import { BaseTable } from "../templates/baseTable";
 import { loadImage } from "@/utils/index";
 
 

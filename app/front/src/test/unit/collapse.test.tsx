@@ -1,4 +1,4 @@
-import { Collapse } from "@/components/collapse"
+import { Collapse } from "@/components/shared/collapse"
 import { fireEvent, render } from "@testing-library/react"
 
 describe("Component collapse",()=>{

@@ -1,4 +1,4 @@
-import { useSelect } from "@/components/useSelect"
+import { useSelect } from "@/hooks/useSelect"
 import { fireEvent, render, } from "@testing-library/react"
 
 const mockDatas = [{value:'Eletrônicos',text:'Eletrônicos'},{value:'Todas',text:'Todas'}]

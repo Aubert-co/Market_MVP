@@ -8,7 +8,7 @@ import type { BaseCoupon } from "@/types/coupons.types"
 import { ProductsCheckout } from "@/styles/checkout.style"
 
 import { FinishCheckout } from "@/components/checkout/finishCheckout"
-import { useBoxMessage } from "@/components/boxMessages"
+import { useBoxMessage } from "@/hooks/useBoxMessages"
 import type { ItemsCheckout } from "@/types/checkout.types"
 import { getUserTotally } from "@/utils"
 

@@ -1,7 +1,7 @@
 import type { UserCart } from "@/types/cart.types"
 import { CartActions } from "./cartActions"
 import React, { type SetStateAction } from "react"
-import type { Message } from "../boxMessages"
+import type { Message } from "../../hooks/useBoxMessages"
 import { loadImage } from "@/utils"
 
 type PropsCartList = {

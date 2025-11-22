@@ -1,7 +1,7 @@
 import { StyleBtn, UserFormStyles } from "@/styles/forms.style"
 import { InputWithLabel } from "./inputWithLabel"
 import { useRef, useState } from "react"
-import { useBoxMessage } from "../boxMessages"
+import { useBoxMessage } from "../../hooks/useBoxMessages"
 import { getMultiInputValues } from "@/utils"
 import { checkIsAValidNumber, isAValidString } from "@/utils/checkIsValid"
 import { createCouponService } from "@/services/admStore.services"

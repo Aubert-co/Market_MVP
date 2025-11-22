@@ -1,5 +1,5 @@
 import {  fireEvent, render } from "@testing-library/react";
-import SideBar from '../../components/sidebar'
+import SideBar from '../../components/shared/sidebar'
 import  {BrowserRouter} from "react-router-dom"
 import {selectMenuItem,sideBarMenuItems} from "../../constants/menuItems"
 const mockedUsedNavigate = jest.fn()

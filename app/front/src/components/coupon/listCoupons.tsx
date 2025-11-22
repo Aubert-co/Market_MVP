@@ -1,7 +1,7 @@
 import type { BaseCoupon } from "@/types/coupons.types";
 import assets from '@/assets/coupon.png'
 import type { SetStateAction } from "react"
-import type { Message } from "../boxMessages"
+import type { Message } from "../../hooks/useBoxMessages"
 import { AddCoupon } from "./AddCoupon";
 
 

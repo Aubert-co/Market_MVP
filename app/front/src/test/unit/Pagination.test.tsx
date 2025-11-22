@@ -1,5 +1,5 @@
 import { act, fireEvent, render } from "@testing-library/react"
-import { usePagination } from "@/components/pagination"
+import { usePagination } from "@/hooks/usePagination"
 import { useEffect } from "react"
 
 describe("test pagination",()=>{

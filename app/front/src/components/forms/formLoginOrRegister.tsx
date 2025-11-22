@@ -7,7 +7,7 @@ import { isAValidString, isValidEmail } from "@/utils/checkIsValid";
 import type { TypeSubmitRegister } from "@/pages/register";
 import type { TypeSubmitLogin } from "@/pages/login";
 
-import { useBoxMessage } from "../boxMessages";
+import { useBoxMessage } from "../../hooks/useBoxMessages";
 import { PasswordInput } from "./passwordInput";
 import { InputWithLabel } from "./inputWithLabel";
 

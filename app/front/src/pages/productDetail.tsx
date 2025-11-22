@@ -1,4 +1,4 @@
-import { useBoxMessage } from "@/components/boxMessages"
+import { useBoxMessage } from "@/hooks/useBoxMessages"
 import { Container } from "@/components/layouts/container"
 import { BoxProductDetail } from "@/components/product/boxProductDetail"
 import { useSyncCart } from "@/hooks/useSyncCart"

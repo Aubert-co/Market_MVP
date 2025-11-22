@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, waitFor } from "@testing-library/react";
-import { useBoxMessage } from "@/components/boxMessages";
+import { useBoxMessage } from "@/hooks/useBoxMessages";
 
 
 

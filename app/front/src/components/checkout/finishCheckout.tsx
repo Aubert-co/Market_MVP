@@ -1,7 +1,7 @@
 import { serviceCreateOrder, type CreateOrder } from "@/services/checkout.services"
 import { getItemsCheckout } from "@/storage/checkout.storage"
 import { StyleBtn } from "@/styles/forms.style"
-import type { Message } from "../boxMessages"
+import type { Message } from "../../hooks/useBoxMessages"
 import type { SetStateAction } from "react"
 
 type Props = {

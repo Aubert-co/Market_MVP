@@ -6,7 +6,7 @@ import { StyleBtn, UserFormStyles } from "@/styles/forms.style"
 import { InputWithLabel } from "./inputWithLabel"
 
 import { serviceCreateProduct } from "@/services/admStore.services"
-import { useBoxMessage } from "../boxMessages"
+import { useBoxMessage } from "../../hooks/useBoxMessages"
 
 
 export const FormCreateProduct = ()=>{

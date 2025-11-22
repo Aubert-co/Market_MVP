@@ -1,7 +1,7 @@
 import { ListProducts } from "./listProducts"
 import type { Product } from "@/types/products.types"
 import { ProductSection } from "@/styles/index.style"
-import { RenderDataState } from "../renderDataState"
+import { RenderDataState } from "@/components/shared/renderDataState"
 
 type Props = {
     datas:Product[],

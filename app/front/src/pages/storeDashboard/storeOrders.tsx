@@ -1,5 +1,5 @@
 import { ContainerDashboard } from "@/components/layouts/containerDashboard"
-import { usePagination } from "@/components/pagination"
+import { usePagination } from "@/hooks/usePagination"
 import { OrdersTable } from "@/components/store/ordensTable"
 import { selectMenuItem } from "@/constants/menuItems"
 import { getStoreOrders } from "@/services/admStore.services"

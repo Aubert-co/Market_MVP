@@ -1,5 +1,5 @@
 import { ListContainer } from "@/styles/profile.style"
-import { RenderDataState } from "../renderDataState"
+import { RenderDataState } from "@/components/shared/renderDataState"
 import type { UserOrders } from "@/types/orders.types"
 import { useEffect, useState } from "react"
 import { userOrders } from "@/services/userProfile.services"

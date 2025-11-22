@@ -1,6 +1,6 @@
 import { removeItemFromCart } from "@/storage/cart.storage"
 import React,{type SetStateAction} from "react"
-import type { Message } from "../boxMessages"
+import type { Message } from "../../hooks/useBoxMessages"
 import { deleteFromCart } from "@/services/cart.services"
 
 type PropsRemove = {

@@ -1,5 +1,5 @@
 import { ContainerDashboard } from "@/components/layouts/containerDashboard"
-import { RenderDataState } from "@/components/renderDataState"
+import { RenderDataState } from "@/components/shared/renderDataState"
 import { DashboardStats } from "@/components/store/DashboardStats"
 import {LastPendingOrders} from '@/components/store/lastPendingOrders'
 import { selectMenuItem } from "@/constants/menuItems"

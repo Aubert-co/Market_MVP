@@ -2,7 +2,7 @@ import { UpdateCartContext} from "@/context/cart.context"
 import  { useContext } from "react"
 import { FaTrash } from "react-icons/fa"
 import React,{type SetStateAction} from "react"
-import type { Message } from "../boxMessages"
+import type { Message } from "../../hooks/useBoxMessages"
 import { useRemoveFromCart } from "./useRemoveFromCart"
 
 type Props ={

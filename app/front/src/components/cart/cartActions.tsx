@@ -2,7 +2,7 @@ import { UpdateCartQuantity } from "./updateCartQuantity"
 import { RemoveFromCart } from "./removeFromCart"
 import React, {  useState, type SetStateAction } from "react"
 import styled from "styled-components"
-import type { Message } from "../boxMessages"
+import type { Message } from "../../hooks/useBoxMessages"
 
 
 type Props = {

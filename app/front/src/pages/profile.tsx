@@ -10,7 +10,7 @@ import { useEffect, useRef } from "react";
 import { Container } from "@/components/layouts/container"
 import { ProfileStyle } from "@/styles/profile.style";
 import { UserOrdersComponent } from "@/components/profile/userOrders";
-import { useBoxMessage } from "@/components/boxMessages";
+import { useBoxMessage } from "@/hooks/useBoxMessages";
 import { useSyncCart } from "@/hooks/useSyncCart";
 
 export const Profile = () => {

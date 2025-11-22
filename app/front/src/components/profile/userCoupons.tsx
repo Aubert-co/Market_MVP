@@ -6,7 +6,7 @@ import { ListContainer } from "@/styles/profile.style"
 import { usableFetch } from "@/services/fetchs"
 import { userCoupons } from "@/services/userProfile.services"
 import { Link } from "react-router-dom"
-import { RenderDataState } from "../renderDataState"
+import { RenderDataState } from "@/components/shared/renderDataState"
 
 type StateCoupon = {
     datas:BaseCoupon<number>[],

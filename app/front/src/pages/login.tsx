@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useRef } from "react"
 import { serviceLoginOrRegister } from "@/services/loginOrRegister"
 import { FormLoginOrRegister } from "@/components/forms/formLoginOrRegister";
-import type { Message } from "@/components/boxMessages";
+import type { Message } from "@/hooks/useBoxMessages";
 export type TypeSubmitLogin = {
     email:string,
     password:string,

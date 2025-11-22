@@ -1,5 +1,5 @@
 import type { SetStateAction } from "react"
-import type { Message } from "../boxMessages"
+import type { Message } from "../../hooks/useBoxMessages"
 import { userAddCoupon } from "@/services/coupons.services"
 
 type Props = {

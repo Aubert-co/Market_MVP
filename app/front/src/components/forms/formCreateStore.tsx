@@ -5,7 +5,7 @@ import { getMultiInputValues } from "@/utils"
 
 import { StyleBtn, UserFormStyles } from "@/styles/forms.style"
 import { InputWithLabel } from "./inputWithLabel"
-import { useBoxMessage } from "../boxMessages"
+import { useBoxMessage } from "../../hooks/useBoxMessages"
 import type { PropsFormCreateStore } from "@/types/store.types";
 import { useNavigate } from "react-router-dom"
 

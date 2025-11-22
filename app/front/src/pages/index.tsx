@@ -1,4 +1,4 @@
-import { usePagination } from "@/components/pagination"
+import { usePagination } from "@/hooks/usePagination"
 import { useNavigate, useParams } from "react-router-dom"
 import { Container } from "@/components/layouts/container"
 import { BoxProducts } from "@/components/product/boxProducts"

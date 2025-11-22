@@ -1,6 +1,6 @@
 import type React from "react"
 import { useState } from "react"
-import Sidebar from "../sidebar"
+import Sidebar from "../shared/sidebar"
 import { StoreDashboard } from "@/styles/dashboardStore.style"
 import type { SideBarItem } from "@/types/storeDashboard.types"
 
