@@ -12,10 +12,7 @@ export const SearchBar = ({type}:Props)=>{
     const onClick = (e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
         let search = getInputValue(searchRef)
-
-        if(search && search.length >=4){
-            return;
-        }
+        if(search.length ===0)return
         if(type === "admSearch"){
             
         }
