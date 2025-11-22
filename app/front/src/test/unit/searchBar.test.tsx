@@ -9,7 +9,7 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockedUsedNavigate,
 }))
 
-describe.skip("component SearchBar",()=>{
+describe("component SearchBar",()=>{
     beforeEach(()=>{
         jest.clearAllMocks()
     })
