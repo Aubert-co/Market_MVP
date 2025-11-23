@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { IProductService } from "../services/product.services";
 import { checkIsAValidCategory, checkIsAValidNumber, isAValidString } from "../helpers";
 import { ErrorMessage } from "../helpers/ErrorMessage";
-
+import { checkOrderBy } from "../helpers";
 
 export class ProductsController{
     constructor(protected products:IProductService){}
@@ -45,13 +45,16 @@ export class ProductsController{
     public async filterProducts(req:Request,res:Response,next:NextFunction):Promise<any>{
         try{
             const name = req.body?.name
-            const category = req.body?.category
+            let category = req.body?.category
             const minPrice = req.body?.minPrice
             const maxPrice = req.body?.maxPrice
+            let orderBy = req.body?.orderBy ?? 'desc'
             const take = 10
             const skip =0
-           
-           if (category && !checkIsAValidCategory(category)) {
+            
+            if(!checkOrderBy(orderBy))orderBy = "desc"
+            if(category && category.toLowerCase() ===  "todas")category = "";
+            if(category && !checkIsAValidCategory(category)) {
                 throw new ErrorMessage("Invalid category provided", 400);
             }
 
@@ -69,7 +72,7 @@ export class ProductsController{
              
             const datas = await this.products.filterProduct({
                 name,category,maxPrice,minPrice,take,
-                skip
+                skip,orderBy
             })
        
             res.status(200).send({message:'Sucess',datas})

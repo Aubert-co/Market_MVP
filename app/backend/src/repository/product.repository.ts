@@ -9,7 +9,7 @@ export interface IProductRepository{
     getProducts(limit:number,skip:number):Promise<SelectedProduct[]>,
     getProductById(id:number):Promise< GetProductById>,
     countProducts():Promise<number >,
-    filterProducts({name,category,maxPrice,minPrice,storeId,skip,take}:FilterProductsInput):Promise<FilteredProduct[]>
+    filterProducts({name,category,maxPrice,minPrice,storeId,skip,take,orderBy}:FilterProductsInput):Promise<FilteredProduct[]>
 }
 
 export class ProductRepository  implements IProductRepository{
@@ -111,7 +111,8 @@ export class ProductRepository  implements IProductRepository{
         minPrice,
         storeId,
         take=10,
-        skip=0
+        skip=0,
+        orderBy,
         }: FilterProductsInput): Promise<FilteredProduct[]> {
        
         return await this.prisma.product.findMany({
@@ -128,6 +129,7 @@ export class ProductRepository  implements IProductRepository{
                     }
                     : {})
                 },
+                orderBy:{price:orderBy},
                 take,
                 skip
             });

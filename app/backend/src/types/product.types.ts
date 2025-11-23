@@ -71,6 +71,7 @@ export type FilterProductsInput = {
     minPrice?:number,
     storeId?:number,
     take:number,
-    skip:number
+    skip:number,
+    orderBy:'asc' | 'desc'
 }
 export type FilteredProduct = Prisma.ProductGetPayload<{}>;

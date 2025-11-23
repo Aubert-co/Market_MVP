@@ -114,11 +114,11 @@ export class ProductService  implements IProductService{
 
     }
    
-    public async filterProduct({name,category,maxPrice,minPrice,take,skip}:FilterProductsInput):Promise<FilteredProduct[]>{
+    public async filterProduct({name,category,maxPrice,minPrice,take,skip,orderBy}:FilterProductsInput):Promise<FilteredProduct[]>{
         try{
          
             return await this.product.filterProducts({
-                name,category,maxPrice,minPrice,take,skip
+                name,category,maxPrice,minPrice,take,skip,orderBy
             })
         }catch(err:any){
             throw new ErrorMessage("No products found",404)
