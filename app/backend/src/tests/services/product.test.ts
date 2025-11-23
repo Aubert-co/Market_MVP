@@ -2,6 +2,7 @@ import {ProductService} from '../../services/product.services'
 import * as uploadFiles from '../../lib/googleStorage'
 import * as images from '../../helpers/checkIsValidImage'
 import {products} from '../__fixtures__/products'
+import { FilterProductsInput } from '../../types/product.types'
 const [product] = products
 const mockRepository = {
     createProduct:jest.fn(),
@@ -112,13 +113,14 @@ describe("method filterProducts",()=>{
         jest.resetAllMocks()
     })
     it("should return the product correctly",async()=>{
-        const params = {
+        const params:FilterProductsInput = {
             name:'jose',
             category:'lorem iptus',
             minPrice:34,
             maxPrice:39,
             take:10,
-            skip:4
+            skip:4,
+            orderBy:'desc'
         }
         mockRepository.filterProducts.mockResolvedValue( [product] )
         const datas = await productService.filterProduct( params )
@@ -129,13 +131,14 @@ describe("method filterProducts",()=>{
     })
     it("should return an error when the repository throws",async()=>{
        try{
-            const params = {
+            const params:FilterProductsInput = {
                 name:'jose',
                 category:'lorem iptus',
                 minPrice:34,
                 maxPrice:39,
                 take:10,
-                skip:4
+                skip:4,
+                orderBy:'desc'
             }
             mockRepository.filterProducts.mockResolvedValue( [product] )
             const datas = await productService.filterProduct( params )

@@ -105,6 +105,9 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         expect(mock ).toHaveBeenCalledWith({
         skip: 0,
         take: 10,
+        "orderBy":  {
+            "price": "desc",
+        },
         where: {
             category: {
             contains: category,
@@ -129,6 +132,9 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         expect(mock ).toHaveBeenCalledWith({
         skip: 0,
         take: 10,
+        "orderBy":  {
+            "price": "desc",
+        },
         where: {
             category: {
             contains: category,
@@ -159,6 +165,9 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         expect(mock ).toHaveBeenCalledWith({
         skip: 0,
         take: 10,
+        "orderBy":  {
+            "price": "desc",
+        },
         where: {
             name: {
             contains: name,
@@ -183,6 +192,9 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         expect(mock ).toHaveBeenCalledWith({
         skip: 0,
         take: 10,
+        "orderBy":  {
+            "price": "desc",
+        },
         where: {
             name: {
             contains: name,
@@ -213,6 +225,9 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         expect(mock ).toHaveBeenCalledWith({
             skip: 0,
             take: 10,
+            "orderBy":  {
+                "price": "desc",
+            },
             where: {
                 price: {
                     lte:maxPrice
@@ -236,6 +251,9 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         expect(mock ).toHaveBeenCalledWith({
         skip: 0,
         take: 10,
+        "orderBy":  {
+            "price": "desc",
+        },
         where: {
             price: {
                 lte:maxPrice
@@ -265,6 +283,9 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         expect(mock ).toHaveBeenCalledWith({
             skip: 0,
             take: 10,
+            "orderBy":  {
+                "price": "desc",
+            },
             where: {
                 price: {
                     gte:minPrice
@@ -288,6 +309,9 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         expect(mock ).toHaveBeenCalledWith({
         skip: 0,
         take: 10,
+        "orderBy":  {
+            "price": "desc",
+        },
         where: {
             price: {
                 gte:minPrice
@@ -314,6 +338,9 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
        expect(mock).toHaveBeenCalledWith({
         skip: 0,
         take: 10,
+        "orderBy":  {
+            "price": "desc",
+        },
         where: {
             category: {
             contains: "Roupas",
@@ -355,6 +382,99 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
        expect(mock).toHaveBeenCalledWith({
         skip: 0,
         take: 10,
+        "orderBy":  {
+            "price": "desc",
+        },
+        where: {
+            category: {
+            contains: "Roupas",
+            mode: "insensitive"
+            },
+            name: {
+            contains: "valid name",
+            mode: "insensitive"
+            },
+            price: {
+            gte: 35.99,
+            lte: 499.99
+            },
+            storeId: undefined
+        }
+        });
+    })
+    it("should return 'desc' when the user sends an invalid orderBy value",async()=>{
+       
+        mock.mockResolvedValue(datas)
+        const minPrice = 35.99
+        const maxPrice = 499.99
+        const category = categories[0]
+        const name = "valid name"
+        const orderBy = "gte"
+        const response = await supertest(app)
+        .post('/product/filter')
+        .send({minPrice,name,category,maxPrice,orderBy})
+
+        expect( response.status).toEqual(200)
+        expect( response.body.message).toEqual("Sucess")
+        expect(response.body.datas).toEqual(
+            datas.map(d => ({
+                ...d,
+                createdAt: expect.any(String),
+                updatedAt: expect.any(String)
+            }))
+        );
+        expect( mock ).toHaveBeenCalledTimes(1)
+       expect(mock).toHaveBeenCalledWith({
+        skip: 0,
+        take: 10,
+        "orderBy":  {
+            "price": "desc",
+        },
+        where: {
+            category: {
+            contains: "Roupas",
+            mode: "insensitive"
+            },
+            name: {
+            contains: "valid name",
+            mode: "insensitive"
+            },
+            price: {
+            gte: 35.99,
+            lte: 499.99
+            },
+            storeId: undefined
+        }
+        });
+    })
+    it("should return 'asc' when orderBy is provided",async()=>{
+       
+        mock.mockResolvedValue(datas)
+        const minPrice = 35.99
+        const maxPrice = 499.99
+        const category = categories[0]
+        const name = "valid name"
+        const orderBy = "asc"
+        const response = await supertest(app)
+        .post('/product/filter')
+        .send({minPrice,name,category,maxPrice,orderBy})
+
+        expect( response.status).toEqual(200)
+        expect( response.body.message).toEqual("Sucess")
+        expect(response.body.datas).toEqual(
+            datas.map(d => ({
+                ...d,
+                createdAt: expect.any(String),
+                updatedAt: expect.any(String)
+            }))
+        );
+        expect( mock ).toHaveBeenCalledTimes(1)
+       expect(mock).toHaveBeenCalledWith({
+        skip: 0,
+        take: 10,
+        "orderBy":  {
+            "price": "asc",
+        },
         where: {
             category: {
             contains: "Roupas",
