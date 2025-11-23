@@ -49,7 +49,8 @@ export const categories = [
   "Moda",
   "Acessórios"
 ];
-
+const orderBy = ["asc","desc"]
+export const checkOrderBy = (value:string)=>orderBy.includes(value.toLowerCase())
 const normalizeString = (str: string) =>
   str.normalize("NFD")             
      .replace(/[\u0300-\u036f]/g, "") 
