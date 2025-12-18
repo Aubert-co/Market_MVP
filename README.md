@@ -1,65 +1,91 @@
-# 🛒 SuperStore - E-commerce Fullstack
+# SuperStore – E-commerce Full Stack
 
-Projeto de **marketplace fullstack** inspirado na Shopee, onde cada usuário pode criar sua própria loja, cadastrar produtos, gerenciar cupons, realizar compras, escrever reviews e muito mais.  
-O foco do projeto é demonstrar **boas práticas de desenvolvimento, testes automatizados e arquitetura escalável**.
+Projeto de **marketplace full stack** inspirado em plataformas de e-commerce modernas, onde cada usuário pode criar sua própria loja, cadastrar produtos, gerenciar cupons, realizar compras e interagir com avaliações.  
+
+O objetivo do projeto é demonstrar **boas práticas de engenharia de software**, com foco em **arquitetura escalável**, **testes automatizados**, **qualidade de código** e **aplicação em ambiente real de produção**.
+
+A aplicação está **disponível online**, permitindo a visualização e utilização das principais funcionalidades.
 
 ---
 
-## ✨ Funcionalidades
+## Funcionalidades
 
-### 👤 Usuário
-- Criar conta e realizar login
-- Ver produtos cadastrados
-- Adicionar produtos ao carrinho
-- Aplicar cupons de desconto
-- 🚧 Em breve: Finalizar compras
-- 🚧 Em breve: Avaliar e comentar produtos
+### Usuário
+- Cadastro e autenticação
+- Visualização de produtos
+- Adição de produtos ao carrinho
+- Aplicação de cupons de desconto
+- Finalização de pedidos
+- Avaliação e comentários em produtos
 
-### 🏪 Loja
-- Criar loja
-- Criar produto
-- Criar cupons de desconto
-- 🚧 Em breve: Dashboard da loja com métricas de vendas e avaliações
-- 🚧 Em breve: Editar e remover produtos
+### Loja
+- Criação e gerenciamento de loja
+- Cadastro de produtos
+- Criação de cupons de desconto
+- Dashboard da loja (pedidos e status)
+- Gerenciamento de produtos
 
+---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
-**Frontend**
-- React.js, TypeScript, CSS
+### Frontend
+- React.js
+- TypeScript
+- CSS
+- Componentes reutilizáveis
+- Design responsivo
 
-**Backend**
-- Node.js, Express.js, Prisma
+### Backend
+- Node.js
+- Express.js
+- Prisma ORM
+- APIs RESTful
 
-**Banco de Dados & Cache**
-- MySQL
+### Banco de Dados & Cache
+- PostgreSQL
 - Redis
 
-**Infra**
-- Docker & Docker Compose
-- Google Cloud Storage (upload de imagens)
+### Infraestrutura
+- Docker e Docker Compose
+- Google Cloud Storage (armazenamento de imagens)
+- Deploy em ambiente de nuvem
 
-**Testes**
-- Jest (unitários, integração, regressão)
+### Testes
+- Jest (testes unitários, integração e regressão)
 - Supertest
-- Cypress (E2E)
+- Cypress (testes end-to-end)
 - Gherkin (BDD)
 
 ---
 
-## 🏗️ Arquitetura
+## Arquitetura
 
-O projeto é dividido em **frontend** e **backend**, ambos orquestrados pelo Docker Compose.  
-- O backend expõe APIs RESTful.  
-- O frontend consome essas APIs.  
-- Banco de dados MySQL e cache Redis também sobem como serviços no Compose.  
-- Uploads de imagens são enviados diretamente para o **Google Cloud Storage**.  
+O sistema foi projetado com **separação clara de responsabilidades**, visando escalabilidade e manutenção a longo prazo.
+
+- Frontend e backend desacoplados
+- Backend expondo APIs RESTful
+- Persistência de dados em PostgreSQL
+- Cache com Redis para otimização de performance
+- Upload de imagens realizado via Google Cloud Storage
+- Serviços orquestrados com Docker Compose
+- Cobertura de testes incluindo fluxos de sucesso e cenários de erro (bad paths)
 
 ---
 
-## 🚀 Como rodar o projeto
+## Acesso ao Projeto
 
-### 1. Clonar repositório
-```bash
-git https://github.com/Aubert-co/Market_MVP
-cd Market_MVP
+A aplicação está **disponível online**, permitindo navegação pelas funcionalidades principais do marketplace e validação prática do funcionamento do sistema em ambiente de produção.
+
+[Projeto online](https://market.aubertdev.com.br/)
+---
+
+## Objetivo do Projeto
+
+Este projeto foi desenvolvido com o propósito de:
+
+- Simular um sistema real de e-commerce em produção
+- Aplicar boas práticas de arquitetura e clean code
+- Demonstrar domínio em testes automatizados
+- Trabalhar com autenticação, performance e resiliência
+- Servir como base para evolução contínua e aprendizado técnico
