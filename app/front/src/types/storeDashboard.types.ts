@@ -64,3 +64,17 @@ export type GetStoreDashboard = {
     total:number
   }
 }
+
+
+export type UpsertProducts = {
+  name?:string,
+  description?:string,
+  price?:string,
+  stock?:string,
+  category?:string,
+  image?:string,
+  id:number,
+
+}
+
+export type OpenSideBarOuDrawer = "sidebar" | "drawer" | null
