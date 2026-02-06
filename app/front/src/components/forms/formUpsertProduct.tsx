@@ -2,7 +2,7 @@ import { categories } from "@/constants"
 import { StyleBtn, UserFormStyles } from "@/styles/forms.style"
 import { InputWithLabel } from "./inputWithLabel"
 import { useUpsertProduct, type UseUpsetProduct } from "@/hooks/useUpsertProduct"
-import type { OpenSideBarOuDrawer } from "@/types/storeSidebar.types"
+import type { OpenSideBarOuDrawer } from "@/types/storeDashboard.types"
 import type { UpsertProducts } from "@/types/storeDashboard.types"
 import { loadImage } from "@/utils"
 
