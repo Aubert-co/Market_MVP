@@ -2,7 +2,7 @@ import { Toggle } from "./toggle"
 import { SiderStyle } from "@/styles/dashboardStore.style"
 import type { SideBarItem } from "@/types/storeDashboard.types"
 import { Link } from "react-router-dom"
-
+import { FaSignOutAlt } from "react-icons/fa";
 
 
 
@@ -10,19 +10,20 @@ type SidebarProps = {
   items: SideBarItem[],
   storeName:string,
   isOpen:boolean,
-  setOpen:(param:boolean)=>void
+  setOpen:(param:"sidebar" | null)=>void
 }
 
 
 const Sidebar = ({ items,storeName ,setOpen,isOpen}:SidebarProps) => {
   return (
     <>
-      <Toggle isOpen={isOpen} setOpen={setOpen} />
+      <Toggle isOpen={ isOpen  } setOpen={setOpen} />
 
         <SiderStyle $open={isOpen}>
         <div className="store-logo">
           <h3>{storeName}</h3>
         </div>
+        <div className="items-sidebar">
         <ul className="menu">
           {items.map((item, index) => (
             <Link data-testid="sidebar-link" key={index} to={item.linkTo} style={{ outline: "none", textDecoration: "none" }}>
@@ -32,8 +33,15 @@ const Sidebar = ({ items,storeName ,setOpen,isOpen}:SidebarProps) => {
               </li>
             </Link>
           ))}
-         
         </ul>
+
+        <div className="end-menu">
+          <div className="menu-item">
+            <span className="icon-wraper"><FaSignOutAlt/></span>
+            <span className="item-label">Sair</span>
+          </div>
+        </div>
+        </div>
       </SiderStyle>
    
     </>
