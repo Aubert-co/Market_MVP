@@ -44,12 +44,59 @@ export const serviceCreateProduct = async({name,description,price,
     }
 }
 
+export const productsMock: Product[] = [
+  {
+    id: 1,
+    name: "Mouse Gamer RGB",
+    price: 129.90,
+    imageUrl: "https://example.com/images/mouse-gamer.jpg",
+    category: "Roupas",
+    stock: 42,
+    description: "Mouse gamer com 7200 DPI, 6 botões programáveis e iluminação RGB ajustável."
+  },
+  {
+    id: 2,
+    name: "Teclado Mecânico Redragon",
+    price: 249.90,
+    imageUrl: "https://example.com/images/teclado-redragon.jpg",
+    category: "Periféricos",
+    stock: 17,
+    description: "Teclado mecânico com switches Redragon, iluminação LED e construção em alumínio."
+  },
+  {
+    id: 3,
+    name: "Headset Wireless Sony",
+    price: 399.00,
+    imageUrl: "https://example.com/images/headset-sony.jpg",
+    category: "Áudio",
+    stock: 8,
+    description: "Headset sem fio com microfone removível, bateria de longa duração e som 3D."
+  },
+  {
+    id: 4,
+    name: "Monitor 27' 144Hz",
+    price: 1299.00,
+    imageUrl: "https://example.com/images/monitor-27.jpg",
+    category: "Monitores",
+    stock: 12,
+    description: "Monitor gamer de 27 polegadas, 144Hz, 1ms de resposta e painel IPS."
+  },
+  {
+    id: 5,
+    name: "Cadeira Gamer Ergonômica",
+    price: 899.99,
+    imageUrl: "https://example.com/images/cadeira-gamer.jpg",
+    category: "Móveis",
+    stock: 5,
+    description: "Cadeira gamer ergonômica com ajuste de altura, inclinação e apoio lombar."
+  }
+];
 
 export const getStoreProducts = async({nextPage}:
     GetStoreProducts):Promise<ResponseWithPages<Product[]>>=>{
        try{     
             const [store] = getStorageStore()
-            const response = await fetch(`/admin/store/products/${store.id}/${nextPage}`,{
+           /* const response = await fetch(`/admin/store/products/${store.id}/${nextPage}`,{
                 method:'GET',
                 headers: {
                 'Content-Type': 'application/json'
@@ -61,11 +108,20 @@ export const getStoreProducts = async({nextPage}:
              if(!response.ok){
                 return {datas:[],message:responseValues.message,currentPage:1,totalPages:1,status:response.status}
              }
-            return {datas:responseValues.datas
+            return {
+                datas:responseValues.datas
                 ,currentPage:responseValues.currentPage
                 ,totalPages:responseValues.totalPages,
-                status:response.status,message:''
-            }
+                status:response.status,
+                message:''
+            }*/
+           return {
+            datas:productsMock,
+            currentPage:1,
+            totalPages:1,
+            status:201,
+            message:''
+           }
           
         }catch(err:unknown){
             return {datas:[],currentPage:1,totalPages:1,status:500,message:'Deu erro'}
