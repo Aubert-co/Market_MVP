@@ -29,7 +29,7 @@ const Tbody = ({ products }: Props) => {
 export const LastPendingOrders = ({ products }: Props) => {
   return (
     <>
-      <h3>Últimos pedidos em aberto</h3>
+
       <BaseTable
         thead={<Theader />}
         tbody={<Tbody products={products} />}
