@@ -1,10 +1,10 @@
-import { FormCreateProduct } from "@/components/forms/formCreateProduct"
+import { FormUpsertProduct } from "@/components/forms/formUpsertProduct"
 import { categories } from "@/constants"
 import * as services from "@/services/admStore.services"
 import { fireEvent, render, waitFor } from "@testing-library/react"
 
 const spyService = jest.spyOn(services,'serviceCreateProduct')
-describe("component FormCreateProduct services",()=>{
+describe("component FormUpsertProduct services",()=>{
     beforeEach(()=>{
         jest.clearAllMocks()
     })
@@ -20,7 +20,7 @@ describe("component FormCreateProduct services",()=>{
     it("should call the service successfully when all inputs are valid",async()=>{
         spyService.mockResolvedValue({status:201,message:'Sucess'})
         const {container,getByPlaceholderText,getByTestId,getByText} = render(
-            <FormCreateProduct/>
+            <FormUpsertProduct/>
         )
         const name = getByPlaceholderText("Ex: camisa polo")
         const file = getByTestId("image-product")
@@ -50,7 +50,7 @@ describe("component FormCreateProduct services",()=>{
     it("should return an error message when the service returns status 400",async()=>{
         spyService.mockResolvedValue({status:400,message:'Sucess'})
         const {container,getByPlaceholderText,getByTestId,getByText} = render(
-            <FormCreateProduct/>
+            <FormUpsertProduct/>
         )
         const name = getByPlaceholderText("Ex: camisa polo")
         const file = getByTestId("image-product")
@@ -80,7 +80,7 @@ describe("component FormCreateProduct services",()=>{
      it("should return an error message when the service returns status 422",async()=>{
         spyService.mockResolvedValue({status:422,message:'Sucess'})
         const {container,getByPlaceholderText,getByTestId,getByText} = render(
-            <FormCreateProduct/>
+            <FormUpsertProduct/>
         )
         const name = getByPlaceholderText("Ex: camisa polo")
         const file = getByTestId("image-product")
@@ -125,7 +125,7 @@ describe("when the name is invalid",()=>{
     it("should prevent calling the service when the name is empty",async()=>{
         spyService.mockResolvedValue({status:201,message:'Sucess'})
         const {container,getByPlaceholderText,getByTestId,getByText} = render(
-            <FormCreateProduct/>
+            <FormUpsertProduct/>
         )
         const name = getByPlaceholderText("Ex: camisa polo")
         const file = getByTestId("image-product")
@@ -170,7 +170,7 @@ describe("when the description is invalid",()=>{
     it("should prevent calling the service when the description is empty",async()=>{
         spyService.mockResolvedValue({status:201,message:'Sucess'})
         const {container,getByPlaceholderText,getByTestId,getByText} = render(
-            <FormCreateProduct/>
+            <FormUpsertProduct/>
         )
         const name = getByPlaceholderText("Ex: camisa polo")
         const file = getByTestId("image-product")
@@ -215,7 +215,7 @@ describe("when the price is invalid",()=>{
     it("should prevent calling the service when the price is empty",async()=>{
         spyService.mockResolvedValue({status:201,message:'Sucess'})
         const {container,getByPlaceholderText,getByTestId,getByText} = render(
-            <FormCreateProduct/>
+            <FormUpsertProduct/>
         )
         const name = getByPlaceholderText("Ex: camisa polo")
         const file = getByTestId("image-product")
@@ -260,7 +260,7 @@ describe("when the stock is invalid",()=>{
     it("should prevent calling the service when the price is empty",async()=>{
         spyService.mockResolvedValue({status:201,message:'Sucess'})
         const {container,getByPlaceholderText,getByTestId,getByText} = render(
-            <FormCreateProduct/>
+            <FormUpsertProduct/>
         )
         const name = getByPlaceholderText("Ex: camisa polo")
         const file = getByTestId("image-product")
@@ -306,7 +306,7 @@ describe("when the category is invalid",()=>{
     it("should prevent calling the service when the price is empty",async()=>{
         spyService.mockResolvedValue({status:201,message:'Sucess'})
         const {container,getByPlaceholderText,getByTestId,getByText} = render(
-            <FormCreateProduct/>
+            <FormUpsertProduct/>
         )
         const name = getByPlaceholderText("Ex: camisa polo")
         const file = getByTestId("image-product")
@@ -351,7 +351,7 @@ describe("when the image is invalid",()=>{
     it("should prevent calling the service when the image is empty",async()=>{
         spyService.mockResolvedValue({status:201,message:'Sucess'})
         const {container,getByPlaceholderText,getByTestId,getByText} = render(
-            <FormCreateProduct/>
+            <FormUpsertProduct/>
         )
         const name = getByPlaceholderText("Ex: camisa polo")
         const file = getByTestId("image-product")
