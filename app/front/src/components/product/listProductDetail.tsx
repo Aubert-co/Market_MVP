@@ -2,11 +2,11 @@ import { loadImage } from "@/utils/index";
 import type { Product } from "@/types/products.types";
 import { ListRatings } from "./listRatings";
 import { Collapse } from "../shared/collapse";
-import { StyleBtn } from "@/styles/forms.style";
 import type { Message } from "../../hooks/useBoxMessages";
 import { addToCart } from "@/services/cart.services";
 import { setItemsCheckout } from "@/storage/checkout.storage";
 import { useNavigate } from "react-router-dom";
+import { PrimaryButton } from "@/styles/shared.style";
 
 type Props = {
     product:Product[],
@@ -62,8 +62,8 @@ export const ListProductDetail = ({product,ratings,setMessage}:Props)=>{
                         <h3>Preço ${val.price}</h3>
                     </div>
                     <div className="actions">
-                        <StyleBtn onClick={addCart}>Adicionar ao carrinho</StyleBtn>
-                        <StyleBtn onClick={redirectCheckout} >Comprar</StyleBtn>
+                        <PrimaryButton onClick={addCart}>Adicionar ao carrinho</PrimaryButton>
+                        <PrimaryButton onClick={redirectCheckout} >Comprar</PrimaryButton>
                     </div>
                 </div>
             </div>

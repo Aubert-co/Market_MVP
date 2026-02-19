@@ -1,6 +1,7 @@
 import type { Product } from "@/types/products.types";
-
 import { loadImage } from "@/utils";
+
+import { ButtonsDiv, PrimaryButton } from "@/styles/shared.style";
 
 type ProductDetailsProps = {
   products: Product[];
@@ -31,17 +32,17 @@ export const ProductDetailModal = ({ products ,showEditModal}: ProductDetailsPro
             R$ {product.price}
             </div>
 
-            <div className="actions">
-            <button className="edit" onClick={()=>showEditModal(product)}>
+            <ButtonsDiv>
+              <PrimaryButton onClick={()=>showEditModal(product)}>
                 Editar
-            </button>
-
-            <button
-                className="disable"
-            >
+              </PrimaryButton>
+              
+              <PrimaryButton $bg="#FF6B6B" 
+                        $hoverBg="#FF4C4C" 
+                        $color="#fff" >
                 Desativar
-            </button>
-            </div>
+              </PrimaryButton>
+            </ButtonsDiv>
         </div>
         </div>
 
