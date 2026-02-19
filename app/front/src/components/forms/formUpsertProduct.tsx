@@ -1,21 +1,24 @@
 import { categories } from "@/constants"
-import { StyleBtn, UserFormStyles } from "@/styles/forms.style"
+import {  UserFormStyles } from "@/styles/forms.style"
 import { InputWithLabel } from "./inputWithLabel"
-import { useUpsertProduct, type UseUpsetProduct } from "@/hooks/useUpsertProduct"
+import { useUpsertProduct, type UpsertProductsRefs, type UseUpsetProduct } from "@/hooks/useUpsertProduct"
 import type { OpenSideBarOuDrawer } from "@/types/storeDashboard.types"
 import type { UpsertProducts } from "@/types/storeDashboard.types"
 import { loadImage } from "@/utils"
+import { ButtonsDiv, PrimaryButton } from "@/styles/shared.style"
+import { useUpsertProductForm } from "@/hooks/useUpsertProductForm"
 
 
 type PropsHandle ={
     type: "create" | "update"
     onSend?:()=>void,
     onCancel:(props:OpenSideBarOuDrawer)=>void,
-    editRefs?:UpsertProducts
+    editRefs:UpsertProducts
 }
 
 export const HandlerFormUpsetProduct = ({type,editRefs,onCancel}:PropsHandle)=>{
-    const {submit,BoxMessage,refs} = useUpsertProduct({type,valuesForm:editRefs,closeModal:onCancel})
+    const {refs} = useUpsertProductForm(editRefs,type)
+    const {submit,BoxMessage} = useUpsertProduct({type,originalValues:editRefs,valuesRef:refs,closeModal:onCancel})
 
     return (
         <FormUpsertProduct
@@ -30,6 +33,7 @@ export const HandlerFormUpsetProduct = ({type,editRefs,onCancel}:PropsHandle)=>{
 type Props = UseUpsetProduct &{
     type:"create" | "update",
     onCancel:(v:null)=>void
+    refs:UpsertProductsRefs
 }
 const renderCategoryOptions = (categories: string[]) =>
   categories.map(category => (
@@ -39,20 +43,19 @@ const renderCategoryOptions = (categories: string[]) =>
   ))
 
 export const FormUpsertProduct = ({refs,submit,BoxMessage,type,onCancel}:Props)=>{
- 
+   
     return(
-        <UserFormStyles>
+        <UserFormStyles $minHeight="none"> 
             <form onSubmit={submit}>
-                {type === "create" ? <h1 className="type_form">Criar produto</h1> :
-                 <h1 className="type_form">Editar produto</h1>}
-                {type === "update"  && <img src={refs.image && loadImage(refs.image)}/>}
                 <BoxMessage/>
                 <InputWithLabel inputName="product_name" textLabel="Defina um nome que ajude os clientes a encontrarem seu produto">
                     <input placeholder="Ex: camisa polo" className="input-form"
                     ref={refs.nameRef} 
                     id="product_name"
-                    maxLength={15} 
-                    type="text" />
+                    maxLength={14} 
+                    type="text" 
+                    data-testid="upsert-name"
+                    />
                 </InputWithLabel>
 
                 <InputWithLabel inputName="image" textLabel="Imagem do produto:">
@@ -71,16 +74,20 @@ export const FormUpsertProduct = ({refs,submit,BoxMessage,type,onCancel}:Props)=
                         ref={refs.descriptionRef} 
                         id="description" 
                         maxLength={199}
+                        data-testid="upsert-description"
                         />
                 </InputWithLabel>
-
+                    {type === "update"  && <img data-testid="upsert-image-update" src={refs.image && loadImage(refs.image)}/>}
                 <InputWithLabel textLabel="Digite o preço do seu produto" inputName="price">
                     <input 
                     placeholder="Ex: 19.99"
                     className="input-form" 
                     ref={refs.priceRef} 
                     type="number" 
-                    id="price"/>
+                    id="price"
+                    step={"0.01"}
+                    data-testid="upsert-price"
+                    />
                 </InputWithLabel>
 
                 <InputWithLabel textLabel="Digite a quantidade de produtos" inputName="stock">
@@ -89,18 +96,31 @@ export const FormUpsertProduct = ({refs,submit,BoxMessage,type,onCancel}:Props)=
                     className="input-form"
                     ref={refs.stockRef} 
                     type="number" 
-                    id="stock"/>
+                    id="stock"
+                    data-testid="upsert-stock"
+                    />
                 </InputWithLabel>
                 
                 <InputWithLabel textLabel="Selecione a categoria que mais representa o seu produto" inputName="category">
                     <select data-testid="select-product" ref={refs.categoryRef} id="category" >
                     <option value="">Selecione uma categoria</option>
-                   {renderCategoryOptions(categories)}
+                    {renderCategoryOptions(categories)}
                 </select>
-                </InputWithLabel>
-                  <BoxMessage/>
-                <StyleBtn >Enviar</StyleBtn>
-                <StyleBtn type="button" onClick={()=>onCancel(null)}>Cancelar</StyleBtn>
+                </InputWithLabel> 
+                <BoxMessage/>
+
+                <ButtonsDiv>
+                    <PrimaryButton type="submit" >Enviar</PrimaryButton>
+                    <PrimaryButton type="button"
+                        $bg="#FF6B6B" 
+                        $hoverBg="#FF4C4C" 
+                        $color="#fff" 
+                        onClick={()=>onCancel(null)}
+                        >
+                        Cancelar
+                    </PrimaryButton>
+
+                </ButtonsDiv>
             </form>
         </UserFormStyles>
     )    
