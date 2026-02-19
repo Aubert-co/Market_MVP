@@ -1,5 +1,5 @@
 import { usableFetch } from "@/services/fetchs";
-import { dashboardStats } from "@/services/storeDashboard.service";
+import { dashboardStats } from "@/services/store/storeDashboard.service";
 import type { BackendStats, Stat } from "@/types/storeDashboard.types";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
