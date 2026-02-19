@@ -1,4 +1,6 @@
-import { StyleBtn } from "@/styles/forms.style";
+import { PrimaryButton } from "@/styles/shared.style";
+
+
 
 type ErrorProps = {
   message?: string;
@@ -13,9 +15,9 @@ export const ErrorBox = ({ message = "Ocorreu um erro ao carregar os dados.",ret
     <div className="error">
       <p>{message}</p>
    
-      {retry &&  <StyleBtn $hoverBg="#f80929ff" $bg="#b3182cff" onClick={onRetry} >
+      {retry &&  <PrimaryButton $hoverBg="#f80929ff" $bg="#b3182cff" onClick={onRetry} >
         Tentar novamente
-      </StyleBtn>}
+      </PrimaryButton>}
     </div>
   );
 };
