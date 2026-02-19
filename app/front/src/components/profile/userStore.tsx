@@ -1,5 +1,5 @@
 import { usableFetch } from "@/services/fetchs"
-import { serviceGetStores } from "@/services/store.services"
+import { serviceGetStores } from "@/services/store/store.services"
 import { ListContainer } from "@/styles/profile.style"
 import type { Store } from "@/types/store.types"
 import { shortDescription } from "@/utils"
