@@ -1,22 +1,39 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getInputValue } from "@/utils"
 
-type Props = {
-    type?:"useSearch" | "admSearch",
-}
-export const SearchBar = ({type}:Props)=>{
-    const navigate = useNavigate()
-    const searchRef = useRef<HTMLInputElement >(null)
 
+type Props = {
+    searchEvent:SearchEvent
+}
+type Params = {
+    mode:"navigate" | "data"
+}
+type SearchEvent = (params:string)=>void
+
+export const useSearch = ({mode}:Params)=>{
+    const [searchProduct,setSearchProduct] = useState<string>()
+    const navigate = useNavigate()
+    const searchEvent = (search:string)=>{
+        if(mode === "navigate"){
+            navigate(`/buscas/${search}`)
+            return;
+        }
+        setSearchProduct(search)
+    }
+    return {
+        searchProduct,setSearchProduct,
+        searchEvent
+    }
+}
+export const SearchBar = ({searchEvent}:Props)=>{
+    const searchRef = useRef<HTMLInputElement >(null)
     const onClick = (e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
         let search = getInputValue(searchRef)
-        if(search.length ===0)return
-        if(type === "admSearch"){
-            
-        }
-        navigate(`/buscas/${search}`)
+        if(search.length ===0)return;
+
+        searchEvent( search )
         
     }
     return (
