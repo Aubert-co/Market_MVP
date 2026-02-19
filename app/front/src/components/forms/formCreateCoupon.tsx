@@ -1,11 +1,13 @@
-import { StyleBtn, UserFormStyles } from "@/styles/forms.style"
+import {  UserFormStyles } from "@/styles/forms.style"
 import { InputWithLabel } from "./inputWithLabel"
 import { useRef, useState } from "react"
 import { useBoxMessage } from "../../hooks/useBoxMessages"
 import { getMultiInputValues } from "@/utils"
 import { checkIsAValidNumber, isAValidString } from "@/utils/checkIsValid"
-import { createCouponService } from "@/services/admStore.services"
+
 import type { DiscountType } from "@/types/coupons.types"
+import { PrimaryButton } from "@/styles/shared.style"
+import { createCoupon } from "@/services/store/couponAdmin.service"
 
 type ValidateInputs={
     selectDiscount:any,
@@ -53,7 +55,7 @@ export const FormCreateCoupon = ()=>{
             setMessage({content:errorMessages,type:'info'})
             return 
         }
-        const {status,message} = await createCouponService({
+        const {status,message} = await createCoupon({
             code:cupomCode,quantity:Number(quantity),discount:Number(discount),
             discountType:selectDiscount as DiscountType ,expiresAt
         })
@@ -101,7 +103,7 @@ export const FormCreateCoupon = ()=>{
                 <InputWithLabel textLabel="Quantidades de cupons" inputName="cupom-quantity">
                     <input ref={quantityRef} placeholder="Ex: 25"  type="number" name="cupom-quantity" />
                 </InputWithLabel>
-                <StyleBtn>Criar</StyleBtn>
+                <PrimaryButton>Criar</PrimaryButton>
             </form>
        </UserFormStyles>
     )

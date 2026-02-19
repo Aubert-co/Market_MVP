@@ -2,14 +2,14 @@ import type React from "react";
 import { useRef, type JSX } from "react";
 import { Link } from "react-router-dom"
 import { getMultiInputValues } from "@/utils";
-import { StyleBtn, UserFormStyles } from "@/styles/forms.style";
+import {  UserFormStyles } from "@/styles/forms.style";
 import { isAValidString, isValidEmail } from "@/utils/checkIsValid";
 import type { TypeSubmitRegister } from "@/pages/register";
 import type { TypeSubmitLogin } from "@/pages/login";
-
 import { useBoxMessage } from "../../hooks/useBoxMessages";
 import { PasswordInput } from "./passwordInput";
 import { InputWithLabel } from "./inputWithLabel";
+import { PrimaryButton } from "@/styles/shared.style";
 
 type TypeForm = "Login" | "Register"
 type PropsTypeForm = {
@@ -104,7 +104,7 @@ export const FormLoginOrRegister = ({submitEvent,type,formRef}:PropsForm)=>{
                 placeholder={"Igual a do campo senha"}/>
                </InputWithLabel>}
           
-              <StyleBtn data-testid="btn_send" type="submit">{'Enviar'}</StyleBtn>
+              <PrimaryButton data-testid="btn_send" type="submit">{'Enviar'}</PrimaryButton>
               <LoginOrRegister option={type}/>
           </form>
     </UserFormStyles>

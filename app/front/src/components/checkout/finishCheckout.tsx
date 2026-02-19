@@ -1,8 +1,8 @@
 import { serviceCreateOrder, type CreateOrder } from "@/services/checkout.services"
 import { getItemsCheckout } from "@/storage/checkout.storage"
-import { StyleBtn } from "@/styles/forms.style"
 import type { Message } from "../../hooks/useBoxMessages"
 import type { SetStateAction } from "react"
+import { PrimaryButton } from "@/styles/shared.style"
 
 type Props = {
     couponId?:number,
@@ -28,5 +28,5 @@ export const FinishCheckout = ({couponId,setMessage}:Props)=>{
         }
         setMessage({type:'error',content:'Algo deu errado ao tentar finalizar a compra!'})
     }
-    return <StyleBtn onClick={onClick}>Finalizar</StyleBtn>
+    return <PrimaryButton onClick={onClick}>Finalizar</PrimaryButton>
 }

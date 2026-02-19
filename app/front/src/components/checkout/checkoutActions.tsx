@@ -1,5 +1,5 @@
 import { removeItemCheckout } from "@/storage/checkout.storage";
-import { StyleBtn } from "@/styles/forms.style"
+import { PrimaryButton } from "@/styles/shared.style"
 import {  type SetStateAction } from "react";
 import { ChangeQuantity } from "./changeItemQuantity";
 
@@ -19,12 +19,12 @@ export const CheckoutActions = ({id,quantity,setUpdate,stock}:Props)=>{
     return(
         <div className="checkout-actions">
             
-            <StyleBtn
+            <PrimaryButton
                 className="btn-delete"
                 $bg="#e74c3c"
                 $hoverBg="#c0392b"
                 $color="#fff"
-             onClick={remove} >Remover</StyleBtn>
+             onClick={remove} >Remover</PrimaryButton>
             <ChangeQuantity stock={stock} setUpdate={setUpdate} id={id} quantity={quantity}/>
         </div>
       
