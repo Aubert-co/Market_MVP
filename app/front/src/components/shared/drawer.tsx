@@ -1,3 +1,4 @@
+import { PanelHeader,CloseButton } from "@/styles/shared.style";
 import type { OpenSideBarOuDrawer } from "@/types/storeDashboard.types"
 import styled from "styled-components"
 
@@ -28,14 +29,6 @@ const StyleDrawer = styled.div<{ $open: boolean }>`
 
   overflow-y: auto;
 
-  .drawer-close {
-    align-self: flex-end;
-    margin: 12px;
-    border: none;
-    background: transparent;
-    font-size: 18px;
-    cursor: pointer;
-  }
 `;
 
 
@@ -43,14 +36,16 @@ type Props = {
   children: React.ReactNode
   isOpen: boolean
   onClose: (option:OpenSideBarOuDrawer) => void
+  title:string
 }
 
-export const Drawer = ({ children, isOpen, onClose }: Props) => {
+export const Drawer = ({ children, isOpen, onClose,title }: Props) => {
   return (
     <StyleDrawer $open={isOpen}>
-      <button className="drawer-close" onClick={()=>onClose(null)}>
-        x
-      </button>
+      <PanelHeader>
+        {title}
+        <CloseButton onClick={()=>onClose(null)}>&times;</CloseButton>
+      </PanelHeader>
 
       {children}
     </StyleDrawer>
