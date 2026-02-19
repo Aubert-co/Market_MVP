@@ -23,9 +23,9 @@ const Container = styled.div`
 `
 
 const Title = styled.h2`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
-  color: #111827; 
+  color: #374151; 
   letter-spacing: 0.2px;
 `
 
