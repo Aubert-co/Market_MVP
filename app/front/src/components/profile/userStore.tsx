@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { loadImage } from "@/utils"
 import { RenderDataState } from "@/components/shared/renderDataState"
+import { BoxSkeleton } from "../templates/skeleton"
 
 type StoreState = {
     datas:Store[],
@@ -68,11 +69,9 @@ export const UserStore =({formRef}:PropsUserStore)=>{
                     </>
                 }
                 errorMessage="Algo deu errado ao carregar a sua loja!"
-                skeletonLoading={{
-                    classImg:'list-item',
-                    classLoading:'list-image',
-                    length:1
-                }}
+                skeleton={
+                    <BoxSkeleton className="list-image" classNameImg="list-item" length={1}/>
+                }
             >
                 <ListStore store={stores.datas} formRef={formRef}/>
             </RenderDataState>

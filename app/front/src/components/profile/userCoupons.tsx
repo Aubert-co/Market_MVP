@@ -7,6 +7,7 @@ import { usableFetch } from "@/services/fetchs"
 import { userCoupons } from "@/services/userProfile.services"
 import { Link } from "react-router-dom"
 import { RenderDataState } from "@/components/shared/renderDataState"
+import { BoxSkeleton } from "../templates/skeleton"
 
 type StateCoupon = {
     datas:BaseCoupon<number>[],
@@ -64,11 +65,9 @@ export const UserCoupons = ({formRef}:PropsUserCoupons)=>{
                 </>
               }
               errorMessage="Algo deu errado ao buscar pelo seus cupons"
-              skeletonLoading={{
-                classLoading:'list-item',
-                classImg:'list-image',
-                length:3
-              }}
+              skeleton={
+                <BoxSkeleton className="list-item" classNameImg="list-image" length={3}/>
+              }
             >
               <ListCoupons datas={coupons.datas}/>
               

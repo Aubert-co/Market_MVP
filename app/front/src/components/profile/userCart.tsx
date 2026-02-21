@@ -9,6 +9,7 @@ import { RenderDataState } from "@/components/shared/renderDataState"
 import type { Message } from "@/hooks/useBoxMessages"
 import { Link } from "react-router-dom"
 import { usableFetch } from "@/services/fetchs"
+import { BoxSkeleton } from "../templates/skeleton"
 
 
 type CartState = {
@@ -59,7 +60,9 @@ export const Cart = ({formRef,setMessage}:Props)=>{
 
                 }
                 errorMessage="Algo deu errado ao carregar o seu carrinho"
-                skeletonLoading={{classLoading:'list-item',classImg:'list-image',length:3}}
+                skeleton={
+                  <BoxSkeleton className="list-item" classNameImg="list-image" length={3}/>
+                }
               >
               <CartOverview setMessage={setMessage} setUpdateCart={setUpdateCart} updateCart={updateCart}/>
               <CartList setMessage={setMessage} cart={userCart.datas}/>

@@ -2,6 +2,7 @@ import { ListProducts } from "./listProducts"
 import type { Product } from "@/types/products.types"
 import { ProductSection } from "@/styles/index.style"
 import { RenderDataState } from "@/components/shared/renderDataState"
+import { BoxSkeleton } from "../templates/skeleton"
 
 type Props = {
     datas:Product[],
@@ -19,11 +20,9 @@ export const BoxProducts = ({ datas, status }: Props) => {
                 status={status}
                 emptyMessage="Sem produtos disponíveis"
                 errorMessage="Ocorreu um erro ao carregar os dados."
-                skeletonLoading={{
-                    classLoading:"product"
-                    ,classImg:""
-                    ,length:8
-                }}
+                skeleton={
+                    <BoxSkeleton className="product" length={8}/>
+                }
             >
                 <ListProducts listType="Product" products={datas} />
             

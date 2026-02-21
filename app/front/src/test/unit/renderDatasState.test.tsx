@@ -1,4 +1,5 @@
 import { RenderDataState } from "@/components/shared/renderDataState"
+import { BoxSkeleton } from "@/components/templates/skeleton"
 import {  render } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
 
@@ -19,7 +20,8 @@ describe("RenderDataState component",()=>{
             datas={datas}
             errorMessage="Deu errado"
             emptyMessage="Dados vazios"
-            skeletonLoading={{classLoading:'',length:1,classImg:''}}
+      
+            skeleton={<BoxSkeleton className="" length={1} classNameImg=""/>}
             >
                 <MockComponent/>
             </RenderDataState>
@@ -46,7 +48,9 @@ describe("RenderDataState component",()=>{
             datas={datas}
             errorMessage="Deu errado"
             emptyMessage="Dados vazios"
-              skeletonLoading={{classLoading:'',length:1,classImg:''}}
+            skeleton={
+                <BoxSkeleton className="" length={1} classNameImg=""/>
+            }
             >
                 <MockComponent/>
             </RenderDataState>
@@ -72,7 +76,9 @@ describe("RenderDataState component",()=>{
             datas={datas}
             errorMessage="Deu errado"
             emptyMessage="Dados vazios"
-              skeletonLoading={{classLoading:'',length:1,classImg:''}}
+            skeleton={
+                <BoxSkeleton className="" classNameImg="" length={1}/>
+            }
             >
                 <MockComponent/>
             </RenderDataState>
@@ -100,7 +106,9 @@ describe("RenderDataState component",()=>{
             datas={datas}
             errorMessage="Deu errado"
             emptyMessage="Dados vazios"
-              skeletonLoading={{classLoading:'',length:1,classImg:''}}
+            skeleton={
+                <BoxSkeleton className="" classNameImg="" length={1}/>
+            }
             >
                 <MockComponent/>
             </RenderDataState>
@@ -127,7 +135,9 @@ describe("RenderDataState component",()=>{
             datas={datas}
             errorMessage="Deu errado"
             emptyMessage="Dados vazios"
-              skeletonLoading={{classLoading:'',length:1,classImg:''}}
+            skeleton={
+                <BoxSkeleton className="" classNameImg="" length={1}/>
+            }
             >
                 <MockComponent/>
             </RenderDataState>
