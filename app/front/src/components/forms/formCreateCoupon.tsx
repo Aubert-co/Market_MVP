@@ -6,7 +6,7 @@ import { getMultiInputValues } from "@/utils"
 import { checkIsAValidNumber, isAValidString } from "@/utils/checkIsValid"
 
 import type { DiscountType } from "@/types/coupons.types"
-import { PrimaryButton } from "@/styles/shared.style"
+import { ButtonsDiv, PrimaryButton } from "@/styles/shared.style"
 import { createCoupon } from "@/services/store/couponAdmin.service"
 
 type ValidateInputs={
@@ -36,7 +36,11 @@ function validateInputs({ selectDiscount, discount, cupomCode, quantity }:Valida
 
   return null; 
 }
-export const FormCreateCoupon = ()=>{
+
+type Props = {
+    setCloseDrawer:(props:null)=>void
+}
+export const FormCreateCoupon = ({setCloseDrawer}:Props)=>{
     
     const [selectDiscount,setDiscount] = useState("fixed")
     const [expiresAt,setExpires] = useState("fivedays")
@@ -77,8 +81,6 @@ export const FormCreateCoupon = ()=>{
     return (
        <UserFormStyles>
             <form onSubmit={onSubmit}>
-               
-                <h1>Criar cupom de desconto</h1>
                  <BoxMessage/>
                 <InputWithLabel textLabel="Tipo de desconto" inputName="select">
                     <select data-testid="select" name="select" id="" onChange={(e)=>setDiscount(e.currentTarget.value)}>
@@ -103,7 +105,18 @@ export const FormCreateCoupon = ()=>{
                 <InputWithLabel textLabel="Quantidades de cupons" inputName="cupom-quantity">
                     <input ref={quantityRef} placeholder="Ex: 25"  type="number" name="cupom-quantity" />
                 </InputWithLabel>
-                <PrimaryButton>Criar</PrimaryButton>
+                <ButtonsDiv>
+                    <PrimaryButton type="submit">Criar</PrimaryButton>
+                <PrimaryButton
+                    onClick={()=>setCloseDrawer(null)}
+                    type="button"
+                    $bg="#dc3545"
+                    $hoverBg="#b02a37"
+                    >
+                    Cancelar
+                </PrimaryButton>
+                </ButtonsDiv>
+
             </form>
        </UserFormStyles>
     )
