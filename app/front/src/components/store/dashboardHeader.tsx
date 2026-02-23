@@ -1,8 +1,12 @@
-export const DashboardHeader = ()=>{
+type Props = {
+    title:string
+    subTitle:string
+}
+export const DashboardHeader = ({title,subTitle}:Props)=>{
     return (
         <header>
-            <h1>Seu dashboard</h1>
-            <p>Acompanhe o desempenho da sua loja em tempo real.</p>
+            <h1>{title }</h1>
+            <p>{subTitle }</p>
         </header>
     )
 }
