@@ -37,11 +37,10 @@ export const SearchBar = ({searchEvent}:Props)=>{
         
     }
     return (
-
-        <form onSubmit={(e)=>onClick(e)} className="search">
+        <form onSubmit={(e)=>onClick(e)} className="search" name="form_search">
             <div className="search-items">
                 <input ref={searchRef}  name="input_search"  minLength={2} maxLength={20} className="input_search"  placeholder="FAÇA UMA BUSCA"/>
-                <button className="btn_search" type="submit" >BUSCAR</button>
+                <button className="btn_search" name="btn_search" type="submit" >BUSCAR</button>
             </div>
         </form>
     )
