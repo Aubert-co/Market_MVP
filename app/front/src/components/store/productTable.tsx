@@ -1,7 +1,8 @@
 import type { Product } from "@/types/products.types";
 import { BaseTable } from "../templates/baseTable";
 import { loadImage } from "@/utils/index";
-import { SmallButton } from "@/styles/forms.style";
+import { CompactButton } from "@/styles/shared.style";
+
 
 type Props = {
   products:Product[],
@@ -24,7 +25,11 @@ const Tbody = ({products,openModal}:Props)=>{
         <td data-label="Preço">R$ {p.price.toFixed(2)}</td>
         <td data-label="Estoque">{p.stock}</td>
         <td>
-          <SmallButton onClick={()=>openModal([p])}>...</SmallButton>
+          <CompactButton 
+          aria-label={`Abrir modal do produto ${p.name}`}
+          onClick={()=>openModal([p])
+          }>...
+          </CompactButton>
         </td>
       </tr>
     ))
