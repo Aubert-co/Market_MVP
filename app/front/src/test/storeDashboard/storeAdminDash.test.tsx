@@ -1,75 +1,77 @@
-import StoreAdminDash from "@/pages/storeDashboard/storeDashboard"
-import { render, waitFor } from "@testing-library/react"
-import * as services from '@/services/storeDashboard.service'
-import { productOrdersMock } from "../fixtures"
-import type { GetStoreDashboard, ProductOrder } from "@/types/storeDashboard.types"
+import {StoreHome} from "@/pages/store/storeHome"
+import { render } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
-const spyService = jest.spyOn(services,'storeDashboardService')
+
+import * as useMostVisited from "@/components/store/topVisitedProducts"
+import * as storeLastOrders from "@/hooks/store/useStoreHome"
+import { FixtureOrders, FixtureVisitedProducs } from "../fixtures/store.fixtures"
+import * as dashboardStats from "@/components/shared/dashboardStats"
+import { mapStats } from "@/constants/dashboardStats"
+import { mockBackendStats } from "./dashboardStats.test"
+import userEvent from "@testing-library/user-event"
 
 
-const ordersMock = [
-    {orders:{cancelled:500,pending:519,completed:29,lastPending:productOrdersMock as ProductOrder[]}, views:{total:188}},
-   
-] as GetStoreDashboard[]
+const spyMostVisited = jest.spyOn(useMostVisited,'useMostVisitedProducts')
+const spyStoreLastOrders = jest.spyOn(storeLastOrders,'useStoreLastOrders')
+const spyDashboardStats = jest.spyOn(dashboardStats,'useDashboardStats')
+
+const mockSetIsOpen = jest.fn()
+
+jest.mock("@/hooks/useSidebarOrDrawer", () => ({
+  useSideBarOrDrawer: () => ({
+    isOpen: false,
+    setIsOpen: mockSetIsOpen,
+  }),
+})) 
+export const mockTopVisitedProducts = {
+    status:201,
+    datas:FixtureVisitedProducs
+}
 describe("StoreDashboard",()=>{
     beforeEach(()=>{
         jest.clearAllMocks()
     })
-    it("should render the page correctly when the service returns data with status 201",async()=>{
-        spyService.mockResolvedValue({message:'Success',datas:ordersMock ,status:201})
-        const {getByText,container,getAllByTestId} = render(
+    it("should render the page correctly",async()=>{
+        spyMostVisited.mockReturnValue({mostVisited:mockTopVisitedProducts})
+        spyStoreLastOrders.mockReturnValue({orders:FixtureOrders,status:201})
+        spyDashboardStats.mockReturnValue({stats:mapStats(mockBackendStats)})
+        
+        const {getByRole,getAllByText,queryByText} = render(
             <BrowserRouter>
-                <StoreAdminDash/>
+                <StoreHome/>
             </BrowserRouter>
         )
-        expect( getAllByTestId("sidebar-link")).toHaveLength(5) 
-        await waitFor(()=>{ 
-            const boxValues = container.querySelectorAll(".box-value")
-            const [completed,cancelled,pending,totlaViews] = container.querySelectorAll(".box-label")
-            expect(completed).toHaveTextContent("Pedidos completados")
-            expect(cancelled).toHaveTextContent("Pedidos cancelados")
-            expect(pending).toHaveTextContent("Pedidos pendentes")
-            expect(totlaViews).toHaveTextContent("Total de visualizações")
-            expect(boxValues[0]).toHaveTextContent(ordersMock[0].orders.completed.toString())
-            expect(boxValues[1]).toHaveTextContent(ordersMock[0].orders.cancelled.toString())
-            expect(boxValues[2]).toHaveTextContent(ordersMock[0].orders.pending.toString())
-            expect(boxValues[3]).toHaveTextContent(ordersMock[0].views.total.toString())
+        const [ordersLink,mostVisitedLink] = getAllByText("ver mais")
+        expect(queryByText("Visualizações")).toBeInTheDocument()
+        expect(queryByText("Faturamento Mensal")).toBeInTheDocument()
+        expect(queryByText("Pedidos Recebidos")).toBeInTheDocument()
+        expect(queryByText("Produtos Ativos")).toBeInTheDocument()
+        expect(queryByText("Cupons Ativos")).toBeInTheDocument()
+        expect(queryByText("Taxa de Conversão")).toBeInTheDocument()
 
-            expect( getByText("Últimos pedidos em aberto")).toBeInTheDocument()
-            expect(container.querySelector("table")).toBeInTheDocument()
+        expect(queryByText("Últimas Ordens")).toBeInTheDocument()
+        expect(queryByText("Produtos mais visitados no mês")).toBeInTheDocument()
+
+        expect(getAllByText("ver mais")).toHaveLength(2)
+         expect(ordersLink.closest("a")).toHaveAttribute(
+            "href",
+            "/loja/pedidos"
+        )
+
+        expect(mostVisitedLink.closest("a")).toHaveAttribute(
+            "href",
+            "/loja/produtos"
+        )
+         const button = getByRole("button", {
+            name: /open menu/i,
         })
 
+        expect(button).toBeInTheDocument()
+
+        await userEvent.click(button)
+
+        expect(mockSetIsOpen).toHaveBeenCalledWith('sidebar')
+        
     })
-     it("should render the page correctly when the service returns empty data [] with status 201",async()=>{
-        spyService.mockResolvedValue({message:'Success',datas:[] ,status:201})
-        const {getByText,container,getAllByTestId} = render(
-            <BrowserRouter>
-                <StoreAdminDash/>
-            </BrowserRouter>
-        )
-        expect( getAllByTestId("sidebar-link")).toHaveLength(5) 
-        await waitFor(()=>{ 
-           
-
-            expect( getByText("Seu dashboard está vázio")).toBeInTheDocument()
-            expect(container.querySelector("table")).not.toBeInTheDocument()
-        },{timeout:1000})
-
-    })
-    it("should render the page correctly when the service returns data with status 500",async()=>{
-        spyService.mockResolvedValue({message:'Success',datas:[] ,status:500})
-        const {getByText,container,getAllByTestId} = render(
-            <BrowserRouter>
-                <StoreAdminDash/>
-            </BrowserRouter>
-        )
-        expect( getAllByTestId("sidebar-link")).toHaveLength(5) 
-        await waitFor(()=>{ 
-           
-
-            expect( getByText("Algo deu errado ao carregar seu dashboard")).toBeInTheDocument()
-            expect(container.querySelector("table")).not.toBeInTheDocument()
-        },{timeout:1000})
-
-    })
+     
 })
