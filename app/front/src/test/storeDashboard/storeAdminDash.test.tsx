@@ -2,7 +2,7 @@ import {StoreHome} from "@/pages/store/storeHome"
 import { render } from "@testing-library/react"
 import { BrowserRouter } from "react-router-dom"
 
-import * as useMostVisited from "@/components/store/topVisitedProducts"
+import * as useMostVisited from "@/hooks/store/useMostVisitedProducts"
 import * as storeLastOrders from "@/hooks/store/useStoreHome"
 import { FixtureOrders, FixtureVisitedProducs } from "../fixtures/store.fixtures"
 import * as dashboardStats from "@/components/shared/dashboardStats"
@@ -32,7 +32,7 @@ describe("StoreDashboard",()=>{
         jest.clearAllMocks()
     })
     it("should render the page correctly",async()=>{
-        spyMostVisited.mockReturnValue({mostVisited:mockTopVisitedProducts})
+        spyMostVisited.mockReturnValue({mostVisited:mockTopVisitedProducts.datas,status:201})
         spyStoreLastOrders.mockReturnValue({orders:FixtureOrders,status:201})
         spyDashboardStats.mockReturnValue({stats:mapStats(mockBackendStats)})
         
