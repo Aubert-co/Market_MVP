@@ -31,7 +31,7 @@ describe("component SideBar",()=>{
 
       
         expect(setState).toHaveBeenCalledTimes(1)
-        expect(setState).toHaveBeenCalledWith(true)
+        expect(setState).toHaveBeenCalledWith("sidebar")
     })
     it("should show the sidebar when isOpen is true and render all menu items correctly",()=>{
        const activeMenu = "Cupons"
@@ -64,6 +64,6 @@ describe("component SideBar",()=>{
 
       
         expect(setState).toHaveBeenCalledTimes(1)
-        expect(setState).toHaveBeenCalledWith(false)
+        expect(setState).toHaveBeenCalledWith(null)
     })
 })
