@@ -22,13 +22,21 @@ const ToggleButton = styled.button<{$open:boolean}>`
 `
 export const Toggle = ({isOpen,setOpen}:Props)=>{
   if(isOpen)return(
-    <ToggleButton data-testid="close-toggle" $open={isOpen} onClick={()=>setOpen(null)}>
+    <ToggleButton 
+      data-testid="close-toggle" 
+      $open={isOpen}
+      aria-label="close menu"
+      onClick={()=>setOpen(null)}>
       X
     </ToggleButton>
 
   );
   return (
-       <ToggleButton data-testid="open-toggle" $open={isOpen} onClick={()=>setOpen('sidebar')}>
+       <ToggleButton 
+        data-testid="open-toggle"
+         $open={isOpen} onClick={()=>setOpen('sidebar')}
+         aria-label="open menu"
+         >
         <FaBars/>
       </ToggleButton>
   
