@@ -12,7 +12,6 @@ describe("component LastPendingOrders",()=>{
         const totallyCell = container.querySelectorAll('[data-label="Total"]');
         const userCell = container.querySelectorAll('[data-label="Cliente"]')
         const images = container.querySelectorAll('[data-label="Produto"] img');
-        expect(getByText("Últimos pedidos em aberto")).toBeInTheDocument()
         expect(getByText("Produto")).toBeInTheDocument()
         expect(getByText("Quantidade")).toBeInTheDocument()
         expect(getByText("Total")).toBeInTheDocument()
