@@ -1,6 +1,6 @@
 import {  HandlerFormUpsetProduct } from "@/components/forms/formUpsertProduct"
 import { categories } from "@/constants"
-import * as services from "@/services/storeProductAdmin.service"
+import * as services from "@/services/store/productAdmin"
 import type { UpsertProducts } from "@/types/storeDashboard.types"
 import { fireEvent, render, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
@@ -53,7 +53,7 @@ describe("component FormUpsertProduct update product",()=>{
    
     it("should not call the service when data has not changed",async()=>{
         spyServiceUpdate.mockResolvedValue({status:201,message:'Sucess'})
-        spyStorage.mockReturnValue([{name:'loja',id:35,photo:'eett',description:'lorem'}])
+        spyStorage.mockReturnValue({name:'loja',id:35,photo:'eett',description:'lorem'})
         const user = userEvent.setup();
         const {container,getByTestId,getByText,getByPlaceholderText} = render(
             <HandlerFormUpsetProduct
@@ -81,7 +81,7 @@ describe("component FormUpsertProduct update product",()=>{
     })
     it("should call the update service correctly",async()=>{
         spyServiceUpdate.mockResolvedValue({status:201,message:'Sucess'})
-        spyStorage.mockReturnValue([{name:'loja',id:35,photo:'eett',description:'lorem'}])
+        spyStorage.mockReturnValue({name:'loja',id:35,photo:'eett',description:'lorem'})
         const user = userEvent.setup();
         const {container,getByTestId,getByText,getByPlaceholderText} = render(
             <HandlerFormUpsetProduct
@@ -130,7 +130,7 @@ describe("component FormUpsertProduct update product",()=>{
     })
     it("should send only the file when all other inputs are empty.",async()=>{
         spyServiceUpdate.mockResolvedValue({status:201,message:'Sucess'})
-        spyStorage.mockReturnValue([{name:'loja',id:35,photo:'eett',description:'lorem'}])
+         spyStorage.mockReturnValue({name:'loja',id:35,photo:'eett',description:'lorem'})
         const user = userEvent.setup();
         const {container,getByTestId,getByText,getByPlaceholderText} = render(
             <HandlerFormUpsetProduct
@@ -198,7 +198,7 @@ describe("component FormUpsertProduct update product",()=>{
     "should send only %s when it is updated",
     async ({ testId, newValue, expectedPayload }) => {
         spyServiceUpdate.mockResolvedValue({ status: 201, message: "Success" })
-        spyStorage.mockReturnValue([{name:'loja',id:35,photo:'eett',description:'lorem'}])
+         spyStorage.mockReturnValue({name:'loja',id:35,photo:'eett',description:'lorem'})
 
         const { container, getByTestId, getByText } = render(
         <HandlerFormUpsetProduct
@@ -238,7 +238,7 @@ describe("component FormUpsertProduct create product",()=>{
     })
      it("should return an error message when the service returns status 400",async()=>{
         spyServiceCreate.mockResolvedValue({status:400,message:'Sucess'})
-        spyStorage.mockReturnValue([{name:'loja',id:35,photo:'eett',description:'lorem'}])
+         spyStorage.mockReturnValue({name:'loja',id:35,photo:'eett',description:'lorem'})
         const user = userEvent.setup()
         const {container,getByPlaceholderText,getByTestId,getByText} = render(
             <HandlerFormUpsetProduct
@@ -275,7 +275,7 @@ describe("component FormUpsertProduct create product",()=>{
     })
     it("should create a product succesfully",async()=>{
         spyServiceCreate.mockResolvedValue({status:201,message:'Sucess'})
-        spyStorage.mockReturnValue([{name:'loja',id:35,photo:'eett',description:'lorem'}])
+         spyStorage.mockReturnValue({name:'loja',id:35,photo:'eett',description:'lorem'})
         const user = userEvent.setup()
         const {container,getByPlaceholderText,getByTestId,getByText} = render(
             <HandlerFormUpsetProduct
