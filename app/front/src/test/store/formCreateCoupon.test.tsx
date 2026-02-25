@@ -1,9 +1,9 @@
 import { fireEvent, render, waitFor } from "@testing-library/react"
 import { FormCreateCoupon } from "@/components/forms/formCreateCoupon"
-import * as services from "@/services/admStore.services"
+import * as services from "@/services/store/couponAdmin.service"
 
-const spyService = jest.spyOn(services,'createCouponService')
-
+const spyService = jest.spyOn(services,'createCoupon')
+ let eventCloseDrawer = jest.fn()
 describe("component FormCreateCoupon",()=>{
     const body = {
         code:"DESCONTO15",
@@ -12,6 +12,7 @@ describe("component FormCreateCoupon",()=>{
         discountType:"percent",
         expiresAt:"fivedays"
     }
+   
     beforeEach(()=>{
         jest.clearAllMocks()
         jest.useFakeTimers()
@@ -20,7 +21,7 @@ describe("component FormCreateCoupon",()=>{
         spyService.mockResolvedValue({status:201,message:''})
         
         const {container,getByPlaceholderText,getAllByTestId,getByText} = render(
-            <FormCreateCoupon/>
+            <FormCreateCoupon setCloseDrawer={eventCloseDrawer}/>
         )
         const inputName = getByPlaceholderText("Ex: DESCONTO15")
         const [selectDiscount,selectDate] = getAllByTestId("select")
@@ -62,7 +63,7 @@ describe("when quantity is invalid",()=>{
         spyService.mockResolvedValue({status:201,message:''})
         const quantity ="b3m"
         const {container,getByPlaceholderText,getAllByTestId,getByText} = render(
-            <FormCreateCoupon/>
+            <FormCreateCoupon setCloseDrawer={eventCloseDrawer}/>
         )
         const inputName = getByPlaceholderText("Ex: DESCONTO15")
         const [selectDiscount,selectDate] = getAllByTestId("select")
@@ -89,7 +90,7 @@ describe("when quantity is invalid",()=>{
         spyService.mockResolvedValue({status:201,message:''})
         
         const {container,getByPlaceholderText,getAllByTestId,getByText} = render(
-            <FormCreateCoupon/>
+            <FormCreateCoupon setCloseDrawer={eventCloseDrawer}/>
         )
         const inputName = getByPlaceholderText("Ex: DESCONTO15")
         const [selectDiscount,selectDate] = getAllByTestId("select")
@@ -129,7 +130,7 @@ describe("when code is invalid",()=>{
         spyService.mockResolvedValue({status:201,message:''})
         const code ="a".repeat(13)
         const {container,getByPlaceholderText,getAllByTestId,getByText} = render(
-            <FormCreateCoupon/>
+            <FormCreateCoupon setCloseDrawer={eventCloseDrawer}/>
         )
         const inputName = getByPlaceholderText("Ex: DESCONTO15")
         const [selectDiscount,selectDate] = getAllByTestId("select")
@@ -155,7 +156,7 @@ describe("when code is invalid",()=>{
         spyService.mockResolvedValue({status:201,message:''})
         const code =""
         const {container,getByPlaceholderText,getAllByTestId,getByText} = render(
-            <FormCreateCoupon/>
+            <FormCreateCoupon setCloseDrawer={eventCloseDrawer}/>
         )
         const inputName = getByPlaceholderText("Ex: DESCONTO15")
         const [selectDiscount,selectDate] = getAllByTestId("select")
@@ -196,7 +197,7 @@ describe("when discount is invalid",()=>{
         spyService.mockResolvedValue({status:201,message:''})
         const discount = 65
         const {container,getByPlaceholderText,getAllByTestId,getByText} = render(
-            <FormCreateCoupon/>
+            <FormCreateCoupon setCloseDrawer={eventCloseDrawer}/>
         )
         const inputName = getByPlaceholderText("Ex: DESCONTO15")
         const [selectDiscount,selectDate] = getAllByTestId("select")
@@ -222,7 +223,7 @@ describe("when discount is invalid",()=>{
         spyService.mockResolvedValue({status:201,message:''})
         const discount = -1
         const {container,getByPlaceholderText,getAllByTestId,getByText} = render(
-            <FormCreateCoupon/>
+            <FormCreateCoupon setCloseDrawer={eventCloseDrawer}/>
         )
         const inputName = getByPlaceholderText("Ex: DESCONTO15")
         const [selectDiscount,selectDate] = getAllByTestId("select")
@@ -262,7 +263,7 @@ describe("services",()=>{
         spyService.mockResolvedValue({status:409,message:''})
        
         const {container,getByPlaceholderText,getAllByTestId,getByText} = render(
-            <FormCreateCoupon/>
+            <FormCreateCoupon setCloseDrawer={eventCloseDrawer}/>
         )
         const inputName = getByPlaceholderText("Ex: DESCONTO15")
         const [selectDiscount,selectDate] = getAllByTestId("select")
@@ -288,7 +289,7 @@ describe("services",()=>{
         spyService.mockResolvedValue({status:409,message:'Limit of active coupons reached for this store.'})
        
         const {container,getByPlaceholderText,getAllByTestId,getByText} = render(
-            <FormCreateCoupon/>
+            <FormCreateCoupon setCloseDrawer={eventCloseDrawer}/>
         )
         const inputName = getByPlaceholderText("Ex: DESCONTO15")
         const [selectDiscount,selectDate] = getAllByTestId("select")
@@ -314,7 +315,7 @@ describe("services",()=>{
         spyService.mockResolvedValue({status:501,message:''})
        
         const {container,getByPlaceholderText,getAllByTestId,getByText} = render(
-            <FormCreateCoupon/>
+            <FormCreateCoupon setCloseDrawer={eventCloseDrawer}/>
         )
         const inputName = getByPlaceholderText("Ex: DESCONTO15")
         const [selectDiscount,selectDate] = getAllByTestId("select")
