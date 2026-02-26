@@ -49,7 +49,7 @@ export const Search  = ()=>{
     })
     const {product} = useParams()
     const [values,setValues] = useState<Filter>({
-        minPrice:0,maxPrice:0,orderBy:'asc',category:'Todas'
+      minPrice:0,maxPrice:0,orderBy:'asc',category:'Todas'
     })
     useEffect(()=>{
       usableFetch<Product[],BodySearch>({
@@ -59,7 +59,7 @@ export const Search  = ()=>{
       })
     },[product,values])
     return (
-        <Container>
+        <Container navigateMode="update">
             <SearchBox>
                 <div className="filtered">
                     <Collapse title="Filtrar">

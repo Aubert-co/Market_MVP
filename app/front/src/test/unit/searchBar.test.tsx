@@ -48,6 +48,7 @@ describe("hook useSearch",()=>{
         jest.clearAllMocks()
     })
    it("should navigate when mode is navigate", () => {
+    const value = "notebook"
     const { result } = renderHook(
       () => useSearch({ mode: "navigate" }),
       {
@@ -56,15 +57,18 @@ describe("hook useSearch",()=>{
     )
 
     act(() => {
-      result.current.searchEvent("notebook")
+      result.current.searchEvent( value  )
     })
 
-    expect(mockedUsedNavigate).toHaveBeenCalledWith("/buscas/notebook")
+    expect(mockedUsedNavigate).toHaveBeenCalledWith({
+      pathname: "/buscas",
+      search: `q=${value}`
+    });
   })
 
   it("should update searchProduct when mode is data", () => {
     const { result } = renderHook(
-      () => useSearch({ mode: "data" }),
+      () => useSearch({ mode: "update" }),
       {
         wrapper: MemoryRouter
       }

@@ -1,24 +1,34 @@
 import { useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { getInputValue } from "@/utils"
+import type { NavigateMode } from "./topBar"
 
 
 type Props = {
     searchEvent:SearchEvent
 }
 type Params = {
-    mode:"navigate" | "data"
+    mode:NavigateMode
 }
 type SearchEvent = (params:string)=>void
 
 export const useSearch = ({mode}:Params)=>{
     const [searchProduct,setSearchProduct] = useState<string>()
+    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate()
     const searchEvent = (search:string)=>{
+
         if(mode === "navigate"){
-            navigate(`/buscas/${search}`)
+            navigate({
+                pathname: "/buscas",
+                search: new URLSearchParams({ q: search }).toString()
+            });
             return;
         }
+        const newParams = new URLSearchParams(searchParams);
+        newParams.set("q", search);
+        
+        setSearchParams(newParams);
         setSearchProduct(search)
     }
     return {

@@ -2,9 +2,13 @@ import { Link, useNavigate } from "react-router-dom"
 import { SearchBar, useSearch } from "./seachBar"
 import { FaShoppingCart, FaUser } from "react-icons/fa"
 
-export const TopBar = ()=>{
+export type NavigateMode = "navigate" | "update"
+type Props = {
+    navigationMode?:NavigateMode
+}
+export const TopBar = ({navigationMode}:Props)=>{
     const navigate = useNavigate()
-    const {searchEvent} = useSearch({mode:'navigate'})
+    const {searchEvent} = useSearch({mode:navigationMode ?? 'navigate'})
     return(
         <>
             <div className="logo">
