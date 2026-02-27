@@ -16,3 +16,10 @@ export type DatasSelect<T extends string | number> = {
     value: T;
     text: string;
 };
+
+export type OrderValue =
+  | "price_asc"
+  | "price_desc"
+  | "stock_asc"
+  | "stock_desc";
+
