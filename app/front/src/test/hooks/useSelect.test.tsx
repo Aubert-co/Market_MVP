@@ -6,7 +6,7 @@ describe("component useSelectCategory",()=>{
     it("should update the select options correctly",()=>{
         const selected = "Eletrônicos"
         const MockComponent = ()=>{
-            const {Select} = useSelect({datas:mockDatas,text:'Selecione uma categoria'})
+            const {Select} = useSelect({datas:mockDatas,text:'Selecione uma categoria',name:"input-select"})
         
             return <Select/>
         }
