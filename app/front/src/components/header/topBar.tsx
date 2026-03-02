@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
-import { SearchBar, useSearch } from "./seachBar"
+import { SearchBar } from "./seachBar"
 import { FaShoppingCart, FaUser } from "react-icons/fa"
+import { useSearch } from "@/hooks/useSearch"
 
 export type NavigateMode = "navigate" | "update"
 type Props = {
