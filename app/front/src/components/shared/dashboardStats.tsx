@@ -1,33 +1,12 @@
-import { usableFetch } from "@/services/fetchs";
-import { dashboardStats } from "@/services/store/storeDashboard.service";
-import type { BackendStats, Stat } from "@/types/storeDashboard.types";
-import { useEffect, useState } from "react";
+import type {  Stat } from "@/types/storeDashboard.types";
 import styled from "styled-components";
 
 
 type Props = {
   stats:Stat[]
 }
-type StatsState ={
-  datas:BackendStats,
-  status:number
-}
-type ReturnUseStats = {
-  stats:BackendStats
-}
-export const useDashboardStats = ():ReturnUseStats=>{
-  const [stats,setStats] = useState<StatsState>({datas:{
-    revenue:0,views:0,products:0,conversion:0,coupons:0,orders:0
-  },status:0})
-  useEffect(()=>{
-    usableFetch<BackendStats,{}>({
-      service:dashboardStats,
-      setDatas:setStats,
-      body:{}
-    })
-  },[])
-  return {stats:stats.datas}
-}
+
+
 export const DashboardStats = ({stats}:Props) => {
   return (
     <Container>
