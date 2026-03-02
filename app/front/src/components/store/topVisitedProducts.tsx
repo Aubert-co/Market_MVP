@@ -1,53 +1,52 @@
-import { usableFetch } from "@/services/fetchs"
-import { topVisitedProducts } from "@/services/storeDashboard.service"
 import { SmallImage } from "@/styles/shared.style"
 import type { TopVisitedProduct } from "@/types/storeDashboard.types"
 import { loadImage } from "@/utils"
-import { useEffect, useState } from "react"
 import styled from "styled-components"
+import { RenderDataState } from "../shared/renderDataState"
+import { Loading } from "../shared/loading"
 
 
 type Props = {
   products: TopVisitedProduct[]
-}
-type VisitedState = {
-  datas:TopVisitedProduct[],
   status:number
 }
-export const useMostVisitedProducts = ()=>{
-  const [mostVisited,setVisited] = useState<VisitedState>({datas:[],status:0})
-  useEffect(()=>{
-    usableFetch<TopVisitedProduct[],{}>({
-      service:topVisitedProducts,
-      setDatas:setVisited,
-      body:{}
-    })
-  },[])
-  return {mostVisited}
-}
-export const TopVisitedProducts = ({ products }: Props) => {
-  if (!products?.length) {
-    return <Empty>Nenhum dado disponível</Empty>
-  }
 
+export const renderTopVisitedProducts = (
+  products: TopVisitedProduct[]
+) => {
+  return products.map((p) => (
+    <Card key={p.id}>
+      <SmallImage
+        src={loadImage(p.imageUrl)}
+        alt={p.name}
+      />
+
+      <Info>
+        <Name>{p.name}</Name>
+        <Visits>
+          {p.currentMonthViews.toLocaleString()} visitas
+        </Visits>
+      </Info>
+
+      <Growth $positive={p.growth >= 0}>
+        {p.growth >= 0 ? "↑" : "↓"} {Math.abs(p.growth)}%
+      </Growth>
+    </Card>
+  ))
+}
+
+export const TopVisitedProducts = ({ products,status }: Props) => {
   return (
     <Container>
-      {products.map((p) => (
-        <Card key={p.id}>
-          <SmallImage src={loadImage(p.imageUrl)} alt={p.name}/>
-
-          <Info>
-            <Name>{p.name}</Name>
-            <Visits>{p.currentMonthViews.toLocaleString()} visitas</Visits>
-          </Info>
-
-          {
-            <Growth $positive={p.growth >= 0}>
-              {p.growth >= 0 ? "↑" : "↓"} {Math.abs(p.growth)}%
-            </Growth>
-          }
-        </Card>
-      ))}
+      <RenderDataState
+        skeleton={<Loading/>}
+        emptyMessage="Nenhum produto encontrado."
+        errorMessage="Erro ao carregar os produtos mais visitados."
+        datas={products}
+        status={status}
+        >
+          { renderTopVisitedProducts(products)}
+      </RenderDataState>
     </Container>
   )
 }
@@ -96,8 +95,3 @@ const Growth = styled.div<{ $positive: boolean }>`
     $positive ? "#10b981" : "#ef4444"};
 `
 
-const Empty = styled.div`
-  text-align: center;
-  padding: 20px;
-  color: #9ca3af;
-`
