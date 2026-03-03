@@ -39,15 +39,29 @@ type Props = {
   title:string
 }
 
-export const Drawer = ({ children, isOpen, onClose,title }: Props) => {
+export const Drawer = ({ children, isOpen, onClose, title }: Props) => {
+  const titleId = `drawer-title-${title?.toLowerCase().replace(/\s+/g, "-")}`;
+
   return (
-    <StyleDrawer $open={isOpen}>
+    <StyleDrawer
+      $open={isOpen}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
+      hidden={!isOpen}
+    >
       <PanelHeader>
-        {title}
-        <CloseButton onClick={()=>onClose(null)}>&times;</CloseButton>
+        <h3 id={titleId}>{title}</h3>
+
+        <CloseButton
+          onClick={() => onClose(null)}
+          aria-label={`Fechar ${title}`}
+        >
+          &times;
+        </CloseButton>
       </PanelHeader>
 
       {children}
     </StyleDrawer>
-  )
-}
+  );
+};
