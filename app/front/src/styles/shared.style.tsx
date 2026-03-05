@@ -65,3 +65,36 @@ export const CompactButton = styled.button`
     transform: translateY(0);
   }
 `
+export const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+`
+
+export const Card = styled.div`
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+`
+export const SmallImage  =styled.img`
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  object-fit: cover;
+  @media (max-width: 768px) {
+    width: 32px;
+    height: 32px;
+  }
+`
+export const ButtonsDiv = styled.div`
+  display: flex;         
+  justify-content:center;
+  gap: 10px;            
+  margin-top: 20px;        
+  flex-wrap: wrap;          
+`;
