@@ -16,6 +16,8 @@ export const renderNumbers = ({totalPages,currentPage,handlePageChange}:RenderNu
           key={i}
           onClick={() => handlePageChange(i)}
           className={i === currentPage ? 'active' : ''}
+          aria-label={`Ir para página ${i}`}
+          aria-current={i === currentPage ? "page" : undefined}
           style={{
             padding: '10px',
             margin: '0 5px',
@@ -34,11 +36,11 @@ export const renderNumbers = ({totalPages,currentPage,handlePageChange}:RenderNu
     return pageNumbers;
 }
 
-export const usePagination = (cbChangePage:CallBackChangePage)=>{
+export const usePagination = (cbChangePage:CallBackChangePage,initialValue?:number)=>{
   
     const [pageInfos,setPagesInfos] = useState<PageInfo>({
         totalPages:1,
-        currentPage:1
+        currentPage:initialValue ?? 1
     })
     const handlePageChange = (newPage:number)=>{
         if(newPage === pageInfos.currentPage)return;
