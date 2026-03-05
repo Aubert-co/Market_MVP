@@ -33,13 +33,19 @@ export const ProductDetailModal = ({ products ,showEditModal}: ProductDetailsPro
             </div>
 
             <ButtonsDiv>
-              <PrimaryButton onClick={()=>showEditModal(product)}>
+              <PrimaryButton
+                onClick={() => showEditModal(product)}
+                aria-label={`Editar produto ${product.name}`}
+              >
                 Editar
               </PrimaryButton>
-              
-              <PrimaryButton $bg="#FF6B6B" 
-                        $hoverBg="#FF4C4C" 
-                        $color="#fff" >
+
+              <PrimaryButton
+                $bg="#FF6B6B"
+                $hoverBg="#FF4C4C"
+                $color="#fff"
+                aria-label={`Desativar produto ${product.name}`}
+              >
                 Desativar
               </PrimaryButton>
             </ButtonsDiv>
