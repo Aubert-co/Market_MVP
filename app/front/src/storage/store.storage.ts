@@ -3,15 +3,17 @@ import type { Store } from "@/types/store.types";
 
 
 
-export const getStorageStore  =():Store[]=>{
+export const getStorageStore  =():Store=>{
     const localStore = localStorage.getItem(KEY_STORE)
     if(localStore){
         return JSON.parse( localStore ) 
     }
-    return [] as Store[];
+    return {
+        id:0,name:"",photo:"",description:""
+    } ;
 }
 
 
-export const saveStorageStore = (store:Store[]):void=>{
+export const saveStorageStore = (store:Store):void=>{
     localStorage.setItem( KEY_STORE , JSON.stringify( store ) )
 }
