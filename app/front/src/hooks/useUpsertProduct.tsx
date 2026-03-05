@@ -1,13 +1,14 @@
-import { useEffect, useRef } from "react"
 import { useBoxMessage } from "./useBoxMessages"
 import { getMultiInputValues } from "@/utils"
-import { checkIsAValidCategory, isAValidString ,checkIsAValidNumber,getValidImageFile} from "@/utils/checkIsValid"
-import { serviceCreateProduct } from "@/services/admStore.services"
+import { checkIsAValidCategory, isAValidString ,checkIsAValidNumber,getValidImageFile, buildUpdatePayload, hasChanges} from "@/utils/checkIsValid"
+
 import type { OpenSideBarOuDrawer } from "@/types/storeDashboard.types"
 import type { UpsertProducts } from "@/types/storeDashboard.types"
+import { serviceCreateProduct, serviceUpdateProduct } from "@/services/store/productAdmin"
+import { renderMessage } from "@/utils/returnMessages"
 
 
-export type FormRefs = {
+export type UpsertProductsRefs = {
   nameRef: React.RefObject<HTMLInputElement | null>
   descriptionRef: React.RefObject<HTMLTextAreaElement | null>
   imageRef: React.RefObject<HTMLInputElement | null>
@@ -17,63 +18,34 @@ export type FormRefs = {
   image?:string
 }
 
+
 export type UseUpsetProduct = {
   BoxMessage: () => React.ReactElement
   submit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>
-  refs:FormRefs,
 }
 type Props = {
   type:"create" | "update",
-  valuesForm?:UpsertProducts,
-   
-  closeModal:(prop:OpenSideBarOuDrawer)=>void
+  valuesRef:UpsertProductsRefs,
+  closeModal:(prop:OpenSideBarOuDrawer)=>void,
+  originalValues:UpsertProducts
 }
-export const  useUpsertProduct = ({type,valuesForm,closeModal}:Props): UseUpsetProduct => {
 
-  const nameRef = useRef<HTMLInputElement>(null)
-  const descriptionRef = useRef<HTMLTextAreaElement>(null)
-  const imageRef = useRef<HTMLInputElement>(null)
-  const priceRef = useRef<HTMLInputElement>(null)
-  const stockRef = useRef<HTMLInputElement>(null)
-  const categoryRef = useRef<HTMLSelectElement>(null)
 
-  useEffect(() => {
-      if (type !== 'update' || !valuesForm) return
-        const {
-          name,
-          description,
-          price,
-          stock,
-          category,
-          
-      } = valuesForm
+export const  useUpsertProduct = ({type,valuesRef,closeModal,originalValues}:Props): UseUpsetProduct => {
 
-  if (nameRef.current) nameRef.current.value = name ?? ""
-  if (descriptionRef.current) descriptionRef.current.value = description ?? ""
-  if (priceRef.current) priceRef.current.value = price ?? ""
-  if (stockRef.current) stockRef.current.value = stock ?? ""
-  if (categoryRef.current) categoryRef.current.value = category ?? ""
+  const {nameRef,descriptionRef,priceRef,stockRef,categoryRef,imageRef} = valuesRef
  
-  }, [type, valuesForm])
   const { setMessage, BoxMessage } = useBoxMessage({ styledType: "" })
+
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
-    const [name, description, price, stock, category] =
-      getMultiInputValues(
-        nameRef,
-        descriptionRef,
-        priceRef,
-        stockRef,
-        categoryRef
-      )
-
+     const [name,description,price,stock,category] = getMultiInputValues(nameRef,descriptionRef,priceRef,stockRef,categoryRef)
     if (!isAValidString(name)) {
       setMessage({ content: "Digite um nome válido", type: "info" })
       return
     }
-
+    
     if (!isAValidString(description, 199)) {
       setMessage({ content: "Digite uma descrição válida", type: "info" })
       return
@@ -96,45 +68,58 @@ export const  useUpsertProduct = ({type,valuesForm,closeModal}:Props): UseUpsetP
 
     const file = getValidImageFile(imageRef)
 
-    if (!file) {
-      setMessage({ content: "Adicione uma imagem válida", type: "info" })
+    if(type === "update"){
+      const originalFields = {
+        name:originalValues.name,
+        category:originalValues.category,
+        price:originalValues.price,
+        stock:originalValues.stock,
+        description:originalValues.description
+      }
+      if(!hasChanges(originalFields,{name,description,category,stock,price}) && !file){
+     
+        setMessage({content:"Campos não foram alterados",type:'info'})
+        return;
+      }
+      const payload = buildUpdatePayload({
+        originalFields,
+        newFields:{
+          name,description,category,stock,price
+        }
+      })
+    
+      const {status} = await serviceUpdateProduct({...payload,id:originalValues.id,image:file})
+      const {content,type:typeMessage} = renderMessage({action:'update',status})
+
+      setMessage({content,type:typeMessage})
+      if(status === 201)closeModal(null)
+      return;
+    }
+    if (!file ) {
+      setMessage({ content: "Adicione uma imagem", type: "info" })
       return
+    } 
+
+   
+      const {status} = await serviceCreateProduct({
+        name,
+        image: file,
+        description,
+        category,
+        stock,
+        price
+      })
+      const { content,type:typeMessage} = renderMessage({action:"create",status})
+      setMessage({content,type:typeMessage})
+      if(status === 201){
+        closeModal(null)
+      }
     }
 
-    const { status } = await serviceCreateProduct({
-      name,
-      description,
-      price,
-      stock,
-      category,
-      image: file
-    })
-    closeModal('drawer')
-    if (status === 201) {
-      setMessage({ content: "Produto criado com sucesso", type: "success" })
-      return
-    }
-
-    if (status === 422) {
-      setMessage({ content: "Campos inválidos!", type: "info" })
-      return
-    }
-
-    setMessage({ content: "Algo deu errado ao criar produto!", type: "info" })
-  }
-
+    
   return {
     BoxMessage,
     submit,
-    refs:{
-        nameRef,
-        priceRef,
-        descriptionRef,
-        categoryRef,
-        imageRef,
-        stockRef,
-        image:valuesForm?.image
-    },
-    
   }
 }
+
