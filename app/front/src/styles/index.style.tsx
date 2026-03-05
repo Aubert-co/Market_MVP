@@ -174,8 +174,8 @@ nav a:hover {
   
 }
 .search-items:focus-within {
-  border-color: #ff6600; /* cor do foco */
-  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5); /* efeito glow opcional */
+  border-color: #ff6600; 
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.5); 
 }
 .input_search {
   width: 70%;
