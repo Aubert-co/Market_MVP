@@ -1,5 +1,5 @@
 import { StoreProducts } from "@/pages/store/storeProducts"
-import {    render, waitFor } from "@testing-library/react"
+import {  render, waitFor } from "@testing-library/react"
 import * as services from "@/services/store/storeProducts"
 import { FixtureStoreProducts } from "@/test/fixtures/store.fixtures"
 import { MemoryRouter, Routes, Route } from "react-router-dom";
@@ -143,7 +143,7 @@ describe("store/product filters",()=>{
             expect(getByRole("button", { current: "page" })).toHaveTextContent(initialValuesUrl.page.toString());
         })
     })
-    it.skip("should change the url correclyt with params",async()=>{
+    it("should update the URL params when selecting a product order option",async()=>{
 
         mockGetStoreInfo.mockReturnValue({
             name:'Lojinha',photo:'lorem',description:'testing',id:43
@@ -153,7 +153,7 @@ describe("store/product filters",()=>{
             status:201,totalPages:5,currentPage:1,message:"ok"
         })
        
-        const {  getByRole} =  render(
+        const {  getByRole ,getByTestId} =  render(
             <MemoryRouter initialEntries={["/store/products"]}>
                 <Routes>
                     <Route path="/store/products" element={<StoreProducts />} />
@@ -162,7 +162,7 @@ describe("store/product filters",()=>{
                      <LocationDisplay/>
             </MemoryRouter>
         );
-        //const selectCategory = getByRole("combobox", { name: /selecione uma categoria/i })
+      
         const selectOrderby = getByRole("combobox",{name:/selecione um filtro/i}) 
         
 
@@ -172,8 +172,207 @@ describe("store/product filters",()=>{
 
         expect(selectOrderby).toHaveValue("price_desc");
         
-        //expect(getByTestId("location")).toHaveTextContent("price_asc")
+        expect(getByTestId("location")).toHaveTextContent("?orderby=price_desc")
        
         
+    })
+     it("should update the URL params when selecting a product category",async()=>{
+
+        mockGetStoreInfo.mockReturnValue({
+            name:'Lojinha',photo:'lorem',description:'testing',id:43
+        })
+        mockService.mockResolvedValue({
+            datas:FixtureStoreProducts,
+            status:201,totalPages:5,currentPage:1,message:"ok"
+        })
+       
+        const {  getByRole ,getByTestId} =  render(
+            <MemoryRouter initialEntries={["/store/products"]}>
+                <Routes>
+                    <Route path="/store/products" element={<StoreProducts />} />
+               
+                </Routes>
+                     <LocationDisplay/>
+            </MemoryRouter>
+        );
+        
+        const selectCategory = getByRole("combobox", { name: /selecione uma categoria/i })
+    
+        const user = userEvent.setup();
+        
+        await user.selectOptions(selectCategory, "Roupas");
+
+        expect(selectCategory).toHaveValue("Roupas");
+        
+        expect(getByTestId("location")).toHaveTextContent("?categoria=Roupas")
+       
+        
+    })
+    it("should update the URL params when selecting a product category",async()=>{
+
+        mockGetStoreInfo.mockReturnValue({
+            name:'Lojinha',photo:'lorem',description:'testing',id:43
+        })
+        mockService.mockResolvedValue({
+            datas:FixtureStoreProducts,
+            status:201,totalPages:5,currentPage:1,message:"ok"
+        })
+       
+        const {  getByRole ,getByTestId} =  render(
+            <MemoryRouter initialEntries={["/store/products"]}>
+                <Routes>
+                    <Route path="/store/products" element={<StoreProducts />} />
+               
+                </Routes>
+                     <LocationDisplay/>
+            </MemoryRouter>
+        );
+        
+        const selectCategory = getByRole("combobox", { name: /selecione uma categoria/i })
+    
+        const user = userEvent.setup();
+        
+        await user.selectOptions(selectCategory, "Roupas");
+
+        expect(selectCategory).toHaveValue("Roupas");
+        
+        expect(getByTestId("location")).toHaveTextContent("?categoria=Roupas")
+       
+    })
+    it("should update the URL with params when the search input changes and the search button is clicked",async()=>{
+
+        mockGetStoreInfo.mockReturnValue({
+            name:'Lojinha',photo:'lorem',description:'testing',id:43
+        })
+        mockService.mockResolvedValue({
+            datas:FixtureStoreProducts,
+            status:201,totalPages:5,currentPage:1,message:"ok"
+        })
+       
+        const {  getByPlaceholderText ,getByText ,getByTestId} =  render(
+            <MemoryRouter initialEntries={["/store/products"]}>
+                <Routes>
+                    <Route path="/store/products" element={<StoreProducts />} />
+               
+                </Routes>
+                     <LocationDisplay/>
+            </MemoryRouter>
+        );
+        const searchValue = "Tenis"
+        const inputSearch = getByPlaceholderText("FAÇA UMA BUSCA")
+        const btnSendSearch = getByText("BUSCAR")
+        const user = userEvent.setup()
+        
+        await user.type(inputSearch,searchValue)
+        
+        await user.click( btnSendSearch )
+
+        expect(getByTestId("location")).toHaveTextContent(`?q=${searchValue}`)
+
+        expect(mockService).toHaveBeenCalledWith({
+            category: "Todas",
+            name: "Tenis",
+            nextPage: 1,
+            orderby: "price_asc"
+        })
+    })
+     it("should update the URL correctly with the page params",async()=>{
+
+        mockGetStoreInfo.mockReturnValue({
+            name:'Lojinha',photo:'lorem',description:'testing',id:43
+        })
+        mockService.mockResolvedValueOnce({
+            datas:FixtureStoreProducts,
+            status:201,totalPages:5,currentPage:1,message:"ok"
+        })
+         .mockResolvedValueOnce({
+            datas: FixtureStoreProducts,
+            status: 201,
+            totalPages: 5,
+            currentPage: 2,
+            message: "ok"
+        })
+        const {   getByTestId,getByLabelText } =  render(
+            <MemoryRouter initialEntries={["/store/products"]}>
+                <Routes>
+                    <Route path="/store/products" element={<StoreProducts />} />
+               
+                </Routes>
+                     <LocationDisplay/>
+            </MemoryRouter>
+        );
+      
+        const user = userEvent.setup()
+    
+        await waitFor(async()=>{
+            const changePage = getByLabelText("Ir para página 2")
+            await user.click(changePage)
+           
+         
+        },{timeout:3000})
+        
+        expect(getByTestId("location")).toHaveTextContent("?page=2")
+
+        expect(mockService).toHaveBeenLastCalledWith({
+            nextPage:2,category:"Todas",name:"",orderby:"price_asc"
+        })
+    })
+    it("should change the url correctly with all params when inputs change",async()=>{
+
+        mockGetStoreInfo.mockReturnValue({
+            name:'Lojinha',photo:'lorem',description:'testing',id:43
+        })
+        mockService.mockResolvedValueOnce({
+            datas:FixtureStoreProducts,
+            status:201,totalPages:5,currentPage:1,message:"ok"
+        })
+        .mockResolvedValue({
+            datas:FixtureStoreProducts,
+            status:201,totalPages:5,currentPage:3,message:"ok"
+        })
+        const {  getByPlaceholderText ,getByText ,getByTestId,getByRole,getByLabelText} =  render(
+            <MemoryRouter initialEntries={["/store/products"]}>
+                <Routes>
+                    <Route path="/store/products" element={<StoreProducts />} />
+               
+                </Routes>
+                     <LocationDisplay/>
+            </MemoryRouter>
+        );
+        const user = userEvent.setup();
+        const searchValue = "Tenis"
+        const category = "Roupas"
+        const orderBy = "price_desc"
+        const nextPage = 3;
+        const inputSearch = getByPlaceholderText("FAÇA UMA BUSCA")
+        const btnSendSearch = getByText("BUSCAR")
+      
+        const selectCategory = getByRole("combobox", { name: /selecione uma categoria/i })
+        const selectOrderby = getByRole("combobox",{name:/selecione um filtro/i}) 
+        
+        await waitFor(async()=>{
+            const changePage = getByLabelText(`Ir para página ${nextPage}`)
+            await user.click(changePage)
+        })
+        
+        await user.selectOptions(selectOrderby, "Maior preço");
+
+        expect(selectOrderby).toHaveValue(orderBy);
+        
+        await user.selectOptions(selectCategory, category);
+
+        expect(selectCategory).toHaveValue( category );
+        
+        await user.type(inputSearch,searchValue)
+        
+        await user.click( btnSendSearch )
+
+        expect(getByTestId("location")).toHaveTextContent(`?page=${nextPage}&orderby=${orderBy}&categoria=${category}&q=${searchValue}`)
+
+       
+        expect( mockService ).toHaveBeenLastCalledWith({
+            category,name:searchValue,orderby:orderBy,
+            nextPage
+        })
     })
 })
