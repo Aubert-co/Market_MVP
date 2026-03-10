@@ -1,5 +1,7 @@
+import type { IconType } from "react-icons"
 import type { BaseCoupon } from "./coupons.types"
 import type { Product } from "./products.types"
+import type { Category, ProductSortOption } from "./filters.types"
 
 export type SideBarItem = {
   label: string
@@ -20,21 +22,22 @@ export type Order = {
     quantity:number,
     status:OrderStatus,
     createdAt:number,
-    coupon?:Omit < BaseCoupon<number>,"quantity" | "id">,
+    coupon?:Omit < BaseCoupon<number>,"quantity" | "id" |"expiresAt" | "quantity">,
     price:number
 }
 
 
 export type GetStoreProducts = {
   name?:string,
-  category?:string,
-  nextPage?:number
+  category?:Category,
+  nextPage?:number,
+  orderby?:ProductSortOption
 }
 
 export type GetStoreOrders ={
   status:OrderStatus,
   nextPage?:number | string,
-
+  search:any
 }
 export type GetStoreCoupons = {
   nextPage?:number | string
@@ -67,14 +70,57 @@ export type GetStoreDashboard = {
 
 
 export type UpsertProducts = {
-  name?:string,
-  description?:string,
-  price?:string,
-  stock?:string,
-  category?:string,
-  image?:string,
+  name:string,
+  description:string,
+  price:string,
+  stock:string,
+  category:string,
+  image:string,
   id:number,
 
 }
 
 export type OpenSideBarOuDrawer = "sidebar" | "drawer" | null
+
+
+export type TopVisitedProduct = {
+    name:string,
+    imageUrl:string,
+    growth:number,
+    currentMonthViews:number,
+    lastMonthViews:number,
+    id:number
+}
+
+export type LastOrders = {
+  name:string,
+  id:number,
+  status:OrderStatus,
+  imageUrl:string,
+  views:string
+}
+
+
+export type StatKey =
+  | "views"
+  | "revenue"
+  | "orders"
+  | "products"
+  | "coupons"
+  | "conversion";
+
+export type Stat = {
+  id: number;
+  label: string;
+  value: string;
+  icon:IconType
+  dataKey:StatKey
+};
+export type BackendStats = {
+  views:number,
+  revenue:number,
+  orders:number,
+  products:number,
+  coupons:number,
+  conversion:number
+}
