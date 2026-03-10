@@ -1,5 +1,6 @@
 import type { UpsertProducts } from "@/types/storeDashboard.types";
-import { categories } from "../constants";
+import { categories } from "../constants/filters";
+
 
 export const isValidEmail = (email:any):boolean=>{
   const emailRegex = new RegExp(
@@ -101,3 +102,7 @@ export const hasChanges = (
     key => original[key] !== current[key]
   )
 }
+
+export const containsValues = <T extends string>(value: string | null,datas:T[]): value is T => {
+  return datas.includes(value as T);
+};
