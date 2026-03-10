@@ -1,4 +1,4 @@
-import { Table } from "@/styles/dashboardStore.style";
+import { Table } from "@/styles/tables.style";
 
 
 type Props = {

@@ -1,25 +1,20 @@
 import { Link } from "react-router-dom"
-import { BoxSkeleton } from "@/components/templates/skeleton"
 
-type Loading = {
-    length:number,
-    classLoading:string,
-    classImg:string
-}
+
 export type DataState<T> ={
     datas:T[],
     status:number,
     children:React.ReactNode,
     emptyMessage:React.ReactNode,
     errorMessage:string
-    skeletonLoading:Loading
+    skeleton:React.ReactNode
 }
 export const RenderDataState = <T,>({
     datas,status,
     emptyMessage,
     errorMessage,
     children,
-    skeletonLoading
+    skeleton
     }:DataState<T>)=>{
     const isEmpty = datas.length === 0 && status < 204;
     const hasError = datas.length ===0 && status > 410;
@@ -27,12 +22,7 @@ export const RenderDataState = <T,>({
     const isNotLogged = status === 401;
 
     if (isLoading) {
-        return (
-            <BoxSkeleton 
-            className={skeletonLoading.classLoading} 
-            classNameImg={skeletonLoading.classImg}
-            length={skeletonLoading.length}/>
-        );
+        return <>{skeleton}</>
     }
 
     if (isNotLogged) {

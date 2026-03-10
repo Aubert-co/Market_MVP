@@ -4,7 +4,7 @@ import { BoxProducts } from "@/components/product/boxProducts"
 import { usableFetch } from "@/services/fetchs"
 import { searchProduct, type BodySearch } from "@/services/productsService"
 import type { Product } from "@/types/products.types"
-import type { Filter } from "@/types/filters"
+import type { Filter } from "@/types/filters.types"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Collapse } from "@/components/shared/collapse"
@@ -49,7 +49,7 @@ export const Search  = ()=>{
     })
     const {product} = useParams()
     const [values,setValues] = useState<Filter>({
-        minPrice:0,maxPrice:0,orderBy:'asc',category:'Todas'
+      minPrice:0,maxPrice:0,orderBy:'asc',category:'Todas'
     })
     useEffect(()=>{
       usableFetch<Product[],BodySearch>({
@@ -59,7 +59,7 @@ export const Search  = ()=>{
       })
     },[product,values])
     return (
-        <Container>
+        <Container navigateMode="update">
             <SearchBox>
                 <div className="filtered">
                     <Collapse title="Filtrar">

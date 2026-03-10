@@ -7,6 +7,7 @@ import { usableFetch } from "@/services/fetchs"
 
 import type { DiscountType } from "@/types/coupons.types"
 import { loadImage } from "@/utils"
+import { BoxSkeleton } from "../templates/skeleton"
 type State = {
   datas: UserOrders[]
   status:number
@@ -59,11 +60,9 @@ export const UserOrdersComponent = ()=>{
                   <>Voce ainda não tenhuma compra </>
               }
               errorMessage="Algo deu errado ao buscar suas compras"
-              skeletonLoading={{
-                classLoading:'list-item',
-                classImg:'list-image',
-                length:3
-              }}
+              skeleton={
+                <BoxSkeleton className="list-item" classNameImg="list-image" length={3}/>
+              }
               >
                 <ListUserOrders orders={orders.datas}/>
               </RenderDataState>

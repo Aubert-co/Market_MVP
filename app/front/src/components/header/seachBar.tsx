@@ -1,30 +1,33 @@
-import { useRef } from "react"
-import { useNavigate } from "react-router-dom"
-import { getInputValue } from "@/utils"
+import {  useState } from "react"
+
 
 type Props = {
-    type?:"useSearch" | "admSearch",
+    searchEvent:SearchEvent
+    initialValue?:string
 }
-export const SearchBar = ({type}:Props)=>{
-    const navigate = useNavigate()
-    const searchRef = useRef<HTMLInputElement >(null)
 
+type SearchEvent = (params:string)=>void
+
+
+export const SearchBar = ({searchEvent,initialValue}:Props)=>{
+    const [searchValue,setSearchValue] = useState<string>( initialValue ?? "")
     const onClick = (e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
-        let search = getInputValue(searchRef)
-        if(search.length ===0)return
-        if(type === "admSearch"){
-            
-        }
-        navigate(`/buscas/${search}`)
+      
+        if(searchValue.length ===0)return;
+
+        searchEvent( searchValue )
         
     }
     return (
-
-        <form onSubmit={(e)=>onClick(e)} className="search">
+        <form onSubmit={(e)=>onClick(e)} className="search" name="form_search">
             <div className="search-items">
-                <input ref={searchRef}  name="input_search"  minLength={2} maxLength={20} className="input_search"  placeholder="FAÇA UMA BUSCA"/>
-                <button className="btn_search" type="submit" >BUSCAR</button>
+                <input value={searchValue} 
+                    onChange={(e)=>setSearchValue(e.target.value)}
+                    name="input_search"  minLength={2} maxLength={20}
+                    className="input_search"
+                    placeholder="FAÇA UMA BUSCA"/>
+                <button className="btn_search" name="btn_search" type="submit" >BUSCAR</button>
             </div>
         </form>
     )

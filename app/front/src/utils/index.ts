@@ -2,7 +2,11 @@ import type { UserTotally } from "@/types/checkout.types";
 import type { OrderStatus } from "@/types/storeDashboard.types";
 
 export type RefValue = React.RefObject<HTMLInputElement | null | HTMLTextAreaElement | HTMLSelectElement>;
-
+export type SetSearchParams = (
+  value:
+    | URLSearchParams
+    | ((prev: URLSearchParams) => URLSearchParams)
+) => void;
 export const getInputValue = (ref:RefValue):string =>{
     if(ref?.current && ref.current.value)return ref.current.value;
     return '';
@@ -40,3 +44,14 @@ export const getUserTotally = ({items,discount,discountType}:UserTotally)=>{
   }
   return total * (1 - discount / 100);
 }
+
+
+export const createUrlUpdater = (setSearchParams: SetSearchParams) => {
+  return (key: string, value: string) => {
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      next.set(key, value);
+      return next;
+    });
+  };
+};

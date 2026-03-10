@@ -1,13 +1,13 @@
 import { useRef } from "react"
-import { serviceCreateStore } from "@/services/store.services"
+import { serviceCreateStore } from "@/services/store/store.services"
 import { getValidImageFile, isAValidString } from "@/utils/checkIsValid"
 import { getMultiInputValues } from "@/utils"
-
-import { StyleBtn, UserFormStyles } from "@/styles/forms.style"
+import {  UserFormStyles } from "@/styles/forms.style"
 import { InputWithLabel } from "./inputWithLabel"
 import { useBoxMessage } from "../../hooks/useBoxMessages"
 import type { PropsFormCreateStore } from "@/types/store.types";
 import { useNavigate } from "react-router-dom"
+import { PrimaryButton } from "@/styles/shared.style"
 
 export const FormCreateStore = ({formRef}:PropsFormCreateStore)=>{
     const nameRef = useRef<HTMLInputElement>(null)
@@ -67,7 +67,7 @@ export const FormCreateStore = ({formRef}:PropsFormCreateStore)=>{
                 <InputWithLabel textLabel="Mostre o visual da sua loja com uma boa imagem" inputName="store_image">
                     <input data-testid="image-file" ref={imageRef} type="file" id="store_image" accept="image/*" />
                 </InputWithLabel>
-                <StyleBtn >Enviar</StyleBtn>
+                <PrimaryButton >Enviar</PrimaryButton>
 
             </form>
         </UserFormStyles>

@@ -5,10 +5,11 @@ import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 type Props = {
   title: string;
   children: React.ReactNode;
+  maxWidth?:string
 };
 
 
-const CollapseContainer = styled.div`
+const CollapseContainer = styled.div<{maxWidth?:string}>`
 
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -16,7 +17,7 @@ const CollapseContainer = styled.div`
   background: #fff;
   overflow: hidden;
   width:90%;
-  max-width:700px;
+  max-width: ${({ maxWidth }) => maxWidth || "700px"};
 
 .collapse-container {
   width: 85%;
@@ -82,11 +83,11 @@ const CollapseContainer = styled.div`
 }
 
 `
-export const Collapse = ({ title, children }:Props) => {
+export const Collapse = ({ title, children ,maxWidth}:Props) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <CollapseContainer className="collapse-container">
+    <CollapseContainer className="collapse-container" maxWidth={maxWidth}>
       <div
         className="collapse-header"
         onClick={() => setOpen(!open)}

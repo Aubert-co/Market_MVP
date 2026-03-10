@@ -1,6 +1,5 @@
 import type {UpdateCartState} from "@/context/cart.context"
 import { getItemsFromCart } from "@/storage/cart.storage"
-import { SmallButton } from "@/styles/forms.style"
 import { useEffect ,useState, type SetStateAction} from "react"
 import styled from "styled-components"
 import type { Message } from "../../hooks/useBoxMessages"
@@ -8,6 +7,7 @@ import { useRemoveFromCart } from "./useRemoveFromCart"
 import { setItemsCheckout } from "@/storage/checkout.storage"
 import type { ItemsCheckout } from "@/types/checkout.types"
 import { useNavigate } from "react-router-dom"
+import { CompactButton } from "@/styles/shared.style"
 
 const ListInfo = styled.div`
     display:flex;
@@ -58,8 +58,8 @@ export const CartOverview  =({updateCart,setUpdateCart,setMessage}:Props)=>{
             <h4>Total: R${ cartTotal.toFixed(2) }</h4>
               {cartTotal > 0 ? (
                 <>
-                  <SmallButton onClick={redirectCheckout}>Finalizar compra</SmallButton>
-                  <SmallButton onClick={clenAllCart}>Limpar carrinho</SmallButton>
+                  <CompactButton onClick={redirectCheckout}>Finalizar compra</CompactButton>
+                  <CompactButton onClick={clenAllCart}>Limpar carrinho</CompactButton>
                 </>
               ) : (
                 <p>Seu carrinho está vazio 🛒</p>

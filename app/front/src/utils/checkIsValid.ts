@@ -1,4 +1,6 @@
-import { categories } from "../constants";
+import type { UpsertProducts } from "@/types/storeDashboard.types";
+import { categories } from "../constants/filters";
+
 
 export const isValidEmail = (email:any):boolean=>{
   const emailRegex = new RegExp(
@@ -15,11 +17,11 @@ export const isAValidString =(value:any,maxLength:number = 15):boolean=>{
 }
 export type RefValue = React.RefObject<HTMLInputElement | null>;
 
-export const getValidImageFile = (image: RefValue): File | null => {
+export const getValidImageFile = (image: RefValue): File | undefined => {
   const fileInput = image.current?.files?.[0];
-  if (!fileInput) return null;
+  if (!fileInput) return undefined;
 
-  return fileInput.type.startsWith("image/") ? fileInput : null;
+  return fileInput.type.startsWith("image/") ? fileInput : undefined;
 };
 
 
@@ -52,3 +54,55 @@ export const checkIsAValidCategory = (category:string)=>{
 
   return categories.some(cat => normalizeString(cat) === normalizedInput);
 }
+type UpdateProduct = Omit<UpsertProducts,"id" | "image">
+type ParamsCompare = {
+  originalFields: UpdateProduct
+  newFields: UpdateProduct
+}
+
+export const buildUpdatePayload = ({
+  originalFields,
+  newFields
+}: ParamsCompare): UpdateProduct => {
+  const payload: UpdateProduct = {
+    name: "",
+    description: "",
+    price: "",
+    stock: "",
+    category: ""
+  }
+
+  if (originalFields.name !== newFields.name) {
+    payload.name = newFields.name
+  }
+
+  if (originalFields.description !== newFields.description) {
+    payload.description = newFields.description
+  }
+
+  if (originalFields.price !== newFields.price) {
+    payload.price = newFields.price
+  }
+
+  if (originalFields.stock !== newFields.stock) {
+    payload.stock = newFields.stock
+  }
+
+  if (originalFields.category !== newFields.category) {
+    payload.category = newFields.category
+  }
+
+  return payload
+}
+export const hasChanges = (
+  original: UpdateProduct,
+  current: UpdateProduct
+): boolean => {
+  return (Object.keys(original) as (keyof UpdateProduct)[]).some(
+    key => original[key] !== current[key]
+  )
+}
+
+export const containsValues = <T extends string>(value: string | null,datas:T[]): value is T => {
+  return datas.includes(value as T);
+};

@@ -1,7 +1,7 @@
 import { InputWithLabel } from "@/components/forms/inputWithLabel"
 import { useSelect } from "@/hooks/useSelect"
-import {  mappedCateogires } from "@/constants"
-import type { Filter, OrderBy,CategoryMapped,DatasSelect } from "@/types/filters"
+import {  categorySelectOptions } from "@/constants/filters"
+import type { Filter, OrderBy,CategoryOption,DatasSelect } from "@/types/filters.types"
 import { getMultiInputValues } from "@/utils"
 import { useRef, type SetStateAction } from "react"
 import styled from "styled-components"
@@ -92,11 +92,13 @@ const DATASORDERBY = [{value:'asc',text:'menor preço'},{value:'desc',text:'maio
 
 
 export const FilterProducts = ({setValues}:Props)=>{
-    const {Select:SelectCategory,selected:category,setSelected:setCategory} = useSelect<CategoryMapped>(
-        {datas:mappedCateogires,text:'Selecione uma categoria',className:"select-category"});
+    const {Select:SelectCategory,selected:category,setSelected:setCategory} = useSelect<CategoryOption>(
+        {datas:categorySelectOptions,text:'Selecione uma categoria',className:"select-category",
+          name:"filter-category"
+        });
 
     const {Select:SelectOrderBy,selected:orderBy,setSelected:setOrder} = useSelect<OrderBy>(
-        {datas:DATASORDERBY,text:'Ordene por',className:"order-by"});
+        {datas:DATASORDERBY,text:'Ordene por',className:"order-by",name:"filter-orderby"});
   
     const minPriceRef = useRef<any>('0')
     const maxPriceRef = useRef<any>('0')

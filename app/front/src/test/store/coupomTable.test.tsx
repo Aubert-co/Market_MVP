@@ -5,7 +5,7 @@ import { mockCoupons } from "../fixtures"
 describe("Component CouponTable",()=>{
     it("should render the coupon table correctly",()=>{
         const {queryAllByLabelText,queryByText} = render(
-            <CouponTable coupons={mockCoupons}/>
+            <CouponTable status={201} coupons={mockCoupons}/>
         )
         const discount = queryAllByLabelText("[data-label='Desconto']")
         const quantity = queryAllByLabelText("[data-label='Quantidade']")
