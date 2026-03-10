@@ -7,6 +7,7 @@ import { usableFetch } from "@/services/fetchs"
 import { CouponCard } from "@/styles/coupomCart.style"
 import type { BaseCoupon } from "@/types/coupons.types"
 import { useEffect, useState } from "react"
+import { BoxSkeleton } from "@/components/templates/skeleton"
 
 type Coupons = BaseCoupon<number>[]
 type State = {
@@ -41,7 +42,10 @@ export const Coupon = ()=>{
                   emptyMessage={
                     "Ainda não há cupons disponiveis"
                   }
-                  skeletonLoading={{classImg:'coupon-image',classLoading:'coupon-item',length:10}}>
+                  skeleton={
+                    <BoxSkeleton className="coupon-item" classNameImg="coupon-image" length={10}/>
+                  }
+                  >
               
                 <ListCoupons 
                   setMessage={setMessage} 
