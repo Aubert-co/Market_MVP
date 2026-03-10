@@ -1,5 +1,5 @@
 import type { Product } from "@/types/products.types";
-import type { OrderBy } from "@/types/filters";
+import type { OrderBy } from "@/types/filters.types";
 import type { ResponseDatas, ResponseWithPages} from "@/types/services.types"
 
 export type GetProductsIndex = {
@@ -27,15 +27,16 @@ export type BodySearch ={
   category?:string,
   minPrice?:string | number,
   maxPrice?:string | number,
-  orderBy?:OrderBy
+  orderBy?:OrderBy,
+  storeId?:number
 }
 
-export const searchProduct = async({name,category,minPrice,maxPrice,orderBy}:BodySearch):Promise<ResponseDatas<Product[]> >=>{
+export const searchProduct = async({name,category,minPrice,maxPrice,orderBy,storeId}:BodySearch):Promise<ResponseDatas<Product[]> >=>{
     try{
         
         const response = await fetch('/product/filter',{
             method:'POST',
-            body:JSON.stringify({name,category,minPrice,maxPrice,orderBy}),
+            body:JSON.stringify({name,category,minPrice,maxPrice,orderBy,storeId}),
             headers: {
                 'Content-Type': 'application/json'
             }
