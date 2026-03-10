@@ -1,3 +1,4 @@
+import type { BaseCoupon } from "@/types/coupons.types";
 import type { Order, TopVisitedProduct } from "@/types/storeDashboard.types";
 
 export const FixtureVisitedProducs:TopVisitedProduct[] = [{
@@ -82,3 +83,61 @@ export const FixtureOrders: Order[] = [
     },
   },
 ]
+
+
+export const FixtureStoreProducts  = [
+  {
+    id: 1,
+    name: "Camiseta Oversized Preta",
+    price: 129.9,
+    imageUrl: "/images/camiseta-preta.jpg",
+    category: "Roupas",
+    stock: 25,
+    description: "Camiseta oversized em algodão premium, confortável e estilosa."
+  },
+  {
+    id: 2,
+    name: "Tênis Casual Branco",
+    price: 299.9,
+    imageUrl: "/images/tenis-branco.jpg",
+    category: "Calçados",
+    stock: 12,
+    description: "Tênis casual versátil, ideal para o dia a dia."
+  },
+  {
+    id: 3,
+    name: "Relógio Minimalista",
+    price: 459.0,
+    imageUrl: "/images/relogio.jpg",
+    category: "Acessórios",
+    stock: 8,
+    description: "Relógio com design minimalista e pulseira em couro."
+  }
+]
+
+export const couponsFixture: BaseCoupon<number>[] = [
+  {
+    id: 1,
+    expiresAt: 1735689600000,
+    code: "WELCOME10",
+    quantity: 100,
+    discount: 10,
+    discountType: "percent",
+  },
+  {
+    id: 2,
+    expiresAt: 1738291200000,
+    code: "SAVE20",
+    quantity: 50,
+    discount: 20,
+    discountType: "percent",
+  },
+  {
+    id: 3,
+    expiresAt: 1733011200000,
+    code: "FRETE5",
+    quantity: 200,
+    discount: 5,
+    discountType: "fixed",
+  },
+];
