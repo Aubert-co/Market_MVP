@@ -1,4 +1,4 @@
-import { categories } from "@/constants"
+import { categories } from "@/constants/filters"
 import {  UserFormStyles } from "@/styles/forms.style"
 import { InputWithLabel } from "./inputWithLabel"
 import { useUpsertProduct, type UpsertProductsRefs, type UseUpsetProduct } from "@/hooks/useUpsertProduct"
