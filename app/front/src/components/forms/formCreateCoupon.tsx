@@ -79,7 +79,7 @@ export const FormCreateCoupon = ({setCloseDrawer}:Props)=>{
         setMessage({content:"Algo deu errado , tente novamente",type:"error"})
     }
     return (
-       <UserFormStyles>
+       <UserFormStyles $minHeight="none">
             <form onSubmit={onSubmit}>
                  <BoxMessage/>
                 <InputWithLabel textLabel="Tipo de desconto" inputName="select">
