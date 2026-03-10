@@ -19,9 +19,9 @@ export type UsableFetch<T,B> = {
   body:B
 
 }
-
+export type SetPages = (params:{totalPages:number,currentPage:number})=>void
 export type useFetchWithPages<T,B> = {
-  setPages: (params: { totalPages: number; currentPage: number }) => void;
+  setPages: SetPages;
   setDatas: (args: { datas: T; status: number; message: string }) => void;
   service: (body:B) => Promise<ResponseWithPages<T>>;
   body: B;
