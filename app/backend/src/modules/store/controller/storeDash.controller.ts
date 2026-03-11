@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { StoreDashboardService } from "services/storeDashboard.services";
+import { StoreDashboardService } from "../services/storeDashboard.services";
 
 export class StoreDashController{
     constructor(protected storeDashService:StoreDashboardService){}

@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { Order , StatusOrder,DatasCreateOrderDto, GetOrder} from "../types/order.types";
 import { ErrorMessage } from "../helpers/ErrorMessage";
 import { applyDiscount } from "../helpers/applyDiscount";
-import { CouponRepository } from "./coupon.repository";
+import { CouponRepository } from "../modules/coupon/repository/coupon.repository";
 import { DiscountType, GetCouponDto } from "../types/coupon.types";
 
 export interface IOrderRepository {

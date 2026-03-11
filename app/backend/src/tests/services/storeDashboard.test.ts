@@ -1,4 +1,4 @@
-import {StoreDashboardService} from '../../services/storeDashboard.services'
+import {StoreDashboardService} from '../../modules/store/services/storeDashboard.services'
 
 const mockStoreRep = {
     getStoreOrders:jest.fn(),

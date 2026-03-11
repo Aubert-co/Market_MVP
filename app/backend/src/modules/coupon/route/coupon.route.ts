@@ -1,12 +1,12 @@
 import { CouponController } from "../controller/coupon.controller"
-import { VerifyStoreOwnership } from "../middleware/verifyStoreOwnership"
+import { VerifyStoreOwnership } from "../../../middleware/verifyStoreOwnership"
 import { CouponRepository } from "../repository/coupon.repository"
 import { CouponServices } from "../services/coupon.services"
 import { Request,Response,NextFunction, Router } from "express"
-import { prisma } from "../lib/prisma"
-import { StoreService } from "../services/store.services"
-import { StoreRepository } from "../repository/store.repository"
-import { Auth } from "../middleware/auth"
+import { prisma } from "../../../lib/prisma"
+import { StoreService } from "../../store/services/store.services"
+import { StoreRepository } from "../../store/repository/store.repository"
+import { Auth } from "../../../middleware/auth"
 
 
 const route = Router()

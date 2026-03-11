@@ -1,13 +1,13 @@
 import { Router,NextFunction,Request,Response} from 'express'
 import { StoreAdminController } from '../controller/storeAdmin.controller'
-import { ValidateImageAndFields } from '../middleware/validateImgAndFiles'
-import { Auth } from '../middleware/auth'
+import { ValidateImageAndFields } from '../../../middleware/validateImgAndFiles'
+import { Auth } from '../../../middleware/auth'
 import { StoreService } from '../services/store.services'
-import { prisma } from '../lib/prisma'
+import { prisma } from '../../../lib/prisma'
 import { StoreRepository } from '../repository/store.repository'
 
-import { VerifyStoreOwnership } from '../middleware/verifyStoreOwnership'
-import { fileUpload } from '../lib/fileUpload'
+import { VerifyStoreOwnership } from '../../../middleware/verifyStoreOwnership'
+import { fileUpload } from '../../../lib/fileUpload'
 
 const validateImageAndFields = new  ValidateImageAndFields
 

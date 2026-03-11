@@ -5,7 +5,7 @@ import { ReviewsRepository } from "../repository/reviews.repository";
 import { prisma } from "../lib/prisma";
 import { ReviewsService } from "../services/reviews.services";
 import { OrderRepository } from "../repository/order.repository";
-import { CouponRepository } from "../repository/coupon.repository";
+import { CouponRepository } from "../modules/coupon/repository/coupon.repository";
 
 const reviewsRepository  =new ReviewsRepository(prisma)
 const couponRepository = new CouponRepository(prisma)

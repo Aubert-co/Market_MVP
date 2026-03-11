@@ -1,6 +1,6 @@
 import { NextFunction, Response,Request } from "express";
 import { StoreService } from "../services/store.services";
-import { checkIsAValidNumber } from "../helpers";
+import { checkIsAValidNumber } from "../../../helpers";
 
 
 

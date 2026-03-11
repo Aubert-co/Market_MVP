@@ -5,9 +5,9 @@ import { fileUpload } from "../lib/fileUpload";
 import { Auth } from "../middleware/auth";
 import { VerifyStoreOwnership } from "../middleware/verifyStoreOwnership";
 
-import { StoreRepository } from "../repository/store.repository";
+import { StoreRepository } from "../modules/store/repository/store.repository";
 import { ProductAdminRepository } from "../repository/productAdmin.repository";
-import { StoreService } from "../services/store.services";
+import { StoreService } from "../modules/store/services/store.services";
 import { ProductAdminService } from "../services/productAdmin.services";
 
 const storeRepository = new StoreRepository(prisma)

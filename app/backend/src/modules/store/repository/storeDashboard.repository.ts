@@ -73,7 +73,7 @@ export class StoreDashboardRep extends StoreRepository implements IStoreDashboar
             return count
         }catch(err:any){
             return 0
-        }
+        } 
     }
 
 }

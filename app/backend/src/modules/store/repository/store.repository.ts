@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { Store } from "../types/store.types";
-import { ErrorMessage } from "../helpers/ErrorMessage";
-import {  ProductWithCountsAndRatings } from "../types/product.types";
+import { Store } from "../../../types/store.types";
+import { ErrorMessage } from "../../../helpers/ErrorMessage";
+import {  ProductWithCountsAndRatings } from "../../../types/product.types";
 
 export interface IStoreRepository{
     createStore(data:{storeName:string,userId:number,description:string,photo:string}):Promise<void>,

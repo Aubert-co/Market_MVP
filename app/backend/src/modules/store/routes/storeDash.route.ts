@@ -1,10 +1,10 @@
 import { StoreDashboardRep } from "../repository/storeDashboard.repository";
 import { StoreDashboardService } from "../services/storeDashboard.services";
 import { StoreDashController } from "../controller/storeDash.controller";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../../../lib/prisma";
 import { NextFunction, Response, Router,Request } from "express";
-import { Auth } from "../middleware/auth";
-import { VerifyStoreOwnership } from "../middleware/verifyStoreOwnership";
+import { Auth } from "../../../middleware/auth";
+import { VerifyStoreOwnership } from "../../../middleware/verifyStoreOwnership";
 import { StoreRepository } from "../repository/store.repository";
 import { StoreService } from "../services/store.services";
 
