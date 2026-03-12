@@ -1,10 +1,9 @@
-import { IProductRepository } from "../../../repository/product.repository";
 import { generateImgPath } from "../../../helpers/checkIsValidImage";
 import { ErrorMessage } from "../../../helpers/ErrorMessage"
 import { uploadFileToGCS } from "../../../lib/googleStorage";
 import { IStoreRepository } from "../repository/store.repository"
-import { Store } from "../../../types/store.types";
-import { Product } from "../../../types/product.types";
+import { Store } from "../types/store.types";
+import { Product } from "../../products/types/product.types";
 
 export interface IStoreService{
     createStore({userId,name,description,buffer,originalName,mimeType}:CreateStoreParams): Promise<void>,

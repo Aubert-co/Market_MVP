@@ -9,7 +9,7 @@ import { generateAccessToken } from "../../helpers/AuthTokens"
 import { prisma } from "../../lib/prisma"
 import { products } from "../__fixtures__/products"
 import {applyDiscount} from '../../helpers/applyDiscount'
-import {Order} from '../../types/order.types'
+import {Order} from '../../modules/orders/types/order.types'
 import { roundTottaly } from "../../helpers"
 
 const {validCoupons,expiredCoupons} = couponsDatas(oneStore.id)

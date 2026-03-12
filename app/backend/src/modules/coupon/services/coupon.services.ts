@@ -1,6 +1,6 @@
 import { ErrorMessage } from "../../../helpers/ErrorMessage";
 import { ICouponRepository,StoreCreateCoupon } from "../repository/coupon.repository";
-import { Coupon,CouponUsage } from "../../../types/coupon.types";
+import { Coupon,CouponUsage } from "../types/coupon.types";
 import { pagination } from "../../../helpers";
 
 export interface ICouponService{

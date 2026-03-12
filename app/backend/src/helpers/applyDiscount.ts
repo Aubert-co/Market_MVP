@@ -1,4 +1,4 @@
-import { ApplyDiscountDto } from "../types/coupon.types"
+import { ApplyDiscountDto } from "../modules/coupon/types/coupon.types"
 import { roundTottaly } from "../helpers/index";
 
 export const applyDiscount = ({total,discountType,discount}:ApplyDiscountDto):number=>{

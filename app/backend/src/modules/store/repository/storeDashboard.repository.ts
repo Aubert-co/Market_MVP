@@ -1,7 +1,7 @@
 import {  PrismaClient } from "@prisma/client";
 import { StoreRepository } from "./store.repository";
-import { StatusOrder } from "types/order.types";
-import { StoreDashOrders } from "types/storedashboard.types";
+import { StatusOrder } from "modules/orders/types/order.types";
+import { StoreDashOrders } from "modules/store/types/storedashboard.types";
 
 export interface IStoreDashboardRep {
     getStoreOrders(status:StatusOrder,storeId:number):Promise<StoreDashOrders[] | []>

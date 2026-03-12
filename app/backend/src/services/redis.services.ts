@@ -1,5 +1,5 @@
 import { IProductRedisRepository } from "../repository/redis.repository";
-import { Product,SelectedProduct } from "../types/product.types";
+import { Product,SelectedProduct } from "../modules/products/types/product.types";
 
 export interface IProductRedisService{
     getCountProductInCache():Promise<number>,

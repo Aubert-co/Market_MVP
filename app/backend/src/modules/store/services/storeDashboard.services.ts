@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { IStoreDashboardRep } from "modules/store/repository/storeDashboard.repository";
-import { StoreDashOrders } from "types/storedashboard.types";
+import { StoreDashOrders } from "modules/store/types/storedashboard.types";
 
 export interface IStoreDashoard {
     getDashboard(storeId:number):Promise<GetDashboard>

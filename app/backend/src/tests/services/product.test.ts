@@ -1,8 +1,8 @@
-import {ProductService} from '../../services/product.services'
+import {ProductService} from '../../modules/products/services/product.services'
 import * as uploadFiles from '../../lib/googleStorage'
 import * as images from '../../helpers/checkIsValidImage'
 import {products} from '../__fixtures__/products'
-import { FilterProductsInput } from '../../types/product.types'
+import { FilterProductsInput } from "../../modules/products/types/product.types"
 const [product] = products
 const mockRepository = {
     createProduct:jest.fn(),

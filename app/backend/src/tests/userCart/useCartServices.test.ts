@@ -1,6 +1,6 @@
-import { IProductRepository } from '../../repository/product.repository'
-import { UserCartService} from '../../services/useCart.services'
-import {UserCartRepository} from '../../repository/userCart.repository'
+import { IProductRepository } from '../../modules/products/repository/product.repository'
+import { UserCartService} from '../../modules/userCart/services/useCart.services'
+import {UserCartRepository} from '../../modules/userCart/repository/userCart.repository'
 import { ErrorMessage } from '../../helpers/ErrorMessage'
 
 

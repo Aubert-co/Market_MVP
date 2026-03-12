@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma"
-import { Order } from "../../types/order.types"
+import { Order } from "../../modules/orders/types/order.types"
 import { orders } from "../__fixtures__/orders"
 import { products } from "../__fixtures__/products"
 import { views } from "../__fixtures__/views"

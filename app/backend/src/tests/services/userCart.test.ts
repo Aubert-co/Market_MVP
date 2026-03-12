@@ -1,8 +1,8 @@
-import {UserCartService} from '../../services/useCart.services'
+import {UserCartService} from '../../modules/userCart/services/useCart.services'
 
 import {products} from '../__fixtures__/products'
 
-import { IUserCartRepository } from '../../repository/userCart.repository'
+import { IUserCartRepository } from '../../modules/userCart/repository/userCart.repository'
 
 const [datas] = products
 const mockCarRep = {
