@@ -1,10 +1,10 @@
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../../lib/prisma";
 import { addCouponUsage, cleanAllDb, cleanCoupons,
-    createCoupons,createUserStoreAndProducts,oneStore,users } from "../__mocks__";
+    createCoupons,createUserStoreAndProducts,oneStore,users } from "../../__mocks__";
 import request from "supertest";
-import app from "../../serve";
-import {couponsDatas} from '../__fixtures__/coupons'
-import { generateAccessToken } from '../../helpers/AuthTokens'
+import app from "../../../serve";
+import {couponsDatas} from '../../__fixtures__/coupons'
+import { generateAccessToken } from '../../../helpers/AuthTokens'
 
 const userId = users[1].id
 const cookies  = generateAccessToken(users[1].id)
