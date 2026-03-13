@@ -1,10 +1,10 @@
 import request from 'supertest'
-import redis from '../../lib/redis'
-import app from '../../serve'
-import { cleanAllDb, createUserStoreAndProducts } from '../__mocks__'
-import { prisma } from '../../lib/prisma'
+import redis from '../../../lib/redis'
+import app from '../../../serve'
+import { cleanAllDb, createUserStoreAndProducts } from '../../__mocks__'
+import { prisma } from '../../../lib/prisma'
 
-import { ProductRedisRepository } from '../../repository/redis.repository'
+import { ProductRedisRepository } from '../../../repository/redis.repository'
 
 describe("db actions",()=>{
     beforeAll(async()=>{

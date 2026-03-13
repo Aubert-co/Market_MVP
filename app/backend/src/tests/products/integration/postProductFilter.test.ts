@@ -1,8 +1,8 @@
 import supertest from 'supertest'
-import app from '../../serve'
-import *as database from '../../lib/prisma'
+import app from '../../../serve'
+import *as database from '../../../lib/prisma'
 
-import { categories } from '../../helpers'
+import { categories } from '../../../helpers'
 jest.useFakeTimers()
 const mock = jest.spyOn(database.prisma.product,'findMany')
  const datas = [{

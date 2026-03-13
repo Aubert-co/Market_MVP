@@ -1,7 +1,7 @@
-import { cleanAllDb, createUserStoreAndProducts } from "../__mocks__"
-import {ProductRepository} from '../../modules/products/repository/product.repository'
-import {prisma} from '../../lib/prisma'
-import { products } from "../__fixtures__/products"
+import { cleanAllDb, createUserStoreAndProducts } from "../../__mocks__"
+import {ProductRepository} from '../../../modules/products/repository/product.repository'
+import {prisma} from '../../../lib/prisma'
+import { products } from "../../__fixtures__/products"
 
 describe("Method filter products",()=>{
     const filter = new ProductRepository(prisma)
