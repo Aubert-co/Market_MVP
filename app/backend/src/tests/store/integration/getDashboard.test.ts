@@ -1,12 +1,12 @@
 import request from "supertest"
 
-import app from "../../serve"
+import app from "../../../serve"
 
-import { prisma } from "../../lib/prisma"
-import { cleanAllDb, createOrders, createUserStoreAndProducts, createViews, deleteOrders,deleteViews } from "../__mocks__"
-import { generateAccessToken } from '../../helpers/AuthTokens'
-import { orders } from "../__fixtures__/orders"
-import { views } from "../__fixtures__/views"
+import { prisma } from "../../../lib/prisma"
+import { cleanAllDb, createOrders, createUserStoreAndProducts, createViews, deleteOrders,deleteViews } from "../../__mocks__"
+import { generateAccessToken } from '../../../helpers/AuthTokens'
+import { orders } from "../../__fixtures__/orders"
+import { views } from "../../__fixtures__/views"
 const storeId = 1
 const cookies =  generateAccessToken(1)
 

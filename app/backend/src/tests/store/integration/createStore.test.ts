@@ -1,10 +1,10 @@
 import request from "supertest"
-import * as FileUpload from "../../lib/googleStorage"
-import app from "../../serve"
+import * as FileUpload from "../../../lib/googleStorage"
+import app from "../../../serve"
 import path from "path"
-import { prisma } from "../../lib/prisma"
-import { cleanAllDb, deleteStore, deleteUser } from "../__mocks__"
-import { generateAccessToken } from '../../helpers/AuthTokens'
+import { prisma } from "../../../lib/prisma"
+import { cleanAllDb, deleteStore, deleteUser } from "../../__mocks__"
+import { generateAccessToken } from '../../../helpers/AuthTokens'
 
 const cookies =  generateAccessToken(1)
 const cookieWithouStore = generateAccessToken(2)
@@ -13,6 +13,10 @@ const checkExistsStore = async()=>{
     const count = await prisma.store.count()
     return count
 }
+const IMAGEJPG =  path.join(process.cwd(), 'src/tests/assets/tmp/image.jpg')
+const LARGEIMAGE = path.join(process.cwd(),'src/tests/assets/tmp/large-image.jpg')
+const IMAGEPDF = path.join(process.cwd(),'src/tests/assets/tmp/image.pdf')
+const IMAGEMP4 = path.join(process.cwd(),'src/tests/assets/tmp/image.mp4')
 describe("Post:/store/create try to create a store without token",()=>{
     let spyFileUpload:any;
     beforeAll(async()=>{
@@ -31,7 +35,7 @@ describe("Post:/store/create try to create a store without token",()=>{
         .post('/store/create')
         .field('name', 'Minha Loja')
         .field('description', 'Descrição da loja')
-        .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
+        .attach('image',IMAGEJPG); 
         
         expect(response.body.message).toEqual('Access Denied')
         expect(response.statusCode).toEqual(401)
@@ -59,7 +63,7 @@ describe("Post:/store/create  DB actions",()=>{
         .set('Cookie', [`token=${cookies}`])
         .field('name', name)
         .field('description', description)
-        .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
+        .attach('image', IMAGEJPG); 
         
         expect(response.statusCode).toEqual(201)
         expect(response.body.message).toEqual('Store sucessfully created')
@@ -88,7 +92,7 @@ describe("Post:/store/create - Invalid store name",()=>{
         .set('Cookie', [`token=${cookies}`])
         .field('name', '')
         .field('description', 'Descrição da loja')
-        .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
+        .attach('image', IMAGEJPG); 
         
         expect(response.body.message).toEqual("Invalid name. Please check and try again.")
         expect(response.statusCode).toEqual(422)
@@ -101,7 +105,7 @@ describe("Post:/store/create - Invalid store name",()=>{
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abc')
         .field('description', 'Descrição da loja')
-        .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
+        .attach('image', IMAGEJPG); 
         
         expect(response.body.message).toEqual("Invalid name. Please check and try again.")
         expect(response.statusCode).toEqual(422)
@@ -114,7 +118,7 @@ describe("Post:/store/create - Invalid store name",()=>{
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'a'.repeat(16))
         .field('description', 'Descrição da loja')
-        .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
+        .attach('image', IMAGEJPG); 
         
         expect(response.body.message).toEqual("Invalid name. Please check and try again.")
         expect(response.statusCode).toEqual(422)
@@ -137,7 +141,7 @@ describe("Post:/store/create - Invalid store description ",()=>{
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'MinhaLoja')
         .field('description', '')
-        .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
+        .attach('image', IMAGEJPG); 
         
         expect(response.body.message).toEqual("Invalid store description. Please check and try again.")
         expect(response.statusCode).toEqual(422)
@@ -150,7 +154,7 @@ describe("Post:/store/create - Invalid store description ",()=>{
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'MinhaLoja')
         .field('description', 'abc')
-        .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
+        .attach('image', IMAGEJPG); 
         
         expect(response.body.message).toEqual("Invalid store description. Please check and try again.")
         expect(response.statusCode).toEqual(422)
@@ -163,7 +167,7 @@ describe("Post:/store/create - Invalid store description ",()=>{
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'MinhaLoja')
         .field('description', 'a'.repeat(201))
-        .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
+        .attach('image', IMAGEJPG); 
         
         expect(response.body.message).toEqual("Invalid store description. Please check and try again.")
         expect(response.statusCode).toEqual(422)
@@ -196,7 +200,7 @@ describe("Post:/store/create - Invalid image",()=>{
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'MinhaLoja')
         .field('description', 'a description')
-        .attach('image', path.resolve(__dirname, '../assets/tmp/large-image.jpg')); 
+        .attach('image',LARGEIMAGE); 
          
         expect(response.body.message).toEqual("Image file size exceeds the 5MB limit.")
         expect(response.statusCode).toEqual(422)
@@ -207,7 +211,7 @@ describe("Post:/store/create - Invalid image",()=>{
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'MinhaLoja')
         .field('description', 'a description')
-         .attach('image', path.resolve(__dirname, '../assets/tmp/image.pdf')); 
+         .attach('image',IMAGEPDF ); 
         
         expect(response.body.message).toEqual("Invalid or missing image file.")
         expect(response.statusCode).toEqual(422)
@@ -218,7 +222,7 @@ describe("Post:/store/create - Invalid image",()=>{
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'MinhaLoja')
         .field('description', 'a description')
-         .attach('image', path.resolve(__dirname, '../assets/tmp/image.mp4')); 
+         .attach('image', IMAGEMP4); 
         
         expect(response.body.message).toEqual("Invalid or missing image file.")
         expect(response.statusCode).toEqual(422)
@@ -255,7 +259,7 @@ describe("Post:/store/create - db actions",()=>{
         .set('Cookie', [`token=${cookies}`])
         .field('name', storeData.name)
         .field('description', 'Descrição da loja')
-        .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
+        .attach('image', IMAGEJPG); 
         
         expect(response.body.message).toEqual('A store with this name already exists.')
         expect(response.statusCode).toEqual(409)
@@ -270,7 +274,7 @@ describe("Post:/store/create - db actions",()=>{
         .set('Cookie', [`token=${cookieWithouStore}`])
         .field('name', 'newName')
         .field('description', 'Descrição da loja')
-        .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
+        .attach('image', IMAGEJPG); 
         
         expect(googleStorage).not.toHaveBeenCalled()
         expect(response.body.message).toEqual('Failed to create a store')
@@ -285,7 +289,7 @@ describe("Post:/store/create - db actions",()=>{
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'tesing')
         .field('description', 'Descrição da loja')
-        .attach('image', path.resolve(__dirname, '../assets/tmp/image.jpg')); 
+        .attach('image', IMAGEJPG); 
         
         expect(googleStorage).not.toHaveBeenCalled()
         expect(response.body.message).toEqual('User already has a store')
