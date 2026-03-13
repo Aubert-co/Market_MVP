@@ -1,16 +1,16 @@
 import { addCouponUsage, cleanAllDb,cleanOrders,
     cleanCoupons, createCoupons,
     createUserStoreAndProducts,oneStore,
-    users } from "../__mocks__"
+    users } from "../../__mocks__"
 import request from 'supertest'
-import app from '../../serve'
-import { couponsDatas } from "../__fixtures__/coupons"
-import { generateAccessToken } from "../../helpers/AuthTokens"
-import { prisma } from "../../lib/prisma"
-import { products } from "../__fixtures__/products"
-import {applyDiscount} from '../../helpers/applyDiscount'
-import {Order} from '../../modules/orders/types/order.types'
-import { roundTottaly } from "../../helpers"
+import app from '../../../serve'
+import { couponsDatas } from "../../__fixtures__/coupons"
+import { generateAccessToken } from "../../../helpers/AuthTokens"
+import { prisma } from "../../../lib/prisma"
+import { products } from "../../__fixtures__/products"
+import {applyDiscount} from '../../../helpers/applyDiscount'
+import {Order} from '../../../modules/orders/types/order.types'
+import { roundTottaly } from "../../../helpers"
 
 const {validCoupons,expiredCoupons} = couponsDatas(oneStore.id)
 

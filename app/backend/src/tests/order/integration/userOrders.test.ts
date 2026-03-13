@@ -1,10 +1,10 @@
-import { generateAccessToken } from "../../helpers/AuthTokens"
-import app from "../../serve"
-import { orders } from "../__fixtures__/orders"
-import { cleanAllDb, cleanCoupons, cleanOrders, createCoupons, createManyOrders, createUserStoreAndProducts,oneStore,users } from "../__mocks__"
+import { generateAccessToken } from "../../../helpers/AuthTokens"
+import app from "../../../serve"
+import { orders } from "../../__fixtures__/orders"
+import { cleanAllDb, cleanCoupons, cleanOrders, createCoupons, createManyOrders, createUserStoreAndProducts,oneStore,users } from "../../__mocks__"
 import request from 'supertest'
-import { couponsDatas } from "../__fixtures__/coupons"
-import { prisma } from "../../lib/prisma"
+import { couponsDatas } from "../../__fixtures__/coupons"
+import { prisma } from "../../../lib/prisma"
 const [firtUser,user] = users
 
 const {validCoupons} = couponsDatas( oneStore.id )
