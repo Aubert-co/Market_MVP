@@ -1,7 +1,7 @@
-import { IProductRepository } from '../../modules/products/repository/product.repository'
-import { UserCartService} from '../../modules/userCart/services/useCart.services'
-import {UserCartRepository} from '../../modules/userCart/repository/userCart.repository'
-import { ErrorMessage } from '../../helpers/ErrorMessage'
+import { IProductRepository } from '../../../modules/products/repository/product.repository'
+import { UserCartService} from '../../../modules/userCart/services/useCart.services'
+import {UserCartRepository} from '../../../modules/userCart/repository/userCart.repository'
+import { ErrorMessage } from '../../../helpers/ErrorMessage'
 
 
 describe("UserCartService method create",()=>{
