@@ -1,11 +1,11 @@
 import {  cleanAllDb,cleanOrders,
       createUserStoreAndProducts,users, createOrder,deleteReviewAndComments
-     } from "../__mocks__"
+     } from "../../__mocks__"
 import request from 'supertest'
-import app from '../../serve'
-import { generateAccessToken } from "../../helpers/AuthTokens"
-import { prisma } from "../../lib/prisma"
-import { products } from "../__fixtures__/products"
+import app from '../../../serve'
+import { generateAccessToken } from "../../../helpers/AuthTokens"
+import { prisma } from "../../../lib/prisma"
+import { products } from "../../__fixtures__/products"
 
 
 const [product] = products
