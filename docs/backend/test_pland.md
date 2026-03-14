@@ -20,7 +20,7 @@ O foco é validar cenários críticos, garantindo integridade dos dados, autenti
 ### Fora do escopo
 - Integração com serviços externos reais.
 - Testes de performance em larga escala.
-- Testes de segurança avançados (XSS, SQL Injection).
+
 
 ---
 
