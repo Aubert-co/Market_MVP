@@ -1,0 +1,31 @@
+Funcionalidade: Criar review de produto
+
+Como um usuário do sistema
+Quero avaliar um produto que comprei
+Para compartilhar minha experiência com outros usuários
+
+Cenário: Criar review com sucesso
+Dado que o usuário possui um pedido com status "completed"
+E a API de criação de review está disponível
+Quando o usuário envia uma requisição POST para "/reviews/create" com:
+| content | rating | order |
+| lorem ipsum testing a new product | 50 | orderId |
+Então a API deve retornar status 201
+E a resposta deve conter a mensagem "Sucess"
+E a review deve ser salva no banco de dados
+E o comentário deve ser salvo no banco de dados
+
+---
+
+Esquema do Cenário: Falha ao criar review devido a dados inválidos
+Dado que a API de criação de review está disponível
+Quando o usuário envia uma requisição POST para "/reviews/create" com "<campo>" inválido
+Então a API deve retornar status <status>
+E a resposta deve conter a mensagem "<mensagem>"
+
+Exemplos:
+| campo                | status | mensagem                                                     |
+| rating inválido      | 400    | Invalid rating. It must be a valid number.                   |
+| orderId inválido     | 400    | Invalid order ID. It must be a valid number.                 |
+| content muito curto  | 400    | Content must be between 5 and 150 characters long.           |
+| pedido não completed | 404    | Order item not found or does not belong to the user.         |

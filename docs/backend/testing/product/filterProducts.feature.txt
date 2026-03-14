@@ -1,0 +1,50 @@
+Funcionalidade: Filtrar produtos por categoria, nome e faixa de preço
+
+Como um usuário do sistema
+Quero buscar produtos utilizando filtros
+Para visualizar apenas os produtos relevantes
+
+Cenário: Buscar produtos com filtros válidos
+Dado que existem produtos cadastrados no sistema
+E a API de filtrar produtos está disponível
+Quando o usuário envia uma requisição POST para "/product/filter" com filtros válidos
+Então a API deve retornar status 200
+E a resposta deve conter a lista de produtos filtrados
+
+---
+
+Esquema do Cenário: Falha ao buscar produtos devido a parâmetros inválidos
+Dado que a API de filtrar produtos está disponível
+Quando o usuário envia uma requisição POST para "/product/filter" com "<campo>" inválido
+Então a API deve retornar status 400
+E a mensagem na resposta deve ser "<mensagem>"
+
+Exemplos:
+| campo        | mensagem                         |
+| name curto   | Invalid name format              |
+| name longo   | Invalid name format              |
+| maxPrice     | Invalid maximum price value      |
+| minPrice     | Invalid minimum price value      |
+| category     | Invalid category provided        |
+
+---
+
+Esquema do Cenário: Buscar produtos utilizando filtros específicos
+Dado que existem produtos cadastrados
+E a API de filtrar produtos está disponível
+Quando o usuário envia uma requisição POST para "/product/filter" com "<filtro>" válido
+Então a API deve retornar status <status>
+E a resposta deve conter "<resultado>"
+
+Exemplos:
+| filtro                         | status | resultado                              |
+| category válida                | 200    | datas com produtos da categoria        |
+| name válido                    | 200    | datas com produtos encontrados         |
+| maxPrice válido                | 200    | datas com produtos até o preço máximo  |
+| minPrice válido                | 200    | datas com produtos acima do preço      |
+| todos os filtros válidos       | 200    | datas com produtos filtrados           |
+| category válida sem resultados | 404    | message "No products found"            |
+| name válido sem resultados     | 404    | message "No products found"            |
+| maxPrice válido sem resultados | 404    | message "No products found"            |
+| minPrice válido sem resultados | 404    | message "No products found"            |
+| todos filtros sem resultados   | 404    | message "No products found"            |

@@ -1,0 +1,32 @@
+Funcionalidade: Listar cupons disponíveis da loja
+
+Como um usuário do sistema
+Quero visualizar cupons disponíveis de uma loja
+Para poder utilizá-los em compras
+
+Cenário: Não existem cupons disponíveis
+Dado que existem apenas cupons expirados na loja
+E o usuário já utilizou esses cupons
+Quando o usuário envia uma requisição GET para "/coupon/available/{storeId}"
+Então a API deve retornar a mensagem "No coupons available"
+E a resposta não deve conter o campo "datas"
+
+---
+
+Cenário: Existe apenas um cupom válido disponível
+Dado que existe um cupom válido e outros expirados na loja
+E o usuário já utilizou os cupons expirados
+Quando o usuário envia uma requisição GET para "/coupon/available/{storeId}"
+Então a API deve retornar status 200
+E a resposta deve conter a mensagem "Sucess"
+E a lista "datas" deve conter 1 cupom
+
+---
+
+Cenário: Existem múltiplos cupons válidos
+Dado que existem cupons válidos e expirados na loja
+E o usuário já utilizou os cupons expirados
+Quando o usuário envia uma requisição GET para "/coupon/available/{storeId}" autenticado
+Então a API deve retornar status 200
+E a resposta deve conter a mensagem "Sucess"
+E a lista "datas" deve conter apenas os cupons válidos

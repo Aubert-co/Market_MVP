@@ -1,0 +1,64 @@
+Funcionalidade: Criar cupons para a loja
+
+Como um dono de loja
+Quero criar cupons de desconto
+Para oferecer promoções aos clientes
+
+---
+
+Cenário: Criar cupom com sucesso
+Dado que o usuário é dono de uma loja
+E a API de criação de cupons está disponível
+Quando o usuário envia uma requisição POST para "/store/create/coupon" com dados válidos
+Então a API deve retornar status 201
+E a resposta deve conter a mensagem "Sucess"
+E o cupom deve ser salvo no banco de dados
+
+---
+
+Esquema do Cenário: Falha ao criar cupom devido a dados inválidos
+Dado que a API de criação de cupons está disponível
+Quando o usuário envia uma requisição POST para "/store/create/coupon" com "<campo>" inválido
+Então a API deve retornar status 400
+E a resposta deve conter a mensagem "<mensagem>"
+
+Exemplos:
+| campo                         | mensagem                                                              |
+| discount inválido             | Invalid discount value. Please provide a valid number.                |
+| discountType inválido         | Invalid discount type. Only 'fixed' or 'percent' are allowed.         |
+| percent maior que 60          | Percentage discount cannot exceed 60%.                                |
+| code menor que 4 caracteres   | Invalid coupon code. Please provide a valid string.                   |
+| quantity inválida             | Invalid quantity. It must be a valid number and not exceed 50 units.  |
+| quantity maior que 50         | Invalid quantity. It must be a valid number and not exceed 50 units.  |
+| quantity não inteira          | Invalid quantity. It must be a valid number and not exceed 50 units.  |
+| expiresAt inválido            | Invalid expiration date. It must be one of: oneweek, onemonth, or fivedays. |
+
+---
+
+Esquema do Cenário: Criar cupom com diferentes datas de expiração
+Dado que o usuário é dono de uma loja
+Quando o usuário envia uma requisição POST para "/store/create/coupon" com "<expiração>"
+Então a API deve retornar status 201
+E o cupom deve ser salvo com a data correta
+
+Exemplos:
+| expiração |
+| oneweek   |
+| onemonth  |
+| fivedays  |
+
+---
+
+Cenário: Falha ao criar cupom devido a erro no banco de dados
+Dado que ocorreu um erro no banco de dados
+Quando o usuário envia uma requisição POST para "/store/create/coupon"
+Então a API deve retornar status 500
+E a resposta deve conter uma mensagem de erro
+
+---
+
+Cenário: Falha ao criar cupom quando o código já existe
+Dado que já existe um cupom com o mesmo código na loja
+Quando o usuário envia uma requisição POST para "/store/create/coupon"
+Então a API deve retornar status 409
+E a resposta deve conter a mensagem "Coupon code already exists"

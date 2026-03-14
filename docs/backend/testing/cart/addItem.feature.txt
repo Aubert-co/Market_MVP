@@ -1,0 +1,44 @@
+Funcionalidade: Adicionar item ao carrinho de compras
+
+Dado que o usuário está autenticado
+E o produto com ID 10 existe e está disponível para compra
+Quando o usuário envia uma requisição POST para "/cart/add" com productId: 10 e quantity: 2
+Então a API deve retornar status 201
+E a mensagem na resposta deve ser "Sucess"
+E o item deve ser adicionado ao carrinho do usuário com a quantidade correta
+
+
+Dado que o usuário está autenticado
+Quando o usuário envia uma requisição POST para "/cart/add" com productId: "abc" e quantity: 2
+Então a API deve retornar status 400
+E a mensagem na resposta deve ser "Invalid product ID. Please provide a valid number."
+
+
+
+Dado que o usuário está autenticado
+E o produto com ID 999 não existe
+Quando o usuário envia uma requisição POST para "/cart/add" com productId: 999 e quantity: 2
+Então a API deve retornar status 404
+E a mensagem na resposta deve ser "Product not found."
+
+
+Dado que o usuário está autenticado
+E o usuário já tem 5 unidades deste produto no carrinho
+Quando o usuário envia uma requisição POST para "/cart/add" com productId: 10 e quantity: 1
+Então a API deve retornar status 400
+E a mensagem na resposta deve ser "Cart limit reached. You can only have up to 5 items in your cart."
+
+Dado que o usuário está autenticado
+E o produto com ID 10 existe e está disponível para compra
+Quando o usuário envia uma requisição POST para "/cart/add" com productId: 10 e quantity: e3
+Então a API deve retornar status 400
+E a mensagem na resposta deve ser "Invalid quantity. Please provide a valid number."
+
+
+
+Dado que o usuário está autenticado
+E o produto com ID 10 existe e está disponível para compra
+Quando o usuário envia uma requisição POST para "/cart/add" com productId: 10 e quantity: 6
+Então a API deve retornar status 400
+E a mensagem na resposta deve ser "You can only add up to 5 items of this product to the cart."
+

@@ -1,0 +1,16 @@
+Funcionalidade: Listagem de pedidos do usuário
+
+Cenário: Listar pedidos do usuário com sucesso
+Dado que o usuário está autenticado
+E existem pedidos associados ao usuário
+Quando o usuário envia uma requisição GET para "/orders/me"
+Então a API deve retornar status 200
+E a resposta deve conter a lista de pedidos do usuário
+E a lista deve conter cinco pedidos
+
+Cenário: Erro ao buscar pedidos devido a falha no banco de dados
+Dado que ocorre um erro ao consultar os pedidos no banco de dados
+E o usuário está autenticado
+Quando o usuário envia uma requisição GET para "/orders/me"
+Então a API deve retornar status 500
+E a mensagem na resposta deve ser "Database error while fetching user orders."

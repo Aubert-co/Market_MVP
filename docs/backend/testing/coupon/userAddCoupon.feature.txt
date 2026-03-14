@@ -1,0 +1,40 @@
+Funcionalidade: Adicionar cupom ao usuário
+
+Como um usuário do sistema
+Quero salvar cupons disponíveis
+Para utilizá-los futuramente em compras
+
+---
+
+Cenário: Falha ao adicionar cupom expirado
+Dado que existe um cupom expirado no sistema
+E a API de adicionar cupons está disponível
+Quando o usuário envia uma requisição POST para "/user/add/coupon" com um cupom expirado
+Então a API deve retornar a mensagem "Invalid or expired coupon."
+E o cupom não deve ser salvo para o usuário
+
+---
+
+Cenário: Adicionar cupom válido com sucesso
+Dado que existe um cupom válido disponível
+Quando o usuário envia uma requisição POST para "/user/add/coupon" com um cupom válido
+Então a API deve retornar status 201
+E a resposta deve conter a mensagem "Sucess"
+E o cupom deve ser salvo para o usuário
+
+---
+
+Cenário: Falha ao adicionar cupom que o usuário já possui
+Dado que o usuário já possui esse cupom
+Quando o usuário envia uma requisição POST para "/user/add/coupon" com o mesmo cupom
+Então a API deve retornar status 400
+E a resposta deve conter a mensagem "This user already possesses the coupon."
+
+---
+
+Cenário: Falha ao adicionar cupom quando o limite de cupons ativos é atingido
+Dado que o usuário já possui 5 cupons ativos
+Quando o usuário envia uma requisição POST para "/user/add/coupon" com um novo cupom
+Então a API deve retornar status 400
+E a resposta deve conter a mensagem "Limit of active coupons reached."
+E o cupom não deve ser salvo para o usuário

@@ -1,0 +1,39 @@
+Funcionalidade: Criação de pedidos - erros
+
+Esquema do Cenário: Falha ao tentar criar pedido com dados inválidos
+Dado que a API de criação de pedidos está disponível
+E o usuário está autenticado
+Quando o usuário envia uma requisição POST para "/order/create" com "<caso>"
+Então a API deve retornar status <status>
+E a mensagem na resposta deve ser "<mensagem>"
+
+Exemplos:
+| caso                           | status | mensagem                                                     |
+| array vazio de itens           | 400    | Invalid order payload: expected a non-empty array of items. |
+| quantity inválido              | 400    | Invalid product ID or quantity. Both must be valid numbers. |
+| productId inválido             | 400    | Invalid product ID or quantity. Both must be valid numbers. |
+| couponId inválido              | 400    | Invalid coupon ID. It must be a valid number.                |
+| productId inexistente          | 404    | No valid product found to create the order.                  |
+| quantidade maior que estoque   | 400    | Insufficient product stock for the requested quantity.      |
+| cupom expirado ou inválido     | 404    | Coupon not found or is invalid.                              |
+| um dos produtos não existe     | 404    | No valid product found to create the order.
+| cupom inválido                 | 404    | Coupon not found or is invalid.
+| cupom expirado                 | 404    | Coupon not found or is invalid.
+| o estoque de produtos é menor que a quantidade de produtos |  400   | Insufficient product stock for the requested quantity.
+| usuário já usou o cupom uma vez | 409   | Coupon has already been used
+
+
+Funcionalidade: Criação de pedidos - sucesso
+
+Cenário: Criar múltiplos pedidos com sucesso
+Dado que existem vários produtos disponíveis em estoque
+E existem cupons válidos disponíveis
+E o usuário está autenticado
+Quando o usuário envia uma requisição POST para "/order/create" com múltiplos itens de pedido
+Então a API deve retornar status 201
+E a mensagem na resposta deve ser "Sucess"
+E cinco pedidos devem ser criados no banco de dados
+E os pedidos devem pertencer ao usuário autenticado
+E os cupons utilizados devem ser registrados como usados
+E cada pedido deve conter o couponId correspondente
+E o total de cada pedido deve considerar corretamente o desconto aplicado

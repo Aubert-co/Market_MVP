@@ -1,0 +1,66 @@
+Funcionalidade: pegar produtos por página
+
+Cenário: Paginar produtos com 20 itens no banco e página inválida enviada
+    Dado que existem 20 produtos cadastrados
+    E a API de paginação de produtos está disponível
+    Quando o usuário envia uma requisição GET para "/product/page/0"
+    Então a API deve retornar status 200
+    E a resposta deve conter: {currentPage:1, totalPages:2, datas:[...], fromCache:false}
+
+Cenário: Paginar produtos e retornar a segunda página
+    Dado que existem 20 produtos cadastrados
+    E a API de paginação de produtos está disponível
+    Quando o usuário envia uma requisição GET para "/product/page/2"
+    Então a API deve retornar status 200
+    E a resposta deve conter: {currentPage:2, totalPages:2, datas:[...], fromCache:false}
+
+Cenário: Paginar produtos solicitando uma página maior que o total disponível
+    Dado que existem 20 produtos cadastrados
+    E a API de paginação de produtos está disponível
+    Quando o usuário envia uma requisição GET para "/product/page/10"
+    Então a API deve retornar status 200
+    E a resposta deve conter: {currentPage:2, totalPages:2, datas:[...], fromCache:false}
+
+Cenário: Recuperar página de produtos do cache quando já está armazenada
+    Dado que existem 20 produtos cadastrados
+    E a API de paginação de produtos está disponível
+    Quando o usuário envia uma requisição GET para "/product/page/1" pela primeira vez
+    E envia a mesma requisição GET para "/product/page/1" novamente
+    Então a primeira resposta deve retornar status 200 e fromCache:false
+    E a segunda resposta deve retornar status 200 e fromCache:true
+    E ambas as respostas devem conter: {currentPage:1, totalPages:2, datas:[...]}
+
+Cenário: Não retornar valores em cache quando ocorre erro ao acessar o cache, mas continuar a busca no banco de dados
+    Dado que existem 20 produtos cadastrados
+    E a API de paginação de produtos está disponível
+    E o acesso ao cache está falhando
+    Quando o usuário envia uma requisição GET para "/product/page/1" duas vezes
+    Então ambas as respostas devem retornar status 200 e fromCache:false
+    E o fluxo deve continuar buscando os dados no banco de dados
+    E ambas as respostas devem conter: {currentPage:1, totalPages:2, datas:[...]}
+
+Cenário: Enviar os dados normalmente quando ocorre um erro no cache
+    Dado que existem 20 produtos cadastrados
+    E a API de paginação de produtos está disponível
+    E o acesso ao cache está falhando
+    Quando o usuário envia uma requisição GET para "/product/page/1" duas vezes
+    Então ambas as respostas devem retornar status 200 e fromCache:false
+    E o fluxo deve continuar buscando os dados no banco de dados
+    E ambas as respostas devem conter: {currentPage:1, totalPages:2, datas:[...]}
+
+Cenário: Retornar os dados da última página disponível quando a página solicitada excede o total
+    Dado que existem 20 produtos cadastrados
+    E a API de paginação de produtos está disponível
+    Quando o usuário envia uma requisição GET para "/product/page/2"
+    E envia uma requisição GET para "/product/page/20"
+    Então a primeira resposta deve retornar status 200 e fromCache:false
+    E a segunda resposta deve retornar status 200
+    E ambas as respostas devem conter: {currentPage:2, totalPages:2, datas:[...]}
+
+Cenário: Retornar erro quando ocorre falha no banco de dados
+    Dado que existem produtos cadastrados
+    E a API de paginação de produtos está disponível
+    E o banco de dados está indisponível
+    Quando o usuário envia uma requisição GET para "/product/page/1"
+    Então a API deve retornar status 500
+    E a resposta deve conter: {message: "An unexpected error occurred. Please try again later."}

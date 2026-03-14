@@ -1,0 +1,32 @@
+Funcionalidade: Listar cupons do usuário
+
+Como um usuário do sistema
+Quero visualizar meus cupons disponíveis
+Para utilizá-los em compras futuras
+
+---
+
+Cenário: Usuário possui apenas cupons expirados
+Dado que o usuário possui apenas cupons expirados
+Quando o usuário envia uma requisição GET para "/user/list/coupons" autenticado
+Então a API deve retornar status 200
+E a resposta deve conter a mensagem "Sucess"
+E a lista de cupons deve estar vazia
+
+---
+
+Cenário: Usuário possui apenas um cupom válido
+Dado que o usuário possui um cupom válido e outros expirados
+Quando o usuário envia uma requisição GET para "/user/list/coupons" autenticado
+Então a API deve retornar status 200
+E a resposta deve conter a mensagem "Sucess"
+E a lista deve conter apenas 1 cupom válido
+
+---
+
+Cenário: Usuário possui múltiplos cupons válidos
+Dado que o usuário possui vários cupons válidos e alguns expirados
+Quando o usuário envia uma requisição GET para "/user/list/coupons" autenticado
+Então a API deve retornar status 200
+E a resposta deve conter a mensagem "Sucess"
+E a lista deve conter apenas os cupons válidos

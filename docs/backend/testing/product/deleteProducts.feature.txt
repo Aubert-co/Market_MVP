@@ -1,0 +1,28 @@
+Funcionalidade: Exclusão de múltiplos produtos
+
+Cenário: Deletar múltiplos produtos com sucesso
+  Dado que existem 3 produtos cadastrados pertencentes à loja do usuário
+  E a API de exclusão de produtos está disponível
+  Quando o usuário envia uma requisição POST para "/products/delete" com os IDs desses produtos
+  Então a API deve retornar status 202
+  E a mensagem na resposta deve ser "Delete scheduled."
+  E os produtos devem ser agendados para exclusão via fila
+
+Cenário: Enviar lista vazia de IDs de produtos
+  Dado que a API de exclusão de produtos está disponível
+  Quando o usuário envia uma requisição POST para "/products/delete" com um array vazio
+  Então a API deve retornar status 400
+  E a mensagem na resposta deve ser "Invalid product IDs provided."
+
+Cenário: Tentar deletar produtos de outra loja
+  Dado que o usuário não é o dono dos produtos informados
+  E a API de exclusão de produtos está disponível
+  Quando o usuário envia uma requisição POST para "/products/delete" com os IDs desses produtos
+  Então a API deve retornar status 403
+  E a mensagem na resposta deve ser "Você não tem permissão para deletar esses produtos."
+
+Cenário: Usuário não autenticado tenta deletar produtos
+  Dado que a API de exclusão de produtos está disponível
+  Quando o usuário não autenticado envia uma requisição POST para "/products/delete"
+  Então a API deve retornar status 401
+  E a mensagem na resposta deve ser "Não autorizado"

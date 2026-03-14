@@ -1,0 +1,45 @@
+Funcionalidade: Criação de produtos
+
+Cenário: Criar produto com dados válidos
+Dado que a API de criação de produto está disponível
+E o usuário preencheu os dados do produto corretamente
+E anexou uma imagem válida chamada "produto.jpg"
+Quando o usuário envia uma requisição POST para "/product"
+Então a API deve retornar o status 201
+E a resposta deve conter a mensagem "Product created"
+E a resposta deve conter os dados do produto criado
+E a imagem deve estar hospedada em um link do Google Cloud Storage
+
+Esquema do Cenário: Falha ao criar produto devido a dados inválidos
+Dado que a API de criação de produto está disponível
+E o usuário preencheu o campo "<campo>" com "<valor>"
+Quando o usuário envia uma requisição POST para "/product"
+Então a API deve retornar o status <status>
+E a resposta deve conter a mensagem "<mensagem>"
+
+Exemplos:
+| campo        | valor                 | status | mensagem                                          |
+| nome         | ""                    | 422    | Invalid name. Please check and try again.        |
+| nome         | "abc"                 | 422    | Invalid name. Please check and try again.        |
+| nome         | "aaaaaaaaaaaaaaaa"    | 422    | Invalid name. Please check and try again.        |
+| categoria    | ""                    | 422    | Invalid category. Please check and try again.    |
+| categoria    | "abc"                 | 422    | Invalid category. Please check and try again.    |
+| categoria    | "aaaaaaaaaaaaaaaaaaaaa"| 422   | Invalid category. Please check and try again.    |
+| preço        | 0                     | 422    | Invalid price. Please check and try again.       |
+| preço        | -1                    | 422    | Invalid price. Please check and try again.       |
+| preço        | ""                    | 422    | Invalid price. Please check and try again.       |
+| preço        | "1e1"                 | 422    | Invalid price. Please check and try again.       |
+| estoque      | "dez unidades"        | 422    | Invalid stock. Please check and try again.       |
+| estoque      | -15                   | 422    | Invalid stock. Please check and try again.       |
+| estoque      | ""                    | 422    | Invalid stock. Please check and try again.       |
+| estoque      | 0                     | 422    | Invalid stock. Please check and try again.       |
+| descrição    | "Curto"               | 422    | Invalid description. Please check and try again. |
+
+Cenário: Erro ao salvar produto devido a falha no banco de dados
+Dado que a API de criação de produto está disponível
+E o usuário preencheu os dados do produto corretamente
+E o banco de dados retorna um erro durante a criação
+Quando o usuário envia uma requisição POST para "/product"
+Então a API deve retornar o status 500
+E a resposta deve conter a mensagem "An unexpected error occurred while creating the product."
+E o serviço de upload para o Google Cloud Storage não deve ser chamado
