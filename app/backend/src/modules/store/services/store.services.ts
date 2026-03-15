@@ -1,10 +1,14 @@
 import { generateImgPath } from "../../../helpers/checkIsValidImage";
 import { ErrorMessage } from "../../../helpers/ErrorMessage"
-import { uploadFileToGCS } from "../../../lib/googleStorage";
+
 import { IStoreRepository } from "../repository/store.repository"
 import { Store } from "../types/store.types";
 import { Product } from "../../products/types/product.types";
+import { GoogleStorage } from "lib/googleStorage";
+import { ImageUploadService } from "lib/ImageUploadService";
 
+const googleStorage = new GoogleStorage()
+const storage = new ImageUploadService(googleStorage)
 export interface IStoreService{
     createStore({userId,name,description,buffer,originalName,mimeType}:CreateStoreParams): Promise<void>,
     checkOwnerShip(storeId:number,userId:number):Promise<boolean>,
@@ -50,7 +54,7 @@ export class StoreService implements IStoreService{
             photo:newUrlPath,
             description
         })
-        await uploadFileToGCS({
+        await storage.uploadImage({
             fileBuffer:buffer,
             urlPath:newUrlPath,
             mimeType

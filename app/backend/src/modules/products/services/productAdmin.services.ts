@@ -1,9 +1,13 @@
+import { ImageUploadService } from "lib/ImageUploadService";
 import { generateImgPath } from "../../../helpers/checkIsValidImage";
 import { ErrorMessage } from "../../../helpers/ErrorMessage";
-import { uploadFileToGCS } from "../../../lib/googleStorage";
 import {  IProductAdminRepository } from "../repository/productAdmin.repository";
 import {  Products } from "../types/product.types";
+import { GoogleStorage } from "lib/googleStorage";
 
+const googleStorage = new GoogleStorage()
+
+const storage = new ImageUploadService(googleStorage)
 
 export interface IProductAdminService{
     createProduct( {category, name, description,
@@ -38,7 +42,7 @@ export class ProductAdminService  implements IProductAdminService{
             description,name,stock,storeId,category,
             price,imageUrl
         })
-        await uploadFileToGCS({
+        await storage.uploadImage({
             fileBuffer,
             mimeType,
             urlPath:imageUrl
