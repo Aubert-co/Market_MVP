@@ -1,5 +1,5 @@
 import request from "supertest"
-import * as FileUpload from "../../../lib/googleStorage"
+import { ImageUploadService } from "../../../services/ImageUploadService"
 import app from "../../../serve"
 import path from "path"
 import { prisma } from "../../../lib/prisma"
@@ -13,15 +13,14 @@ const checkExistsStore = async()=>{
     const count = await prisma.store.count()
     return count
 }
+const spyFileUpload = jest.spyOn(ImageUploadService.prototype,'uploadImage')
 const IMAGEJPG =  path.join(process.cwd(), 'src/tests/assets/tmp/image.jpg')
 const LARGEIMAGE = path.join(process.cwd(),'src/tests/assets/tmp/large-image.jpg')
 const IMAGEPDF = path.join(process.cwd(),'src/tests/assets/tmp/image.pdf')
 const IMAGEMP4 = path.join(process.cwd(),'src/tests/assets/tmp/image.mp4')
 describe("Post:/store/create try to create a store without token",()=>{
-    let spyFileUpload:any;
     beforeAll(async()=>{
         await cleanAllDb()
-        spyFileUpload = jest.spyOn(FileUpload,"uploadFileToGCS").mockResolvedValue("sucess")
     })
     afterAll(async()=>{
         try{
@@ -43,13 +42,13 @@ describe("Post:/store/create try to create a store without token",()=>{
 })
 
 describe("Post:/store/create  DB actions",()=>{
-    let googleStorage:any;
+    
     const data = { id:1,name:'lucas',password:'123456',email:'lucas@gmail.com'}
     beforeAll(async ()=>{
       
         await deleteStore()
         await prisma.user.create({data})
-        googleStorage = jest.spyOn(FileUpload,"uploadFileToGCS").mockResolvedValue("sucess")
+        spyFileUpload.mockResolvedValue({success:true})
     })
      afterAll(async()=>{
         await deleteStore()
@@ -68,7 +67,7 @@ describe("Post:/store/create  DB actions",()=>{
         expect(response.statusCode).toEqual(201)
         expect(response.body.message).toEqual('Store sucessfully created')
     
-        expect(googleStorage).toHaveBeenCalledTimes(1)
+        expect(spyFileUpload).toHaveBeenCalledTimes(1)
 
         const selectStore = await prisma.store.findMany({where:{userId:data.id}})
         const [newStore] = selectStore
@@ -232,9 +231,9 @@ describe("Post:/store/create - Invalid image",()=>{
 describe("Post:/store/create - db actions",()=>{
     const data = [{ id:1,name:'lucas',password:'123456',email:'lucas@gmail.com'},{ id:2,name:'joseff',password:'123456',email:'lucas@gmail.com.br'}]
     const storeData = {id:111,name:'stores',description:'description',userId:1}
-    let googleStorage:any;
+    
     beforeEach(()=>{
-        googleStorage= jest.spyOn(FileUpload,"uploadFileToGCS").mockResolvedValue("sucess")
+        spyFileUpload.mockResolvedValue({success:true})
         jest.clearAllMocks()
     })
     beforeAll(async ()=>{
@@ -252,7 +251,7 @@ describe("Post:/store/create - db actions",()=>{
     })
    
     it("should return the message 'A store with this name already exists.' when trying to use an existing name.",async()=>{
-        googleStorage.mockResolvedValue("sucess")
+   
           
         const response = await request(app)
         .post('/store/create')
@@ -263,11 +262,11 @@ describe("Post:/store/create - db actions",()=>{
         
         expect(response.body.message).toEqual('A store with this name already exists.')
         expect(response.statusCode).toEqual(409)
-        expect(googleStorage).not.toHaveBeenCalled()
+        expect(spyFileUpload).not.toHaveBeenCalled()
     })
     it("should return an error when the database throws an error and not call google storage",async()=>{
         jest.spyOn(prisma.store,'create').mockRejectedValueOnce(new Error('Simulated DB error: Connection lost.'));
-        const googleStorage = jest.spyOn(FileUpload,"uploadFileToGCS").mockResolvedValue("sucess")
+     
         
         const response = await request(app)
         .post('/store/create')
@@ -276,13 +275,13 @@ describe("Post:/store/create - db actions",()=>{
         .field('description', 'Descrição da loja')
         .attach('image', IMAGEJPG); 
         
-        expect(googleStorage).not.toHaveBeenCalled()
+        expect(spyFileUpload).not.toHaveBeenCalled()
         expect(response.body.message).toEqual('Failed to create a store')
         expect(response.statusCode).toEqual(409)
        
     })
     it("should return an error when the user already has a store",async()=>{
-        const googleStorage = jest.spyOn(FileUpload,"uploadFileToGCS").mockResolvedValue("sucess")
+   
         
         const response = await request(app)
         .post('/store/create')
@@ -291,7 +290,7 @@ describe("Post:/store/create - db actions",()=>{
         .field('description', 'Descrição da loja')
         .attach('image', IMAGEJPG); 
         
-        expect(googleStorage).not.toHaveBeenCalled()
+        expect(spyFileUpload).not.toHaveBeenCalled()
         expect(response.body.message).toEqual('User already has a store')
         expect(response.statusCode).toEqual(409)
     })

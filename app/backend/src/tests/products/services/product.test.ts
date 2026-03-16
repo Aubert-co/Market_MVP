@@ -1,52 +1,18 @@
 import {ProductService} from '../../../modules/products/services/product.services'
-import * as uploadFiles from '../../../lib/googleStorage'
-import * as images from '../../../helpers/checkIsValidImage'
 import {products} from '../../__fixtures__/products'
 import { FilterProductsInput } from "../../../modules/products/types/product.types"
 const [product] = products
 const mockRepository = {
-    createProduct:jest.fn(),
+  
     getProducts:jest.fn(),
     getProductById:jest.fn(),
     countProducts:jest.fn(),
     deleteProduct:jest.fn(),
     filterProducts:jest.fn()
 }
-const mockUpload = jest.spyOn(uploadFiles,'uploadFileToGCS')
-const productService = new ProductService( mockRepository )
-describe("method createProduct",()=>{
-    
-  
-    beforeEach(()=>{
-        jest.resetAllMocks()
-    })
-    it("should call the services correctly",async()=>{
-        const urlPath = "testing 1234"
-        jest.spyOn(images,'generateImgPath').mockReturnValue(urlPath)
-        const description = "lorem ipstu"
-        const name = "testing"
-        const price = 35
-        const category = 'testing'
-        const stock = 35
-        const storeId = 3
-        const originalName = 'name'
-        const fileBuffer = new Buffer('testing')
-        const mimeType = "img"
-        await productService.createProduct({description,name,price,
-            category,stock,storeId,fileBuffer,originalName,mimeType
 
-        })
-        expect( mockRepository.createProduct)
-        .toHaveBeenCalledTimes(1)
-        expect( mockRepository.createProduct).toHaveBeenCalledWith({
-            description,name,price,category,stock,storeId,imageUrl:urlPath
-        })
-        expect( mockUpload ).toHaveBeenCalledTimes(1)
-        expect( mockUpload ).toHaveBeenCalledWith({
-            mimeType,fileBuffer,urlPath
-        })
-    })
-})
+const productService = new ProductService( mockRepository )
+
 
 
 describe("method getProductById",()=>{

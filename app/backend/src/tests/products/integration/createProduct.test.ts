@@ -1,5 +1,5 @@
 import request from 'supertest'
-import * as FileUpload from "../../../lib/googleStorage"
+import {ImageUploadService} from "../../../services/ImageUploadService"
 import app from "../../../serve"
 import path from "path"
 import jwt from "jsonwebtoken"
@@ -337,7 +337,7 @@ describe("db actions",()=>{
         await prisma.store.createMany({data:stores})
     })
     beforeEach(async()=>{
-        googleStorage= jest.spyOn(FileUpload,"uploadFileToGCS")
+        googleStorage= jest.spyOn(ImageUploadService.prototype,"uploadImage")
         prismaProductCreate =jest.spyOn(prisma.product,'create')
         jest.clearAllMocks()
     })
