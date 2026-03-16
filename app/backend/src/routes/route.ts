@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { generateSignedUrl } from "../lib/googleStorage";
 import products from '../modules/products/routes/products.route'
 import storeRoute from '../modules/store/routes/store.route'
 import userCartRoute from '../modules/userCart/routes/userCart.route'
@@ -9,6 +8,10 @@ import orderRoute from '../modules/orders/route/order.route'
 import couponRoute from '../modules/coupon/route/coupon.route'
 import reviewsRoute from '../modules/reviews/routes/reviews.route'
 import storeDashboard from '../modules/store/routes/storeDash.route'
+import { makeUploadFile } from "../factory/uploadFIles";
+
+ 
+const imageUpload = makeUploadFile()
 const route = Router();
 
  
@@ -20,10 +23,11 @@ route.use( orderRoute)
 route.use( couponRoute)
 route.use(reviewsRoute)
 route.use(storeDashboard)
+
 route.get('/images/:filename', async (req, res) => {
   const { filename } = req.params;
 
-  const signedUrl = await generateSignedUrl(filename);
+  const signedUrl = await imageUpload.generateSignedUrl(filename);
   res.set('Content-Type', 'image/png');
   res.redirect(signedUrl);
 }); 
