@@ -55,6 +55,10 @@ services:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
       - REDIS_URL=redis://default:${REDIS_PASSWORD}@redis:6379
       - NODE_ENV=test
+      - AWS_REGION=jqwejbqe
+      - AWS_BUCKET=qjekqjbe
+      - AWS_SECRET_ACCESS_KEY=iqjwjnqweb
+      - AWS_ACCESS_KEY_ID=jqwnekbwehb
     tty: true
 
 
