@@ -9,7 +9,9 @@ export type UploadFile ={
   mimeType:string
 }
 
-export interface ImageStorage  {
-    deleteImg(imageName:string):Promise<any>
-    generateSignedUrl(imageName:string):Promise<string>
-}
+
+export interface IFileStorage {
+  upload(data: UploadFile): Promise<UploadImageResult>
+  generateSignedUrl(imageName:string):Promise<string>
+  
+} 
