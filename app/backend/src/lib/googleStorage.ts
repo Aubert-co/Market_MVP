@@ -1,11 +1,9 @@
 import  {Bucket, Storage}  from '@google-cloud/storage';
 import { ErrorMessage } from '../helpers/ErrorMessage';
-import { IFileStorage } from './ImageUploadService';
-import { ImageStorage, UploadFile, UploadImageResult } from 'types/storageImages.types';
+import {  UploadFile, UploadImageResult,IFileStorage } from '../types/storageImages.types';
 
 
-
-export class GoogleStorage implements IFileStorage , ImageStorage{
+export class GoogleStorage implements IFileStorage {
   private readonly PRIVATE_KEY: string
   private readonly BUCKET_NAME: string
 
