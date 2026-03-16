@@ -1,31 +1,19 @@
 import { ProductRedisRepository } from "../../../repository/redis.repository";
 import {  pagination } from "../../../helpers";
-import { generateImgPath } from "../../../helpers/checkIsValidImage";
 import { ErrorMessage } from "../../../helpers/ErrorMessage";
-import { uploadFileToGCS } from "../../../lib/googleStorage";
 import {  IProductRepository } from "../repository/product.repository";
-import {  Products, SelectedProduct ,GetProductById, FilteredProduct,FilterProductsInput} from "../types/product.types";
+import {   SelectedProduct ,GetProductById, FilteredProduct,FilterProductsInput} from "../types/product.types";
 import { IProductRedisService, ProductRedisService } from "../../../services/redis.services";
 import redis from "../../../lib/redis";
 
 export interface IProductService{
-    createProduct( {category, name, description,
-        storeId, price, 
-        stock ,fileBuffer,originalName ,mimeType }:CreateProduct
-    ): Promise<void>
-  
     getProducts(page:number):Promise<GetProducts>,
     getProductById(id:number):Promise< GetProductById>,
     countProducts():Promise<number>,
-   
     filterProduct({name,category,maxPrice,minPrice,take,skip}:FilterProductsInput):Promise<FilteredProduct[]>
 }
 
-type CreateProduct = Products & {
-    mimeType:string,
-    fileBuffer:Buffer,
-    originalName:string
-}
+
 type GetProducts = {
     datas:SelectedProduct[],
     currentPage:number,
@@ -39,24 +27,7 @@ export class ProductService  implements IProductService{
         this.redis = new ProductRedisService(redisRep)
     }
 
-    public async createProduct( {category, name, description,
-        storeId, price, 
-        stock ,fileBuffer,originalName ,mimeType }:CreateProduct
-    ): Promise<void> {
-        const imageUrl = generateImgPath(originalName)
-        
-        await this.product.createProduct({
-            description,name,stock,storeId,category,
-            price,imageUrl
-        })
-        await uploadFileToGCS({
-            fileBuffer,
-            mimeType,
-            urlPath:imageUrl
-        })
-    }
-   
-   
+
     public async getProducts( page:number):Promise<GetProducts>{
         const limit = 10
         let countProducts = await this.redis.getCountProductInCache()

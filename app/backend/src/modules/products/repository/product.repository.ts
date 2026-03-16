@@ -3,9 +3,6 @@ import { ErrorMessage } from "../../../helpers/ErrorMessage";
 import {  GetProductById, SelectedProduct, FilteredProduct,FilterProductsInput } from "../types/product.types";
 
 export interface IProductRepository{
-    createProduct(data:{category:string,name:string,description:string,
-        storeId:number,price:number,stock:number,imageUrl:string
-    }):Promise<void>,
     getProducts(limit:number,skip:number):Promise<SelectedProduct[]>,
     getProductById(id:number):Promise< GetProductById>,
     countProducts():Promise<number >,
@@ -15,14 +12,6 @@ export interface IProductRepository{
 export class ProductRepository  implements IProductRepository{
     constructor(private prisma:PrismaClient){}
 
-    public async createProduct(data: { category:string,name: string; description: string; storeId: number; price: number; stock: number; imageUrl: string; }): Promise<void> {
-        try{
-            await this.prisma.product.create({data})
-        }catch(err:any){
-            throw new Error()
-        }
-        
-    }
     public async getProducts(limit:number , skip:number = 0): Promise<SelectedProduct[] > {
          
         try{
@@ -101,9 +90,7 @@ export class ProductRepository  implements IProductRepository{
     public async countProducts():Promise<number >{
         return await this.prisma.product.count()
     }
-    public async deleteProduct(storeId:number,productId:number):Promise<void>{
-        await this.prisma.product.deleteMany({where:{id:productId,storeId}})
-    }
+   
     public async filterProducts({
         name,
         category,

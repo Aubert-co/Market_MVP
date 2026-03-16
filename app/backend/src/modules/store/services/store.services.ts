@@ -4,11 +4,11 @@ import { ErrorMessage } from "../../../helpers/ErrorMessage"
 import { IStoreRepository } from "../repository/store.repository"
 import { Store } from "../types/store.types";
 import { Product } from "../../products/types/product.types";
-import { GoogleStorage } from "lib/googleStorage";
-import { ImageUploadService } from "lib/ImageUploadService";
+import { makeUploadFile } from "../../../factory/uploadFIles";
 
-const googleStorage = new GoogleStorage()
-const storage = new ImageUploadService(googleStorage)
+
+
+const storage = makeUploadFile()
 export interface IStoreService{
     createStore({userId,name,description,buffer,originalName,mimeType}:CreateStoreParams): Promise<void>,
     checkOwnerShip(storeId:number,userId:number):Promise<boolean>,

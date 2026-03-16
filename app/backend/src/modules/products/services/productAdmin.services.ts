@@ -1,13 +1,12 @@
-import { ImageUploadService } from "lib/ImageUploadService";
 import { generateImgPath } from "../../../helpers/checkIsValidImage";
 import { ErrorMessage } from "../../../helpers/ErrorMessage";
 import {  IProductAdminRepository } from "../repository/productAdmin.repository";
 import {  Products } from "../types/product.types";
-import { GoogleStorage } from "lib/googleStorage";
+import { makeUploadFile } from "../../../factory/uploadFIles";
 
-const googleStorage = new GoogleStorage()
 
-const storage = new ImageUploadService(googleStorage)
+
+const storage = makeUploadFile()
 
 export interface IProductAdminService{
     createProduct( {category, name, description,
