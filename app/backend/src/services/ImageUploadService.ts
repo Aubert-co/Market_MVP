@@ -1,10 +1,8 @@
-import { compressImage } from "helpers/compressImages";
-import { UploadFile, UploadImageResult } from "types/storageImages.types";
+import { compressImage } from "../helpers/compressImages";
+import { UploadFile, UploadImageResult,IFileStorage } from "../types/storageImages.types";
 
 
-export interface IFileStorage {
-  upload(data: UploadFile): Promise<UploadImageResult>
-}
+
 export class ImageUploadService {
     constructor(private storage:IFileStorage){}
 
@@ -16,5 +14,7 @@ export class ImageUploadService {
         fileBuffer:buff,urlPath,mimeType
       })
     }
-   
+   public async generateSignedUrl(imageName:string){
+    return await this.storage.generateSignedUrl(imageName)
+   }
 }
