@@ -1,4 +1,4 @@
-import { ImageUploadService } from "services/ImageUploadService";
+import { ImageUploadService } from "../services/ImageUploadService";
 import { AwsStorage } from "../lib/awsStorage";
 
 export function makeUploadFile(){
