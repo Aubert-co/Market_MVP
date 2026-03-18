@@ -1,21 +1,20 @@
 import { CouponController } from "../controller/coupon.controller"
-import { VerifyStoreOwnership } from "../../../middleware/verifyStoreOwnership"
+
 import { CouponRepository } from "../repository/coupon.repository"
 import { CouponServices } from "../services/coupon.services"
 import { Request,Response,NextFunction, Router } from "express"
 import { prisma } from "../../../lib/prisma"
-import { StoreService } from "../../store/services/store.services"
-import { StoreRepository } from "../../store/repository/store.repository"
+
 import { Auth } from "../../../middleware/auth"
+import { makeVerifyStoreMiddle } from "../../../factory/makeVerifyStoreMiddle"
 
 
 const route = Router()
 const couponRepository = new CouponRepository(prisma,)
 const couponService = new CouponServices(couponRepository)
-const storeRepository = new StoreRepository(prisma)
 
-const storeService = new StoreService(storeRepository)
-const verifyStoreOwnershipMiddle = new VerifyStoreOwnership(storeService)
+const verifyStoreOwnershipMiddle = makeVerifyStoreMiddle()
+
 const couponController = new CouponController(couponService)
 route.post('/store/create/coupon',[
     Auth,

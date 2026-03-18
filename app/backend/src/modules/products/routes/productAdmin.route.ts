@@ -3,20 +3,18 @@ import { ProductAdminController } from "../controller/productAdmin.controller";
 import { Router,Request,Response,NextFunction } from "express"
 import { fileUpload } from "../../../lib/fileUpload";
 import { Auth } from "../../../middleware/auth";
-import { VerifyStoreOwnership } from "../../../middleware/verifyStoreOwnership";
 
-import { StoreRepository } from "../../store/repository/store.repository";
 import { ProductAdminRepository } from "../repository/productAdmin.repository";
-import { StoreService } from "../../store/services/store.services";
 import { ProductAdminService } from "../services/productAdmin.services";
+import { makeVerifyStoreMiddle } from "../../../factory/makeVerifyStoreMiddle";
 
-const storeRepository = new StoreRepository(prisma)
+
 
 const productAdminRepository = new ProductAdminRepository(prisma)
 const productAdminService = new ProductAdminService(productAdminRepository)
-const storeService = new StoreService(storeRepository)
 
-const verifyStoreOwnershipMiddle = new VerifyStoreOwnership(storeService)
+
+const verifyStoreOwnershipMiddle = makeVerifyStoreMiddle()
 const productAdmin = new ProductAdminController(productAdminService)
 const route = Router()
 
