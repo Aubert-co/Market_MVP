@@ -3,15 +3,19 @@ import {products} from '../../__fixtures__/products'
 import { FilterProductsInput } from "../../../modules/products/types/product.types"
 const [product] = products
 const mockRepository = {
-  
     getProducts:jest.fn(),
     getProductById:jest.fn(),
     countProducts:jest.fn(),
     deleteProduct:jest.fn(),
     filterProducts:jest.fn()
 }
-
-const productService = new ProductService( mockRepository )
+const mockRedisService = {
+ getCountProductInCache:jest.fn(),
+    saveProductInCache:jest.fn(),
+    saveCountProductsInCache:jest.fn(),
+    getProductInCache:jest.fn(),
+}
+const productService = new ProductService( mockRepository ,mockRedisService)
 
 
 
