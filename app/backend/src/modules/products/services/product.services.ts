@@ -1,10 +1,9 @@
-import { ProductRedisRepository } from "../../../repository/redis.repository";
 import {  pagination } from "../../../helpers";
 import { ErrorMessage } from "../../../helpers/ErrorMessage";
 import {  IProductRepository } from "../repository/product.repository";
 import {   SelectedProduct ,GetProductById, FilteredProduct,FilterProductsInput} from "../types/product.types";
-import { IProductRedisService, ProductRedisService } from "../../../services/redis.services";
-import redis from "../../../lib/redis";
+import { IProductRedisService } from "../../../services/redis.services";
+
 
 export interface IProductService{
     getProducts(page:number):Promise<GetProducts>,
@@ -21,10 +20,8 @@ type GetProducts = {
     fromCache:boolean
 }
 export class ProductService  implements IProductService{
-    protected redis: IProductRedisService
-    constructor(protected product:IProductRepository){
-        const redisRep = new ProductRedisRepository(redis)
-        this.redis = new ProductRedisService(redisRep)
+    
+    constructor(protected product:IProductRepository,protected redis:IProductRedisService){
     }
 
 
