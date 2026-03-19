@@ -33,6 +33,6 @@ jobs:
             echo 'PRIVATE_KEY={"project_id":"mockado"}'
           } > .env
 
-      - name: Subir containers (já rodam testes)
+      - name: Testes backend
         working-directory: app/backend
         run: docker compose -f docker-compose.test.yaml up --build --abort-on-container-exit --exit-code-from app_test
