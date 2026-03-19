@@ -16,24 +16,22 @@ jobs:
       - name: Criar .env
         working-directory: app/backend
         run: |
-          cat <<'EOF' > .env
-          POSTGRES_USER=admin
-          POSTGRES_PASSWORD=loremiptsu
-          POSTGRES_DB=test
-          MODE=development
-          DATABASE_URL=
-          BUCKET_NAME=marketst1
-          REDIS_PASSWORD=loremi
-          ACCESS_TOKEN=qiwje39493849qweqwenqjdb3//123
-          REFRESH_TOKEN=loremiptsu123134h
-          NODE_ENV=development
-          REDIS_URL=
-          ORIGIN_KEY=http://localhost:5173
-          PORT=8080
-          PRIVATE_KEY={
-          
-          }
-          EOF
+          {
+            echo "POSTGRES_USER=admin"
+            echo "POSTGRES_PASSWORD=loremiptsu"
+            echo "POSTGRES_DB=test"
+            echo "MODE=development"
+            echo "DATABASE_URL="
+            echo "BUCKET_NAME=marketst1"
+            echo "REDIS_PASSWORD=loremi"
+            echo "ACCESS_TOKEN=qiwje39493849qweqwenqjdb3//123"
+            echo "REFRESH_TOKEN=loremiptsu123134h"
+            echo "NODE_ENV=development"
+            echo "REDIS_URL="
+            echo "ORIGIN_KEY=http://localhost:5173"
+            echo "PORT=8080"
+            echo 'PRIVATE_KEY={"project_id":"mockado"}'
+          } > .env
 
       - name: Subir containers (já rodam testes)
         working-directory: app/backend
