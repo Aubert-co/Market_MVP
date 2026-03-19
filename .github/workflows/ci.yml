@@ -13,7 +13,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Subir containers (já rodam testes)
+      - name: Criar .env
         working-directory: app/backend
         run: |
-          docker compose -f docker-compose.test.yaml up --build --abort-on-container-exit
+          cat <<'EOF' > .env
+          POSTGRES_USER=admin
+          POSTGRES_PASSWORD=loremiptsu
+          POSTGRES_DB=test
+          MODE=development
+          DATABASE_URL=
+          BUCKET_NAME=marketst1
+          REDIS_PASSWORD=loremi
+          ACCESS_TOKEN=qiwje39493849qweqwenqjdb3//123
+          REFRESH_TOKEN=loremiptsu123134h
+          NODE_ENV=development
+          REDIS_URL=
+          ORIGIN_KEY=http://localhost:5173
+          PORT=8080
+          PRIVATE_KEY={
+          
+          }
+          EOF
+
+      - name: Subir containers (já rodam testes)
+        working-directory: app/backend
+        run: docker compose -f docker-compose.test.yaml up --build --abort-on-container-exit
