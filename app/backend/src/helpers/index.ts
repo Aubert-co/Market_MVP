@@ -1,3 +1,5 @@
+import { StatusOrder } from "../modules/orders/types/order.types";
+
 export const isAValidString =(value:any,maxLength:number = 15):boolean=>{
     if(!value || typeof value !== 'string' )return false;
 
@@ -50,7 +52,13 @@ export const categories = [
   "Acessórios"
 ];
 const orderBy = ["asc","desc"]
-export const checkOrderBy = (value:string)=>orderBy.includes(value.toLowerCase())
+export const checkOrderBy = (value:unknown):boolean=>{
+  if(!value || typeof value !=='string')return false
+  return orderBy.includes(value.toLowerCase())
+}
+export function checkIsValidStatus(value: unknown): value is StatusOrder {
+  return typeof value === "string" && ["PENDING","PAID","CANCELED"].includes(value)
+}
 const normalizeString = (str: string) =>
   str.normalize("NFD")             
      .replace(/[\u0300-\u036f]/g, "") 
@@ -89,3 +97,5 @@ export const pagination = ({totalItems,page,limit}:Pagination):ReturnPagination=
 export const roundTottaly = (value:number, decimals:number = 2):number=> {
   return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
 }
+
+export const calcSkipPages = (page:number,limit:number):number=>(page-1)*limit
