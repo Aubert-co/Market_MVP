@@ -99,3 +99,6 @@ export const roundTottaly = (value:number, decimals:number = 2):number=> {
 }
 
 export const calcSkipPages = (page:number,limit:number):number=>(page-1)*limit
+
+export  const getString = (value: unknown) =>
+typeof value === "string" ? value : undefined;
