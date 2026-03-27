@@ -11,14 +11,15 @@ const route = Router()
 const ordersRepository = new OrdersRepository(prisma)
 const ordersService = new OrdersServices(ordersRepository)
 const ordersController = new OrdersController(ordersService)
+
 route.use(Auth)
-route.use()
-route.post('/order/create',
-    [makeVerifyStoreMiddle],
+route.use(makeVerifyStoreMiddle)
+route.get('/stores/:storeId/orders/last',
+  
     (req:Request,res:Response,next:NextFunction)=>ordersController.getLastOrders(req,res,next)
 )
-route.get('/orders/me',
-    [makeVerifyStoreMiddle],
+route.get('/stores/:storeId/orders',
+   
     (req:Request,res:Response,next:NextFunction)=>ordersController.searchOrders(req,res,next)
 )
 export default route
