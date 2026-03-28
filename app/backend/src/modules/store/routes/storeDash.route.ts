@@ -4,16 +4,14 @@ import { StoreDashController } from "../controller/storeDash.controller";
 import { prisma } from "../../../lib/prisma";
 import { NextFunction, Response, Router,Request } from "express";
 import { Auth } from "../../../middleware/auth";
-import { VerifyStoreOwnership } from "../../../middleware/verifyStoreOwnership";
-import { StoreRepository } from "../repository/store.repository";
-import { StoreService } from "../services/store.services";
+import { makeVerifyStoreMiddle } from "../../../factory/makeVerifyStoreMiddle";
 
 const dashboardRepository = new StoreDashboardRep(prisma)
-const storeRep = new StoreRepository(prisma )
-const storeService = new StoreService(storeRep)
+
+
 const dashboardService = new StoreDashboardService(dashboardRepository)
 const dashboardController = new StoreDashController( dashboardService )
-const verifyStoreOwnership = new VerifyStoreOwnership(storeService)
+const verifyStoreOwnership = makeVerifyStoreMiddle()
 const route = Router()
 
 route.get('/store/dashboard/:storeId',
