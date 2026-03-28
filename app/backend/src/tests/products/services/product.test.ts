@@ -14,6 +14,8 @@ const mockRedisService = {
     saveProductInCache:jest.fn(),
     saveCountProductsInCache:jest.fn(),
     getProductInCache:jest.fn(),
+    saveItemsCache:jest.fn(),
+    getcachedStoreId:jest.fn()
 }
 const productService = new ProductService( mockRepository ,mockRedisService)
 
