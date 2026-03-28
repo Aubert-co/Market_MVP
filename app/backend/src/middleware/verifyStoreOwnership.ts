@@ -1,18 +1,16 @@
 import { NextFunction ,Request,Response} from "express";
 import { checkIsAValidNumber } from "../helpers";
 import { IStoreService } from "../modules/store/services/store.services";
-import { IProductRedisService } from "services/redis.services";
-
-
+import { IProductRedisService } from "../services/redis.services";
 
 
 export class VerifyStoreOwnership{
     constructor(protected store:IStoreService , protected redis:IProductRedisService){}
-    protected getStoreId(req:Request): number {
-        const bodyStoreId = req.body.storeId
-        const paramsStoreId = req.params.storeId
-        const queryStoreId = req.query.storeId
-
+    protected getStoreId(req:Request): number | null {
+        const bodyStoreId = req.body?.storeId
+        const paramsStoreId = req.params?.storeId
+        const queryStoreId = req.query?.storeId
+  
         if(bodyStoreId && checkIsAValidNumber(bodyStoreId)){
             return Number(bodyStoreId)
         }
@@ -21,8 +19,8 @@ export class VerifyStoreOwnership{
         }
         if(queryStoreId && checkIsAValidNumber(queryStoreId)){
             return Number(queryStoreId)
-        }
-        return 0
+        }  
+        return null
     }
     public async handler(req:Request,res:Response,next:NextFunction):Promise<any>{
        
@@ -30,7 +28,7 @@ export class VerifyStoreOwnership{
         const userId = req.user
 
         const storeId = this.getStoreId(req)
-        if(storeId === 0){ 
+        if(!storeId ){ 
             return res.status(400).send({message:'Invalid store ID.'})
         }
         const key = `user:${userId}:store:${storeId}`
