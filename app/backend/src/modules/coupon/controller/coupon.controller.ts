@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ICouponService } from "../services/coupon.services";
-import { checkIsAValidNumber, isAValidString } from "../../../helpers";
-import { ErrorMessage } from "../../../helpers/ErrorMessage";
+import { checkIsAValidNumber, checkisAValidString } from "../../../helpers/checkIsValid";
 import { convertStringToDate, validDates } from "../../../helpers/dates";
 
 
@@ -36,7 +35,7 @@ export class CouponController{
                 });
             }
 
-            if (!isAValidString(code)) {
+            if (!checkisAValidString(code)) {
                 return res.status(400).send({
                     message: "Invalid coupon code. Please provide a valid string."
                 });

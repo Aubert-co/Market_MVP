@@ -1,4 +1,4 @@
-import {  pagination } from "../../../helpers";
+import {  pagination } from "../../../helpers/pagination";
 import { ErrorMessage } from "../../../helpers/ErrorMessage";
 import {  IProductRepository } from "../repository/product.repository";
 import {   SelectedProduct ,GetProductById, FilteredProduct,FilterProductsInput} from "../types/product.types";

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { IProductService } from "../services/product.services";
-import { checkIsAValidCategory, checkIsAValidNumber, isAValidString } from "../../../helpers";
+import { checkIsAValidCategory, checkIsAValidNumber, checkisAValidString,checkOrderBy } from "../../../helpers/checkIsValid";
 import { ErrorMessage } from "../../../helpers/ErrorMessage";
-import { checkOrderBy } from "../../../helpers";
+
 
 export class ProductsController{
     constructor(protected products:IProductService){}
@@ -58,7 +58,7 @@ export class ProductsController{
                 throw new ErrorMessage("Invalid category provided", 400);
             }
 
-            if (name && !isAValidString(name)) {
+            if (name && !checkisAValidString(name)) {
                 throw new ErrorMessage("Invalid name format", 400);
             }
 

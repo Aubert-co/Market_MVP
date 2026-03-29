@@ -1,5 +1,5 @@
 import { NextFunction ,Request,Response} from "express";
-import { checkIsAValidNumber } from "../helpers";
+import {  checkIsAValidInteger } from "../helpers/checkIsValid";
 import { IStoreService } from "../modules/store/services/store.services";
 import { IProductRedisService } from "../services/redis.services";
 
@@ -11,13 +11,13 @@ export class VerifyStoreOwnership{
         const paramsStoreId = req.params?.storeId
         const queryStoreId = req.query?.storeId
   
-        if(bodyStoreId && checkIsAValidNumber(bodyStoreId)){
+        if(bodyStoreId && checkIsAValidInteger(bodyStoreId)){
             return Number(bodyStoreId)
         }
-        if(paramsStoreId && checkIsAValidNumber(paramsStoreId)){
+        if(paramsStoreId && checkIsAValidInteger(paramsStoreId)){
             return Number(paramsStoreId)
         }
-        if(queryStoreId && checkIsAValidNumber(queryStoreId)){
+        if(queryStoreId && checkIsAValidInteger(queryStoreId)){
             return Number(queryStoreId)
         }  
         return null

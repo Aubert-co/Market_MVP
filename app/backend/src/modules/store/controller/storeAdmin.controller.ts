@@ -1,6 +1,6 @@
 import { NextFunction, Response,Request } from "express";
 import { StoreService } from "../services/store.services";
-import { checkIsAValidNumber } from "../../../helpers";
+import { checkIsAValidInteger } from "../../../helpers/checkIsValid";
 
 
 
@@ -22,7 +22,7 @@ export class StoreAdminController{
             let page = 1
             let storeId =  Number(req.params.storeId)
 
-            if(checkIsAValidNumber(req.params?.page)){
+            if(checkIsAValidInteger(req.params?.page)){
                 page  = Number(req.params.page)
             }
             const {datas ,totalPages,currentPage} = await this.storeService.getProductsByStoreId(storeId,page)

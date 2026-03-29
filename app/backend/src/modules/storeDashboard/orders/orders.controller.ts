@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { IOrdersService } from "./orders.services";
-import { checkIsAValidNumber, checkIsValidStatus, checkOrderBy, getString, isAValidString } from "../../../helpers";
+import { checkIsAValidInteger, checkIsValidStatus, checkOrderBy, checkisAValidString } from "../../../helpers/checkIsValid";
 import { ErrorMessage } from "../../../helpers/ErrorMessage";
-
+import { getString } from "../../../helpers";
 type Orderby = "asc" | "desc"
 export class OrdersController{
     constructor(private ordersService:IOrdersService){}
@@ -21,11 +21,11 @@ export class OrdersController{
             const statusStr = getString(status)
             const orderStr  = getString(orderby)
             const storeIdStr = getString(storeId)
-            const pageNumber  = checkIsAValidNumber(pageStr)  ? Number(pageStr)  : 1
-            const limitNumber = checkIsAValidNumber(limitStr) ? Number(limitStr) : 5
+            const pageNumber  = checkIsAValidInteger(pageStr)  ? Number(pageStr)  : 1
+            const limitNumber = checkIsAValidInteger(limitStr) ? Number(limitStr) : 5
             const orderBy: Orderby = checkOrderBy(orderStr) ? (orderStr as Orderby) : "desc"
             const statusValue = checkIsValidStatus(statusStr)? statusStr : undefined
-            if (searchStr && (!isAValidString(searchStr) || !checkIsAValidNumber(searchStr))) {
+            if (searchStr && (!checkisAValidString(searchStr) || !checkIsAValidInteger(searchStr))) {
                 throw new ErrorMessage("is not valid search", 422)
             }
             

@@ -1,4 +1,4 @@
-import { checkIsAValidCategory } from "../../helpers"
+import { checkIsAValidCategory } from "../../helpers/checkIsValid"
 
 describe("check is a valid category",()=>{
     it("test",()=>{

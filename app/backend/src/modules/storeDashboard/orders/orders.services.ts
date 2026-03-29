@@ -1,4 +1,4 @@
-import { calcSkipPages, pagination } from "../../../helpers";
+import { calcSkipPages, pagination } from "../../../helpers/pagination";
 import { IOrdersRepository } from "../orders/orders.repository";
 import { GetLastOrdersDTO, LastOrdersPayload, SearchOrdersDTO, SearchOrdersResponse } from "./orders.types";
 import { ErrorMessage } from "../../../helpers/ErrorMessage";
@@ -26,7 +26,7 @@ export class OrdersServices implements IOrdersService{
 
         return {
             datas,pagination:{
-                currentPage,skip:skipPage,totalPages
+                page:currentPage,limit:skipPage,totalItems:totalPages
             }
         }
         }catch(err:unknown){

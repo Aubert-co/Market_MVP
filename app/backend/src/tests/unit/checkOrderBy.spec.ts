@@ -1,4 +1,4 @@
-import {checkOrderBy} from '../../helpers'
+import {checkOrderBy} from '../../helpers/checkIsValid'
 
 
 describe("checkOrderBy", () => {

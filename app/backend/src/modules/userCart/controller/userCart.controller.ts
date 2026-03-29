@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { checkIsAValidNumber } from "../../../helpers";
+import { checkIsAValidNumber } from "../../../helpers/checkIsValid";
 import { IUserCartService } from "../services/useCart.services";
 import { ErrorMessage } from "../../../helpers/ErrorMessage";
 

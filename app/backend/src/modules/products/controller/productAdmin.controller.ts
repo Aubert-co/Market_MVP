@@ -1,6 +1,6 @@
 import { NextFunction,Request, Response } from "express";
 
-import { checkIsAValidCategory, checkIsAValidNumber, isAValidString } from "../../../helpers";
+import { checkIsAValidCategory, checkIsAValidInteger, checkIsAValidNumber, checkisAValidString } from "../../../helpers/checkIsValid";
 
 import { checkIsValidImage } from "../../../helpers/checkIsValidImage";
 import { IProductAdminService } from "../services/productAdmin.services";
@@ -31,14 +31,14 @@ export class ProductAdminController{
                 return res.status(422).send({message:"Invalid or missing image file."}) 
             }
         
-        if(!isAValidString(name,50)){
+        if(!checkisAValidString(name,50)){
             return res.status(422).send({message:"Invalid name. Please check and try again."})
             
         }
-        if(!isAValidString(description , 1000)){
+        if(!checkisAValidString(description , 1000)){
             return res.status(422).send({message:"Invalid description. Please check and try again."})
         }
-        if (!checkIsAValidNumber(stock)) {
+        if (!checkIsAValidInteger(stock)) {
             return res.status(422).send({message:"Invalid or missing stock value. Must be a non-negative number."});
         }
 
@@ -48,7 +48,7 @@ export class ProductAdminController{
         if(!checkIsAValidCategory(category)){
             return res.status(422).send({message:"Invalid category. Please check and try again."})
         }
-        if(!checkIsAValidNumber(storeId)){
+        if(!checkIsAValidInteger(storeId)){
             return res.status(400).send({message:'Invalid request.'});
         }
        

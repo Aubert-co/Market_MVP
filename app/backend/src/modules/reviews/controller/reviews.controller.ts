@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IRewviewsService } from "../../reviews/services/reviews.services";
-import { checkIsAValidNumber, isAValidString } from "../../../helpers";
+import { checkIsAValidNumber, checkisAValidString,checkIsAValidInteger } from "../../../helpers/checkIsValid";
 
 export class ReviewsController{
     constructor(protected reviews:IRewviewsService){}
@@ -13,10 +13,10 @@ export class ReviewsController{
             return res.status(400).send({ message: "Invalid rating. It must be a valid number." });
         }
 
-        if (!checkIsAValidNumber(orderId)) {
+        if (!checkIsAValidInteger(orderId)) {
             return res.status(400).send({ message: "Invalid order ID. It must be a valid number." });
         }
-        if(!isAValidString(content,150)){
+        if(!checkisAValidString(content,150)){
             return res.status(400).send({
                 message: "Content must be between 5 and 150 characters long."
             });

@@ -1,4 +1,4 @@
-import { checkIsAValidNumber } from "../../../helpers";
+import { checkIsAValidNumber, checkIsAValidInteger } from "../../../helpers/checkIsValid";
 import { ErrorMessage } from "../../../helpers/ErrorMessage";
 import { OrderService } from "../../orders/services/order.services";
 import { OrderProductInput } from "../types/order.types";
@@ -16,11 +16,11 @@ export class OrdersController{
         }
 
         const items = order.map((val:any)=>{
-            if (!checkIsAValidNumber(val.productId) || !checkIsAValidNumber(val.quantity)) {
+            if (!checkIsAValidInteger(val.productId) || !checkIsAValidInteger(val.quantity)) {
                 throw new ErrorMessage("Invalid product ID or quantity. Both must be valid numbers.", 400);
             }
 
-            if (val.couponId && !checkIsAValidNumber(val.couponId)) {
+            if (val.couponId && !checkIsAValidInteger(val.couponId)) {
                 throw new ErrorMessage("Invalid coupon ID. It must be a valid number.", 400);
             }
             if(!val.couponId){
