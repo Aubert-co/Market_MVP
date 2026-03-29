@@ -1,10 +1,10 @@
 export type Pagination = {
-    totalPages:number,
-    skip:number,
-    currentPage:number
+  totalItems:number,
+  page:number,
+  limit:number
 }
-export type PaginationDTO={
-    skip:number,
-    page:number,
-    limit:number
+export type ReturnPagination = {
+  currentPage:number,
+  totalPages:number,
+  skip:number
 }
