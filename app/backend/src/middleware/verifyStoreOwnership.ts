@@ -1,11 +1,11 @@
 import { NextFunction ,Request,Response} from "express";
 import {  checkIsAValidInteger } from "../helpers/checkIsValid";
 import { IStoreService } from "../modules/store/services/store.services";
-import { IProductRedisService } from "../services/redis.services";
+import { IStoreCache } from "../modules/store/cache/store.cache";
 
 
 export class VerifyStoreOwnership{
-    constructor(protected store:IStoreService , protected redis:IProductRedisService){}
+    constructor(protected store:IStoreService , protected redis:IStoreCache){}
     protected getStoreId(req:Request): number | null {
         const bodyStoreId = req.body?.storeId
         const paramsStoreId = req.params?.storeId
@@ -31,10 +31,10 @@ export class VerifyStoreOwnership{
         if(!storeId ){ 
             return res.status(400).send({message:'Invalid store ID.'})
         }
-        const key = `user:${userId}:store:${storeId}`
+        
       
         try{
-            const getCachedItems = await this.redis.getcachedStoreId(key)
+            const getCachedItems = await this.redis.getCachedStoreId(userId,storeId)
          
             if(getCachedItems)return next();
             
@@ -43,7 +43,7 @@ export class VerifyStoreOwnership{
             if(!check) {
                 return res.status(403).send({ message: "You do not have permission to access this store." });
             }
-            await this.redis.saveItemsCache(key,{userId,storeId})   
+            await this.redis.saveCacheStoreId(storeId,userId)   
             next()
         } catch(err:unknown) {
            
