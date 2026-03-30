@@ -3,8 +3,10 @@ import redis from '../../../lib/redis'
 import app from '../../../serve'
 import { cleanAllDb, createUserStoreAndProducts } from '../../__mocks__'
 import { prisma } from '../../../lib/prisma'
+import { RedisRepository } from '../../../repository/redis.repository'
 
-import { ProductRedisRepository } from '../../../repository/redis.repository'
+
+const redisRep = new RedisRepository(redis)
 
 describe("db actions",()=>{
     beforeAll(async()=>{
@@ -113,8 +115,8 @@ describe("When saves values in cache",()=>{
         let prisma:any
         let redis:any
        
-        const RepsitoryRedis = new ProductRedisRepository(redis)
-        jest.spyOn(RepsitoryRedis,'getCachedProduct').mockRejectedValue(new Error('Simulated DB error: Connection lost.'));
+        
+        jest.spyOn(redisRep,'getCachedItem').mockRejectedValue(new Error('Simulated DB error: Connection lost.'));
         const response1 = await request(app)
         .get('/product/page/1')
         const response = await request(app)

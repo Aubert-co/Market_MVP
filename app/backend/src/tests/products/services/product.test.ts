@@ -1,6 +1,7 @@
 import {ProductService} from '../../../modules/products/services/product.services'
 import {products} from '../../__fixtures__/products'
 import { FilterProductsInput } from "../../../modules/products/types/product.types"
+import { ICacheProducts } from '../../../modules/products/cache/product.cache'
 const [product] = products
 const mockRepository = {
     getProducts:jest.fn(),
@@ -9,13 +10,11 @@ const mockRepository = {
     deleteProduct:jest.fn(),
     filterProducts:jest.fn()
 }
-const mockRedisService = {
- getCountProductInCache:jest.fn(),
-    saveProductInCache:jest.fn(),
-    saveCountProductsInCache:jest.fn(),
-    getProductInCache:jest.fn(),
-    saveItemsCache:jest.fn(),
-    getcachedStoreId:jest.fn()
+const mockRedisService:ICacheProducts = {
+    getCountAllProducts:jest.fn(),
+    saveCountAllProducts:jest.fn(),
+    getProductsInCache:jest.fn(),
+    saveProductsInCache:jest.fn()
 }
 const productService = new ProductService( mockRepository ,mockRedisService)
 
