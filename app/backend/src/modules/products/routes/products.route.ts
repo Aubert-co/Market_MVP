@@ -3,13 +3,14 @@ import { ProductRepository } from "../repository/product.repository";
 import { ProductService } from "../services/product.services";
 import { Router,Request,Response,NextFunction } from "express";
 import { ProductsController } from "../controller/products.controller";
-import { makeRedisProductModule } from "../../../factory/makeRedisProductModule";
-
+import { CacheProducts } from "../cache/product.cache";
+import { RedisRepository } from "../../../repository/redis.repository";
+import redis from "../../../lib/redis";
 
 const productRepository = new ProductRepository(prisma)
-const makeRedis = makeRedisProductModule()
-
-const productService = new ProductService(productRepository,makeRedis)
+const redisRepository = new RedisRepository(redis)
+const cacheProducts = new CacheProducts(redisRepository)
+const productService = new ProductService(productRepository,cacheProducts)
 
 const productsController = new ProductsController(productService)
 

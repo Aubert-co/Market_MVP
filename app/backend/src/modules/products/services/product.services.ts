@@ -2,7 +2,7 @@ import {  pagination } from "../../../helpers/pagination";
 import { ErrorMessage } from "../../../helpers/ErrorMessage";
 import {  IProductRepository } from "../repository/product.repository";
 import {   SelectedProduct ,GetProductById, FilteredProduct,FilterProductsInput} from "../types/product.types";
-import { IProductRedisService } from "../../../services/redis.services";
+import { ICacheProducts } from "../cache/product.cache";
 
 
 export interface IProductService{
@@ -21,18 +21,18 @@ type GetProducts = {
 }
 export class ProductService  implements IProductService{
     
-    constructor(protected product:IProductRepository,protected redis:IProductRedisService){
+    constructor(protected product:IProductRepository,protected redis:ICacheProducts){
     }
 
 
     public async getProducts( page:number):Promise<GetProducts>{
         const limit = 10
-        let countProducts = await this.redis.getCountProductInCache()
+        let countProducts = (await this.redis.getCountAllProducts()) ?? 0
         if ( countProducts <= 0 ) {
             const count = await this.product.countProducts()
             
             if ( count > 0) {
-                await this.redis.saveCountProductsInCache(count)
+                await this.redis.saveCountAllProducts(count)
                 countProducts = count;
             }
         }
@@ -42,11 +42,11 @@ export class ProductService  implements IProductService{
         const {skip,currentPage,totalPages} = pagination({
             totalItems:countProducts,page,limit
         })
-        const key = `product:page:${currentPage}`
+       
 
-        const getProductsInCache =await this.redis.getProductInCache( key )
+        const getProductsInCache = await this.redis.getProductsInCache( currentPage )
   
-         if(getProductsInCache.length >0 ){
+         if(getProductsInCache && getProductsInCache.length >0 ){
             return {
                 datas:getProductsInCache,
                 totalPages,currentPage,fromCache:true
@@ -54,7 +54,7 @@ export class ProductService  implements IProductService{
         }
  
         const datas = await this.product.getProducts(limit,skip)
-        if(datas.length >0)await this.redis.saveProductInCache( key ,datas)
+        if(datas.length >0)await this.redis.saveProductsInCache( datas,currentPage )
 
         return{
             datas,totalPages,currentPage,fromCache:false
