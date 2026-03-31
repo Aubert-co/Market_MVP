@@ -9,12 +9,13 @@ import couponRoute from '../modules/coupon/route/coupon.route'
 import reviewsRoute from '../modules/reviews/routes/reviews.route'
 import storeDashboard from '../modules/store/routes/storeDash.route'
 import { makeUploadFile } from "../factory/uploadFIles";
+import { httpLogger } from "../middleware/loggerHttp";
 
  
 const imageUpload = makeUploadFile()
 const route = Router();
 
- 
+route.use( httpLogger)
 route.use( products)
 route.use( storeRoute )
 route.use( userCartRoute )
