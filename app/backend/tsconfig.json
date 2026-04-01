@@ -8,7 +8,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
+    "paths": {
+      "@/*":["src/*"],
+      "@/modules":["src/modules/*"]
+    },
     "typeRoots": ["./node_modules/@types", "./src/types"]
 
   },
