@@ -17,7 +17,11 @@ export class ReviewsService implements IRewviewsService{
     protected async checkOrder(userId:number,OrderId:number):Promise<Order>{
         const order = await this.order.getOrderItemByIdAndUserId(userId,OrderId,"completed")
         if (!order) {
-            throw new ErrorMessage("Order item not found or does not belong to the user.", 404);
+            throw new ErrorMessage({message:"Order item not found or does not belong to the user.",
+                status:404,
+                service:"ReviewsService",
+                action:"checkOrder"    
+            });
         }
 
         return order;

@@ -17,7 +17,7 @@ export class ProductsController{
         
             res.status(200).send({message:'Sucess',datas,totalPages,currentPage,fromCache})
             
-        }catch(err:any){
+        }catch(err:unknown){
             next(err)
         }
     } 
@@ -37,7 +37,7 @@ export class ProductsController{
             };
 
             res.status(200).send({ message: 'Success', datas });
-        }catch(err:any){
+        }catch(err:unknown){
             next(err)
         }
             
@@ -55,19 +55,23 @@ export class ProductsController{
             if(!checkOrderBy(orderBy))orderBy = "desc"
             if(category && category.toLowerCase() ===  "todas")category = "";
             if(category && !checkIsAValidCategory(category)) {
-                throw new ErrorMessage("Invalid category provided", 400);
+                return res.status(400).send({message:"Invalid category provided"})
+              
             }
 
             if (name && !checkisAValidString(name)) {
-                throw new ErrorMessage("Invalid name format", 400);
+                return res.status(400).send({message:"Invalid name format"})
+             
             }
 
             if (maxPrice && !checkIsAValidNumber(maxPrice)) {
-                throw new ErrorMessage("Invalid maximum price value", 400);
+                return res.status(400).send({message:"Invalid maximum price value"})
+            
             }
 
             if (minPrice && !checkIsAValidNumber(minPrice)) {
-                throw new ErrorMessage("Invalid minimum price value", 400);
+                return res.status(400).send({message:"Invalid minimum price value"})
+                
             }
              
             const datas = await this.products.filterProduct({
@@ -76,7 +80,7 @@ export class ProductsController{
             })
        
             res.status(200).send({message:'Sucess',datas})
-        }catch(err:any){
+        }catch(err:unknown){
             next(err)
         }
     }

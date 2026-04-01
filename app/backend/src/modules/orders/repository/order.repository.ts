@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Order , StatusOrder,DatasCreateOrderDto, GetOrder} from "../types/order.types";
-import { ErrorMessage } from "../../../helpers/ErrorMessage";
+import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage";
 import { applyDiscount } from "../../../helpers/applyDiscount";
 import { CouponRepository } from "../../coupon/repository/coupon.repository";
 import { DiscountType, GetCouponDto } from "../../coupon/types/coupon.types";
@@ -21,11 +21,29 @@ export class OrderRepository implements IOrderRepository{
 
         const coupon = await this.coupon.getCouponById(couponId)
         if (!coupon) {
-            throw new ErrorMessage("Coupon not found or is invalid.", 404);
+    
+             throw new ErrorMessage({
+                message:"Coupon not found or is invalid.",
+                status:404,
+                action:"getCouponById",
+                service:"OrderRepository",
+                context:{
+                    userId
+                }
+            })
         }
         const checkCouponUsage = await this.coupon.isUserUsedCoupon( userId,couponId )
         if(!checkCouponUsage){
-            throw new ErrorMessage("Coupon has already been used", 409);
+   
+            throw new ErrorMessage({
+                message:"Coupon has already been used",
+                status:409,
+                action:"getCouponById",
+                service:"OrderRepository",
+                context:{
+                    userId
+                }
+            })
         }
         return {
             discount:coupon.discount,discountType:coupon.discountType as DiscountType
@@ -90,11 +108,29 @@ export class OrderRepository implements IOrderRepository{
                     })
                     
                     if (!product) {
-                    throw new ErrorMessage("No valid product found to create the order.", 404);
+                
+                         throw new ErrorMessage({
+                            message:"No valid product found to create the order.",
+                            status:404,
+                            action:"createOrder",
+                            service:"OrderRepository",
+                            context:{
+                                userId
+                            }
+                        })
                     }
 
                     if (product.stock < val.quantity) {
-                        throw new ErrorMessage("Insufficient product stock for the requested quantity.", 400);
+         
+                         throw new ErrorMessage({
+                            message:"Insufficient product stock for the requested quantity.",
+                            status:400,
+                            action:"createOrder",
+                            service:"OrderRepository",
+                            context:{
+                                userId
+                            }
+                        })
                     }
 
                     const {discount,discountType} = await this.getCouponById(val.couponId ,userId)
@@ -136,11 +172,25 @@ export class OrderRepository implements IOrderRepository{
                 }
             });
 
-       }catch(err:any){
+       }catch(err:unknown){
             if(err instanceof ErrorMessage){
-                throw new ErrorMessage(err.message,err.status)
+                 throw new ErrorMessage({
+                    message:err.message,
+                    status:err.status,
+                    action:"createOrder",
+                    service:"OrderRepository",
+                    context:err.context
+                })
             }
-            throw new ErrorMessage("Internal error while creating the order.", 500)
+           
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Internal error while creating the order.",
+                status:500,
+                action:"createOrder",
+                service:"OrderRepository",
+                prismaError
+            })
         }
 
         

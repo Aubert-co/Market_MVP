@@ -33,7 +33,16 @@ export class ProductAdminService  implements IProductAdminService{
         
         const countProducts = await this.product.countStoreProducts(storeId)
         if (countProducts >= 10){
-            throw new ErrorMessage("Product creation limit reached: maximum 10 products allowed", 429);
+      
+            throw new ErrorMessage({
+                message:"Product creation limit reached: maximum 10 products allowed",
+                status:429,
+                action:"createProduct",
+                service:"ProductAdminService",
+                context:{
+                    countProducts
+                }
+            })
         }
         const imageUrl = generateImgPath(originalName)
         
@@ -50,7 +59,14 @@ export class ProductAdminService  implements IProductAdminService{
    
     public async deleteProduct(productIds:any,storeId:number):Promise<void>{
         if (!Array.isArray(productIds) || productIds.length === 0) {
-            throw new ErrorMessage("Invalid product IDs provided.",400)
+            
+             throw new ErrorMessage({
+                message:"Invalid product IDs provided.",
+                status:400,
+                action:"deleteProduct",
+                service:"ProductAdminService",
+                
+            })
         }
        
     }

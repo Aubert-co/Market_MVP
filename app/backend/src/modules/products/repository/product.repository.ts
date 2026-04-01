@@ -1,5 +1,5 @@
 import {  PrismaClient } from "@prisma/client";
-import { ErrorMessage } from "../../../helpers/ErrorMessage";
+import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage";
 import {  GetProductById, SelectedProduct, FilteredProduct,FilterProductsInput } from "../types/product.types";
 
 export interface IProductRepository{
@@ -49,8 +49,19 @@ export class ProductRepository  implements IProductRepository{
                     averageRating: ratingMap.get(product.id) ?? null 
             }));  
             return productsWithRatings
-        }catch(err:any){
-            throw new ErrorMessage("An unexpected error occurred. Please try again later.",500)
+        }catch(err:unknown){
+       
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"An unexpected error occurred. Please try again later.",
+                status:500,
+                action:"getProducts",
+                service:"ProductRepository",
+                context:{
+                    limit,skip
+                },
+                prismaError
+            })
         }
     }
    
@@ -82,8 +93,19 @@ export class ProductRepository  implements IProductRepository{
             return {
                 product,ratings
             }
-        }catch(err:any){
-            throw new ErrorMessage("Failed to find product.",500)
+        }catch(err:unknown){
+            
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to find product.",
+                status:500,
+                action:"getProductById",
+                service:"ProductRepository",
+                context:{
+                    productId:id
+                },
+                prismaError
+            })
         }
     }
    

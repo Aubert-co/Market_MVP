@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Store } from "../types/store.types";
-import { ErrorMessage } from "../../../helpers/ErrorMessage";
+import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage";
 import {  ProductWithCountsAndRatings } from "../../products/types/product.types";
 
 export interface IStoreRepository{
@@ -27,10 +27,20 @@ export class StoreRepository implements IStoreRepository{
                 description:data.description,
                 photo:data.photo
             }})  
-       }catch(err:any){
-  
-        throw new ErrorMessage("Failed to create a store",409)
-       }
+       }catch(err:unknown){
+      
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to create a store",
+                status:409,
+                prismaError,
+                context:{
+                    data
+                },
+                service:"StoreRepository",
+                action:"createStore"
+            })
+        }
        
     } 
     public async checkStoreOwnerShip(storeId:number):Promise<any>{
@@ -67,8 +77,18 @@ export class StoreRepository implements IStoreRepository{
                     },
                 }
             })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to get products",500)
+        }catch(err:unknown){
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to get products",
+                status:500,
+                prismaError,
+                context:{
+                    storeId,skip,limit
+                },
+                service:"StoreRepository",
+                action:"getProductByStoreId"
+            })
         }
     }
     public async countProductStore(storeId:number):Promise<number>{
@@ -76,8 +96,18 @@ export class StoreRepository implements IStoreRepository{
             return await this.prisma.product.count({
                 where:{storeId}
             })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to count store products",500)
+        }catch(err:unknown){
+            const prismaError = getPrismaError("err")
+            throw new ErrorMessage({
+                message:"Failed to count store products",
+                status:500,
+                prismaError,
+                action:"countProductStore",
+                service:"StoreRepository",
+                context:{
+                    storeId
+                }
+            })
         }
     }
 }

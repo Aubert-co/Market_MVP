@@ -1,5 +1,5 @@
 import { PrismaClient ,Prisma} from "@prisma/client";
-import { ErrorMessage } from "../../../helpers/ErrorMessage";
+import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage";
 import { now } from "../../../helpers/dates";
 import { Coupon, CouponUsage, CouponUsageInfoDto,DiscountType } from "../types/coupon.types";
 
@@ -46,8 +46,19 @@ export class CouponRepository implements ICouponRepository{
             })
             if(hasCoupon)return true
             return false;
-        }catch(err:any){
-            throw new ErrorMessage("Failed to get user coupon usage",500)
+        }catch(err:unknown){
+          
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to get user coupon usage",
+                status:500,
+                service:"CouponRepository",
+                action:"isUserUsedCoupon",
+                prismaError,
+                context:{
+                    userId
+                }
+            })
         }
     }
     public async storeCreateCoupon({
@@ -64,8 +75,19 @@ export class CouponRepository implements ICouponRepository{
                 code
             }
         })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to create a coupon.",500)
+        }catch(err:unknown){
+            
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to create a coupon.",
+                status:500,
+                prismaError,
+                service:"CouponRepository",
+                action:"storeCreateCoupon",
+                context:{
+                    storeId
+                }
+            })
         }
     }
     public async checkCouponByCode(code:string):Promise<boolean>{
@@ -75,9 +97,15 @@ export class CouponRepository implements ICouponRepository{
             })
             if(coupon)return true
             return false
-        }catch(err:any){
-            throw new ErrorMessage("Failed to verify the coupon", 500);
-
+        }catch(err:unknown){
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to verify the coupon",
+                status:500,
+                service:"CouponRepository",
+                action:"checkCouponByCode",
+                prismaError
+            })
         }
     }
     public async userAddCoupon(userId:number,couponId:number):Promise<void>{
@@ -88,8 +116,16 @@ export class CouponRepository implements ICouponRepository{
                     couponId,
                 }
             })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to get coupon",500)
+        }catch(err:unknown){
+         
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to get coupon",
+                status:500,
+                service:"CouponRepository",
+                action:"userAddCoupon",
+                prismaError
+            })
         }
     }
     public async userListCoupons(userId:number):Promise<CouponUsage[]>{
@@ -104,8 +140,16 @@ export class CouponRepository implements ICouponRepository{
                 select:{expiresAt:true,discount:true,discountType:true,code:true}
             }}
         })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to select coupons",500)
+        }catch(err:unknown){
+       
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to select coupons",
+                status:500,
+                service:"CouponRepository",
+                action:"userListCoupons",
+                prismaError
+            })
         }
     }
     public async storeGetCoupons(storeId:number,limit:number=5,skip:number):Promise<Coupon[]>{
@@ -120,8 +164,16 @@ export class CouponRepository implements ICouponRepository{
                 take:limit,
                 skip
             })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to get coupons",500)
+        }catch(err:unknown){
+            const prismaError = getPrismaError(err)
+        
+            throw new ErrorMessage({
+                message:"Failed to get coupons",
+                status:500,
+                service:"CouponRepository",
+                prismaError,
+                action:"storeGetCoupons"
+            })
         }
     }
     
@@ -137,8 +189,16 @@ export class CouponRepository implements ICouponRepository{
                 usedAt:undefined
             }
         })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to count coupon usage",500)
+        }catch(err:unknown){
+    
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to count coupon usage",
+                status:500,
+                action:"countCouponUsage",
+                service:"CouponRepository",
+                prismaError
+            })
         }
     }
     public async doesUserHaveCoupon(userId:number,couponId:number):Promise<boolean>{
@@ -148,8 +208,16 @@ export class CouponRepository implements ICouponRepository{
             })
             if(coupon)return true
             return false
-        }catch(err:any){    
-            throw new ErrorMessage("Failed to check if the user has the coupon",500)
+        }catch(err:unknown){    
+   
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to check if the user has the coupon",
+                status:500,
+                action:"doesUserHaveCoupon",
+                service:"CouponRepository",
+                prismaError
+            })
         }
     }
     public async getCouponById(couponId:number):Promise<Coupon | null>{
@@ -160,8 +228,16 @@ export class CouponRepository implements ICouponRepository{
                 }}
             })
             
-        }catch(err:any){
-            throw new ErrorMessage("Failed to verify coupon is not expired",500)
+        }catch(err:unknown){
+          
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to verify coupon is not expired",
+                status:500,
+                action:"getCouponById",
+                service:"CouponRepository",
+                prismaError
+            })
         }
     }
     public async userHaveCoupon(userId:number,couponId:number):Promise<CouponUsageInfoDto | null>{
@@ -187,8 +263,16 @@ export class CouponRepository implements ICouponRepository{
                 }
             });
 
-        }catch(err:any){
-            throw new ErrorMessage("",500)
+        }catch(err:unknown){
+         
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to verify if the user has a coupon",
+                status:500,
+                action:"userHaveCoupon",
+                service:"CouponRepository",
+                prismaError
+            })
         }   
     }
     public async availableCoupons(limit:number,skip:number):Promise<Coupon[]>{
@@ -202,8 +286,16 @@ export class CouponRepository implements ICouponRepository{
                     }
                 }
             })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to get available coupons",500)
+        }catch(err:unknown){
+           
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to get available coupons",
+                status:500,
+                action:"availableCoupons",
+                service:"CouponRepository",
+                prismaError
+            })
         }
     }
     public async countAvailableCoupons():Promise<number>{
@@ -215,8 +307,16 @@ export class CouponRepository implements ICouponRepository{
                     }
                 }
             })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to get available coupons",500)
+        }catch(err:unknown){
+          
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to get available coupons",
+                status:500,
+                action:"countAvailableCoupons",
+                service:"CouponRepository",
+                prismaError
+            })
         }
     }
     public async decreaseCouponQuantity(couponId:number,value:number):Promise<void>{
@@ -225,8 +325,16 @@ export class CouponRepository implements ICouponRepository{
                 where:{id:couponId},
                 data:{quantity:value}
             })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to change the coupon quantity",500)
+        }catch(err:unknown){
+        
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to change the coupon quantity",
+                status:500,
+                action:"decreaseCouponQuantity",
+                service:"CouponRepository",
+                prismaError
+            })
         }
     }
     public async countStoreCoupons(storeId:number):Promise<number>{
@@ -234,8 +342,16 @@ export class CouponRepository implements ICouponRepository{
             return await this.prisma.coupon.count({
                 where:{storeId}
             })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to count store coupon.",500)
+        }catch(err:unknown){
+          
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to count store coupon.",
+                status:500,
+                action:"countStoreCoupons",
+                service:"CouponRepository",
+                prismaError
+            })
         }
     }
     public async userAddCouponUsage({userId,couponId,quantity}:UserAddCoupon):Promise<void>{

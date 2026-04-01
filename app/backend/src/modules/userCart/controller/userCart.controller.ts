@@ -57,7 +57,13 @@ export class UserCartController{
             const userId  =req.user
             const mapedDatas = cart.map((val:any)=>{
                 if(!checkIsAValidNumber(val)){
-                    throw new ErrorMessage("Invalid cart id. Please provide a valid cart id",400)
+                  
+                    throw new ErrorMessage({
+                        message:"Invalid cart id. Please provide a valid cart id",
+                        status:400,
+                        service:"UserCartController",
+                        action:"removeItemFromCart"
+                    })
                 }
                 return {
                     id:Number(val),userId
@@ -78,10 +84,22 @@ export class UserCartController{
             const userId = req.user
             const mapCart = cart.map((val: any) => {
                 if (!checkIsAValidNumber(val.id) || !checkIsAValidNumber(val.quantity) || !Number.isInteger(val.quantity)) {
-                    throw new ErrorMessage("Invalid cart id. Please provide a valid cart id", 400);
+              
+                    throw new ErrorMessage({
+                        message:"Invalid cart id. Please provide a valid cart id",
+                        status:400,
+                        service:"UserCartController",
+                        action:"updateCart"
+                    })
                 }
                 if(val.quantity > 5){
-                    throw new ErrorMessage("You can only add up to 5 items of this product to the cart.",400)
+     
+                      throw new ErrorMessage({
+                        message:"You can only add up to 5 items of this product to the cart.",
+                        status:400,
+                        service:"UserCartController",
+                        action:"updateCart"
+                    })
                 }
                 return {
                     cartId: val.id,

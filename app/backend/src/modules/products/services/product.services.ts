@@ -1,5 +1,5 @@
 import {  pagination } from "../../../helpers/pagination";
-import { ErrorMessage } from "../../../helpers/ErrorMessage";
+import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage";
 import {  IProductRepository } from "../repository/product.repository";
 import {   SelectedProduct ,GetProductById, FilteredProduct,FilterProductsInput} from "../types/product.types";
 import { ICacheProducts } from "../cache/product.cache";
@@ -37,7 +37,16 @@ export class ProductService  implements IProductService{
             }
         }
         if (countProducts === 0) {
-            throw new ErrorMessage("No products available at the moment.",204)
+        
+             throw new ErrorMessage({
+                message:"No products available at the moment.",
+                status:204,
+                action:"getProducts",
+                service:"ProductService",
+                context:{
+                    page
+                }
+            })
         }
         const {skip,currentPage,totalPages} = pagination({
             totalItems:countProducts,page,limit
@@ -65,8 +74,16 @@ export class ProductService  implements IProductService{
             const datas = await this.product.getProductById(id);
             
             return datas
-        }catch(err:any){
-            throw new ErrorMessage("Failed to retrieve products. Please try again later.", 500);
+        }catch(err:unknown){
+       
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to retrieve products. Please try again later.",
+                status:500,
+                action:"getProductById",
+                service:"ProductService",
+                prismaError
+            })
         }
     }
    
@@ -76,8 +93,16 @@ export class ProductService  implements IProductService{
             if(count)return Number(count);
 
             return 0;
-        } catch (err: any) {
-            throw new ErrorMessage("Failed to count products in the database", 500);
+        } catch (err: unknown) {
+           
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to count products in the database",
+                status:500,
+                action:"countProducts",
+                service:"ProductService",
+                prismaError
+            })
         }
 
     }
@@ -88,8 +113,19 @@ export class ProductService  implements IProductService{
             return await this.product.filterProducts({
                 name,category,maxPrice,minPrice,take,skip,orderBy
             })
-        }catch(err:any){
-            throw new ErrorMessage("No products found",404)
+        }catch(err:unknown){
+        
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"No products found",
+                status:404,
+                action:"filterProduct",
+                service:"ProductService",
+                context:{
+                    name,category,maxPrice,minPrice,take,skip,orderBy
+                },
+                prismaError
+            })
         }
     }
 }

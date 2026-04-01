@@ -24,11 +24,29 @@ export class UserCartService implements IUserCartService{
         }
         const countCartItems = await this.cart.countUserCart(userId)
         if (countCartItems > 5) {
-            throw new ErrorMessage("Cart limit reached. You can only have up to 5 items in your cart.",400)
+   
+            throw new ErrorMessage({
+                message:"Cart limit reached. You can only have up to 5 items in your cart.",
+                status:400,
+                action:"create",
+                service:"UserCartService",
+                context:{
+                    userId,quantity
+                }
+            })
         }
         const {product} = await this.product.getProductById(productId)
         if (!product) {
-            throw new ErrorMessage("Product not found.", 404);
+      
+             throw new ErrorMessage({
+                message:"Product not found.",
+                status:404,
+                action:"create",
+                service:"UserCartService",
+                context:{
+                    userId,quantity
+                }
+            })
         }
 
         await this.cart.create(userId,productId,quantity)

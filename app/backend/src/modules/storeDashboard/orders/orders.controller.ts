@@ -7,7 +7,7 @@ type Orderby = "asc" | "desc"
 export class OrdersController{
     constructor(private ordersService:IOrdersService){}
 
-    async searchOrders(req:Request,res:Response,next:NextFunction):Promise<void>{
+    async searchOrders(req:Request,res:Response,next:NextFunction):Promise<any>{
         let {currentPage,search,
             status,orderby,limit,storeId
         } = req.query
@@ -26,7 +26,7 @@ export class OrdersController{
             const orderBy: Orderby = checkOrderBy(orderStr) ? (orderStr as Orderby) : "desc"
             const statusValue = checkIsValidStatus(statusStr)? statusStr : undefined
             if (searchStr && (!checkisAValidString(searchStr) || !checkIsAValidInteger(searchStr))) {
-                throw new ErrorMessage("is not valid search", 422)
+                return res.status(422).send({message:"is not valid search"})
             }
             
             await this.ordersService.searchOrders({

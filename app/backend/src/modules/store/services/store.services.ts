@@ -1,5 +1,5 @@
 import { generateImgPath } from "../../../helpers/checkIsValidImage";
-import { ErrorMessage } from "../../../helpers/ErrorMessage"
+import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage"
 
 import { IStoreRepository } from "../repository/store.repository"
 import { Store } from "../types/store.types";
@@ -41,11 +41,22 @@ export class StoreService implements IStoreService{
         const newUrlPath = generateImgPath(originalName)
         
         const existsStoreName = await this.storeRepository.findByName( name )
-        if(existsStoreName)throw new ErrorMessage("A store with this name already exists.",409)
-        
+        if(existsStoreName){
+            throw new ErrorMessage({message:"A store with this name already exists.",
+                status:409,
+                service:"StoreService",
+                action:"createStore"
+            })
+        }
         const userAlreadyHaveStore = await this.storeRepository.selectUserStores( userId )
         if( userAlreadyHaveStore.length >0){
-            throw new ErrorMessage("User already has a store", 409)
+            throw new ErrorMessage({
+                message:"User already has a store", 
+                status:409,
+                service:"StoreService",
+                action:"createStore"
+            })
+            
         }
         
         await this.storeRepository.createStore({
@@ -67,16 +78,29 @@ export class StoreService implements IStoreService{
             if(!datas)return false;
 
             return true;
-        }catch(err:any){
-            throw new ErrorMessage("Failed to find a store",409)
+        }catch(err:unknown){
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({message:"Failed to find a store",
+                status:409,
+                service:"StoreService",
+                action:"findByName",
+                prismaError
+            })
         }
     }
     public async checkOwnerShip(storeId:number,userId:number):Promise<boolean>{
         try{
             const datas = await this.storeRepository.checkStoreOwnerShip(storeId)
             return datas?.userId === userId;
-        }catch(err:any){
-            throw new ErrorMessage("Failed to find a store",409)
+        }catch(err:unknown){
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to find a store",
+                status:409,
+                service:"StoreService",
+                action:"checkOwnerShip",
+                prismaError
+            })
         }
     }
     public async selectUserStores(userId:number):Promise<Store[]>{
@@ -85,8 +109,15 @@ export class StoreService implements IStoreService{
             if(datas.length ===0)return [];
 
             return datas ;
-        }catch(err:any){
-            throw new ErrorMessage("Failed to find a store",409)
+        }catch(err:unknown){
+            const prismaError  =getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to find a store",
+                status:409,
+                prismaError,
+                action:"selecUserStores",
+                service:"StoreService"
+            })
         }
     }
      public async countProductStore(storeId:number):Promise<number>{
@@ -95,7 +126,7 @@ export class StoreService implements IStoreService{
             if(!count)return 0
 
             return count;
-        }catch(err:any){
+        }catch(err:unknown){
             return 0;
         }
     }

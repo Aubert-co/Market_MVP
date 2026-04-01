@@ -1,5 +1,5 @@
 import { PrismaClient} from "@prisma/client";
-import { ErrorMessage } from "../../../helpers/ErrorMessage";
+import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage";
 
 import { CartWithItems,DatasId } from "../types/cart.types";
 
@@ -23,9 +23,19 @@ export class UserCartRepository implements UserCartRepository{
                     productId,quantity,userId
                 }
             })
-        }catch(err:any){
-            throw new ErrorMessage("An internal error occurred while trying to add the item to the cart.", 500);
-
+        }catch(err:unknown){
+           
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"An internal error occurred while trying to add the item to the cart.",
+                status:500,
+                action:"create",
+                service:"UserCartRepository",
+                prismaError,
+                context:{
+                    userId,productId,quantity
+                }
+            })
         }
     }
     public async countUserCart(userId:number):Promise<number >{
@@ -33,8 +43,19 @@ export class UserCartRepository implements UserCartRepository{
             return await this.prisma.cartitem.count({
                 where:{userId}
             })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to count cart",500)
+        }catch(err:unknown){
+            
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to count cart",
+                status:500,
+                action:"countUserCart",
+                service:"UserCartRepository",
+                prismaError,
+                context:{
+                    userId
+                }
+            })
         }
     }
     
@@ -47,8 +68,16 @@ export class UserCartRepository implements UserCartRepository{
                 }
                 
             })
-        }catch(err:any){
-            throw new ErrorMessage("Failed to remove a item from cart.",500)
+        }catch(err:unknown){
+     
+           const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to remove a item from cart.",
+                status:500,
+                action:"removeItem",
+                service:"UserCartRepository",
+                prismaError,
+            })
         }
     }
     
@@ -67,8 +96,16 @@ export class UserCartRepository implements UserCartRepository{
             }
         })
        }catch(err:any){
-        throw new ErrorMessage("Failed to get items from cart.",500)
-       }
+      
+         const prismaError = getPrismaError(err)
+        throw new ErrorMessage({
+            message:"Failed to get items from cart.",
+            status:500,
+            action:"getAllCartItems",
+            service:"UserCartRepository",
+            prismaError,
+        })
+    }
         
     }   
     public async updateCart(cartId:number,userId:number,quantity:number):Promise<void>{
@@ -78,7 +115,15 @@ export class UserCartRepository implements UserCartRepository{
                 data:{quantity}
             })
         }catch(err:any){
-            throw new ErrorMessage("Failed to update cart items.",500)
+        
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to update cart items.",
+                status:500,
+                action:"updateCart",
+                service:"UserCartRepository",
+                prismaError,
+            })
         }
     }
     

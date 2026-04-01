@@ -25,7 +25,7 @@ export class ReviewsController{
             const userId = req.user
             await this.reviews.addReview({content,rating,userId,orderId})
             res.status(201).send({message:'Sucess'})
-        }catch(err){
+        }catch(err:unknown){
             next(err)
         }
     }

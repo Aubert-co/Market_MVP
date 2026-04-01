@@ -1,4 +1,4 @@
-import { ErrorMessage } from "../../../helpers/ErrorMessage";
+import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage";
 import { IOrderRepository } from "../repository/order.repository";
 import { DatasCreateOrderDto, GetOrder } from "../types/order.types";
 
@@ -18,8 +18,19 @@ export class OrderService implements IOrderServices{
         try{
             const datas = await this.order.getOrder( userId )
             return datas
-        }catch(err:any){
-            throw new ErrorMessage("Database error while fetching user orders.", 500)
+        }catch(err:unknown){
+      
+            const prismaError = getPrismaError(err)
+             throw new ErrorMessage({
+                message:"Database error while fetching user orders.",
+                status:500,
+                action:"getCouponById",
+                service:"OrderRepository",
+                context:{
+                    userId
+                },
+                prismaError
+            })
         }
     }
    

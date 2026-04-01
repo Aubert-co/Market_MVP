@@ -1,7 +1,7 @@
 import { calcSkipPages, pagination } from "../../../helpers/pagination";
 import { IOrdersRepository } from "../orders/orders.repository";
 import { GetLastOrdersDTO, LastOrdersPayload, SearchOrdersDTO, SearchOrdersResponse } from "./orders.types";
-import { ErrorMessage } from "../../../helpers/ErrorMessage";
+import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage";
 
 type SearchOrderWithPage = Omit<SearchOrdersDTO, "skip"> & {
     page:number
@@ -30,14 +30,27 @@ export class OrdersServices implements IOrdersService{
             }
         }
         }catch(err:unknown){
-            throw new ErrorMessage("",500)
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"",
+                status:500,
+                prismaError,
+                service:"Dashboard-OrdersServices",
+                action:"searchOrders"
+            })
         }
     }
     async getLastOrders({status,storeId}:GetLastOrdersDTO){
         try{
             return await this.orderRep.getLastOrders({status,storeId})
         }catch(err:unknown){
-            throw new ErrorMessage("",500)
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"",
+                status:500,
+                service:"Dashboard-OrdersServices",
+                action:"getLastOrders"
+            })
         }
     }
 }
