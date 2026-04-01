@@ -1,7 +1,7 @@
-import { calcSkipPages, pagination } from "../../../helpers/pagination";
-import { IOrdersRepository } from "../orders/orders.repository";
+import { calcSkipPages, pagination } from "@/helpers/pagination";
+import { IOrdersRepository } from "./orders.repository";
 import { GetLastOrdersDTO, LastOrdersPayload, SearchOrdersDTO, SearchOrdersResponse } from "./orders.types";
-import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage";
+import { ErrorMessage, getPrismaError } from "@/helpers/ErrorMessage";
 
 type SearchOrderWithPage = Omit<SearchOrdersDTO, "skip"> & {
     page:number

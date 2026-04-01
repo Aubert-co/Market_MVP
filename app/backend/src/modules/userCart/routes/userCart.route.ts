@@ -2,9 +2,9 @@ import { Router,Request,Response,NextFunction } from "express"
 import { UserCartController } from "../controller/userCart.controller"
 import { UserCartRepository } from "../repository/userCart.repository"
 import { UserCartService } from "../services/useCart.services"
-import { prisma } from "../../../lib/prisma"
-import { ProductRepository } from "../../products/repository/product.repository"
-import { Auth } from "../../../middleware/auth"
+import { prisma } from "@/lib/prisma"
+import { ProductRepository } from "@/modules/products/repository/product.repository"
+import { Auth } from "@/middleware/auth"
 
 const userCartRepository = new UserCartRepository(prisma)
 const productRepository = new ProductRepository(prisma)

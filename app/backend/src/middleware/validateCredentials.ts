@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { checkisAValidString, checkisValidEmail } from "../helpers/checkIsValid";
+import { checkisAValidString, checkisValidEmail } from "@/helpers/checkIsValid";
 
 export class ValidateCredentials{
     public  handler(req:Request,res:Response,next:NextFunction):any{

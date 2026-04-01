@@ -1,5 +1,5 @@
-import { ApplyDiscountDto } from "../modules/coupon/types/coupon.types"
-import { roundTottaly } from "../helpers/index";
+import { ApplyDiscountDto } from "@/modules/coupon/types/coupon.types"
+import { roundTottaly } from "@/helpers/index";
 
 export const applyDiscount = ({total,discountType,discount}:ApplyDiscountDto):number=>{
     if(!discountType || ! discount)return total

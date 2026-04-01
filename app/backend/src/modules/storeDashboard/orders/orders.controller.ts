@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IOrdersService } from "./orders.services";
-import { checkIsAValidInteger, checkIsValidStatus, checkOrderBy, checkisAValidString } from "../../../helpers/checkIsValid";
-import { ErrorMessage } from "../../../helpers/ErrorMessage";
-import { getString } from "../../../helpers";
+import { checkIsAValidInteger, checkIsValidStatus, checkOrderBy, checkisAValidString } from "@/helpers/checkIsValid";
+import { getString } from "@/helpers";
 type Orderby = "asc" | "desc"
 export class OrdersController{
     constructor(private ordersService:IOrdersService){}

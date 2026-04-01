@@ -1,6 +1,5 @@
 import  {Bucket, Storage}  from '@google-cloud/storage';
-import { ErrorMessage } from '../helpers/ErrorMessage';
-import {  UploadFile, UploadImageResult,IFileStorage } from '../types/storageImages.types';
+import {  UploadFile, UploadImageResult,IFileStorage } from '@/types/storageImages.types';
 
 
 export class GoogleStorage implements IFileStorage {
@@ -85,7 +84,7 @@ export class GoogleStorage implements IFileStorage {
     try{
       await this.storage.bucket(this.BUCKET_NAME).file(imageName).delete()
     }catch(err:any){
-      throw new ErrorMessage("Failed to delete image",500)
+      //throw new ErrorMessage("Failed to delete image",500)
     }
   }
 }

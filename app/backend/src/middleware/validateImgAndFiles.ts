@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { checkIsValidImage } from "../helpers/checkIsValidImage";
-import { checkisAValidString } from "../helpers/checkIsValid";
+import { checkIsValidImage } from "@/helpers/checkIsValidImage";
+import { checkisAValidString } from "@/helpers/checkIsValid";
 
 export class ValidateImageAndFields{
     constructor(){}

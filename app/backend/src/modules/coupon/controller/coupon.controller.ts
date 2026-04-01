@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ICouponService } from "../services/coupon.services";
-import { checkIsAValidNumber, checkisAValidString } from "../../../helpers/checkIsValid";
-import { convertStringToDate, validDates } from "../../../helpers/dates";
+import { checkIsAValidNumber, checkisAValidString } from "@/helpers/checkIsValid";
+import { convertStringToDate, validDates } from "@/helpers/dates";
 
 
 export class CouponController{

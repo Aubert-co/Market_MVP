@@ -1,4 +1,4 @@
-import { logger } from "../lib/logger";
+import { logger } from "@/lib/logger";
 import { pinoHttp } from "pino-http";
 
 export const httpLogger = pinoHttp({

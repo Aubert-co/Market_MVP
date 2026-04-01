@@ -1,5 +1,5 @@
-import { compressImage } from "../helpers/compressImages";
-import { UploadFile, UploadImageResult,IFileStorage } from "../types/storageImages.types";
+import { compressImage } from "@/helpers/compressImages";
+import { UploadFile, UploadImageResult,IFileStorage } from "@/types/storageImages.types";
 
 
 

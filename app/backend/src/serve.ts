@@ -1,12 +1,13 @@
+import 'module-alias/register'
 import express, { Request,Response, ErrorRequestHandler, NextFunction } from 'express'
-import { ErrorMiddleware } from './middleware/error.middleware'
+import { ErrorMiddleware } from '@/middleware/error.middleware'
 import cookieParser from 'cookie-parser'
-import route from './routes/route'
+import route from '@/routes/route'
 import cors from 'cors'
-import { connectRedis } from './lib/redis'
+import { connectRedis } from '@/lib/redis'
 import path from 'path'
 import helmet from 'helmet'
-import { globalLimiter } from './middleware/globalLimiter'
+import { globalLimiter } from '@/middleware/globalLimiter'
 
 
 if(!process.env.NODE_ENV){

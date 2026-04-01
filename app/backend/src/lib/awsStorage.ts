@@ -1,4 +1,4 @@
-import { IFileStorage, UploadFile, UploadImageResult } from "../types/storageImages.types";
+import { IFileStorage, UploadFile, UploadImageResult } from "@/types/storageImages.types";
 import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 

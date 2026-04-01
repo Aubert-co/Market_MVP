@@ -1,5 +1,5 @@
 import { categories,orderBy } from "./index";
-import { StatusOrder } from "../modules/orders/types/order.types";
+import { StatusOrder } from "@/modules/orders/types/order.types";
 
 
 export const checkIsAValidNumber = (value:unknown):boolean=>{

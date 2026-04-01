@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { prisma } from "../../../lib/prisma";
-import { Auth } from "../../../middleware/auth";
+import { prisma } from "@/lib/prisma";
+import { Auth } from "@/middleware/auth";
 
-import { makeVerifyStoreMiddle } from "factory/makeVerifyStoreMiddle";
+import { makeVerifyStoreMiddle } from "@/factory/makeVerifyStoreMiddle";
 import { OrdersRepository } from "./orders.repository";
 import { OrdersServices } from "./orders.services";
 import { OrdersController } from "./orders.controller";

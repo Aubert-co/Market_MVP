@@ -1,6 +1,6 @@
 import { PrismaClient ,Prisma} from "@prisma/client";
-import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage";
-import { now } from "../../../helpers/dates";
+import { ErrorMessage, getPrismaError } from "@/helpers/ErrorMessage";
+import { now } from "@/helpers/dates";
 import { Coupon, CouponUsage, CouponUsageInfoDto,DiscountType } from "../types/coupon.types";
 
 

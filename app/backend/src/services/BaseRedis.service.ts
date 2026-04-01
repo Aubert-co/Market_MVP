@@ -1,5 +1,5 @@
-import { SaveItemsCacheDTO } from "types/cache.types";
-import { IRedisRepository } from "../repository/redis.repository";
+import { SaveItemsCacheDTO } from "@/types/cache.types";
+import { IRedisRepository } from "@/repository/redis.repository";
 
 
 

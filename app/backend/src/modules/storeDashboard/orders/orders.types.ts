@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client'
 import { StatusOrder } from '../../orders/types/order.types'
-import { Pagination } from '../../../types/pagination.types'
+import { Pagination } from '@/types/pagination.types'
 
 export type LastOrdersPayload = Prisma.OrderGetPayload<{
   include: {

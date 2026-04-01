@@ -1,5 +1,5 @@
 import { PrismaClient} from "@prisma/client";
-import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage";
+import { ErrorMessage, getPrismaError } from "@/helpers/ErrorMessage";
 
 import { CartWithItems,DatasId } from "../types/cart.types";
 

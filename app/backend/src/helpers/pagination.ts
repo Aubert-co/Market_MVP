@@ -1,4 +1,4 @@
-import { Pagination,ReturnPagination } from "../types/pagination.types"
+import { Pagination,ReturnPagination } from "@/types/pagination.types"
 export const pagination = ({totalItems,page,limit}:Pagination):ReturnPagination=>{
   const totalPages = Math.ceil(totalItems/limit)
   if(page > totalPages){
