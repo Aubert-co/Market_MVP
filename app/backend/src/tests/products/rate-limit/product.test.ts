@@ -1,5 +1,5 @@
 import supertest from "supertest"
-import app from "../../../serve"
+import app from "@/serve"
 
 describe("product rate limit",()=>{
 

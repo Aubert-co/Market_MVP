@@ -1,7 +1,7 @@
-import {ProductService} from '../../../modules/products/services/product.services'
-import {products} from '../../__fixtures__/products'
-import { FilterProductsInput } from "../../../modules/products/types/product.types"
-import { ICacheProducts } from '../../../modules/products/cache/product.cache'
+import {ProductService} from '@/modules/products/services/product.services'
+import {products} from '@/tests/__fixtures__/products'
+import { FilterProductsInput } from "@/modules/products/types/product.types"
+import { ICacheProducts } from '@/modules/products/cache/product.cache'
 const [product] = products
 const mockRepository = {
     getProducts:jest.fn(),
