@@ -1,7 +1,7 @@
-import * as images from '../../../helpers/checkIsValidImage'
-import { IProductAdminRepository } from '../../../modules/products/repository/productAdmin.repository'
-import { ProductAdminService } from '../../../modules/products/services/productAdmin.services'
-import { ImageUploadService } from '../../../services/ImageUploadService'
+import * as images from '@/helpers/checkIsValidImage'
+import { IProductAdminRepository } from '@/modules/storeAdmin/products/products.repository'
+import { ProductAdminService } from '@/modules/storeAdmin/products/products.services'
+import { ImageUploadService } from '@/services/ImageUploadService'
 
 const mockRepository:IProductAdminRepository = {
     createProduct:jest.fn(),
