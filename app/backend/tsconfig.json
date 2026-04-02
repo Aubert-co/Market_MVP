@@ -11,11 +11,12 @@
     "baseUrl": ".",
     "paths": {
       "@/*":["src/*"],
-      "@/modules":["src/modules/*"]
+      "@/modules":["src/modules/*"],
+      "@/tests":["src/tests/*"]
     },
     "typeRoots": ["./node_modules/@types", "./src/types"]
 
   },
   "include": ["src/**/*", "public"],
-  "exclude": ["node_modules","src/tests","src/test-load"]
+  "exclude": ["node_modules","src/test-load"]
 }
