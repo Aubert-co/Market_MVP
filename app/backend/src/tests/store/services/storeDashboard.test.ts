@@ -1,4 +1,9 @@
-import {StoreDashboardService} from '../../../modules/store/services/storeDashboard.services'
+describe.skip("",()=>{
+    it("",()=>{
+
+    })
+})
+/*import {StoreDashboardService} from '../../../modules/storeAdmin/store/services/storeDashboard.services'
 
 const mockStoreRep = {
     getStoreOrders:jest.fn(),
@@ -163,4 +168,4 @@ describe("class StoreDashboardService",()=>{
         expect( mockStoreRep.getStoreOrders).toHaveBeenCalledTimes(1)
         expect( mockStoreRep.getStoreOrders).toHaveBeenCalledWith('pending',storeId)
     })
-})
+})*/

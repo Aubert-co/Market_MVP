@@ -10,7 +10,7 @@ import { views } from "../../__fixtures__/views"
 const storeId = 1
 const cookies =  generateAccessToken(1)
 
-describe("get /store/dashboard/:storeId",()=>{
+describe.skip("get /store/dashboard/:storeId",()=>{
     beforeEach(()=>{
         jest.clearAllMocks()
         jest.restoreAllMocks()

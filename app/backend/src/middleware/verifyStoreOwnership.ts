@@ -1,7 +1,7 @@
 import { NextFunction ,Request,Response} from "express";
 import {  checkIsAValidInteger } from "@/helpers/checkIsValid";
-import { IStoreService } from "@/modules/store/services/store.services";
-import { IStoreCache } from "@/modules/store/cache/store.cache";
+import { IStoreService } from "@/modules/storeAdmin/store/services/store.services";
+import { IStoreCache } from "@/modules/storeAdmin/store/cache/store.cache";
 
 
 export class VerifyStoreOwnership{

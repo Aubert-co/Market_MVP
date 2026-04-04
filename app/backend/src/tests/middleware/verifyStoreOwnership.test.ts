@@ -1,7 +1,7 @@
 import {VerifyStoreOwnership} from '../../middleware/verifyStoreOwnership'
 
 import { Request, Response, NextFunction } from 'express';
-import { IStoreCache } from '../../modules/store/cache/store.cache';
+import { IStoreCache } from '../../modules/storeAdmin/store/cache/store.cache';
 
 const userId = 1
 let request:Partial<Request>
