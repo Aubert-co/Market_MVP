@@ -13,8 +13,8 @@ export interface IOrdersService {
 export class OrdersServices implements IOrdersService{
     constructor(protected orderRep:IOrdersRepository){}
 
-    async searchOrders({search,storeId,status,limit,orderBy,page}:SearchOrderWithPage):Promise<SearchOrdersResponse>{
-        try{
+    protected async orderFilter({search,storeId,status,limit,orderBy,page}:SearchOrderWithPage):Promise<SearchOrdersResponse>{
+         try{
             const skip = calcSkipPages(page,limit)
             const {datas,pageInfo} =  await this.orderRep.searchOrders({
                 search,status,skip,storeId,limit,orderBy
@@ -39,6 +39,16 @@ export class OrdersServices implements IOrdersService{
                 action:"searchOrders"
             })
         }
+    }
+    async searchOrders({search,storeId,status,limit,orderBy,page}:SearchOrderWithPage):Promise<SearchOrdersResponse>{
+       return await this.orderFilter({
+        storeId,search,status,limit,orderBy,page
+       })
+    }
+    async getLastOrders(storeId:number,){
+        return await this.orderFilter({
+            storeId,orderBy:'desc'
+        })
     }
     
 }
