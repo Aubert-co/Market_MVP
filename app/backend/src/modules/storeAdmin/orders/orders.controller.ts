@@ -40,15 +40,4 @@ export class OrdersController{
             next(err)
         }
     }
-    async getLastOrders(req:Request,res:Response,next:NextFunction):Promise<void>{
-        const {storeId,status} = req.body
-        try{
-            
-            await this.ordersService.getLastOrders({
-                storeId,status
-            })
-        }catch(err:unknown){
-            next(err)
-        }
-    }
 }

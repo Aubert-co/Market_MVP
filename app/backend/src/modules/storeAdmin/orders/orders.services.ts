@@ -8,7 +8,7 @@ type SearchOrderWithPage = Omit<SearchOrdersDTO, "skip"> & {
 }
 export interface IOrdersService {
     searchOrders({storeId,search,status,page,orderBy,limit}:SearchOrderWithPage):Promise<SearchOrdersResponse>
-    getLastOrders({status,storeId}:GetLastOrdersDTO):Promise<LastOrdersPayload[]>
+    
 }
 export class OrdersServices implements IOrdersService{
     constructor(protected orderRep:IOrdersRepository){}
@@ -40,17 +40,5 @@ export class OrdersServices implements IOrdersService{
             })
         }
     }
-    async getLastOrders({status,storeId}:GetLastOrdersDTO){
-        try{
-            return await this.orderRep.getLastOrders({status,storeId})
-        }catch(err:unknown){
-            const prismaError = getPrismaError(err)
-            throw new ErrorMessage({
-                message:"",
-                status:500,
-                service:"Dashboard-OrdersServices",
-                action:"getLastOrders"
-            })
-        }
-    }
+    
 }

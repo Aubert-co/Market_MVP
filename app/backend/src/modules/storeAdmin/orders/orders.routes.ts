@@ -14,10 +14,7 @@ const ordersController = new OrdersController(ordersService)
 
 route.use(Auth)
 route.use(makeVerifyStoreMiddle)
-route.get('/stores/:storeId/orders/last',
-  
-    (req:Request,res:Response,next:NextFunction)=>ordersController.getLastOrders(req,res,next)
-)
+
 route.get('/stores/:storeId/orders',
    
     (req:Request,res:Response,next:NextFunction)=>ordersController.searchOrders(req,res,next)

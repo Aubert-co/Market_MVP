@@ -1,9 +1,13 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { LastOrdersPayload,GetLastOrdersDTO,SearchOrdersDTO, OrderListPayload, SearchOrdersReturn } from "./orders.types";
+import { StatusOrder } from "@/modules/orders/types/order.types";
+import { StoreDashOrders } from "../store/types/storedashboard.types";
 
 export interface IOrdersRepository{
     getLastOrders({}:GetLastOrdersDTO):Promise<LastOrdersPayload[]>
     searchOrders({}:SearchOrdersDTO):Promise<SearchOrdersReturn>
+    getStoreOrders(status:StatusOrder,storeId:number):Promise<StoreDashOrders[] | []>
+    countOrders(status:StatusOrder,storeId:number):Promise<number>   
 }
 export class OrdersRepository implements IOrdersRepository{
     constructor(private prisma:PrismaClient){}
@@ -28,7 +32,7 @@ export class OrdersRepository implements IOrdersRepository{
 
        const where: Prisma.OrderWhereInput= {
         product: { storeId },
-
+        
         ...(status && { status }),
 
         ...(search && {
@@ -68,5 +72,52 @@ export class OrdersRepository implements IOrdersRepository{
         }
 
     }
+     public async getStoreOrders(status:StatusOrder,storeId:number):Promise<StoreDashOrders[] | []>{
+        try{
+            const datas =  await this.prisma.order.findMany({
+                where:{
+                    status,
+                    product:{
+                        storeId
+                    },
+                    
+                },
+                orderBy:{
+                    createdAt:'desc'
+                },
+                select:{
+                    product:{
+                        select:{name:true,price:true,imageUrl:true}
+                    },
+                    total:true,
+                    quantity:true,
+                    user:{
+                        select:{name:true}
+                    }
+                },
+                take:5
+            })
+            if(!datas)return []
+            return datas
+        }catch(err:any){
+            return []
+        }
+    }
+    public async countOrders(status:StatusOrder,storeId:number):Promise<number>{
+       try{
+            const count = await this.prisma.order.count({
+                where:{
+                    status,
+                    product:{
+                        storeId
+                    }
+                }
+            })
+            if(!count)return 0
 
+            return count;
+       }catch(err:any){
+            return 0
+       }
+    }
 }
