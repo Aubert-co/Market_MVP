@@ -25,3 +25,9 @@ export type CouponUsageInfoDto = Prisma.CouponUsageGetPayload<{
         }
     }
 }>
+
+export type GetAvailableCoupons = {
+    datas:Coupon[],
+    currentPage:number,
+    totalPages:number
+}
