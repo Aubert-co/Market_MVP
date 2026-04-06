@@ -16,14 +16,7 @@ export type GetLastOrdersDTO = {
     storeId:number,
     status?:StatusOrder
 }
-export type SearchOrdersDTO = {
-    storeId:number,
-    skip:number,
-    limit:number,
-    search?:string | number
-    status?:StatusOrder
-    orderBy?:'asc' | 'desc'
-}
+
 export type OrderListPayload = Prisma.OrderGetPayload<{
   select: {
     product: {
@@ -44,3 +37,19 @@ export type SearchOrdersResponse = {
   datas:OrderListPayload[],
   pagination:Pagination
 }
+
+export type SearchOrdersDTO = {
+    storeId:number,
+    search?:string | number
+    status?:StatusOrder
+    orderBy?:'asc' | 'desc'
+    pagination?:{
+        limit:number,
+        skip:number
+    }
+}
+export type SearchOrdersResult<T extends boolean> = {
+  datas: OrderListPayload[]
+} & (T extends true
+  ? { pageInfo: { totalItems: number } }
+  : {})
