@@ -27,15 +27,26 @@ export class OrdersController{
             if (searchStr && (!checkisAValidString(searchStr) || !checkIsAValidInteger(searchStr))) {
                 return res.status(422).send({message:"is not valid search"})
             }
-            
+           
             await this.ordersService.searchOrders({
                 orderBy,
                 storeId:Number(storeIdStr),
                 search: searchStr,
                 status: statusValue,
-                limit: limitNumber,
+                limit:limitNumber,
                 page: pageNumber
             })     
+        }catch(err:unknown){
+            next(err)
+        }
+    }
+    async getLastOrders(req:Request,res:Response,next:NextFunction):Promise<any>{
+        try{
+            const {storeId}  =req.query
+            const datas = await this.ordersService.getLastOrders(Number(storeId))
+            res.status(200).send({
+                datas
+            })
         }catch(err:unknown){
             next(err)
         }
