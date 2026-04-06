@@ -1,28 +1,32 @@
 import { calcSkipPages, pagination } from "@/helpers/pagination";
 import { IOrdersRepository } from "./orders.repository";
-import { GetLastOrdersDTO, LastOrdersPayload, SearchOrdersDTO, SearchOrdersResponse } from "./orders.types";
+import { OrderListPayload, SearchOrdersDTO, SearchOrdersResponse } from "./orders.types";
 import { ErrorMessage, getPrismaError } from "@/helpers/ErrorMessage";
 
-type SearchOrderWithPage = Omit<SearchOrdersDTO, "skip"> & {
-    page:number
+type SearchOrderWithPage = Omit<SearchOrdersDTO, "pagination"> & {
+    page:number,
+    limit:number
 }
 export interface IOrdersService {
     searchOrders({storeId,search,status,page,orderBy,limit}:SearchOrderWithPage):Promise<SearchOrdersResponse>
-    
+    getLastOrders(storeId:number):Promise<OrderListPayload[]>
 }
 export class OrdersServices implements IOrdersService{
     constructor(protected orderRep:IOrdersRepository){}
 
-    protected async orderFilter({search,storeId,status,limit,orderBy,page}:SearchOrderWithPage):Promise<SearchOrdersResponse>{
+   
+    async searchOrders({search,storeId,status,limit,orderBy,page}:SearchOrderWithPage):Promise<SearchOrdersResponse>{
          try{
             const skip = calcSkipPages(page,limit)
-            const {datas,pageInfo} =  await this.orderRep.searchOrders({
-                search,status,skip,storeId,limit,orderBy
+            
+            const {datas,pageInfo} =  await this.orderRep.search<true>({
+                search,status,storeId,orderBy,pagination:{skip,limit}
             })
-        const {skip:skipPage,currentPage,totalPages} = pagination({
-            totalItems:pageInfo.totalItems,
-            page,limit
-        })
+           
+            const {skip:skipPage,currentPage,totalPages} = pagination({
+                totalItems:pageInfo.totalItems,
+                page,limit
+            })
 
         return {
             datas,pagination:{
@@ -40,15 +44,21 @@ export class OrdersServices implements IOrdersService{
             })
         }
     }
-    async searchOrders({search,storeId,status,limit,orderBy,page}:SearchOrderWithPage):Promise<SearchOrdersResponse>{
-       return await this.orderFilter({
-        storeId,search,status,limit,orderBy,page
-       })
+    async getLastOrders(storeId:number):Promise<OrderListPayload[]>{
+        try{
+            const {datas} =  await this.orderRep.search({
+                storeId,orderBy:'desc'
+            })
+            return datas
+        }catch(err:unknown){
+            throw new ErrorMessage({
+                message:"",
+                status:500,
+                service:"",
+                action:""
+            })
+        }
     }
-    async getLastOrders(storeId:number,){
-        return await this.orderFilter({
-            storeId,orderBy:'desc'
-        })
-    }
+    
     
 }
