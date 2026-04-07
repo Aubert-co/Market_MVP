@@ -3,20 +3,23 @@ import { prisma } from "@/lib/prisma";
 import { Auth } from "@/middleware/auth";
 
 import { makeVerifyStoreMiddle } from "@/factory/makeVerifyStoreMiddle";
-import { OrdersRepository } from "./orders.repository";
-import { OrdersServices } from "./orders.services";
-import { OrdersController } from "./orders.controller";
+import { AdminOrderRep } from "./orders.repository";
+import { AdminOrderService } from "./orders.services";
+import { AdminOrdersControl } from "./orders.controller";
 
 const route = Router()
-const ordersRepository = new OrdersRepository(prisma)
-const ordersService = new OrdersServices(ordersRepository)
-const ordersController = new OrdersController(ordersService)
+const ordersRepository = new AdminOrderRep(prisma)
+const ordersService = new AdminOrderService(ordersRepository)
+const ordersController = new AdminOrdersControl(ordersService)
 
 route.use(Auth)
 route.use(makeVerifyStoreMiddle)
 
-route.get('/stores/:storeId/orders',
-   
+route.get('/store/:storeId/orders',
     (req:Request,res:Response,next:NextFunction)=>ordersController.searchOrders(req,res,next)
+)
+
+route.get('/store/:storeId/lastOrders',
+    (req:Request,res:Response,next:NextFunction)=>ordersController.getLastOrders(req,res,next)
 )
 export default route
