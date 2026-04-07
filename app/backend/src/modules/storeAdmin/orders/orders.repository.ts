@@ -3,14 +3,11 @@ import {  SearchOrdersDTO ,SearchOrdersResult} from "./orders.types";
 
 
 
-export interface IOrdersRepository{
+export interface IAdminOrderRep{
    search<T extends boolean>({search,storeId,status,orderBy,pagination}:SearchOrdersDTO):Promise<SearchOrdersResult<T>>
 }
 
-
-
-
-export class OrdersRepository implements IOrdersRepository{
+export class AdminOrderRep implements IAdminOrderRep{
     constructor(private prisma:PrismaClient){}
 
    

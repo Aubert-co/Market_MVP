@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { IOrdersService } from "./orders.services";
+import { IAdminOrderService } from "./orders.services";
 import { checkIsAValidInteger, checkIsValidStatus, checkOrderBy, checkisAValidString } from "@/helpers/checkIsValid";
 import { getString } from "@/helpers";
 type Orderby = "asc" | "desc"
-export class OrdersController{
-    constructor(private ordersService:IOrdersService){}
+export class AdminOrdersControl{
+    constructor(private ordersService:IAdminOrderService){}
 
     async searchOrders(req:Request,res:Response,next:NextFunction):Promise<any>{
         let {currentPage,search,
