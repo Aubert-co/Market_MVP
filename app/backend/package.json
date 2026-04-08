@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "_moduleAliases":{
-    "@":"dist"
+  "_moduleAliases": {
+    "@": "dist"
   },
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register src/serve.ts --noEmit",
@@ -13,7 +13,6 @@
     "test": "npx jest  --detectOpenHandles --runInBand --forceExit",
     "unit": "npx jest /*.spec.ts --watchAll --logHeapUsage"
   },
-  
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1009.0",
     "@aws-sdk/s3-request-presigner": "^3.1009.0",
@@ -29,6 +28,7 @@
     "module-alias": "^2.3.4",
     "pino": "^10.3.1",
     "pino-http": "^11.0.0",
+    "pino-loki": "^3.0.0",
     "prisma": "^7.6.0",
     "redis": "^5.8.2",
     "sharp": "^0.34.4",
