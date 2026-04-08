@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { ErrorMessage } from "@/helpers/ErrorMessage";
 import multer from "multer";
-import { logger } from "@/lib/logger";
+import { startLogger } from "@/lib/logger";
 
+const logger = startLogger()
 export function ErrorMiddleware  (error:any,req:Request,res:Response,next:NextFunction):any{
       
         if (error instanceof multer.MulterError) {
