@@ -1,16 +1,15 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import {  SearchOrdersDTO ,SearchOrdersResult} from "./orders.types";
+import {  LastOrdersPayload, SearchOrdersDTO ,SearchOrdersResult} from "./orders.types";
 
 
 
 export interface IAdminOrderRep{
    search<T extends boolean>({search,storeId,status,orderBy,pagination}:SearchOrdersDTO):Promise<SearchOrdersResult<T>>
+   getLastOrders(storeId:number):Promise<LastOrdersPayload[]>
 }
 
 export class AdminOrderRep implements IAdminOrderRep{
     constructor(private prisma:PrismaClient){}
-
-   
 
     public async  search<T extends boolean>({search,storeId,status,orderBy,pagination}:SearchOrdersDTO):
     Promise<SearchOrdersResult<T>>{
@@ -35,12 +34,28 @@ export class AdminOrderRep implements IAdminOrderRep{
             ]
         })
         }
-        if(pagination){
+        
             const [orders, total] = await Promise.all([
                 this.prisma.order.findMany({
-                    select:{
-                        product:{ select:{ name:true } }
+                   select:{
+                    user:{
+                        select:{name:true,id:true}
                     },
+                    coupon:{
+                        select:{
+                            discount:true,
+                            discountType:true,
+                        },
+                    },
+                    product:{
+                        select:{
+                            price:true,
+                            name:true,imageUrl:true
+                        }
+                    },
+                    total:true,status:true,id:true,
+                    quantity:true,price:true,createdAt:true
+                   },
                     where,
                     skip:pagination.skip,
                     take:pagination.limit,
@@ -56,17 +71,36 @@ export class AdminOrderRep implements IAdminOrderRep{
                     totalItems:total
                 }
             } as SearchOrdersResult<T>
-        
-        }
-        const datas = await this.prisma.order.findMany({
-                select:{
-                    product:{ select:{ name:true } }
-                },
-                where,
-                orderBy: { createdAt: orderBy }
-            })
-        return {datas} as SearchOrdersResult<T>
+    } 
+    
+    public async getLastOrders(storeId:number):Promise<LastOrdersPayload[]>{
+        return await this.prisma.order.findMany({
+            where:{
+                product:{storeId}
+            },
+        include: {
+            product: {
+                select: {
+                    name: true,
+                    price: true,
+                    imageUrl:true
+                }
+            },
+            coupon: {
+                select: {
+                discount: true,
+                discountType: true,
+                code: true
+                }
+            },
+            user: {
+                select: {
+                id: true,
+                name: true
+                }
+            },
+
+            }
+        })
     }
-    
-    
 }
