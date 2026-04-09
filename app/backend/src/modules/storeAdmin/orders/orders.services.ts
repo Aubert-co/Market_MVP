@@ -1,9 +1,9 @@
 import { calcSkipPages, pagination } from "@/helpers/pagination";
 import { IAdminOrderRep } from "./orders.repository";
-import { OrderListPayload, SearchOrdersDTO, SearchOrdersResponse } from "./orders.types";
+import { LastOrdersPayload, OrderListPayload, SearchOrdersDTO, SearchOrdersResponse } from "./orders.types";
 import { ErrorMessage, getPrismaError } from "@/helpers/ErrorMessage";
 
-type SearchOrderWithPage = Omit<SearchOrdersDTO, "pagination"> & {
+export type SearchOrderWithPage = Omit<SearchOrdersDTO, "pagination"> & {
     page:number,
     limit:number
 }
@@ -15,7 +15,7 @@ export class AdminOrderService implements IAdminOrderService{
     constructor(protected orderRep:IAdminOrderRep){}
 
    
-    async searchOrders({search,storeId,status,limit,orderBy,page}:SearchOrderWithPage):Promise<SearchOrdersResponse>{
+    async searchOrders({search,storeId,status,limit,orderBy="desc",page}:SearchOrderWithPage):Promise<SearchOrdersResponse>{
          try{
             const skip = calcSkipPages(page,limit)
             
@@ -30,10 +30,11 @@ export class AdminOrderService implements IAdminOrderService{
 
         return {
             datas,pagination:{
-                page:currentPage,limit:skipPage,totalItems:totalPages
+                currentPage,skip:skipPage,totalPages
             }
         }
         }catch(err:unknown){
+            
             const prismaError = getPrismaError(err)
             throw new ErrorMessage({
                 message:"Failed to search orders.",
@@ -44,11 +45,9 @@ export class AdminOrderService implements IAdminOrderService{
             })
         }
     }
-    async getLastOrders(storeId:number):Promise<OrderListPayload[]>{
+    async getLastOrders(storeId:number):Promise<LastOrdersPayload[]>{
         try{
-            const {datas} =  await this.orderRep.search({
-                storeId,orderBy:'desc'
-            })
+            const datas =  await this.orderRep.getLastOrders(storeId)
             return datas
         }catch(err:unknown){
             const prismaError = getPrismaError(err)
