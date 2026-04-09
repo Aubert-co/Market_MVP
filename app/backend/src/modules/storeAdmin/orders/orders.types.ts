@@ -1,14 +1,34 @@
 import { Prisma } from '@prisma/client'
 import { StatusOrder } from '../../orders/types/order.types'
-import { Pagination } from '@/types/pagination.types'
+
 
 export type LastOrdersPayload = Prisma.OrderGetPayload<{
   include: {
     product: {
       select: {
+        name:true,
+        price:true,
+        imageUrl:true
+        
+      }
+    },
+    coupon:{
+      select:{
+        discount:true,
+        discountType:true,
+        code:true
+      }
+    },
+    user:{
+      select:{
+        id:true,
         name:true
       }
     }
+  },
+  select:{
+    status:true,quantity:true,price:true,total:true,
+    createdAt:true
   }
 }>
 
@@ -18,13 +38,24 @@ export type GetLastOrdersDTO = {
 }
 
 export type OrderListPayload = Prisma.OrderGetPayload<{
-  select: {
-    product: {
-      select: {
-        name: true
-      }
-    }
-  }
+  select:{
+                    user:{
+                        select:{name:true,id:true}
+                    },
+                    coupon:{
+                        select:{
+                            discount:true,
+                            discountType:true,
+                        },
+                    },
+                    product:{
+                        select:{
+                            price:true,name:true,imageUrl:true
+                        }
+                    },
+                    total:true,status:true,id:true,
+                    quantity:true
+                  }
 }>
 export type SearchOrdersReturn = {
   datas:OrderListPayload[],
@@ -35,7 +66,11 @@ export type SearchOrdersReturn = {
 
 export type SearchOrdersResponse = {
   datas:OrderListPayload[],
-  pagination:Pagination
+  pagination:{
+    totalPages:number,
+    currentPage:number,
+    skip:number
+  }
 }
 
 export type SearchOrdersDTO = {
@@ -43,7 +78,7 @@ export type SearchOrdersDTO = {
     search?:string | number
     status?:StatusOrder
     orderBy?:'asc' | 'desc'
-    pagination?:{
+    pagination:{
         limit:number,
         skip:number
     }
