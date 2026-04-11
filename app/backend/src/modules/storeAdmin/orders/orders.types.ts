@@ -3,20 +3,15 @@ import { StatusOrder } from '../../orders/types/order.types'
 
 
 export type LastOrdersPayload = Prisma.OrderGetPayload<{
+  omit:{
+    couponId:true
+  },
   include: {
     product: {
       select: {
         name:true,
-        price:true,
         imageUrl:true
         
-      }
-    },
-    coupon:{
-      select:{
-        discount:true,
-        discountType:true,
-        code:true
       }
     },
     user:{
@@ -39,23 +34,24 @@ export type GetLastOrdersDTO = {
 
 export type OrderListPayload = Prisma.OrderGetPayload<{
   select:{
-                    user:{
-                        select:{name:true,id:true}
-                    },
-                    coupon:{
-                        select:{
-                            discount:true,
-                            discountType:true,
-                        },
-                    },
-                    product:{
-                        select:{
-                            price:true,name:true,imageUrl:true
-                        }
-                    },
-                    total:true,status:true,id:true,
-                    quantity:true
-                  }
+        user:{
+            select:{name:true,id:true}
+        },
+        coupon:{
+            select:{
+                discount:true,
+                discountType:true,
+                code:true
+            },
+        },
+        product:{
+            select:{
+                price:true,name:true,imageUrl:true
+            }
+        },
+        total:true,status:true,id:true,
+        quantity:true
+  }
 }>
 export type SearchOrdersReturn = {
   datas:OrderListPayload[],
