@@ -1,38 +1,28 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import {  LastOrdersPayload, SearchOrdersDTO ,SearchOrdersResult} from "./orders.types";
+import {  LastOrdersPayload, SearchOrdersDTO , SearchOrdersReturn} from "./orders.types";
 
 
 
 export interface IAdminOrderRep{
-   search<T extends boolean>({search,storeId,status,orderBy,pagination}:SearchOrdersDTO):Promise<SearchOrdersResult<T>>
+   search({searchByOrderId,storeId,status,orderBy,pagination}:SearchOrdersDTO):Promise<SearchOrdersReturn>
    getLastOrders(storeId:number):Promise<LastOrdersPayload[]>
 }
 
 export class AdminOrderRep implements IAdminOrderRep{
     constructor(private prisma:PrismaClient){}
 
-    public async  search<T extends boolean>({search,storeId,status,orderBy,pagination}:SearchOrdersDTO):
-    Promise<SearchOrdersResult<T>>{
-        const searchNumber = Number(search)
-
+    public async  search({searchByOrderId,storeId,status,orderBy,pagination}:SearchOrdersDTO):
+    Promise<SearchOrdersReturn>{
+      
+       
        const where: Prisma.OrderWhereInput= {
         product: { storeId },
         
         ...(status && { status }),
 
-        ...(search && {
-            OR: [
-            ...(Number.isNaN(searchNumber) ? [] : [{ id: searchNumber }]),
-            {
-                product: {
-                name: {
-                    contains: String(search),
-                    mode: 'insensitive'
-                }
-                }
-            }
-            ]
-        })
+        ...(searchByOrderId && {
+            AND: {id:searchByOrderId}
+            })
         }
         
             const [orders, total] = await Promise.all([
@@ -45,6 +35,7 @@ export class AdminOrderRep implements IAdminOrderRep{
                         select:{
                             discount:true,
                             discountType:true,
+                            code:true
                         },
                     },
                     product:{
@@ -54,7 +45,8 @@ export class AdminOrderRep implements IAdminOrderRep{
                         }
                     },
                     total:true,status:true,id:true,
-                    quantity:true,price:true,createdAt:true
+                    quantity:true,price:true,createdAt:true,productId:true,
+                    couponId:false,
                    },
                     where,
                     skip:pagination.skip,
@@ -70,7 +62,7 @@ export class AdminOrderRep implements IAdminOrderRep{
                 pageInfo:{
                     totalItems:total
                 }
-            } as SearchOrdersResult<T>
+            } 
     } 
     
     public async getLastOrders(storeId:number):Promise<LastOrdersPayload[]>{
@@ -78,19 +70,15 @@ export class AdminOrderRep implements IAdminOrderRep{
             where:{
                 product:{storeId}
             },
+        orderBy:{
+            createdAt:'desc'
+        },
+        take:5,
         include: {
             product: {
                 select: {
                     name: true,
-                    price: true,
                     imageUrl:true
-                }
-            },
-            coupon: {
-                select: {
-                discount: true,
-                discountType: true,
-                code: true
                 }
             },
             user: {
@@ -100,7 +88,10 @@ export class AdminOrderRep implements IAdminOrderRep{
                 }
             },
 
+            },
+            omit:{
+                couponId:true
             }
-        })
+        },)
     }
 }
