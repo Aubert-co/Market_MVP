@@ -46,11 +46,11 @@ export type OrderListPayload = Prisma.OrderGetPayload<{
         },
         product:{
             select:{
-                price:true,name:true,imageUrl:true
+                name:true,imageUrl:true
             }
         },
         total:true,status:true,id:true,
-        quantity:true
+        quantity:true,productId:true,price:true,createdAt:true
   }
 }>
 export type SearchOrdersReturn = {
@@ -71,7 +71,7 @@ export type SearchOrdersResponse = {
 
 export type SearchOrdersDTO = {
     storeId:number,
-    search?:string | number
+    searchByOrderId?:number
     status?:StatusOrder
     orderBy?:'asc' | 'desc'
     pagination:{
@@ -79,8 +79,3 @@ export type SearchOrdersDTO = {
         skip:number
     }
 }
-export type SearchOrdersResult<T extends boolean> = {
-  datas: OrderListPayload[]
-} & (T extends true
-  ? { pageInfo: { totalItems: number } }
-  : {})
