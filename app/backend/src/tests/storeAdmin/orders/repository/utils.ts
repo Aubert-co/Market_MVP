@@ -11,7 +11,7 @@ export const isProductFromStore = (ordersDatas:any)=>{
       product.storeId === storeId
   )
   
-  expect(foundProduct).toBeUndefined()
+  expect(foundProduct).not.toBeUndefined()
 })
 }
 
