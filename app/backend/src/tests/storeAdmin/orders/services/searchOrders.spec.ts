@@ -9,7 +9,7 @@ const mockRepository = {
 }
 
 describe("AdminOrderService method getLastOrders",()=>{
-    it("should call the search method correctly",async()=>{
+    it("should call the searchByOrderId method correctly",async()=>{
         
         mockRepository.search.mockResolvedValue({datas:['hi'],pageInfo:{
             totalItems:50
@@ -17,7 +17,7 @@ describe("AdminOrderService method getLastOrders",()=>{
         const storeId = 35
         const admin = new AdminOrderService(mockRepository)
         const searchOrders =  await admin.searchOrders({
-            storeId,page:1,limit:5,search:'testing'
+            storeId,page:1,limit:5,searchByOrderId:3
         })
 
         expect(searchOrders.datas).toEqual(['hi'])
@@ -30,8 +30,8 @@ describe("AdminOrderService method getLastOrders",()=>{
                 limit:5,
                 skip:0,
             },
-            search:'testing',
-            status:undefined
+            status:undefined,
+            searchByOrderId:3
         } satisfies SearchOrdersDTO)
     })
     it("should handle errors correctly when the search method throws",async()=>{
@@ -50,7 +50,7 @@ describe("AdminOrderService method getLastOrders",()=>{
                     skip:0,
                     
                 },
-                search:undefined,
+                searchByOrderId:undefined,
                 status:undefined
             } satisfies SearchOrdersDTO)
 
