@@ -1,7 +1,9 @@
 import { prisma } from "../../lib/prisma"
 import { Order } from "../../modules/orders/types/order.types"
 import { orders } from "../__fixtures__/orders"
-import { products } from "../__fixtures__/products"
+import { products, productsByStore } from "../__fixtures__/products"
+import { stores } from "../__fixtures__/stores"
+import { manyUsers } from "../__fixtures__/users"
 import { views } from "../__fixtures__/views"
 import { CreateOrderDto,ParamsCoupons 
     ,ParamsCart,ParamCouponUsage,DatasCouponUsage,itemCoupon,itemsCart
@@ -118,6 +120,11 @@ export const createUserStoreAndProducts = async():Promise<void>=>{
     await prisma.user.createMany( {data:users} )
     await prisma.store.create({data:oneStore})
     await prisma.product.createMany({data:products})
+}
+export const creatManyUsersStoresAndProducts = async():Promise<void>=>{
+    await prisma.user.createMany({data:manyUsers})
+    await prisma.store.createMany({data:stores})
+    await prisma.product.createMany({data:productsByStore})
 }
 
 export const addCouponUsage = async(data:ParamCouponUsage[]):Promise<DatasCouponUsage[]>=>{
