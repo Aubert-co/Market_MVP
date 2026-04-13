@@ -8,19 +8,19 @@ export type SearchOrderWithPage = Omit<SearchOrdersDTO, "pagination"> & {
     limit:number
 }
 export interface IAdminOrderService {
-    searchOrders({storeId,search,status,page,orderBy,limit}:SearchOrderWithPage):Promise<SearchOrdersResponse>
-    getLastOrders(storeId:number):Promise<OrderListPayload[]>
+    searchOrders({storeId,searchByOrderId,status,page,orderBy,limit}:SearchOrderWithPage):Promise<SearchOrdersResponse>
+    getLastOrders(storeId:number):Promise<LastOrdersPayload[]>
 }
 export class AdminOrderService implements IAdminOrderService{
     constructor(protected orderRep:IAdminOrderRep){}
 
    
-    async searchOrders({search,storeId,status,limit,orderBy="desc",page}:SearchOrderWithPage):Promise<SearchOrdersResponse>{
+    async searchOrders({storeId,status,limit,orderBy="desc",page,searchByOrderId}:SearchOrderWithPage):Promise<SearchOrdersResponse>{
          try{
             const skip = calcSkipPages(page,limit)
             
-            const {datas,pageInfo} =  await this.orderRep.search<true>({
-                search,status,storeId,orderBy,pagination:{skip,limit}
+            const {datas,pageInfo} =  await this.orderRep.search({
+                searchByOrderId,status,storeId,orderBy,pagination:{skip,limit}
             })
            
             const {skip:skipPage,currentPage,totalPages} = pagination({
