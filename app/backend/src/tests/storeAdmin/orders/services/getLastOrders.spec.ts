@@ -9,15 +9,13 @@ const mockRepository = {
 
 describe("AdminOrderService method getLastOrders",()=>{
     it("should call the getLastOrders method correctly",async()=>{
-        mockRepository.getLastOrders.mockResolvedValue({datas:['test']})
+        mockRepository.getLastOrders.mockResolvedValue(['test'])
         const storeId = 35
         const admin = new AdminOrderService(mockRepository)
         const getLastOrders =  await admin.getLastOrders(storeId)
 
         expect(getLastOrders).toEqual(['test'])
-        expect(mockRepository.getLastOrders).toHaveBeenCalledWith({
-            storeId,orderBy:"desc"
-        })
+        expect(mockRepository.getLastOrders).toHaveBeenCalledWith(storeId)
     })
      it("should handle errors correctly when the getLastOrders method throws",async()=>{
        try{
@@ -27,9 +25,7 @@ describe("AdminOrderService method getLastOrders",()=>{
             const getLastOrders =  await admin.getLastOrders(storeId)
 
             expect(getLastOrders).toEqual(['test'])
-            expect(mockRepository.getLastOrders).toHaveBeenCalledWith({
-                storeId,orderBy:"desc"
-            })
+            expect(mockRepository.getLastOrders).toHaveBeenCalledWith(storeId)
        }catch(err:unknown){
             expect(err).toBeInstanceOf(ErrorMessage)
             if(err instanceof ErrorMessage){
