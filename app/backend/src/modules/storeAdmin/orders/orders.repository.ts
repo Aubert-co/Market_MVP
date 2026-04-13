@@ -81,16 +81,10 @@ export class AdminOrderRep implements IAdminOrderRep{
                     imageUrl:true
                 }
             },
-            user: {
-                select: {
-                id: true,
-                name: true
-                }
-            },
-
+            
             },
             omit:{
-                couponId:true
+                couponId:true,userId:true
             }
         },)
     }
