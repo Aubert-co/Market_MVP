@@ -4,7 +4,7 @@ import { StatusOrder } from '../../orders/types/order.types'
 
 export type LastOrdersPayload = Prisma.OrderGetPayload<{
   omit:{
-    couponId:true
+    couponId:true,userId:true
   },
   include: {
     product: {
@@ -14,12 +14,6 @@ export type LastOrdersPayload = Prisma.OrderGetPayload<{
         
       }
     },
-    user:{
-      select:{
-        id:true,
-        name:true
-      }
-    }
   },
   select:{
     status:true,quantity:true,price:true,total:true,
