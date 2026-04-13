@@ -21,7 +21,7 @@ export class AdminOrderRep implements IAdminOrderRep{
         ...(status && { status }),
 
         ...(searchByOrderId && {
-            AND: {id:searchByOrderId}
+             id:searchByOrderId
             })
         }
         
