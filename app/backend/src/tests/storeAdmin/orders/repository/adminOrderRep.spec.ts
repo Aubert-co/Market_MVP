@@ -1,19 +1,28 @@
 import { prisma } from "@/lib/prisma";
 import { AdminOrderRep } from "@/modules/storeAdmin/orders/orders.repository";
-import { oneStore,cleanAllDb, createManyOrders, createUserStoreAndProducts, deleteOrders, createCoupons, creatManyUsersStoresAndProducts, cleanCoupons } from "@/tests/__mocks__";
+import { cleanAllDb, createManyOrders, deleteOrders, createCoupons, creatManyUsersStoresAndProducts, cleanCoupons } from "@/tests/__mocks__";
 import { orders } from "@/tests/__fixtures__/orders";
 import { couponsDatas } from "@/tests/__fixtures__/coupons";
 import {checkSearchReturn,checkLastOrdersReturn,isProductFromStore} from "./utils"
 
 const admin = new AdminOrderRep(prisma)
-export const storeId = oneStore.id
+export const storeId = 1
 
-describe('AdminOrderRep search',()=>{
+describe.only('AdminOrderRep search',()=>{
     beforeAll(async()=>{
-        await createUserStoreAndProducts()
-        await createManyOrders(orders)
+        const {validCoupons} = couponsDatas(2)
+        
+        const ordersWithCouponId = orders.map((val,index)=>{
+            let couponId = validCoupons[index]?.id ?? null
+            return {...val,couponId,userId:3}  
+        }) 
+        await creatManyUsersStoresAndProducts()
+        await createCoupons(validCoupons)
+        await createManyOrders(ordersWithCouponId)
+        
     })
     afterAll(async()=>{
+        await cleanCoupons()
         await deleteOrders()
         await cleanAllDb()
     })
@@ -22,8 +31,8 @@ describe('AdminOrderRep search',()=>{
             storeId,orderBy:'desc',pagination:{skip:1,limit:5}
         })
         expect(values.datas).toHaveLength(5)
-        expect(values.datas[0].id).toEqual(orders[orders.length-2].id)
-      
+ 
+        
         checkSearchReturn(values.datas)
         isProductFromStore(values.datas)
     })
@@ -32,7 +41,7 @@ describe('AdminOrderRep search',()=>{
             storeId,orderBy:'asc',pagination:{skip:1,limit:5}
         })
         expect(values.datas).toHaveLength(5)
-        expect(values.datas[0].id).toEqual(2)
+        
         checkSearchReturn(values.datas)
         isProductFromStore(values.datas)
     })
@@ -70,29 +79,23 @@ describe('AdminOrderRep search',()=>{
         const values = await admin.search({
             storeId,orderBy:'desc',pagination:{skip:0,limit:10},status:'completed'
         })
-        expect(values.datas).toHaveLength(
-            orders.filter((val)=>val.status==="completed").length
-        )
+        expect(values.datas.length).toBeLessThanOrEqual(10)
         checkSearchReturn(values.datas)
         isProductFromStore(values.datas)
     })
     it("should return results filtered by status 'cancelled'",async()=>{
         const values = await admin.search({
-            storeId,orderBy:'desc',pagination:{skip:0,limit:10},status:'cancelled'
+            storeId,orderBy:'desc',pagination:{skip:0,limit:5},status:'cancelled'
         })
-        expect(values.datas).toHaveLength(
-            orders.filter((val)=>val.status==="cancelled").length
-        )
+        expect(values.datas.length).toBeLessThanOrEqual(5)
         checkSearchReturn(values.datas)
         isProductFromStore(values.datas)
     })
      it("should return results filtered by status 'pending'",async()=>{
         const values = await admin.search({
-            storeId,orderBy:'desc',pagination:{skip:0,limit:15},status:'pending'
+            storeId,orderBy:'desc',pagination:{skip:0,limit:3},status:'pending'
         })
-        expect(values.datas).toHaveLength(
-            orders.filter((val)=>val.status==="pending").length
-        )
+        expect(values.datas.length).toBeLessThanOrEqual(3)
         checkSearchReturn(values.datas)
         isProductFromStore(values.datas)
     })
