@@ -1,12 +1,17 @@
 # SuperStore – E-commerce Full Stack
 
-Projeto de **marketplace full stack** inspirado em plataformas de e-commerce modernas, onde cada usuário pode criar sua própria loja, cadastrar produtos, gerenciar cupons, realizar compras e interagir com avaliações.  
+Plataforma de marketplace onde usuários podem criar lojas, vender produtos e gerenciar pedidos com foco em escalabilidade, testes e observabilidade.
 
-O objetivo do projeto é demonstrar **boas práticas de engenharia de software**, com foco em **arquitetura escalável**, **testes automatizados**, **qualidade de código** e **aplicação em ambiente real de produção**.
+Projeto focado em simular um ambiente real de produção, com CI/CD, monitoramento e alta cobertura de testes.
+## Destaques
 
-A aplicação está **disponível online**, permitindo a visualização e utilização das principais funcionalidades.
+- Testes automatizados:
+  - +270 testes (40 suítes)
+  - Cobertura de fluxos de sucesso e cenários de erro (bad paths)
+- CI/CD com execução automática de testes
+- Logs estruturados com Pino
+- Observabilidade com Grafana e Loki
 
----
 
 ## Funcionalidades
 
@@ -25,16 +30,8 @@ A aplicação está **disponível online**, permitindo a visualização e utiliz
 - Dashboard da loja (pedidos e status)
 - Gerenciamento de produtos
 
----
 
 ## Tecnologias Utilizadas
-
-### Frontend
-- React.js
-- TypeScript
-- CSS
-- Componentes reutilizáveis
-- Design responsivo
 
 ### Backend
 - Node.js
@@ -48,16 +45,24 @@ A aplicação está **disponível online**, permitindo a visualização e utiliz
 
 ### Infraestrutura
 - Docker e Docker Compose
-- Google Cloud Storage (armazenamento de imagens)
-- Deploy em ambiente de nuvem
+- Armazenamento de imagens em nuvem (AWS S3 planejado)
+- Deploy em ambiente de nuvem (AWS EC2 e Route 53 em planejamento)
 
 ### Testes
 - Jest (testes unitários, integração e regressão)
-- Supertest
-- Cypress (testes end-to-end)
+- Supertest (testes de endpoints HTTP)
 - Gherkin (BDD)
 
----
+#### Cobertura
+- Validação de regras de negócio
+- Fluxos de sucesso e cenários de erro (bad paths)
+- Testes de rate limiting
+- Testes de segurança baseados no OWASP Top 10
+
+#### Qualidade
+- Documentação dos cenários de teste
+- Definição de cenários baseada em regras de negócio
+- Organização dos testes por domínio (ex: pedidos, cupons, autenticação)
 
 ## Arquitetura
 
@@ -67,18 +72,29 @@ O sistema foi projetado com **separação clara de responsabilidades**, visando 
 - Backend expondo APIs RESTful
 - Persistência de dados em PostgreSQL
 - Cache com Redis para otimização de performance
-- Upload de imagens realizado via Google Cloud Storage
-- Serviços orquestrados com Docker Compose
+- Serviços containerizados
 - Cobertura de testes incluindo fluxos de sucesso e cenários de erro (bad paths)
 
----
+### Observabilidade & Monitoramento
+- Pino (logger estruturado para alta performance)
+- Pino HTTP (logs de requisições)
+- Grafana (visualização e análise de logs)
+- Loki (agregação de logs)
+
+### CI/CD
+- GitHub Actions
+- Execução automática de testes a cada push
+- Garantia de integridade e estabilidade do código
+- Pipeline automatizado com execução de testes unitários e de integração
+- Validação contínua antes de merges
 
 ## Acesso ao Projeto
 
-A aplicação está **disponível online**, permitindo navegação pelas funcionalidades principais do marketplace e validação prática do funcionamento do sistema em ambiente de produção.
+A aplicação ainda não está disponível online.
 
-[Projeto online](https://market.aubertdev.com.br/)
----
+Em breve será possível acessar uma versão em produção para explorar as principais funcionalidades do marketplace.
+
+A infraestrutura será provisionada na AWS, utilizando EC2 para hospedagem da aplicação e Route 53 para gerenciamento de domínio e DNS.
 
 ## Objetivo do Projeto
 
