@@ -12,14 +12,16 @@ const ordersRepository = new AdminOrderRep(prisma)
 const ordersService = new AdminOrderService(ordersRepository)
 const ordersController = new AdminOrdersControl(ordersService)
 
-route.use(Auth)
-route.use(makeVerifyStoreMiddle)
 
-route.get('/store/:storeId/orders',
+route.use(Auth)
+
+route.get('/stores/:storeId/orders',
+    [(req:Request,res:Response,next:NextFunction)=>makeVerifyStoreMiddle().handler(req,res,next)],
     (req:Request,res:Response,next:NextFunction)=>ordersController.searchOrders(req,res,next)
 )
 
-route.get('/store/:storeId/lastOrders',
+route.get('/stores/:storeId/lastOrders',
+
     (req:Request,res:Response,next:NextFunction)=>ordersController.getLastOrders(req,res,next)
 )
 export default route
