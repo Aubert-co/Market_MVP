@@ -11,10 +11,10 @@ import reviewsRoute from '@/modules/reviews/routes/reviews.route'
 import { makeUploadFile } from "@/factory/uploadFIles";
 import { httpLogger } from "@/middleware/loggerHttp";
 import CouponStore from "@/modules/storeAdmin/coupon/coupon.route"
- 
+import orderAdminRoute from "@/modules/storeAdmin/orders/orders.routes"
+
 const imageUpload = makeUploadFile()
 const route = Router();
-
 route.use( httpLogger)
 route.use( products)
 route.use( storeRoute )
@@ -23,6 +23,7 @@ route.use( productAdminRoute )
 route.use( orderRoute)
 route.use( couponRoute)
 route.use(reviewsRoute)
+route.use(orderAdminRoute)
 //route.use(storeDashboard)
 route.use(CouponStore)
 

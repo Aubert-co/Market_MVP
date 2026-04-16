@@ -7,45 +7,53 @@ export class AdminOrdersControl{
     constructor(private ordersService:IAdminOrderService){}
 
     async searchOrders(req:Request,res:Response,next:NextFunction):Promise<any>{
-        let {currentPage,search,
-            status,orderby,limit,storeId
+        let {currentPage,orderId,
+            status,orderBy,limit
         } = req.query
-
+        let storeId = req.params.storeId
         
         try{
-       
+            
             const pageStr   = getString(currentPage)
             const limitStr  = getString(limit)
-            const searchStr = getString(search)
             const statusStr = getString(status)
-            const orderStr  = getString(orderby)
+            const orderStr  = getString(orderBy)
             const storeIdStr = getString(storeId)
             const pageNumber  = checkIsAValidInteger(pageStr)  ? Number(pageStr)  : 1
             const limitNumber = checkIsAValidInteger(limitStr) ? Number(limitStr) : 5
-            const orderBy: Orderby = checkOrderBy(orderStr) ? (orderStr as Orderby) : "desc"
+            const orderByStr: Orderby = checkOrderBy(orderStr) ? (orderStr as Orderby) : "desc"
             const statusValue = checkIsValidStatus(statusStr)? statusStr : undefined
-            if (searchStr && (!checkisAValidString(searchStr) || !checkIsAValidInteger(searchStr))) {
-                return res.status(422).send({message:"is not valid search"})
-            }
+
            
-            await this.ordersService.searchOrders({
-                orderBy,
+            if (orderId && !checkIsAValidInteger(orderId)) {
+                return res.status(400).send({
+                    message: "Invalid orderId. It must be a valid integer."
+                });
+            }
+          
+            const {datas,pagination} = await this.ordersService.searchOrders({
+                orderBy:orderByStr,
                 storeId:Number(storeIdStr),
-                search: searchStr,
+                searchByOrderId: Number(orderId),
                 status: statusValue,
                 limit:limitNumber,
                 page: pageNumber
             })     
+           
+            res.status(200).send({datas,message:'Success',pagination})
         }catch(err:unknown){
             next(err)
         }
     }
     async getLastOrders(req:Request,res:Response,next:NextFunction):Promise<any>{
         try{
-            const {storeId}  =req.query
+        
+            const {storeId}  =req.params 
+
             const datas = await this.ordersService.getLastOrders(Number(storeId))
+            
             res.status(200).send({
-                datas
+                datas,message:"Success"
             })
         }catch(err:unknown){
             next(err)

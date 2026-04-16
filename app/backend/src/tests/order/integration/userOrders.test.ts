@@ -1,12 +1,13 @@
 import { generateAccessToken } from "../../../helpers/AuthTokens"
 import app from "../../../serve"
 import { orders } from "../../__fixtures__/orders"
-import { cleanAllDb, cleanCoupons, cleanOrders, createCoupons, createManyOrders, createUserStoreAndProducts,oneStore,users } from "../../__mocks__"
+import { cleanAllDb, cleanCoupons, cleanOrders, createCoupons, createManyOrders, createUserStoreAndProducts,creatManyUsersStoresAndProducts,oneStore,users } from "../../__mocks__"
 import request from 'supertest'
 import { couponsDatas } from "../../__fixtures__/coupons"
 import { prisma } from "../../../lib/prisma"
-const [firtUser,user] = users
+import { manyUsers } from "@/tests/__fixtures__/users"
 
+const user =manyUsers[2]
 const {validCoupons} = couponsDatas( oneStore.id )
 const cookies = generateAccessToken(user.id)
 const newOrders = orders.map((val,index)=>{
@@ -20,7 +21,7 @@ describe("Api get /order/user",()=>{
     })
     beforeEach(async()=>{
  
-        await createUserStoreAndProducts()
+        await creatManyUsersStoresAndProducts()
         await createCoupons( validCoupons )
         await createManyOrders(newOrders)
      
