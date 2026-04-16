@@ -21,7 +21,7 @@ route.get('/stores/:storeId/orders',
 )
 
 route.get('/stores/:storeId/lastOrders',
-
+    [(req:Request,res:Response,next:NextFunction)=>makeVerifyStoreMiddle().handler(req,res,next)],
     (req:Request,res:Response,next:NextFunction)=>ordersController.getLastOrders(req,res,next)
 )
 export default route
