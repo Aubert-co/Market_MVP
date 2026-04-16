@@ -40,17 +40,20 @@ export class AdminOrdersControl{
                 page: pageNumber
             })     
            
-            res.status(200).send({datas,messages:'Success',pagination})
+            res.status(200).send({datas,message:'Success',pagination})
         }catch(err:unknown){
             next(err)
         }
     }
     async getLastOrders(req:Request,res:Response,next:NextFunction):Promise<any>{
         try{
-            const {storeId}  =req.query
+        
+            const {storeId}  =req.params 
+
             const datas = await this.ordersService.getLastOrders(Number(storeId))
+            
             res.status(200).send({
-                datas
+                datas,message:"Success"
             })
         }catch(err:unknown){
             next(err)
