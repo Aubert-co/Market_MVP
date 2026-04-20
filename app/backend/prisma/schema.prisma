@@ -150,11 +150,12 @@ model Order {
 
 
 model View {
-  id         Int       @id @default(autoincrement())
-  productId  Int
-  userId     Int?      
-  viewedAt   DateTime  @default(now())
+  id        Int      @id @default(autoincrement())
+  productId Int
+  userId    Int?
+  sessionId String
+  viewedAt  DateTime @default(now())
 
-  product    Product   @relation(fields: [productId], references: [id])
-  user       User?     @relation(fields: [userId], references: [id])
-}
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
+} 
