@@ -116,6 +116,7 @@ CREATE TABLE "View" (
     "id" SERIAL NOT NULL,
     "productId" INTEGER NOT NULL,
     "userId" INTEGER,
+    "sessionId" TEXT NOT NULL,
     "viewedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "View_pkey" PRIMARY KEY ("id")
