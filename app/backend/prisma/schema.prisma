@@ -148,14 +148,19 @@ model Order {
   comments  Comment[]
 }
 
-
+enum ViewSource {
+  HOME
+  PRODUCT
+  FILTERS
+}
 model View {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   productId Int
   userId    Int?
   sessionId String
-  viewedAt  DateTime @default(now())
+  source    ViewSource
+  viewedAt  DateTime   @default(now())
 
-  product   Product  @relation(fields: [productId], references: [id])
-  user      User?    @relation(fields: [userId], references: [id])
-} 
+  product   Product    @relation(fields: [productId], references: [id])
+  user      User?      @relation(fields: [userId], references: [id])
+}
