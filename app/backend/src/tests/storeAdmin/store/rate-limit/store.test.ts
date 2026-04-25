@@ -1,5 +1,5 @@
 import supertest from "supertest"
-import app from "../../../serve"
+import app from "@/serve"
 
 describe("store rate limit",()=>{
     it("should enforce rate limit on my stores",async()=>{

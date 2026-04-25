@@ -1,8 +1,8 @@
 import request from "supertest"
-import app from "../../../serve"
-import { cleanAllDb,createUserStoreAndProducts } from "../../__mocks__"
-import { prisma } from '../../../lib/prisma'
-import { generateAccessToken } from '../../../helpers/AuthTokens'
+import app from "@/serve"
+import { cleanAllDb,createUserStoreAndProducts } from "@/tests/__mocks__"
+import { prisma } from '@/lib/prisma'
+import { generateAccessToken } from '@/helpers/AuthTokens'
 
 
 const cookies  = generateAccessToken(1)

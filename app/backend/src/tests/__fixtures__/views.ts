@@ -1,62 +1,33 @@
+import { ViewSource } from '@prisma/client'
+
+
+
 export const views = [
-  {
-    id: 1,
-    productId: 1, 
-
-    viewedAt: new Date("2025-09-01T09:15:00Z")
-  },
-  {
-    id: 2,
-    productId: 2,
-   
-    viewedAt: new Date("2025-09-01T10:30:00Z")
-  },
-  {
-    id: 3,
-    productId: 4, 
   
-    viewedAt: new Date("2025-09-02T08:45:00Z")
-  },
-  {
-    id: 4,
-    productId: 5, 
+  { productId: 1, userId: 1, sessionId: 's1', source: ViewSource.HOME },
+  { productId: 1, userId: 2, sessionId: 's2', source: ViewSource.PRODUCT },
+  { productId: 1, userId: 3, sessionId: 's3', source: ViewSource.FILTERS },
+  { productId: 1, userId: null, sessionId: 's4', source: ViewSource.HOME },
+  { productId: 1, userId: 2, sessionId: 's5', source: ViewSource.PRODUCT },
 
-    viewedAt: new Date("2025-09-02T09:20:00Z")
-  },
-  {
-    id: 5,
-    productId: 10, 
-   
-    viewedAt: new Date("2025-09-03T11:00:00Z")
-  },
-  {
-    id: 6,
-    productId: 1, 
-  
-    viewedAt: new Date("2025-09-03T15:10:00Z")
-  },
-  {
-    id: 7,
-    productId: 2, 
 
-    viewedAt: new Date("2025-09-04T17:30:00Z")
-  },
-  {
-    id: 8,
-    productId: 4, 
-  
-    viewedAt: new Date("2025-09-05T12:45:00Z")
-  },
-  {
-    id: 9,
-    productId: 5,
-   
-    viewedAt: new Date("2025-09-06T14:20:00Z")
-  },
-  {
-    id: 10,
-    productId: 10,
+  { productId: 2, userId: 1, sessionId: 's6', source: ViewSource.HOME },
+  { productId: 2, userId: 3, sessionId: 's7', source: ViewSource.PRODUCT },
+  { productId: 2, userId: null, sessionId: 's8', source: ViewSource.FILTERS },
+  { productId: 2, userId: 2, sessionId: 's9', source: ViewSource.HOME },
 
-    viewedAt: new Date("2025-09-07T19:00:00Z")
-  }
-];
+
+  { productId: 3, userId: 1, sessionId: 's10', source: ViewSource.PRODUCT },
+  { productId: 3, userId: null, sessionId: 's11', source: ViewSource.HOME },
+  { productId: 3, userId: 2, sessionId: 's12', source: ViewSource.FILTERS },
+
+
+  { productId: 4, userId: 3, sessionId: 's13', source: ViewSource.HOME },
+  { productId: 4, userId: null, sessionId: 's14', source: ViewSource.PRODUCT },
+
+
+  { productId: 5, userId: 1, sessionId: 's15', source: ViewSource.FILTERS },
+
+
+  { productId: 6, userId: null, sessionId: 's16', source: ViewSource.HOME }
+]

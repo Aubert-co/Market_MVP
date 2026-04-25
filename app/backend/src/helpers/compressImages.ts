@@ -1,6 +1,15 @@
 import sharp from "sharp";
+import { ErrorMessage } from "./ErrorMessage";
 
-export async function compressImage(fileBuffer:Buffer):Promise<Buffer | null>{
+
+export type CompressImageResult = {
+    data?:Buffer,
+    success:boolean
+}
+export type CompressImageDTO = {
+    fileBuffer:Buffer
+}
+export async function compressImage({fileBuffer}:CompressImageDTO):Promise<CompressImageResult>{
     try {
         const MAX_WIDTH_LARGE = 1200;
         const MAX_WIDTH_MEDIUM = 800;
@@ -10,7 +19,10 @@ export async function compressImage(fileBuffer:Buffer):Promise<Buffer | null>{
     
         if (fileSizeKB < 100) {
             
-            return fileBuffer;
+            return {
+                data:fileBuffer,
+                success:true
+            };
         }
     
         let width = MAX_WIDTH_MEDIUM;
@@ -26,8 +38,8 @@ export async function compressImage(fileBuffer:Buffer):Promise<Buffer | null>{
             .jpeg({ quality })
             .toBuffer();
     
-        return optimizedBuffer;
+        return {data:optimizedBuffer,success:true};
     } catch (error:any) {
-        return null;
+        return {data:undefined,success:false};
     }
 }

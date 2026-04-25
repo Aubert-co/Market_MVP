@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "ViewSource" AS ENUM ('HOME', 'PRODUCT', 'FILTERS');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -116,6 +119,8 @@ CREATE TABLE "View" (
     "id" SERIAL NOT NULL,
     "productId" INTEGER NOT NULL,
     "userId" INTEGER,
+    "sessionId" TEXT NOT NULL,
+    "source" "ViewSource" NOT NULL,
     "viewedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "View_pkey" PRIMARY KEY ("id")
