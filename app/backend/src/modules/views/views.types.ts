@@ -1,0 +1,1 @@
+export type SourceViews = "HOME" | "PRODUCT" | "FILTERS"
