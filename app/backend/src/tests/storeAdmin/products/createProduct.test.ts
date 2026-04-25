@@ -328,7 +328,7 @@ describe("When try to create a product with an invalid description",()=>{
 })   
 describe("db actions",()=>{
     let  newCookies  = jwt.sign({id:users[1].id},ACCESS_TOKEN )
-    let googleStorage:any
+    let imageUpload:any
     let prismaProductCreate:any
     beforeAll(async()=>{
         await cleanAllDb()
@@ -337,7 +337,7 @@ describe("db actions",()=>{
         await prisma.store.createMany({data:stores})
     })
     beforeEach(async()=>{
-        googleStorage= jest.spyOn(ImageUploadService.prototype,"uploadImage")
+        imageUpload= jest.spyOn(ImageUploadService.prototype,"uploadImage")
         prismaProductCreate =jest.spyOn(prisma.product,'create')
         jest.clearAllMocks()
     })
@@ -361,7 +361,7 @@ describe("db actions",()=>{
         expect(response.statusCode).toEqual(403)
     })
     it("should sucessfully create a new product",async()=>{
-        googleStorage.mockResolvedValue("sucess")
+        imageUpload.mockResolvedValue({success:true})
                   
         const response = await request(app)
         .post('/product/create')
@@ -376,7 +376,7 @@ describe("db actions",()=>{
         
         expect(response.body.message).toEqual('Product sucessfully created.')
         expect(response.statusCode).toEqual(201)
-        expect(googleStorage).toHaveBeenCalledTimes(1)
+        expect(imageUpload).toHaveBeenCalledTimes(1)
     })
      it("should return an error message when the product limit is reached",async()=>{
         const spyprisma = jest.spyOn(prisma.product,'count')
@@ -397,8 +397,8 @@ describe("db actions",()=>{
         
         
     })
-    it("should return an error when the db throwns an error",async()=>{
-        googleStorage.mockResolvedValue("sucess")
+    it.only("should return an error when the db throwns an error",async()=>{
+        imageUpload.mockResolvedValue({success:true})
         prismaProductCreate.mockRejectedValueOnce(()=>new Error('something went wrong'))
         const response = await request(app)
         .post('/product/create')
@@ -411,9 +411,9 @@ describe("db actions",()=>{
         .field('storeId',stores[0].id)
         .attach('image',IMAGE); 
         
-        expect(response.body.message).toEqual('An unexpected error occurred. Please try again later.')
+        expect(response.body.message).toEqual('Failed to create product.')
         expect(response.statusCode).toEqual(500)
-        expect(googleStorage).toHaveBeenCalledTimes(0)
+        expect(imageUpload).toHaveBeenCalledTimes(0)
     })
 
 }) 
