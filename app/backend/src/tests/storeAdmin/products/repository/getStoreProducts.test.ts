@@ -17,7 +17,7 @@ describe("ProductAdminRepository getStoresProducts",()=>{
         await cleanAllDb()
     })
     it("should return only products from the correct store",async()=>{
-        const result = await admin.getStoresProducts({
+        const result = await admin.getStoreProducts({
             storeId:stores[0].id,
             orderBy:'desc',
             take:5,
@@ -33,7 +33,7 @@ describe("ProductAdminRepository getStoresProducts",()=>{
         expect(result.pageInfo.totalItems).toEqual(filter.length )
     })
     it("should return only the product with the given name",async()=>{
-        const result = await admin.getStoresProducts({
+        const result = await admin.getStoreProducts({
             storeId:stores[0].id,
             orderBy:'desc',
             take:5,
@@ -48,7 +48,7 @@ describe("ProductAdminRepository getStoresProducts",()=>{
         expect(result.pageInfo.totalItems).toEqual( 1 )
     })
     it("should return an empty array when no values match the criteria",async()=>{
-          const result = await admin.getStoresProducts({
+          const result = await admin.getStoreProducts({
             storeId:stores[0].id,
             orderBy:'desc',
             take:5,
@@ -63,7 +63,7 @@ describe("ProductAdminRepository getStoresProducts",()=>{
         expect(result.pageInfo.totalItems).toEqual( 0 )
     })
     it("should return only products that match the categories",async()=>{
-          const result = await admin.getStoresProducts({
+          const result = await admin.getStoreProducts({
             storeId:stores[0].id,
             orderBy:'desc',
             take:5,
