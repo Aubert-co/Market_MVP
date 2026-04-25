@@ -1,10 +1,10 @@
 import request from "supertest"
-import { ImageUploadService } from "../../../services/ImageUploadService"
-import app from "../../../serve"
+import { ImageUploadService } from "@/services/ImageUploadService"
+import app from "@/serve"
 import path from "path"
-import { prisma } from "../../../lib/prisma"
-import { cleanAllDb, deleteStore, deleteUser } from "../../__mocks__"
-import { generateAccessToken } from '../../../helpers/AuthTokens'
+import { prisma } from "@/lib/prisma"
+import { cleanAllDb, deleteStore, deleteUser } from "@/tests/__mocks__"
+import { generateAccessToken } from '@/helpers/AuthTokens'
 
 const cookies =  generateAccessToken(1)
 const cookieWithouStore = generateAccessToken(2)
