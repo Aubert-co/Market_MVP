@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { IAdminOrderService } from "./orders.services";
 import { checkIsAValidInteger, checkIsValidStatus, checkOrderBy, checkisAValidString } from "@/helpers/checkIsValid";
 import { getString } from "@/helpers";
-type Orderby = "asc" | "desc"
+import { Orderby } from "@/types/global.types"
+
 export class AdminOrdersControl{
     constructor(private ordersService:IAdminOrderService){}
 
