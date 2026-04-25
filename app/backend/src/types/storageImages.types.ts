@@ -1,6 +1,6 @@
 export type UploadImageResult = {
   success: boolean
-  error?: "compress-error" | "upload-error"
+  error?: "upload-error"
 }
 
 export type UploadFile ={
