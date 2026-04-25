@@ -1,0 +1,1 @@
+export type Orderby = "asc" | "desc"
