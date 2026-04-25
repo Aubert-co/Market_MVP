@@ -32,7 +32,12 @@ export const deleteUser = async():Promise<void>=>{
         }
     })
 }
- 
+export const createOneStore = async():Promise<void>=>{
+    await prisma.store.create({
+       data:{ ...stores[0] }
+    })
+}
+
 export const deleteProduct = async():Promise<void>=>{
     await prisma.product.deleteMany({
         where:{
