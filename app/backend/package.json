@@ -7,11 +7,12 @@
     "@": "dist"
   },
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register src/serve.ts --noEmit",
+    "dev": "ts-node-dev --respawn --transpile-only --require tsconfig-paths/register src/serve.ts",
     "start": "node dist/serve.js",
     "build": "tsc --project ./tsconfig.build.json",
-    "test": "npx jest  --detectOpenHandles --runInBand --forceExit",
-    "unit": "npx jest /*.spec.ts --watchAll --logHeapUsage"
+    "test": "npx jest /src/test --detectOpenHandles --runInBand --forceExit",
+    "unit": "npx jest /*.spec.ts --watchAll --logHeapUsage",
+    "build:e2e":"tsc --project ./tsconfig.e2e.build.json"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1009.0",
