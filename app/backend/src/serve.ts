@@ -58,7 +58,7 @@ const startServer = async()=>{
     try {
         await connectRedis();
        
-        if(NODE_ENV === "production"){
+        if(NODE_ENV === "production" || NODE_ENV==="test-e2e"){
             app.listen(process.env.PORT,()=>{console.log('server running'+process.env.PORT)});
         }
     } catch (err:any) {

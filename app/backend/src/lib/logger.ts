@@ -3,8 +3,7 @@ import pino from 'pino'
 export const startLogger = () => {
   const env = process.env.NODE_ENV ?? 'development'
 
-
-  if (env === 'test') {
+  if (env === 'test' || env==="test-e2e") {
     return pino({ level: 'debug' })
   }
 
