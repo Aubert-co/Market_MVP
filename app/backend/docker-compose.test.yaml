@@ -34,6 +34,7 @@ services:
     image: my-express-app:dev 
     build:
       context: .
+      dockerfile: dockerfile
     container_name: app_test
     working_dir: /app 
     volumes:

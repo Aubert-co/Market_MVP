@@ -10,7 +10,7 @@
     "dev": "ts-node-dev --respawn --transpile-only --require tsconfig-paths/register src/serve.ts",
     "start": "node dist/serve.js",
     "build": "tsc --project ./tsconfig.build.json",
-    "test": "npx jest /src/test --detectOpenHandles --runInBand --forceExit",
+    "test": "npx jest /src/tests --detectOpenHandles --runInBand --forceExit",
     "unit": "npx jest /*.spec.ts --watchAll --logHeapUsage",
     "build:e2e":"tsc --project ./tsconfig.e2e.build.json"
   },
