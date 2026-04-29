@@ -1,7 +1,8 @@
 import request from "supertest";
 import app from "@/serve";
+import { XForwardedForIncrease } from "@/tests/__utils__/rate_limit";
 
-
+const xForward = XForwardedForIncrease()
 
 
 describe("Api post/login:When the password is invalid",()=>{
@@ -10,7 +11,7 @@ describe("Api post/login:When the password is invalid",()=>{
          const requests = Array.from({ length: 100 }).map(() =>
             request(app)
             .post("/login")
-            .set("X-Forwarded-For", "1.1.3.1")
+            .set("X-Forwarded-For",xForward)
             .send({password:"12345",email:"lucas@gmail.com"})
         )
         const responses = await Promise.all(requests)
@@ -20,7 +21,7 @@ describe("Api post/login:When the password is invalid",()=>{
         expect(blocked.length).toBe(0)
         const response = await request(app)
         .post('/login')
-        .set("X-Forwarded-For", "1.1.3.1")
+        .set("X-Forwarded-For", xForward)
         expect(response.status).toBe(429)
         expect( response.body.message).toEqual("Too many requests from this IP, please try again later.")
     });
