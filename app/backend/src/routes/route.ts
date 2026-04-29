@@ -12,10 +12,12 @@ import { makeUploadFile } from "@/factory/uploadFIles";
 import { httpLogger } from "@/middleware/loggerHttp";
 import CouponStore from "@/modules/storeAdmin/coupon/coupon.route"
 import orderAdminRoute from "@/modules/storeAdmin/orders/orders.routes"
+import Auth from "@/modules/auth/route/auth.route"
 
 const imageUpload = makeUploadFile()
 const route = Router();
 route.use( httpLogger)
+route.use(Auth)
 route.use( products)
 route.use( storeRoute )
 route.use( userCartRoute )
