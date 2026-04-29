@@ -30,7 +30,7 @@ route.get('/stores/:storeId/products',[
   ],
   (req:Request,res:Response,next:NextFunction)=>productAdmin.getStoreProducts(req,res,next)
 )
-route.post('/product/create',[
+route.post('/stores/product/create',[
     fileUpload.single('image')
     ,Auth
     ,(req:Request,res:Response,next:NextFunction)=>verifyStoreOwnershipMiddle.handler(req,res,next)
