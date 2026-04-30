@@ -15,7 +15,7 @@ const reviewsController =new  ReviewsController(reviewsService)
 const route = Router()
 
 
-route.post('/reviews/create',[Auth],
+route.post('/reviews',[Auth],
    (req:Request,res:Response,next:NextFunction)=> reviewsController.addReview(req,res,next)
 )
 

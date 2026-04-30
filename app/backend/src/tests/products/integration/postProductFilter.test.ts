@@ -5,6 +5,7 @@ import *as database from '../../../lib/prisma'
 import { categories } from '../../../helpers'
 jest.useFakeTimers()
 const mock = jest.spyOn(database.prisma.product,'findMany')
+const endpoint = "/api/product/search"
  const datas = [{
             id: 1,
             name: "Produto A",
@@ -25,8 +26,7 @@ describe("POST /product/filter - when user sends invalid inputs",()=>{
     })
     it("should return an error when the category is invalid",async()=>{
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({category:'test'})
+        .get(`${endpoint}?category=test`)
 
         expect( response.status).toEqual(400)
         expect( response.body.message).toEqual("Invalid category provided")
@@ -34,8 +34,8 @@ describe("POST /product/filter - when user sends invalid inputs",()=>{
     })
      it("should return an error when the name is shorter than 4 characters",async()=>{
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({name:'tete'})
+        .get(`${endpoint}?name=tete`)
+      
 
         expect( response.status).toEqual(400)
         expect( response.body.message).toEqual("Invalid name format")
@@ -43,7 +43,7 @@ describe("POST /product/filter - when user sends invalid inputs",()=>{
     })
      it("should return an error when the name is longer than 16 characters",async()=>{
         const response = await supertest(app)
-        .post('/product/filter')
+        .get(`${endpoint}?name=${'a'.repeat(16)}`)
         .send({name:'a'.repeat(16)})
 
         expect( response.status).toEqual(400)
@@ -52,8 +52,7 @@ describe("POST /product/filter - when user sends invalid inputs",()=>{
     })
      it("should return an error when the maxPrice is an invalid number",async()=>{
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({maxPrice:'a15'})
+        .get(`${endpoint}?maxPrice=a15`)
 
         expect( response.status).toEqual(400)
         expect( response.body.message).toEqual("Invalid maximum price value")
@@ -61,8 +60,8 @@ describe("POST /product/filter - when user sends invalid inputs",()=>{
     })
      it("should return an error when the minPrice is an invalid number",async()=>{
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({minPrice:'a15'})
+        .get(`${endpoint}?minPrice=a15`)
+        
 
         expect( response.status).toEqual(400)
         expect( response.body.message).toEqual("Invalid minimum price value")
@@ -70,8 +69,8 @@ describe("POST /product/filter - when user sends invalid inputs",()=>{
     })
     it("should return 'Invalid category provided' error when all inputs are invalid",async()=>{
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({category:'tt',minPrice:'a15',name:'e',maxPrice:'ab3'})
+        .get(`${endpoint}?category=tt&minPrice=a15&&name=e&&maxPrice=ab3`)
+        
 
         expect( response.status).toEqual(400)
         expect( response.body.message).toEqual("Invalid category provided")
@@ -89,8 +88,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         mock.mockResolvedValue(datas)
         const category = categories[0]
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({category})
+        .get(`${endpoint}?category=${category}`)
+     
 
         expect( response.status).toEqual(200)
         expect( response.body.message).toEqual("Sucess")
@@ -122,8 +121,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         mock.mockRejectedValueOnce(new Error(""))
         const category = categories[0]
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({category})
+        .get(`${endpoint}?category=${category}`)
+       
 
         expect( response.status).toEqual(404)
         expect( response.body.message).toEqual("No products found")
@@ -149,8 +148,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         mock.mockResolvedValue(datas)
         const name = 'lorem ipstu'
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({name})
+        .get(`${endpoint}?name=${name}`)
+   
 
         expect( response.status).toEqual(200)
         expect( response.body.message).toEqual("Sucess")
@@ -182,8 +181,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         mock.mockRejectedValue(new Error(""))
         const name = 'lorem ipstu'
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({name})
+        .get(`${endpoint}?name=${name}`)
+    
 
         expect( response.status).toEqual(404)
         expect( response.body.message).toEqual("No products found")
@@ -209,8 +208,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         mock.mockResolvedValue(datas)
         const maxPrice = 35.99
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({maxPrice})
+        .get(`${endpoint}?maxPrice=${maxPrice}`)
+     
 
         expect( response.status).toEqual(200)
         expect( response.body.message).toEqual("Sucess")
@@ -241,8 +240,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         mock.mockRejectedValue(new Error(""))
         const maxPrice = 35.99
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({maxPrice})
+          .get(`${endpoint}?maxPrice=${maxPrice}`)
+ 
 
         expect( response.status).toEqual(404)
         expect( response.body.message).toEqual("No products found")
@@ -267,8 +266,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         mock.mockResolvedValue(datas)
         const minPrice = 35.99
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({minPrice})
+          .get(`${endpoint}?minPrice=${minPrice}`)
+
 
         expect( response.status).toEqual(200)
         expect( response.body.message).toEqual("Sucess")
@@ -299,8 +298,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         mock.mockRejectedValue(new Error(""))
         const minPrice = 35.99
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({minPrice})
+          .get(`${endpoint}?minPrice=${minPrice}`)
+        
 
         expect( response.status).toEqual(404)
         expect( response.body.message).toEqual("No products found")
@@ -328,8 +327,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         const category = categories[0]
         const name = "valid name"
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({minPrice,name,category,maxPrice})
+          .get(`${endpoint}?minPrice=${minPrice}&name=${name}&category=${category}&maxPrice=${maxPrice}`)
+       
 
         expect( response.status).toEqual(404)
         expect( response.body.message).toEqual("No products found")
@@ -366,8 +365,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         const category = categories[0]
         const name = "valid name"
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({minPrice,name,category,maxPrice})
+        .get(`${endpoint}?minPrice=${minPrice}&name=${name}&category=${category}&maxPrice=${maxPrice}`)
+    
 
         expect( response.status).toEqual(200)
         expect( response.body.message).toEqual("Sucess")
@@ -411,8 +410,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         const name = "valid name"
         const orderBy = "gte"
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({minPrice,name,category,maxPrice,orderBy})
+        .get(`${endpoint}?minPrice=${minPrice}&name=${name}&category=${category}&maxPrice=${maxPrice}&orderBy=${orderBy}`)
 
         expect( response.status).toEqual(200)
         expect( response.body.message).toEqual("Sucess")
@@ -456,8 +454,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         const name = "valid name"
         const orderBy = "asc"
         const response = await supertest(app)
-        .post('/product/filter')
-        .send({minPrice,name,category,maxPrice,orderBy})
+        .get(`${endpoint}?minPrice=${minPrice}&name=${name}&category=${category}&maxPrice=${maxPrice}&orderBy=${orderBy}`)
 
         expect( response.status).toEqual(200)
         expect( response.body.message).toEqual("Sucess")

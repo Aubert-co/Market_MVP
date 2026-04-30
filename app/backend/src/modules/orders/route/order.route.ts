@@ -14,11 +14,11 @@ const orderRepository = new OrderRepository(prisma,couponRepository)
 const orderService = new OrderService( orderRepository )
 const orderController = new OrdersController( orderService)
 
-route.post('/order/create',
+route.post('/orders',
     [Auth],
     (req:Request,res:Response,next:NextFunction)=>orderController.userCreateOrder(req,res,next)
 )
-route.get('/orders/me',
+route.get('/orders',
     [Auth],
     (req:Request,res:Response,next:NextFunction)=>orderController.getUserOrders(req,res,next)
 )

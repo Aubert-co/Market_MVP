@@ -6,7 +6,7 @@ describe("products rate limit",()=>{
    it("should enforce rate limit on product creation",async()=>{
         const XForward = XForwardedForIncrease()
         const requests = Array.from({ length: 100 }).map(() =>
-            supertest(app).post("/product/create")
+            supertest(app).post("/api/product/create")
             .set("X-Forwarded-For", XForward)
         )
         const responses = await Promise.all(requests)
@@ -15,7 +15,7 @@ describe("products rate limit",()=>{
 
         expect(blocked.length).toBe(0)
         const response = await supertest(app)
-        .post('/product/create')
+        .post('/api/product/create')
         .set("X-Forwarded-For", XForward)
         expect(response.status).toBe(429)
         expect( response.body.message).toEqual("Too many requests from this IP, please try again later.")
@@ -24,7 +24,7 @@ describe("products rate limit",()=>{
         const XForward = XForwardedForIncrease()
         const requests = Array.from({ length: 100 }).map(() =>
             supertest(app)
-            .get("/stores/2/products/most-viewed")
+            .get("/api/stores/2/products/most-viewed")
             .set("X-Forwarded-For", XForward)
         )
         const responses = await Promise.all(requests)
@@ -33,7 +33,7 @@ describe("products rate limit",()=>{
 
         expect(blocked.length).toBe(0)
         const response = await supertest(app)
-        .get('/stores/2/products/most-viewed')
+        .get('/api/stores/2/products/most-viewed')
         .set("X-Forwarded-For", XForward)
         expect(response.status).toBe(429)
         expect( response.body.message).toEqual("Too many requests from this IP, please try again later.")
@@ -42,7 +42,7 @@ describe("products rate limit",()=>{
         const XForward = XForwardedForIncrease()
         const requests = Array.from({ length: 100 }).map(() =>
             supertest(app)
-            .get("/stores/2/products")
+            .get("/api/stores/2/products")
             .set("X-Forwarded-For", XForward)
         )
         const responses = await Promise.all(requests)
@@ -51,7 +51,7 @@ describe("products rate limit",()=>{
 
         expect(blocked.length).toBe(0)
         const response = await supertest(app)
-        .get('/stores/2/products/most-viewed')
+        .get('/api/stores/2/products/most-viewed')
         .set("X-Forwarded-For", XForward)
         expect(response.status).toBe(429)
         expect( response.body.message).toEqual("Too many requests from this IP, please try again later.")

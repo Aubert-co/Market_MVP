@@ -19,13 +19,11 @@ export class StoreAdminController{
     public async GetProductFromStore(req:Request,res:Response,next:NextFunction):Promise<any>{
         try{
            
-            let page = 1
+            let page = req.query.page
             let storeId =  Number(req.params.storeId)
-
-            if(checkIsAValidInteger(req.params?.page)){
-                page  = Number(req.params.page)
-            }
-            const {datas ,totalPages,currentPage} = await this.storeService.getProductsByStoreId(storeId,page)
+            let pageNumber = checkIsAValidInteger(page) ? Number(page) : 1
+           
+            const {datas ,totalPages,currentPage} = await this.storeService.getProductsByStoreId(storeId,pageNumber)
 
             res.status(200).send({message:'Sucess',datas,totalPages,currentPage})
         }catch(error:any){

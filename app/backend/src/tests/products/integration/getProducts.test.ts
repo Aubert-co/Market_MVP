@@ -7,7 +7,7 @@ import { RedisRepository } from '../../../repository/redis.repository'
 
 
 const redisRep = new RedisRepository(redis)
-
+const endpoint = (page:number)=>`/api/product?page=${page}`
 describe("db actions",()=>{
     beforeAll(async()=>{
         await cleanAllDb()
@@ -23,7 +23,7 @@ describe("db actions",()=>{
     })
     it("should return 10 products with currentPage = 1 and totalPages = 2 when there are 20 products in the database. If page = 0 is sent, it should default to page 1",async()=>{
         const response = await request(app)
-        .get('/product/page/0')
+        .get(endpoint(0))
         
           
         expect(response.status).toEqual(200)
@@ -35,7 +35,7 @@ describe("db actions",()=>{
     })
     it("should return the second page when it is requested.",async()=>{
         const response = await request(app)
-        .get('/product/page/2')
+        .get(endpoint(2))
         
           expect(response.body.message).toEqual('Sucess')
         expect(response.status).toEqual(200)
@@ -47,7 +47,7 @@ describe("db actions",()=>{
     })
     it("should return the last page when a page number greater than the total number of pages is requested.",async()=>{
         const response = await request(app)
-        .get('/product/page/10')
+        .get(endpoint(10))
         
          
         expect(response.status).toEqual(200)
@@ -71,9 +71,9 @@ describe("When saves values in cache",()=>{
     
     it("should retrieve the value from cache when the page is already cached",async()=>{
         const response1 = await request(app)
-        .get('/product/page/1')
+        .get(endpoint(1))
         const response = await request(app)
-        .get('/product/page/1')
+        .get(endpoint(1))
         
         expect(response1.status).toEqual(200)
         expect(response1.body.fromCache).toBeFalsy()
@@ -93,9 +93,9 @@ describe("When saves values in cache",()=>{
     it("should not return cached values when an error occurs while trying to access the cache",async()=>{
         jest.spyOn(redis,'get').mockRejectedValue(new Error('Simulated DB error: Connection lost.'));
         const response1 = await request(app)
-        .get('/product/page/1')
+        .get(endpoint(1))
         const response = await request(app)
-        .get('/product/page/1')
+        .get(endpoint(1))
         
         expect(response1.status).toEqual(200)
         expect(response1.body.fromCache).toBeFalsy()
@@ -118,9 +118,9 @@ describe("When saves values in cache",()=>{
         
         jest.spyOn(redisRep,'getCachedItem').mockRejectedValue(new Error('Simulated DB error: Connection lost.'));
         const response1 = await request(app)
-        .get('/product/page/1')
+        .get(endpoint(1))
         const response = await request(app)
-        .get('/product/page/1')
+        .get(endpoint(1))
         
         expect(response1.status).toEqual(200)
         expect(response1.body.fromCache).toBeFalsy()
@@ -138,9 +138,9 @@ describe("When saves values in cache",()=>{
     })
      it("should return the data from the highest available page when the requested page exceeds the total number of page",async()=>{
         const response1 = await request(app)
-        .get('/product/page/2')
+        .get(endpoint(2))
         const response = await request(app)
-        .get('/product/page/20')
+        .get(endpoint(20))
         
          
         expect(response1.status).toEqual(200)

@@ -4,14 +4,14 @@ import bcrypt from "bcrypt"
 import { prisma } from "@/lib/prisma";
 import { cleanAllDb, deleteUser } from "@/tests/__mocks__";
 
-
+const endpoint = "/api/login"
 describe("Api post/login:When the password is invalid",()=>{
     beforeAll(async()=>{
         await cleanAllDb()
     })
     it("should return status 422 and 'Invalid password...' When the password is greater than 15.", async () => {
         const response = await request(app)
-        .post('/login')
+        .post(endpoint)
         
         .send({  password: 'a'.repeat(16), email: 'lorem@gmail.com' }); 
 
@@ -21,7 +21,7 @@ describe("Api post/login:When the password is invalid",()=>{
     });
      it("should return status 422 and 'Invalid password...' When the password is shorter than 4.", async () => {
         const response = await request(app)
-        .post('/login')
+        .post(endpoint)
        
         .send({  password: 'a'.repeat(3), email: 'lorem@gmail.com' }); 
 
@@ -31,7 +31,7 @@ describe("Api post/login:When the password is invalid",()=>{
     });
     it("should return status 422 and an 'Invalid email...' message when the password is empty.", async () => {
         const response = await request(app)
-        .post('/login')
+        .post(endpoint)
        
         .send({  password: '', email: 'lorem@gmail.com' }); 
 
@@ -43,7 +43,7 @@ describe("Api post/login:When the password is invalid",()=>{
 describe("API POST /login: When the email is invalid",()=>{
      it("should return status 422 and an 'Invalid email...' message when the email is empty.", async () => {
         const response = await request(app)
-        .post('/login')
+        .post(endpoint)
        
         .send({  password: 'abcde3e', email: '' }); 
 
@@ -53,7 +53,7 @@ describe("API POST /login: When the email is invalid",()=>{
     });
        it("should return status 422 and an 'Invalid email...' message when the email is invalid.", async () => {
         const response = await request(app)
-        .post('/login')
+        .post(endpoint)
        
         .send({  password: 'abcde3e', email: 'test@gmail' }); 
 
@@ -87,7 +87,7 @@ describe("API POST /login: Database Operations",()=>{
     })
     it(" should return status 201 and a 'Success message' when a user tries to login with valid datas.",async()=>{
         const response = await request(app)
-        .post('/login')
+        .post('/api/login')
        
         .send( {email:data.email,password} ); 
 
@@ -96,7 +96,7 @@ describe("API POST /login: Database Operations",()=>{
     })
     it(" should return status 401 and a 'Error message' when a user try to log with email not registred.",async()=>{
         const response = await request(app)
-        .post('/login')
+        .post('/api/login')
        
         .send( {email:'test1231@gmail.com',password} ); 
 
@@ -105,7 +105,7 @@ describe("API POST /login: Database Operations",()=>{
     })
     it("should return status 401 and '' when the user exists but the password dont match",async()=>{
         const response = await request(app)
-        .post('/login')
+        .post('/api/login')
         
         .send( {email:data.email,password:'1lorem2'} ); 
         expect(response.body.message).toEqual("Invalid email or password");
@@ -125,7 +125,7 @@ describe("API POST /login: Database Operations",()=>{
     })
      it("should return status 401 and the message 'User not found' if the user does not exist in the database during login.",async()=>{
         const response = await request(app)
-        .post('/login')
+        .post('/api/login')
        
         .send( {email:data.email,password} ); 
 
@@ -147,7 +147,7 @@ describe("Api post/login: When the database throws an error",()=>{
         createUserSpy.mockRejectedValueOnce(new Error('Simulated DB error: Connection lost.'));
 
         const response = await request(app)
-        .post('/login')
+        .post('/api/login')
        
         .send({password:'12345678',email:'lucas@gmail.com'}); 
 

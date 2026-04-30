@@ -12,9 +12,9 @@ const storeId = oneStore.id
 
 const {expiredCoupons,validCoupons}=  couponsDatas(storeId)
 
+const endpoint = "/api/coupons"
 
-
-describe("GET /user/list/coupons",()=>{
+describe(`GET ${endpoint}`,()=>{
     const coupons = [...expiredCoupons]
     beforeEach(async()=>{
         await cleanAllDb()
@@ -35,7 +35,7 @@ describe("GET /user/list/coupons",()=>{
    
     it("should return an empty array when there's only an expired coupon",async()=>{
         const response = await request(app)
-            .get('/user/list/coupons')
+            .get(endpoint)
             .set('Cookie', [`token=${cookies}`])
 
         expect(response.body.message).toEqual("Sucess")
@@ -43,7 +43,7 @@ describe("GET /user/list/coupons",()=>{
     })
 })
 
-describe("GET //user/list/coupons",()=>{
+describe(`GET ${endpoint}`,()=>{
     const coupons = [...expiredCoupons,validCoupons[0]]
     beforeEach(async()=>{
         await cleanAllDb()
@@ -64,7 +64,7 @@ describe("GET //user/list/coupons",()=>{
    
     it("should return only one coupon when there's only one saved",async()=>{
         const response = await request(app)
-                .get('/user/list/coupons')
+                .get(endpoint)
                 .set('Cookie', [`token=${cookies}`])
 
         expect(response.body.message).toEqual("Sucess")
@@ -75,7 +75,7 @@ describe("GET //user/list/coupons",()=>{
     })
 })
 
-describe("GET //user/list/coupons",()=>{
+describe(`GET ${endpoint}`,()=>{
     const coupons = [...expiredCoupons,...validCoupons]
     beforeEach(async()=>{
         await cleanAllDb()
@@ -96,7 +96,7 @@ describe("GET //user/list/coupons",()=>{
    
     it("should return only valid coupons",async()=>{
         const response = await request(app)
-                .get('/user/list/coupons')
+                .get(endpoint)
                 .set('Cookie', [`token=${cookies}`])
 
         expect(response.body.message).toEqual("Sucess")

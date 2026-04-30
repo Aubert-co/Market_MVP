@@ -17,7 +17,7 @@ const {validCoupons,expiredCoupons} = couponsDatas(oneStore.id)
 const [user1,user2] = users
 const userId = user2.id
 const cookies = generateAccessToken(userId)
-
+const endpoint = "/api/orders"
 describe("Api POST:/order/create errors",()=>{
     
     beforeAll(async()=>{
@@ -40,7 +40,7 @@ describe("Api POST:/order/create errors",()=>{
     })
     it("should return an error message when send an empty array",async()=>{
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:[]})
 
@@ -49,7 +49,7 @@ describe("Api POST:/order/create errors",()=>{
     })
     it("should return an error message when send a array with invalid quantity",async()=>{
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:[{productId:12,quantity:'e3b',couponId:13}]})
 
@@ -58,7 +58,7 @@ describe("Api POST:/order/create errors",()=>{
     })
      it("should return an error message when send a array with invalid productId",async()=>{
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:[{productId:'12b',quantity:50,couponId:13}]})
 
@@ -67,7 +67,7 @@ describe("Api POST:/order/create errors",()=>{
     })
     it("should return an error message when send a array with invalid cuponId",async()=>{
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:[{productId:12,quantity:50,couponId:'13bc'}]})
 
@@ -76,7 +76,7 @@ describe("Api POST:/order/create errors",()=>{
     })
     it("should return an error message when no exists product with that id",async()=>{
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:[{productId:255,quantity:50,couponId:'13'}]})
 
@@ -86,7 +86,7 @@ describe("Api POST:/order/create errors",()=>{
     })
     it("should return an error message when send a quantity greater than stock",async()=>{
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:[{productId:20,quantity:50,couponId:13}]})
 
@@ -96,7 +96,7 @@ describe("Api POST:/order/create errors",()=>{
     })
      it("should return an error message when send a expired coupon",async()=>{
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:[{productId:20,quantity:2,couponId:expiredCoupons[0].id}]})
 
@@ -109,7 +109,7 @@ describe("Api POST:/order/create errors",()=>{
         const quantity = 5
         const coupon = validCoupons[0]
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:[{productId:product.id,quantity,couponId:coupon.id}]})
 
@@ -172,7 +172,7 @@ describe("Api POST:/order/create",()=>{
             {productId:product5.id,quantity:1,couponId:coupon3.id,price:product5.price,discount:coupon3.discount,discountType:coupon3.discountType}
         ]
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:orders})
 
@@ -222,7 +222,7 @@ describe("Api POST:/order/create",()=>{
             {productId:50,quantity:1,couponId:coupon3.id,price:product5.price,discount:coupon3.discount,discountType:coupon3.discountType}
         ]
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:orders})
 
@@ -248,7 +248,7 @@ describe("Api POST:/order/create",()=>{
             {productId:product5.id,quantity:1,couponId:555,price:product5.price,discount:coupon3.discount,discountType:coupon3.discountType}
         ]
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:orders})
 
@@ -274,7 +274,7 @@ describe("Api POST:/order/create",()=>{
             {productId:product5.id,quantity:1,couponId:expiredCoupons[0].id,price:product5.price,discount:coupon3.discount,discountType:coupon3.discountType}
         ]
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:orders})
 
@@ -300,7 +300,7 @@ describe("Api POST:/order/create",()=>{
             {productId:product5.id,quantity:product5.stock+1,couponId:null,price:product5.price,discount:coupon3.discount,discountType:coupon3.discountType}
         ]
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:orders})
 
@@ -351,7 +351,7 @@ describe("Api POST:/order/create",()=>{
             {productId:product5.id,quantity:1,couponId:coupon3.id,price:product5.price,discount:coupon3.discount,discountType:coupon3.discountType}
         ]
         const response = await request(app)
-        .post('/order/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({order:orders})
 

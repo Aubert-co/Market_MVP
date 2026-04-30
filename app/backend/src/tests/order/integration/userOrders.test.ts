@@ -13,7 +13,8 @@ const cookies = generateAccessToken(user.id)
 const newOrders = orders.map((val,index)=>{
     return {...val,couponId:validCoupons[index]?.id}
 })
-describe("Api get /order/user",()=>{
+const endpoint = "/api/orders"
+describe("Api get /orders",()=>{
     beforeAll(async()=>{
           await cleanCoupons()
         await cleanOrders()
@@ -35,7 +36,7 @@ describe("Api get /order/user",()=>{
     it("should successfully get user orders",async()=>{
         const response =  
         await request(app)
-            .get('/orders/me')
+            .get(endpoint)
             .set('Cookie', [`token=${cookies}`]);
 
         
@@ -45,12 +46,12 @@ describe("Api get /order/user",()=>{
     })
 })
 
-describe("Api get /order/user db erros",()=>{
+describe("Api get /orders db erros",()=>{
     it("should return an error message with status 500 when a database error occurs",async()=>{
         jest.spyOn(prisma.order,'findMany').mockRejectedValue('error')
 
         const response  = await request(app)
-        .get('/orders/me')
+        .get(endpoint)
         .set('Cookie', [`token=${cookies}`]);
 
         expect( response.status).toEqual( 500 )

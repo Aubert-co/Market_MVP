@@ -19,13 +19,13 @@ const productsController = new ProductsController(productService)
 const route = Router()
 
 
-route.post('/product/filter',
+route.get('/product/search',
     (req:Request,res:Response,next:NextFunction)=>productsController.filterProducts(req,res,next)
 )
-route.get('/product/page/:page',
+route.get('/product',
     (req:Request,res:Response,next:NextFunction)=> productsController.GetProducts(req,res,next)
 );
-route.get('/product/:id',
+route.get('/product/:id/details',
     [(req:Request,res:Response,next:NextFunction)=>userSessionMiddleware(req,res,next)],
     (req:Request,res:Response,next:NextFunction)=> productsController.GetOneProduct(req,res,next)
 )

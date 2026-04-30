@@ -16,7 +16,7 @@ describe("getStoreProducts",()=>{
     })
     it("should call the service with all query params correctly",async()=>{
         const response = await supertest(app)
-        .get('/stores/1/products?page=15&search=shirt&category=Roupas&orderBy=asc&limit=10')
+        .get('/api/stores/1/products?page=15&search=shirt&category=Roupas&orderBy=asc&limit=10')
         .set('Cookie', [`token=${cookies}`])
 
         expect(response.body.message).toEqual('Success')
@@ -35,7 +35,7 @@ describe("getStoreProducts",()=>{
             totalPages:5,skip:1,currentPage:1
         }})
         const response = await supertest(app)
-        .get('/stores/1/products')
+        .get('/api/stores/1/products')
         .set('Cookie', [`token=${cookies}`])
 
         expect(response.body.message).toEqual('Success')
@@ -55,7 +55,7 @@ describe("getStoreProducts",()=>{
     }) 
      it("should return an error when an invalid category is provided",async()=>{
         const response = await supertest(app)
-        .get('/stores/1/products?search=shirt&category=test')
+        .get('/api/stores/1/products?search=shirt&category=test')
         .set('Cookie', [`token=${cookies}`])
 
         expect(response.body.message).toEqual('Invalid category. Please check and try again.')
@@ -64,7 +64,7 @@ describe("getStoreProducts",()=>{
     }) 
       it("should return an error when an invalid search is provided",async()=>{
         const response = await supertest(app)
-        .get('/stores/1/products?search=3&category=test')
+        .get('/api/stores/1/products?search=3&category=test')
         .set('Cookie', [`token=${cookies}`])
 
         expect(response.body.message).toEqual('Invalid search. Please check and try again.')

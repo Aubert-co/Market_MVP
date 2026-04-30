@@ -25,7 +25,7 @@ describe("api /stores/:storeId/products/most-viewed",()=>{
     it("should return an empty array",async()=>{
     
         const response = await supertest(app)
-        .get(`/stores/${storeId}/products/most-viewed`)
+        .get(`/api/stores/${storeId}/products/most-viewed`)
         .set('Cookie', [`token=${cookies}`])
         expect(response.body.message).toEqual("Success")
         expect(response.statusCode).toEqual(200)
@@ -38,7 +38,7 @@ describe("api /stores/:storeId/products/most-viewed",()=>{
         
     
         const response = await supertest(app)
-        .get(`/stores/${storeId}/products/most-viewed`)
+        .get(`/api/stores/${storeId}/products/most-viewed`)
         .set('Cookie', [`token=${cookies}`])
         expect(response.body.message).toEqual("Success")
         expect(response.statusCode).toEqual(200)
@@ -54,7 +54,7 @@ describe("api /stores/:storeId/products/most-viewed",()=>{
         .mockRejectedValueOnce(new Error("error"))
      
         const response = await supertest(app)
-        .get(`/stores/${storeId}/products/most-viewed`)
+        .get(`/api/stores/${storeId}/products/most-viewed`)
         .set('Cookie', [`token=${cookies}`])
         expect(response.body.message).toEqual("Failed to get store most viewd products.")
         expect(response.statusCode).toEqual(500)

@@ -6,7 +6,7 @@ describe("reviews rate limit",()=>{
     it("should enforce rate limiting on adding reviews",async()=>{
         const XForward = XForwardedForIncrease()
         const requests = Array.from({ length: 100 }).map(() =>
-            supertest(app).post("/reviews/create")
+            supertest(app).post("/api/reviews")
             .set("X-Forwarded-For", XForward)
         )
         const responses = await Promise.all(requests)
@@ -15,7 +15,7 @@ describe("reviews rate limit",()=>{
 
         expect(blocked.length).toBe(0)
         const response = await supertest(app)
-        .post('/reviews/create')
+        .post('/api/reviews')
         .set("X-Forwarded-For", XForward)
         expect(response.status).toBe(429)
         expect( response.body.message).toEqual("Too many requests from this IP, please try again later.")

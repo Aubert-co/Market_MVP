@@ -13,7 +13,7 @@ const [user1,user2] = users
 const userId = user2.id
 const cookies = generateAccessToken(userId)
 
-describe("Api POST:/reviews/create",()=>{
+describe("Api POST:/reviews",()=>{
     const orderId = 50
     beforeAll(async()=>{
      
@@ -34,7 +34,7 @@ describe("Api POST:/reviews/create",()=>{
     })
     it("should not save a new review  when send a invalid rating",async()=>{
         const response = await request(app)
-        .post('/reviews/create')
+        .post('/api/reviews')
         .set('Cookie', [`token=${cookies}`])
         .send({content:'lorem isptus testing',rating:'e3',order:orderId})
 
@@ -43,7 +43,7 @@ describe("Api POST:/reviews/create",()=>{
     })
     it("should not save a new review  when send a invalid orderId",async()=>{
         const response = await request(app)
-        .post('/reviews/create')
+        .post('/api/reviews')
         .set('Cookie', [`token=${cookies}`])
         .send({content:'lorem isptus testing',rating:3,order:'e3'})
 
@@ -52,7 +52,7 @@ describe("Api POST:/reviews/create",()=>{
     })
     it("should not save a new review  when send a content smaller than 4 caracters",async()=>{
         const response = await request(app)
-        .post('/reviews/create')
+        .post('/api/reviews')
         .set('Cookie', [`token=${cookies}`])
         .send({content:'abc',rating:3,order:orderId})
  
@@ -63,7 +63,7 @@ describe("Api POST:/reviews/create",()=>{
         const content = "lorem isptu testing a new product"
         const rating = 50
         const response = await request(app)
-        .post('/reviews/create')
+        .post('/api/reviews')
         .set('Cookie', [`token=${cookies}`])
         .send({content,rating,order:orderId})
  
@@ -106,7 +106,7 @@ describe("Api POST:/order/create",()=>{
         const content = "lorem isptu testing a new product"
         const rating = 50
         const response = await request(app)
-        .post('/reviews/create')
+        .post('/api/reviews')
         .set('Cookie', [`token=${cookies}`])
         .send({content,rating,order:orderId})
  

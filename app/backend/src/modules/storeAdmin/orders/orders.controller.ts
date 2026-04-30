@@ -1,45 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import { IAdminOrderService } from "./orders.services";
-import { checkIsAValidInteger, checkIsValidStatus, checkOrderBy, checkisAValidString } from "@/helpers/checkIsValid";
-import { getString } from "@/helpers";
-import { Orderby } from "@/types/global.types"
+import { validateSearchOrders } from "@/validators/index.validators";
 
 export class AdminOrdersControl{
     constructor(private ordersService:IAdminOrderService){}
 
     async searchOrders(req:Request,res:Response,next:NextFunction):Promise<any>{
-        let {currentPage,orderId,
-            status,orderBy,limit
-        } = req.query
-        let storeId = req.params.storeId
+     
+        const {storeId} = req.params
         
         try{
-            
-            const pageStr   = getString(currentPage)
-            const limitStr  = getString(limit)
-            const statusStr = getString(status)
-            const orderStr  = getString(orderBy)
-            const storeIdStr = getString(storeId)
-            const pageNumber  = checkIsAValidInteger(pageStr)  ? Number(pageStr)  : 1
-            const limitNumber = checkIsAValidInteger(limitStr) ? Number(limitStr) : 5
-            const orderByStr: Orderby = checkOrderBy(orderStr) ? (orderStr as Orderby) : "desc"
-            const statusValue = checkIsValidStatus(statusStr)? statusStr : undefined
-
-           
-            if (orderId && !checkIsAValidInteger(orderId)) {
-                return res.status(400).send({
-                    message: "Invalid orderId. It must be a valid integer."
-                });
-            }
+            const inputs = validateSearchOrders(req)
           
-            const {datas,pagination} = await this.ordersService.searchOrders({
-                orderBy:orderByStr,
-                storeId:Number(storeIdStr),
-                searchByOrderId: Number(orderId),
-                status: statusValue,
-                limit:limitNumber,
-                page: pageNumber
-            })     
+            const {datas,pagination} = await this.ordersService.searchOrders({...inputs,storeId:Number(storeId)})     
            
             res.status(200).send({datas,message:'Success',pagination})
         }catch(err:unknown){

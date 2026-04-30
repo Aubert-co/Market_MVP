@@ -12,8 +12,8 @@ const cookies  = generateAccessToken(users[1].id)
 const storeId = oneStore.id
 
 const {expiredCoupons,validCoupons}=  couponsDatas(storeId)
-
-describe("POST /user/add/coupon",()=>{
+const endpoint = "/api/coupons"
+describe(`POST ${endpoint}`,()=>{
     const coupons = [...expiredCoupons,...validCoupons]
     beforeEach(async()=>{
         await cleanAllDb()
@@ -28,7 +28,7 @@ describe("POST /user/add/coupon",()=>{
     })
     it("should return a error message when the coupon is expired",async()=>{
         const response = await request(app)
-                .post('/user/add/coupon')
+                .post(endpoint)
                 .set('Cookie', [`token=${cookies}`])
                 .send({couponId:expiredCoupons[0].id})
 
@@ -42,7 +42,7 @@ describe("POST /user/add/coupon",()=>{
     it("should sucessuly saves the coupon when its valid and add the couponusage and decrease the coupon quantity",async()=>{
         
         const response = await request(app)
-                .post('/user/add/coupon')
+                .post(endpoint)
                 .set('Cookie', [`token=${cookies}`])
                 .send({couponId:validCoupons[0].id})
 
@@ -81,7 +81,7 @@ describe("POST /user/add/coupon",()=>{
     })
     it("should return a error message when the already have the coupon",async()=>{
         const response = await request(app)
-            .post('/user/add/coupon')
+            .post(endpoint)
             .set('Cookie', [`token=${cookies}`])
             .send({couponId:validCoupons[0].id})
 
@@ -91,7 +91,7 @@ describe("POST /user/add/coupon",()=>{
     it("should sucessfly add a new coupon whe the user already have 4 coupon not expired e 3 coupon expired",async()=>{
         const couponId = validCoupons[4].id
         const response = await request(app)
-            .post('/user/add/coupon')
+            .post(endpoint)
             .set('Cookie', [`token=${cookies}`])
             .send({couponId})
 
@@ -106,7 +106,7 @@ describe("POST /user/add/coupon",()=>{
     })
 })
 
-describe("POST /user/add/coupon",()=>{
+describe(`POST ${endpoint}`,()=>{
     const values = [validCoupons[0],validCoupons[1],validCoupons[2],validCoupons[3],validCoupons[4],...expiredCoupons]
     const datas =  values .map((val)=>{
         return {couponId:val.id,userId}
@@ -131,7 +131,7 @@ describe("POST /user/add/coupon",()=>{
     it("should return a error message when the user already have 5 valid coupons and try to add one more",async()=>{
         const couponId = validCoupons[5].id
         const response = await request(app)
-            .post('/user/add/coupon')
+            .post(endpoint)
             .set('Cookie', [`token=${cookies}`])
             .send({couponId})
 

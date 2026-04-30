@@ -13,6 +13,8 @@ const [user] = manyUsers
 const [store] = stores
 const cookies = generateAccessToken(user.id)
 
+const endpoint = (storeId:number)=>`/api/stores/${storeId}/orders/latest`
+
 describe('getLastOrders database tests', () => {
     beforeAll(async()=>{
         await creatManyUsersStoresAndProducts()
@@ -25,14 +27,14 @@ describe('getLastOrders database tests', () => {
     })
     it("should return an error when the user is not authenticated",async()=>{
         const response = await request(app)
-        .get(`/stores/${store.id}/lastOrders`)
+        .get(endpoint(store.id))
         expect(response.status).toEqual(401)
         expect(response.body.message).toEqual('Access Denied')
     })
      it("should return an error when the user doesn't have that store",async()=>{
        
         const response = await request(app)
-        .get('/stores/5/lastOrders')
+        .get(endpoint(5))
         .set('Cookie', [`token=${cookies}`])
         expect(response.body.message).toEqual('You do not have permission to access this store.')
         expect(response.status).toEqual(403)
@@ -72,7 +74,7 @@ describe('getLastOrders service (mocked)', () => {
         ]
         mocks.mockResolvedValue( datas )
         const response = await request(app)
-        .get(`/stores/${store.id}/lastOrders`)
+        .get(endpoint(store.id))
         .set('Cookie', [`token=${cookies}`])
 
         expect(mocks).toHaveBeenCalledTimes(1)
@@ -92,7 +94,7 @@ describe('getLastOrders service (mocked)', () => {
         
         mocks.mockRejectedValue(new Error("error"))
         const response = await request(app)
-        .get(`/stores/${store.id}/lastOrders`)
+        .get(endpoint(store.id))
         .set('Cookie', [`token=${cookies}`])
 
         expect(mocks).toHaveBeenCalledTimes(1)

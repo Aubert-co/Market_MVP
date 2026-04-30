@@ -16,7 +16,7 @@ const users = [
 const stores = [{id:1,name:'stores',description:'description',userId:3}]
 const cookies  = jwt.sign({id:users[0].id},ACCESS_TOKEN )
 
-
+const endpoint = "/api/stores/products"
 const IMAGE =  path.join(process.cwd(), 'src/tests/assets/tmp/image.jpg')
 
 describe("When try to create a product with invalid name",()=>{
@@ -31,7 +31,7 @@ describe("When try to create a product with invalid name",()=>{
     })
     it("should return 422 when the product name is '' ",async()=>{   
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', '')
         .field('description', 'Descrição detalhada do produto')
@@ -48,7 +48,7 @@ describe("When try to create a product with invalid name",()=>{
         
         
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abc')
         .field('description', 'Descrição detalhada do produto')
@@ -65,7 +65,7 @@ describe("When try to create a product with invalid name",()=>{
         
         
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'a'.repeat(51))
         .field('description', 'Descrição detalhada do produto')
@@ -86,7 +86,7 @@ describe("When try to create a product with an invalid category",()=>{
         
         
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'Descrição detalhada do produto')
@@ -103,7 +103,7 @@ describe("When try to create a product with an invalid category",()=>{
         
         
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'Descrição detalhada do produto')
@@ -120,7 +120,7 @@ describe("When try to create a product with an invalid category",()=>{
         
  
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'Descrição detalhada do produto')
@@ -142,7 +142,7 @@ describe("When try to create a product with an invalid price",()=>{
         
         
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'Descrição detalhada do produto')
@@ -159,7 +159,7 @@ describe("When try to create a product with an invalid price",()=>{
         
         
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'Descrição detalhada do produto')
@@ -174,7 +174,7 @@ describe("When try to create a product with an invalid price",()=>{
     })
     it("should return 422 when the product price is ''",async()=>{
        const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'Descrição detalhada do produto')
@@ -189,7 +189,7 @@ describe("When try to create a product with an invalid price",()=>{
     })
     it("should return 422 when the product price is NaN",async()=>{
        const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'Descrição detalhada do produto')
@@ -210,7 +210,7 @@ describe("When try to create a product with an invalid stock",()=>{
         
         
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'Descrição detalhada do produto')
@@ -227,7 +227,7 @@ describe("When try to create a product with an invalid stock",()=>{
         
         
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'Descrição detalhada do produto')
@@ -242,7 +242,7 @@ describe("When try to create a product with an invalid stock",()=>{
     })
     it("should return 422 when the product stock is ''",async()=>{
        const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'Descrição detalhada do produto')
@@ -257,7 +257,7 @@ describe("When try to create a product with an invalid stock",()=>{
     })
     it("should return 422 when the product stock is NaN",async()=>{
        const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'Descrição detalhada do produto')
@@ -279,7 +279,7 @@ describe("When try to create a product with an invalid description",()=>{
         
         
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', '')
@@ -296,7 +296,7 @@ describe("When try to create a product with an invalid description",()=>{
         
         
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'curt')
@@ -311,7 +311,7 @@ describe("When try to create a product with an invalid description",()=>{
     })
     it("should return 422 when the product description is greater than 1000",async()=>{
        const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'a'.repeat(1001))
@@ -347,7 +347,7 @@ describe("db actions",()=>{
     })
     it("should return an error message when the user tries to create a product in a store that belongs to another user",async()=>{
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${newCookies}`])
         .field('name', 'abcdee')
         .field('description', 'a'.repeat(20))
@@ -364,7 +364,7 @@ describe("db actions",()=>{
         imageUpload.mockResolvedValue({success:true})
                   
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'a'.repeat(20))
@@ -382,7 +382,7 @@ describe("db actions",()=>{
         const spyprisma = jest.spyOn(prisma.product,'count')
         spyprisma.mockResolvedValueOnce(10)
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'a'.repeat(20))
@@ -401,7 +401,7 @@ describe("db actions",()=>{
         imageUpload.mockResolvedValue({success:true})
         prismaProductCreate.mockRejectedValueOnce(()=>new Error('something went wrong'))
         const response = await request(app)
-        .post('/stores/product/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
         .field('description', 'a'.repeat(20))

@@ -9,7 +9,7 @@ const [user1,user2] = users
  
 const cookies  = generateAccessToken(user2.id)
 const cookies2 = generateAccessToken(user1.id)
-
+const endpoint = "/api/cart"
 describe("when the cart is full",()=>{
  
     beforeAll(async()=>{
@@ -25,7 +25,7 @@ describe("when the cart is full",()=>{
     
     it("should return an error when the cart is not an array",async()=>{
         const response =await request(app)
-            .put('/user/cart/update') 
+            .put(endpoint) 
             .set('Cookie', [`token=${cookies}`])
             .send({cart:10})
             expect(response.body.message).toBe('Invalid cart. Please provide a valid cart.')
@@ -33,7 +33,7 @@ describe("when the cart is full",()=>{
     })
     it("should return an error when the cart is a string",async()=>{
         const response =await request(app)
-            .put('/user/cart/update')
+            .put(endpoint)
             .set('Cookie', [`token=${cookies}`])
             .send({cart:'abec'})
             expect(response.body.message).toBe('Invalid cart. Please provide a valid cart.')
@@ -41,7 +41,7 @@ describe("when the cart is full",()=>{
     })
     it("should return an error when the cart is an object",async()=>{
         const response =await request(app)
-            .put('/user/cart/update')
+            .put(endpoint)
             .set('Cookie', [`token=${cookies}`])
             .send({cart:{length:3}})
             expect(response.body.message).toBe('Invalid cart. Please provide a valid cart.')
@@ -49,7 +49,7 @@ describe("when the cart is full",()=>{
     })
     it("should return an error when the array contains an invalid number",async()=>{
         const response =await request(app)
-        .put('/user/cart/update')
+        .put(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({cart:['bce',1,2,10]})
         expect(response.body.message).toBe('Invalid cart id. Please provide a valid cart id')
@@ -82,7 +82,7 @@ describe("db actions",()=>{
     it("should successfully update the quantity",async()=>{
         const quantity = 4
         const response =await request(app)
-        .put('/user/cart/update')
+        .put(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({cart:[{id:carts[0],quantity    }]})
         expect(response.body.message).toBe('Sucess')
@@ -122,7 +122,7 @@ describe("db actions",()=>{
     it("should not update the quantity when the cart item does not belong to the user",async()=>{
         const quantity = 4 
         const response =await request(app)
-        .put('/user/cart/update')
+        .put(endpoint)
         .set('Cookie', [`token=${cookies2}`])
         .send({cart:[{id:carts[0],quantity    }]})
         expect(response.body.message).toBe('Failed to update cart items.')
@@ -137,7 +137,7 @@ describe("db actions",()=>{
         jest.spyOn(prisma.cartitem,'update').mockRejectedValueOnce(()=>new Error('something went wrong'))
         const quantity = 4 
         const response =await request(app)
-        .put('/user/cart/update')
+        .put(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({cart:[{id:carts[0],quantity    }]})
         expect(response.body.message).toBe('Failed to update cart items.')

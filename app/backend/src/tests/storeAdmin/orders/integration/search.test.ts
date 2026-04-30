@@ -13,6 +13,7 @@ const [user] = manyUsers
 const [store] = stores
 const cookies = generateAccessToken(user.id)
 
+const endpoint = (storeId:number)=>`/api/stores/${storeId}/orders`
 describe('search integration tests', () => {
     beforeAll(async()=>{
         await creatManyUsersStoresAndProducts()
@@ -25,14 +26,14 @@ describe('search integration tests', () => {
     })
     it("should return an error when the user is not authenticated",async()=>{
         const response = await request(app)
-        .get('/stores/1/orders')
+        .get(endpoint(1))
         expect(response.status).toEqual(401)
         expect(response.body.message).toEqual('Access Denied')
     })
      it("should return an error when the user doesn't have that store",async()=>{
        
         const response = await request(app)
-        .get('/stores/5/orders')
+        .get(endpoint(5))
         .set('Cookie', [`token=${cookies}`])
         expect(response.status).toEqual(403)
         expect(response.body.message).toEqual('You do not have permission to access this store.')
@@ -61,7 +62,7 @@ describe('search service (mocked)',()=>{
 
         mocks.mockResolvedValue({datas:[],pagination:{currentPage:1,totalPages:10,skip:0}})
         const response = await request(app)
-        .get(`/stores/${store.id}/orders?orderId=1&orderby=invalid&status=completed&limit=e1`)
+        .get(`${endpoint(store.id)}?orderId=1&orderby=invalid&status=completed&limit=e1`)
         .set('Cookie', [`token=${cookies}`])
       
         expect(response.status).toEqual(200)
@@ -80,7 +81,7 @@ describe('search service (mocked)',()=>{
 
         mocks.mockResolvedValue({datas:[],pagination:{currentPage:1,totalPages:10,skip:0}})
         const response = await request(app)
-        .get(`/stores/${store.id}/orders?orderId=1es&orderby=invalid&status=completed&limit=e1`)
+        .get(`${endpoint(store.id)}?orderId=1es&orderby=invalid&status=completed&limit=e1`)
         .set('Cookie', [`token=${cookies}`])
       
         expect(response.status).toEqual(400)
@@ -95,7 +96,7 @@ describe('search service (mocked)',()=>{
 
         mocks.mockRejectedValueOnce(new Error('error'))
         const response = await request(app)
-        .get(`/stores/${store.id}/orders?orderId=1&orderby=invalid&status=completed&limit=e1`)
+        .get(`${endpoint(store.id)}?orderId=1&orderby=invalid&status=completed&limit=e1`)
         .set('Cookie', [`token=${cookies}`])
       
         expect(response.status).toEqual(500)

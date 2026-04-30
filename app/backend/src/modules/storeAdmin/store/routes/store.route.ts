@@ -16,16 +16,16 @@ const storeAdminController = new StoreAdminController(storeService)
 const verifyStoreOwnershipMiddle = makeVerifyStoreMiddle()
 const route = Router()
  
-route.get('/store/mystores',[Auth],
+route.get('/stores',[Auth],
     (req:Request,res:Response,next:NextFunction)=>storeAdminController.GetUserStores(req,res,next));
 
-route.get('/admin/store/products/:storeId/:page',[
+/*route.get('/stores/:storeId/products',[
     Auth,
     (req:Request,res:Response,next:NextFunction)=>verifyStoreOwnershipMiddle.handler(req,res,next)
 ],
     (req:Request,res:Response,next:NextFunction)=>storeAdminController.GetProductFromStore(req,res,next)
-);
-route.post('/store/create',[fileUpload.single('image'),Auth,
+);*/
+route.post('/stores',[fileUpload.single('image'),Auth,
     validateImageAndFields.handler
 ],(req:Request,res:Response,next:NextFunction)=>storeAdminController.CreateStore(req,res,next))
 

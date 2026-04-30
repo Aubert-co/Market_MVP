@@ -6,7 +6,7 @@ import { prisma } from '../../../lib/prisma'
 import { generateAccessToken } from '../../../helpers/AuthTokens'
 const [user1,user2] = users
 
-
+const endpoint = "/api/cart"
 const cookies  =generateAccessToken(user2.id)
 describe("when the cart is full",()=>{
     const [product1,product2,product3,product4,product5,product6] = products
@@ -30,7 +30,7 @@ describe("when the cart is full",()=>{
     })
     it("should get the user cart successfully",async()=>{
         const response =await request(app)
-        .get('/user/cart')
+        .get(endpoint)
         .set('Cookie', [`token=${cookies}`])
         
         expect(response.status).toEqual(200)
@@ -43,7 +43,7 @@ describe("when the cart is full",()=>{
      it("should not get the user cart when a database error occurs",async()=>{
         jest.spyOn(prisma.cartitem,'findMany').mockRejectedValueOnce(()=>new Error('something went wrong'))
         const response =await request(app)
-        .get('/user/cart')
+        .get(endpoint)
         .set('Cookie', [`token=${cookies}`])
         
         expect(response.body.message).toEqual("Failed to get items from cart.")

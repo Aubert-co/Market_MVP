@@ -16,12 +16,12 @@ const verifyStoreOwnershipMiddle = makeVerifyStoreMiddle()
 
 const couponController = new CouponStoreController(couponService)
 
-route.get('/store/coupons/:storeId',[
+route.get('/stores/coupons/:storeId',[
   Auth,
   (req:Request,res:Response,next:NextFunction)=>verifyStoreOwnershipMiddle.handler(req,res,next)],
   (req:Request,res:Response,next:NextFunction)=>couponController.storeGetCoupons(req,res,next)
 )
-route.post('/store/create/coupon',[
+route.post('/stores/create/coupon',[
     Auth,
     (req:Request,res:Response,next:NextFunction)=>verifyStoreOwnershipMiddle.handler(req,res,next)
     ],

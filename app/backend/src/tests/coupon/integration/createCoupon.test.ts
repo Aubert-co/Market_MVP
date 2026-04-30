@@ -7,6 +7,7 @@ import {couponsDatas} from '../../__fixtures__/coupons'
 import { generateAccessToken } from '../../../helpers/AuthTokens'
 const cookies  = generateAccessToken(oneStore.id)
 
+const endpoint = "/api/stores/create/coupon"
 describe("POST:/store/create/coupon",()=>{
     beforeAll(async()=>{
         await cleanCoupons()
@@ -19,7 +20,7 @@ describe("POST:/store/create/coupon",()=>{
     }) 
     it("should return an error when send an invalid discount",async()=>{
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount:'134b',discountType:'fixed',expiresAt:'oneweek',code:'tesst',quantity:54,storeId:oneStore.id})
 
@@ -29,7 +30,7 @@ describe("POST:/store/create/coupon",()=>{
     })
     it("should return an error when send a disctounType different from fixed or percent",async()=>{
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount:'134',discountType:'fixeds',expiresAt:'oneweek',code:'tesst',quantity:54,storeId:oneStore.id})
 
@@ -39,7 +40,7 @@ describe("POST:/store/create/coupon",()=>{
     })
      it("should return an error when the discount is greater than 60 and type of discount is percent",async()=>{
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount:'61',discountType:'percent',expiresAt:'oneweek',code:'tesst',quantity:54,storeId:oneStore.id})
 
@@ -49,7 +50,7 @@ describe("POST:/store/create/coupon",()=>{
     })
     it("should return an error when the code is smaller than 4",async()=>{
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount:'61',discountType:'fixed',expiresAt:'oneweek',code:'tes',quantity:54,storeId:oneStore.id})
 
@@ -59,7 +60,7 @@ describe("POST:/store/create/coupon",()=>{
     })
      it("should return an error when the quantity is an invalid number",async()=>{
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount:'61',discountType:'fixed',expiresAt:'oneweek',code:'teste',quantity:'e3',storeId:oneStore.id})
 
@@ -69,7 +70,7 @@ describe("POST:/store/create/coupon",()=>{
     })
      it("should return an error when the quantity is greater than 50",async()=>{
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount:'61',discountType:'fixed',expiresAt:'oneweek',code:'teste',quantity:51,storeId:oneStore.id})
 
@@ -79,7 +80,7 @@ describe("POST:/store/create/coupon",()=>{
     })
     it("should return an error when the quantity is an integer",async()=>{
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount:'61',discountType:'fixed',expiresAt:'oneweek',code:'teste',quantity:49.9,storeId:oneStore.id})
 
@@ -89,7 +90,7 @@ describe("POST:/store/create/coupon",()=>{
     })
      it("should return an error when the expiresAt is different from oneweeks | onemonth or fivedays",async()=>{
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount:'61',discountType:'fixed',expiresAt:'',code:'teste',quantity:35,storeId:oneStore.id})
 
@@ -104,7 +105,7 @@ describe("POST:/store/create/coupon",()=>{
         const code = "lorem"
         const quantity = 35
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount,discountType,expiresAt,code,quantity,storeId:oneStore.id})
 
@@ -148,7 +149,7 @@ describe("create coupon",()=>{
         const code = "lorem"
         const quantity = 35
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount,discountType,expiresAt,code,quantity,storeId:oneStore.id})
 
@@ -176,7 +177,7 @@ describe("create coupon",()=>{
         const code = "lorem"
         const quantity = 35
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount,discountType,expiresAt,code,quantity,storeId:oneStore.id})
 
@@ -205,7 +206,7 @@ describe("create coupon",()=>{
         const code = "lorem"
         const quantity = 35
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount,discountType,expiresAt,code,quantity,storeId:oneStore.id})
 
@@ -228,7 +229,7 @@ describe("create coupon",()=>{
         const code = "lorem"
         const quantity = 35
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount,discountType,expiresAt,code,quantity,storeId:oneStore.id})
 
@@ -269,7 +270,7 @@ describe("when already have a coupon with that code",()=>{
         const code = "active15"
         const quantity = 35
         const response = await request(app)
-        .post('/store/create/coupon')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({discount,discountType,expiresAt,code,quantity,storeId:oneStore.id})
 

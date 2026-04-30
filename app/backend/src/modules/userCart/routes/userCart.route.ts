@@ -11,16 +11,16 @@ const productRepository = new ProductRepository(prisma)
 const userCartService = new UserCartService(userCartRepository,productRepository)
 const userCartController = new UserCartController(userCartService)
 const route = Router()
-route.get('/user/cart',[Auth],
+route.get('/cart',[Auth],
     (req:Request,res:Response,next:NextFunction)=>userCartController.getCartItems(req,res,next)
 )
-route.delete('/user/cart/remove',[Auth],
+route.delete('/cart',[Auth],
     (req:Request,res:Response,next:NextFunction)=> userCartController.removeItemFromCart(req,res,next)
 )
-route.post('/user/cart/add',[Auth],
+route.post('/cart',[Auth],
     (req:Request,res:Response,next:NextFunction)=>userCartController.addItemToCart(req,res,next)
 )
-route.put('/user/cart/update',[Auth],
+route.put('/cart',[Auth],
     (req:Request,res:Response,next:NextFunction)=>userCartController.updateCart(req,res,next)
 )
 

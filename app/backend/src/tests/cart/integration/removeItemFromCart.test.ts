@@ -10,7 +10,7 @@ const [user1,user2] = users
 
 const cookies  = generateAccessToken(user2.id)
 const cookies2 = generateAccessToken(user1.id)
-
+const endpoint ="/api/cart"
 describe("when the cart is full",()=>{
     const [product1,product2,product3,product4,product5,product6] = products
     let carts:any = []
@@ -36,7 +36,7 @@ describe("when the cart is full",()=>{
     it("should delete the items sucessfuly",async()=>{
      
         const response =await request(app)
-        .delete('/user/cart/remove')
+        .delete(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({cart:carts})
         expect(response.body.message).toBe('Sucess')
@@ -51,7 +51,7 @@ describe("when the cart is full",()=>{
     })
     it("should return an error when the cart is not an array",async()=>{
         const response =await request(app)
-        .delete('/user/cart/remove')
+        .delete(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({cart:10})
         expect(response.body.message).toBe('Invalid cart. Please provide a valid cart.')
@@ -59,7 +59,7 @@ describe("when the cart is full",()=>{
     })
     it("should return an error when the cart is a string",async()=>{
         const response =await request(app)
-        .delete('/user/cart/remove')
+        .delete(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({cart:'abec'})
         expect(response.body.message).toBe('Invalid cart. Please provide a valid cart.')
@@ -67,7 +67,7 @@ describe("when the cart is full",()=>{
     })
     it("should return an error when the cart is an object",async()=>{
         const response =await request(app)
-        .delete('/user/cart/remove')
+        .delete(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({cart:{length:3}})
         expect(response.body.message).toBe('Invalid cart. Please provide a valid cart.')
@@ -75,7 +75,7 @@ describe("when the cart is full",()=>{
     })
     it("should return an error when the array contains an invalid number",async()=>{
         const response =await request(app)
-        .delete('/user/cart/remove')
+        .delete(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({cart:['bce',1,2,10]})
         expect(response.body.message).toBe('Invalid cart id. Please provide a valid cart id')
@@ -111,7 +111,7 @@ describe("when the user doesn't have the cart item",()=>{
     it("should not delete the cart item when it doesn't belong to the user",async()=>{
         
         const response =await request(app)
-        .delete('/user/cart/remove')
+        .delete(endpoint)
         .set('Cookie', [`token=${cookies2}`])
         .send({cart:[carts[0]]})
         expect(response.body.message).toBe('Sucess')
@@ -126,7 +126,7 @@ describe("when the user doesn't have the cart item",()=>{
         jest.spyOn(prisma.cartitem,'deleteMany').mockRejectedValueOnce(()=>new Error('something went wrong'))
         
         const response =await request(app)
-        .delete('/user/cart/remove')
+        .delete(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .send({cart:[carts[0]]})
         expect(response.body.message).toBe('Failed to remove a item from cart.')

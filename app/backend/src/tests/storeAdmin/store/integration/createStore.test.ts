@@ -13,12 +13,13 @@ const checkExistsStore = async()=>{
     const count = await prisma.store.count()
     return count
 }
+const endpoint = "/api/stores"
 const spyFileUpload = jest.spyOn(ImageUploadService.prototype,'uploadImage')
 const IMAGEJPG =  path.join(process.cwd(), 'src/tests/assets/tmp/image.jpg')
 const LARGEIMAGE = path.join(process.cwd(),'src/tests/assets/tmp/large-image.jpg')
 const IMAGEPDF = path.join(process.cwd(),'src/tests/assets/tmp/image.pdf')
 const IMAGEMP4 = path.join(process.cwd(),'src/tests/assets/tmp/image.mp4')
-describe("Post:/store/create try to create a store without token",()=>{
+describe("Post:/stores try to create a store without token",()=>{
     beforeAll(async()=>{
         await cleanAllDb()
     })
@@ -31,7 +32,7 @@ describe("Post:/store/create try to create a store without token",()=>{
     })
     it("should return 'Acess denied' and status 401 when try to create a store withou login",async()=>{
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .field('name', 'Minha Loja')
         .field('description', 'Descrição da loja')
         .attach('image',IMAGEJPG); 
@@ -41,7 +42,7 @@ describe("Post:/store/create try to create a store without token",()=>{
     })
 })
 
-describe("Post:/store/create  DB actions",()=>{
+describe("Post:/stores  DB actions",()=>{
     
     const data = { id:1,name:'lucas',password:'123456',email:'lucas@gmail.com'}
     beforeAll(async ()=>{
@@ -58,7 +59,7 @@ describe("Post:/store/create  DB actions",()=>{
         const name = 'Minha Loja'
         const description = 'Lorem iptus testing'
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', name)
         .field('description', description)
@@ -77,7 +78,7 @@ describe("Post:/store/create  DB actions",()=>{
     })
 })
 
-describe("Post:/store/create - Invalid store name",()=>{
+describe("Post:/stores - Invalid store name",()=>{
     afterAll(async()=>{
         try{
             await checkExistsStore()
@@ -87,7 +88,7 @@ describe("Post:/store/create - Invalid store name",()=>{
     })
     it("should return status 422 and message 'Invalid name. Please check and try again.' when name is empty.",async()=>{
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', '')
         .field('description', 'Descrição da loja')
@@ -100,7 +101,7 @@ describe("Post:/store/create - Invalid store name",()=>{
        
         
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abc')
         .field('description', 'Descrição da loja')
@@ -113,7 +114,7 @@ describe("Post:/store/create - Invalid store name",()=>{
    
         
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'a'.repeat(16))
         .field('description', 'Descrição da loja')
@@ -124,7 +125,7 @@ describe("Post:/store/create - Invalid store name",()=>{
     })
 })
 
-describe("Post:/store/create - Invalid store description ",()=>{
+describe("Post:/stores - Invalid store description ",()=>{
     afterAll(async()=>{
         try{
             await checkExistsStore()
@@ -136,7 +137,7 @@ describe("Post:/store/create - Invalid store description ",()=>{
         
         
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'MinhaLoja')
         .field('description', '')
@@ -149,7 +150,7 @@ describe("Post:/store/create - Invalid store description ",()=>{
        
         
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'MinhaLoja')
         .field('description', 'abc')
@@ -162,7 +163,7 @@ describe("Post:/store/create - Invalid store description ",()=>{
       
         
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'MinhaLoja')
         .field('description', 'a'.repeat(201))
@@ -173,7 +174,7 @@ describe("Post:/store/create - Invalid store description ",()=>{
     })
 })
 
-describe("Post:/store/create - Invalid image",()=>{
+describe("Post:/stores - Invalid image",()=>{
      afterAll(async()=>{
         try{
             await checkExistsStore()
@@ -184,7 +185,7 @@ describe("Post:/store/create - Invalid image",()=>{
     
     it("should return 'Invalid or missing image file.' when not send a image",async()=>{
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'MinhaLoja')
         .field('description', 'a description')
@@ -195,7 +196,7 @@ describe("Post:/store/create - Invalid image",()=>{
     })
      it("should return 'Invalid or missing image file.' the image is greater than 5mb",async()=>{
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'MinhaLoja')
         .field('description', 'a description')
@@ -206,7 +207,7 @@ describe("Post:/store/create - Invalid image",()=>{
     })
     it("should return 'Invalid or missing image file.' when send a pdf",async()=>{
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'MinhaLoja')
         .field('description', 'a description')
@@ -217,7 +218,7 @@ describe("Post:/store/create - Invalid image",()=>{
     })
     it("should return 'Invalid or missing image file.' when send a mp4",async()=>{
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'MinhaLoja')
         .field('description', 'a description')
@@ -228,7 +229,7 @@ describe("Post:/store/create - Invalid image",()=>{
     })
 })
 
-describe("Post:/store/create - db actions",()=>{
+describe("Post:/stores - db actions",()=>{
     const data = [{ id:1,name:'lucas',password:'123456',email:'lucas@gmail.com'},{ id:2,name:'joseff',password:'123456',email:'lucas@gmail.com.br'}]
     const storeData = {id:111,name:'stores',description:'description',userId:1}
     
@@ -254,7 +255,7 @@ describe("Post:/store/create - db actions",()=>{
    
           
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', storeData.name)
         .field('description', 'Descrição da loja')
@@ -269,7 +270,7 @@ describe("Post:/store/create - db actions",()=>{
      
         
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookieWithouStore}`])
         .field('name', 'newName')
         .field('description', 'Descrição da loja')
@@ -284,7 +285,7 @@ describe("Post:/store/create - db actions",()=>{
    
         
         const response = await request(app)
-        .post('/store/create')
+        .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'tesing')
         .field('description', 'Descrição da loja')
