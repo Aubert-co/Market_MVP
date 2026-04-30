@@ -17,17 +17,17 @@ import Auth from "@/modules/auth/route/auth.route"
 const imageUpload = makeUploadFile()
 const route = Router();
 route.use( httpLogger)
-route.use(Auth)
-route.use( products)
-route.use( storeRoute )
-route.use( userCartRoute )
-route.use( productAdminRoute )
-route.use( orderRoute)
-route.use( couponRoute)
-route.use(reviewsRoute)
-route.use(orderAdminRoute)
+route.use('/api',Auth)
+route.use('/api', products)
+route.use( '/api',storeRoute )
+route.use('/api', userCartRoute )
+route.use( '/api',productAdminRoute )
+route.use( '/api',orderRoute)
+route.use('/api', couponRoute)
+route.use('/api',reviewsRoute)
+route.use('/api',orderAdminRoute)
 //route.use(storeDashboard)
-route.use(CouponStore)
+route.use('/api',CouponStore)
 
 route.get('/images/:filename', async (req, res) => {
   const { filename } = req.params;
