@@ -1,7 +1,8 @@
-import { getString } from "@/helpers";
-import { checkIsAValidCategory, checkIsAValidNumber, checkisAValidString } from "@/helpers/checkIsValid";
+import { getInteger, getPage, getString, getValidString } from "@/helpers";
+import { checkIsAValidCategory, checkIsAValidInteger, checkIsAValidNumber, checkisAValidString, checkIsValidStatus, checkOrderBy } from "@/helpers/checkIsValid";
 import { ErrorMessage } from "@/helpers/ErrorMessage";
 import { FilterProductsInput } from "@/modules/products/types/product.types";
+import { SearchOrderWithPage } from "@/modules/storeAdmin/orders/orders.services";
 import { Orderby } from "@/types/global.types";
 import { Request } from "express";
 
@@ -53,5 +54,40 @@ export const validateFilterProducts = (req:Request):FilterProductsInput=>{
         category:categoryStr,
         name:nameStr,maxPrice:Number(maxPrice),
         minPrice:Number(minPrice),take:10,skip:0
+    }
+}
+
+type ValidateSearcbOrdersDTO = Omit<SearchOrderWithPage,"storeId">
+export const validateSearchOrders = (req:Request):ValidateSearcbOrdersDTO=>{
+  let {currentPage,orderId,
+            status,orderBy,limit
+        } = req.query
+
+      
+    const limitStr  = getInteger(limit) 
+    const statusStr = getValidString(status)
+    const orderStr  = getValidString(orderBy)
+
+    const limitNumber = limitStr ? limitStr: 5
+    const orderByStr: Orderby = checkOrderBy(orderStr) ? (orderStr as Orderby) : "desc"
+    const statusValue = checkIsValidStatus(statusStr) ? statusStr : undefined
+    
+                
+    if (orderId && !checkIsAValidInteger(orderId)) {
+        throw new ErrorMessage({
+            message:"Invalid orderId. It must be a valid integer.",
+            status:400,
+            service:"Validate",
+            action:"validateSearchOrders"
+        })
+    }
+
+    
+    return {
+        page:getPage(currentPage),
+        searchByOrderId:Number(orderId),
+        limit:limitNumber,
+        status:statusValue,
+        orderBy:orderByStr,
     }
 }
