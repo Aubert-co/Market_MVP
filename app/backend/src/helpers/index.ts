@@ -1,3 +1,5 @@
+import { checkIsAValidInteger } from "./checkIsValid";
+
 export const categories = [
   "Roupas",
   "Eletrônicos",
@@ -26,3 +28,10 @@ export const roundTottaly = (value:number, decimals:number = 2):number=> {
 
 export  const getString = (value: unknown) =>
 typeof value === "string" ? value : undefined;
+
+export const getPage = (value:unknown):number=>{
+    if(!checkIsAValidInteger(value)){
+      return 1
+    }
+    return Number(value)
+}
