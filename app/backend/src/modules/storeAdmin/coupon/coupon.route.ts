@@ -21,7 +21,7 @@ route.get('/stores/coupons/:storeId',[
   (req:Request,res:Response,next:NextFunction)=>verifyStoreOwnershipMiddle.handler(req,res,next)],
   (req:Request,res:Response,next:NextFunction)=>couponController.storeGetCoupons(req,res,next)
 )
-route.post('/stores/create/coupon',[
+route.post('/stores/coupons',[
     Auth,
     (req:Request,res:Response,next:NextFunction)=>verifyStoreOwnershipMiddle.handler(req,res,next)
     ],

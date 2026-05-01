@@ -7,7 +7,7 @@ import {couponsDatas} from '../../__fixtures__/coupons'
 import { generateAccessToken } from '../../../helpers/AuthTokens'
 const cookies  = generateAccessToken(oneStore.id)
 
-const endpoint = "/api/stores/create/coupon"
+const endpoint = "/api/stores/coupons"
 describe("POST:/store/create/coupon",()=>{
     beforeAll(async()=>{
         await cleanCoupons()
