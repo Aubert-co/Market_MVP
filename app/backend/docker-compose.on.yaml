@@ -41,7 +41,7 @@ services:
     
     volumes:
       - /app/node_modules
-    command: sh -c "npx prisma db push && node dist/tests/_seed_/index.js && node dist/serve.js"
+    command: sh -c "npx prisma db push && node dist/serve.js"
     depends_on:   
       postgres:
         condition: service_healthy
