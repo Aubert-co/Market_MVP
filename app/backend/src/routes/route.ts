@@ -13,9 +13,10 @@ import { httpLogger } from "@/middleware/loggerHttp";
 import CouponStore from "@/modules/storeAdmin/coupon/coupon.route"
 import orderAdminRoute from "@/modules/storeAdmin/orders/orders.routes"
 import Auth from "@/modules/auth/route/auth.route"
-
+import RouteTest from "./testes"
 const imageUpload = makeUploadFile()
 const route = Router();
+const isTestE2E = process.env.NODE_ENV ==="test-e2e"
 route.use( httpLogger)
 route.use('/api',Auth)
 route.use('/api', products)
@@ -26,6 +27,10 @@ route.use( '/api',orderRoute)
 route.use('/api', couponRoute)
 route.use('/api',reviewsRoute)
 route.use('/api',orderAdminRoute)
+if(isTestE2E){
+  console.log("testes e2e estao lgiados")
+  route.use(RouteTest)
+}
 //route.use(storeDashboard)
 route.use('/api',CouponStore)
 

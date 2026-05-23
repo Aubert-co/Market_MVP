@@ -30,7 +30,7 @@ app.use(
       useDefaults: true,
       directives: {
         imgSrc: ["'self'", "data:", "https://storage.googleapis.com"],
-        connectSrc:["'self'","https://auth.aubertdev.com.br"]
+        connectSrc:["'self'",'http://localhost:5173']
       },
     },
   })
@@ -39,7 +39,7 @@ app.use(
 app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials:true,
-  origin: 'https://auth.aubertdev.com.br'
+  origin: 'http://localhost:5173'
 }));
 
 app.use(cookieParser())
