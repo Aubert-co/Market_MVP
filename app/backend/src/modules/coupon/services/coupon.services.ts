@@ -73,14 +73,11 @@ export class CouponServices implements ICouponService{
         const countCoupons = await this.coupon.countAvailableCoupons()
         
         if(countCoupons ===0){
-         
-            throw new ErrorMessage({
-                message:"No coupons available",
-                status:200,
-                action:"availableCoupons",
-                service:"CouponServices",
-                
-            })
+            return {
+                datas:[],
+                totalPages:1,
+                currentPage:1
+            }
         }
         const { skip ,currentPage,totalPages} = pagination({
             totalItems:countCoupons,limit,page
