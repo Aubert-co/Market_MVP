@@ -7,7 +7,7 @@ export interface IStoreRepository{
     createStore(data:{storeName:string,userId:number,description:string,photo:string}):Promise<void>,
     checkStoreOwnerShip(storeId:number):Promise<any>,
     findByName(storeName:string):Promise<any>,
-    selectUserStores(userId:number):Promise<Store[] | []>,
+    selectUserStores(userId:number):Promise<Store[] >,
     getProductsByStoreId(storeId:number,skip:number,limit:number):Promise< ProductWithCountsAndRatings[] >
     countProductStore(storeId:number):Promise<number >,
 }
@@ -59,7 +59,7 @@ export class StoreRepository implements IStoreRepository{
         return datas;
         
     }
-    public async selectUserStores(userId:number):Promise<Store[] | []>{
+    public async selectUserStores(userId:number):Promise<Store[] >{
         const datas = await this.prisma.store.findMany({
             where:{userId}
         })

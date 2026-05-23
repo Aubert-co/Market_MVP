@@ -106,7 +106,7 @@ export class StoreService implements IStoreService{
     public async selectUserStores(userId:number):Promise<Store[]>{
         try{
             const datas = await this.storeRepository.selectUserStores(userId)
-            if(datas.length ===0)return [];
+            
 
             return datas ;
         }catch(err:unknown){
