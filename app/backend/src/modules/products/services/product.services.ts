@@ -117,8 +117,8 @@ export class ProductService  implements IProductService{
         
             const prismaError = getPrismaError(err)
             throw new ErrorMessage({
-                message:"No products found",
-                status:404,
+                message:"Failed to filter products.",
+                status:500,
                 action:"filterProduct",
                 service:"ProductService",
                 context:{

@@ -124,8 +124,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         .get(`${endpoint}?category=${category}`)
        
 
-        expect( response.status).toEqual(404)
-        expect( response.body.message).toEqual("No products found")
+        expect( response.status).toEqual(500)
+        expect( response.body.message).toEqual("Failed to filter products.")
         expect(response.body.datas).toBeUndefined()
         expect( mock ).toHaveBeenCalledTimes(1)
         expect(mock ).toHaveBeenCalledWith({
@@ -184,8 +184,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         .get(`${endpoint}?name=${name}`)
     
 
-        expect( response.status).toEqual(404)
-        expect( response.body.message).toEqual("No products found")
+        expect( response.status).toEqual(500)
+        expect( response.body.message).toEqual("Failed to filter products.")
         expect(response.body.datas).toBeUndefined()
         expect( mock ).toHaveBeenCalledTimes(1)
         expect(mock ).toHaveBeenCalledWith({
@@ -243,8 +243,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
           .get(`${endpoint}?maxPrice=${maxPrice}`)
  
 
-        expect( response.status).toEqual(404)
-        expect( response.body.message).toEqual("No products found")
+        expect( response.status).toEqual(500)
+        expect( response.body.message).toEqual("Failed to filter products.")
         expect(response.body.datas).toBeUndefined()
         expect( mock ).toHaveBeenCalledTimes(1)
         expect(mock ).toHaveBeenCalledWith({
@@ -301,8 +301,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
           .get(`${endpoint}?minPrice=${minPrice}`)
         
 
-        expect( response.status).toEqual(404)
-        expect( response.body.message).toEqual("No products found")
+        expect( response.status).toEqual(500)
+        expect( response.body.message).toEqual("Failed to filter products.")
         expect(response.body.datas).toBeUndefined()
         expect( mock ).toHaveBeenCalledTimes(1)
         expect(mock ).toHaveBeenCalledWith({
@@ -330,8 +330,8 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
           .get(`${endpoint}?minPrice=${minPrice}&name=${name}&category=${category}&maxPrice=${maxPrice}`)
        
 
-        expect( response.status).toEqual(404)
-        expect( response.body.message).toEqual("No products found")
+        expect( response.status).toEqual(500)
+        expect( response.body.message).toEqual("Failed to filter products.")
         expect(response.body.datas).toBeUndefined()
         expect( mock ).toHaveBeenCalledTimes(1)
        expect(mock).toHaveBeenCalledWith({
