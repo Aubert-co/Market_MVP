@@ -46,7 +46,7 @@ describe(`POST ${endpoint}`,()=>{
                 .set('Cookie', [`token=${cookies}`])
                 .send({couponId:validCoupons[0].id})
 
-        expect(response.body.message).toEqual("Sucess")
+        expect(response.body.message).toEqual("Success")
         const couponUsage = await prisma.couponUsage.findMany({
             where:{userId}
         })
@@ -96,7 +96,7 @@ describe("POST /user/add/coupon",()=>{
             .send({couponId})
 
         expect(response.status).toEqual(201)
-        expect(response.body.message).toEqual("Sucess")
+        expect(response.body.message).toEqual("Success")
 
         const userCoupon = await prisma.couponUsage.findFirst({
             where:{userId,couponId}

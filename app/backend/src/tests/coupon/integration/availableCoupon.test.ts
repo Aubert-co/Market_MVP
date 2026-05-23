@@ -39,8 +39,11 @@ describe(`GET ${endpoint}`,()=>{
             .get(`${endpoint}?page=1`) 
           
 
-        expect(response.body.message).toEqual("No coupons available")
-        expect(response.body).not.toHaveProperty('datas')
+        expect(response.body.message).toEqual("Success")
+        expect(response.body).toHaveProperty('datas')
+        expect(response.body.datas).toEqual([])
+        expect(response.body.totalPages).toEqual(1)
+        expect(response.body.currentPage).toEqual(1)
     })
 })
 
@@ -67,7 +70,7 @@ describe("GET /coupon/available",()=>{
         const response = await request(app)
                         .get(`${endpoint}?page=1`)
               
-        expect(response.body.message).toEqual("Sucess")
+        expect(response.body.message).toEqual("Success")
         expect(response.body.datas).toHaveLength(1)
     })
 })
@@ -96,7 +99,7 @@ describe("GET /coupon/available",()=>{
                 .get(`${endpoint}?page=1`)
                 .set('Cookie', [`token=${cookies}`])
 
-        expect(response.body.message).toEqual("Sucess")
+        expect(response.body.message).toEqual("Success")
       
         expect(response.body.datas).toHaveLength(validCoupons.length)
      

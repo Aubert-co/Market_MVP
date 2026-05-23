@@ -38,7 +38,7 @@ describe(`GET ${endpoint}`,()=>{
             .get(endpoint)
             .set('Cookie', [`token=${cookies}`])
 
-        expect(response.body.message).toEqual("Sucess")
+        expect(response.body.message).toEqual("Success")
         expect(response.body.datas).toEqual([])
     })
 })
@@ -67,7 +67,7 @@ describe(`GET ${endpoint}`,()=>{
                 .get(endpoint)
                 .set('Cookie', [`token=${cookies}`])
 
-        expect(response.body.message).toEqual("Sucess")
+        expect(response.body.message).toEqual("Success")
         expect(response.body.datas).toHaveLength(1)
 
         expect(response.body.datas[0].couponId).toEqual(validCoupons[0].id)
@@ -99,7 +99,7 @@ describe(`GET ${endpoint}`,()=>{
                 .get(endpoint)
                 .set('Cookie', [`token=${cookies}`])
 
-        expect(response.body.message).toEqual("Sucess")
+        expect(response.body.message).toEqual("Success")
       
         expect(response.body.datas).toHaveLength(validCoupons.length)
      

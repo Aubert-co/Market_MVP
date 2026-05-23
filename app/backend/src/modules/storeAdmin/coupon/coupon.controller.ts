@@ -9,9 +9,9 @@ export class CouponStoreController {
         try{
             const storeId = Number(req.params.storeId)
 
-            const datas = await this.coupon.storeSelectCoupon(storeId,5,0)
+            const datas = await this.coupon.storeSelectCoupon(storeId,5,1)
 
-            res.status(200).send({message:'Sucess',datas})
+            res.status(200).send({message:'Sucess',...datas})
         }catch(err:any){
             next(err)
         }
