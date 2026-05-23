@@ -14,20 +14,20 @@ export function ErrorMiddleware  (error:any,req:Request,res:Response,next:NextFu
                     status:422,
                     context:"Image file size exceeds the 5MB limit"
                 })
-                res.status(422).json({ message: "Image file size exceeds the 5MB limit." });
-                return
+                return res.status(422).json({ message: "Image file size exceeds the 5MB limit." });
+                
             }
             logger.error({
                 message:"FILE UPLOAD FAILED",
                 status:400
             })
-            res.status(400).json({
+            return res.status(400).json({
                 message: `File upload failed`
             });
-            return
+            
         }
         if(error instanceof ErrorMessage){
-            res.status(error.status).json({message:error.message})
+         
             logger.error({
                 context:error.context,
                 prismaError:error.prismaError,
@@ -36,7 +36,8 @@ export function ErrorMiddleware  (error:any,req:Request,res:Response,next:NextFu
                 action:error.action,
                 message:error.message
             })
-            return 
+            return res.status(error.status)
+               .json({message:error.message});
         }
         logger.error({
             message:'error not registered',
