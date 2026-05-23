@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ICouponService } from "../services/coupon.services";
 import { checkIsAValidNumber } from "@/helpers/checkIsValid";
-import { getString } from "@/helpers";
+
 
 
 
@@ -19,7 +19,7 @@ export class CouponController{
             }
             const userId = req.user
             await this.coupon.userAddCoupon(couponId,userId)
-            res.status(201).send({message:'Sucess'})
+            res.status(201).send({message:'Success'})
         }catch(err:any){
             next(err)
         }
@@ -30,7 +30,7 @@ export class CouponController{
             let pageNumber =  checkIsAValidNumber(page) ? Number(page) : 1
             
             const {datas,currentPage,totalPages} = await this.coupon.availableCoupons(pageNumber)
-            res.status(200).send({message:'Sucess',datas,currentPage,totalPages})
+            res.status(200).send({message:'Success',datas,currentPage,totalPages})
         }catch(err:any){
             next(err)
         }
@@ -47,7 +47,7 @@ export class CouponController{
             ...val.coupon   
             }));
 
-            res.status(200).send({ message: 'Sucess', datas })
+            res.status(200).send({ message: 'Success', datas })
         }catch(err:any){
             next(err)
         }
