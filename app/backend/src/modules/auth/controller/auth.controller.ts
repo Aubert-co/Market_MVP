@@ -1,9 +1,11 @@
 import {NextFunction, Request,Response} from 'express'
 import { IUserService } from "../service/auth.service";
 import { checkisAValidString } from '@/helpers/checkIsValid';
+import { cookieConfig } from '@/helpers/AuthTokens';
 
 
 const isProduction = process.env.NODE_ENV === 'production';
+const domain =  isProduction && '.aubertdev.com.br'
 export class AuthUserController{
     constructor(private user:IUserService){}
     public async Login(req:Request,res:Response,next:NextFunction):Promise<any>{
@@ -12,14 +14,7 @@ export class AuthUserController{
 
             const {accessToken,refreshToken} = await this.user.loginUser(email,password)
 
-            res.cookie('token', accessToken, {
-                httpOnly: true,
-                secure: isProduction,
-                maxAge: 15 * 60 * 1000, 
-                path: '/',
-                domain:'.aubertdev.com.br',
-                sameSite:'none'
-            })
+            res.cookie('token', accessToken,cookieConfig())
             .cookie('refresh', refreshToken, {
                 httpOnly: true,
                 secure: isProduction,
