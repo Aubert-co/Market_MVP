@@ -2,7 +2,7 @@ import { Router,Request,Response,NextFunction } from "express"
 import { UserCartController } from "../controller/userCart.controller"
 import { UserCartRepository } from "../repository/userCart.repository"
 import { UserCartService } from "../services/useCart.services"
-import { prisma } from "@/lib/prisma"
+import { prisma } from "@/database/prisma"
 import { ProductRepository } from "@/modules/products/repository/product.repository"
 import { Auth } from "@/middleware/auth"
 

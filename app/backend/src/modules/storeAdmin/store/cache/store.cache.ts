@@ -1,4 +1,4 @@
-import { BaseRedisServices } from "../../../../services/BaseRedis.service";
+import { BaseRedisServices } from "../../../../config/cache/BaseRedis.service";
 
 export interface IStoreCache {
     saveCacheStoreId(storeId:number,userId:number):Promise<void>

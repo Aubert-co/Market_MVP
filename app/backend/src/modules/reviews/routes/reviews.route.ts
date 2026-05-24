@@ -2,7 +2,7 @@ import { ReviewsController } from "../controller/reviews.controller";
 import { Auth } from "../../../middleware/auth";
 import { NextFunction, Router,Request,Response } from "express";
 import { ReviewsRepository } from "../repository/reviews.repository";
-import { prisma } from "../../../lib/prisma";
+import { prisma } from "../../../database/prisma";
 import { ReviewsService } from "../services/reviews.services";
 import { OrderRepository } from "../../orders/repository/order.repository";
 import { CouponRepository } from "../../coupon/repository/coupon.repository";

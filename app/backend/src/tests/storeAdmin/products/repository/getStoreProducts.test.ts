@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma"
+import { prisma } from "@/database/prisma"
 import { ProductAdminRepository } from "@/modules/storeAdmin/products/products.repository"
 import { productsByStore } from "@/tests/__fixtures__/products"
 import { stores } from "@/tests/__fixtures__/stores"

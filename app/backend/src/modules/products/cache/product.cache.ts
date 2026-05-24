@@ -1,4 +1,4 @@
-import { BaseRedisServices } from "../../../services/BaseRedis.service";
+import { BaseRedisServices } from "../../../config/cache/BaseRedis.service";
 import { SelectedProduct } from "../types/product.types";
 
 const keyCachedPageProduct = (page:number)=>`product:page:${page}`

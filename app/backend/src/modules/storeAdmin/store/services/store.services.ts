@@ -4,7 +4,7 @@ import { ErrorMessage, getPrismaError } from "../../../../helpers/ErrorMessage"
 import { IStoreRepository } from "../repository/store.repository"
 import { Store } from "../types/store.types";
 import { Product } from "../../../products/types/product.types";
-import { makeUploadFile } from "../../../../factory/uploadFIles";
+import { makeUploadFile } from "../../../../config/imageUpload/uploadFIles";
 
 
 

@@ -1,4 +1,4 @@
-import { prisma } from "../../lib/prisma"
+import { prisma } from "../../database/prisma"
 import { Order } from "../../modules/orders/types/order.types"
 import { orders } from "../__fixtures__/orders"
 import { products, productsByStore } from "../__fixtures__/products"

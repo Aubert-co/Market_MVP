@@ -1,4 +1,4 @@
-import { prisma } from "./src/lib/prisma"
+import { prisma } from "./src/database/prisma"
 
 afterAll(async()=>{
     await prisma.$disconnect()

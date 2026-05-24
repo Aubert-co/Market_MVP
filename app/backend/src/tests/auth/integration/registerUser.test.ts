@@ -1,6 +1,6 @@
 import request from "supertest";
 import app from "@/serve";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/database/prisma";
 import { deleteUser,oneUser,createOneUser, cleanAllDb } from "@/tests/__mocks__";
 
 const endpoint = "/api/register"

@@ -3,7 +3,7 @@ import { ValidateCredentials } from "@/middleware/validateCredentials"
 import { AuthUserController } from "../controller/auth.controller"
 import { UserService } from "../service/auth.service"
 import { UserRepository } from "../repository/auth.repository"
-import { prisma } from "@/lib/prisma"
+import { prisma } from "@/database/prisma"
 const validateCredentials = new ValidateCredentials()
 
 const userRepository =  new UserRepository(prisma)

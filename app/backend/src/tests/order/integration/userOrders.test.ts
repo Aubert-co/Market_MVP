@@ -4,7 +4,7 @@ import { orders } from "../../__fixtures__/orders"
 import { cleanAllDb, cleanCoupons, cleanOrders, createCoupons, createManyOrders, createUserStoreAndProducts,creatManyUsersStoresAndProducts,oneStore,users } from "../../__mocks__"
 import request from 'supertest'
 import { couponsDatas } from "../../__fixtures__/coupons"
-import { prisma } from "../../../lib/prisma"
+import { prisma } from "../../../database/prisma"
 import { manyUsers } from "@/tests/__fixtures__/users"
 
 const user =manyUsers[2]

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { OrdersController } from "../controller/order.controller";
-import { prisma } from "../../../lib/prisma";
+import { prisma } from "../../../database/prisma";
 import { Auth } from "../../../middleware/auth";
 import { CouponRepository } from "../../coupon/repository/coupon.repository";
 import { OrderRepository } from "../repository/order.repository";

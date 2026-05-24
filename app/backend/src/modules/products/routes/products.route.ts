@@ -1,11 +1,11 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/database/prisma";
 import { ProductRepository } from "../repository/product.repository";
 import { ProductService } from "../services/product.services";
 import { Router,Request,Response,NextFunction } from "express";
 import { ProductsController } from "../controller/products.controller";
 import { CacheProducts } from "../cache/product.cache";
-import { RedisRepository } from "@/repository/redis.repository";
-import redis from "@/lib/redis";
+import { RedisRepository } from "@/config/cache/redis.repository";
+import redis from "@/config/cache/redis";
 import { userSessionMiddleware } from "@/middleware/userSession.middeware";
 
 const productRepository = new ProductRepository(prisma)

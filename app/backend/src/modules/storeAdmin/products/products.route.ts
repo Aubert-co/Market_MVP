@@ -1,13 +1,13 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/database/prisma";
 import { ProductAdminController } from "./producs.controller";
 import { Router,Request,Response,NextFunction } from "express"
-import { fileUpload } from "@/lib/fileUpload";
+import { fileUpload } from "@/config/imageUpload/fileUpload";
 import { Auth } from "@/middleware/auth";
 
 import { ProductAdminRepository } from "./products.repository";
 import { ProductAdminService } from "./products.services";
 import { makeVerifyStoreMiddle } from "@/factory/makeVerifyStoreMiddle";
-import { makeUploadFile } from "@/factory/uploadFIles";
+import { makeUploadFile } from "@/config/imageUpload/uploadFIles";
 
 const uploadImage = makeUploadFile()
 const productAdminRepository = new ProductAdminRepository(prisma)

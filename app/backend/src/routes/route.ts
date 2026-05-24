@@ -8,7 +8,7 @@ import orderRoute from '@/modules/orders/route/order.route'
 import couponRoute from '@/modules/coupon/route/coupon.route'
 import reviewsRoute from '@/modules/reviews/routes/reviews.route'
 //import storeDashboard from '@/modules/storeAdmin/store/routes/storeDash.route'
-import { makeUploadFile } from "@/factory/uploadFIles";
+import { makeUploadFile } from "@/config/imageUpload/uploadFIles";
 import { httpLogger } from "@/middleware/loggerHttp";
 import CouponStore from "@/modules/storeAdmin/coupon/coupon.route"
 import orderAdminRoute from "@/modules/storeAdmin/orders/orders.routes"

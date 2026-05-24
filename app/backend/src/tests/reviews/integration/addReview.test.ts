@@ -4,7 +4,7 @@ import {  cleanAllDb,cleanOrders,
 import request from 'supertest'
 import app from '../../../serve'
 import { generateAccessToken } from "../../../helpers/AuthTokens"
-import { prisma } from "../../../lib/prisma"
+import { prisma } from "../../../database/prisma"
 import { products } from "../../__fixtures__/products"
 
 

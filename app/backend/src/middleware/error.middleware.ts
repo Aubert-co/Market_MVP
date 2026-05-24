@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ErrorMessage } from "@/helpers/ErrorMessage";
 import multer from "multer";
-import { startLogger } from "@/lib/logger";
+import { startLogger } from "@/config/logger/logger";
 
 const logger = startLogger()
 export function ErrorMiddleware  (error:any,req:Request,res:Response,next:NextFunction):any{

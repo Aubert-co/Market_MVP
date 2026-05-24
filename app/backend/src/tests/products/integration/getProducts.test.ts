@@ -1,9 +1,9 @@
 import request from 'supertest'
-import redis from '../../../lib/redis'
+import redis from '../../../config/cache/redis'
 import app from '../../../serve'
 import { cleanAllDb, createUserStoreAndProducts } from '../../__mocks__'
-import { prisma } from '../../../lib/prisma'
-import { RedisRepository } from '../../../repository/redis.repository'
+import { prisma } from '../../../database/prisma'
+import { RedisRepository } from '../../../config/cache/redis.repository'
 
 
 const redisRep = new RedisRepository(redis)

@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "@/serve";
 import bcrypt from "bcrypt"
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/database/prisma";
 import { cleanAllDb, deleteUser } from "@/tests/__mocks__";
 
 const endpoint = "/api/login"

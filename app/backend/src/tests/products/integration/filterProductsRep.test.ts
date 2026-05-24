@@ -1,6 +1,6 @@
 import { cleanAllDb, createUserStoreAndProducts } from "../../__mocks__"
 import {ProductRepository} from '../../../modules/products/repository/product.repository'
-import {prisma} from '../../../lib/prisma'
+import {prisma} from '../../../database/prisma'
 import { products } from "../../__fixtures__/products"
 
 describe("Method filter products",()=>{

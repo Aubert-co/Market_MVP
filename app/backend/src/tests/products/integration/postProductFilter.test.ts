@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import app from '../../../serve'
-import *as database from '../../../lib/prisma'
+import *as database from '../../../database/prisma'
 
 import { categories } from '../../../helpers'
 jest.useFakeTimers()

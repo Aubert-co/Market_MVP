@@ -1,7 +1,7 @@
 import { generateImgPath } from "@/helpers/checkIsValidImage";
 import { ErrorMessage, getPrismaError } from "@/helpers/ErrorMessage";
 import {  IProductAdminRepository } from "./products.repository";
-import { IImageUploadService } from "@/services/ImageUploadService";
+import { IImageUploadService } from "@/config/imageUpload/ImageUploadService";
 import { compressImage } from "@/helpers/compressImages";
 import { FuncReturn, retry } from "@/helpers/retry";
 import {  productMostViewedResult, GetStoreProductResult,GetStoreProductsPage, CreateProductDTO } from "./products.types";

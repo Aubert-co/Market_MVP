@@ -1,5 +1,5 @@
 import { IProductAdminRepository } from "@/modules/storeAdmin/products/products.repository";
-import { IImageUploadService } from "@/services/ImageUploadService";
+import { IImageUploadService } from "@/config/imageUpload/ImageUploadService";
 
 export const mockProductAdminRep = {
     createProduct:jest.fn(),

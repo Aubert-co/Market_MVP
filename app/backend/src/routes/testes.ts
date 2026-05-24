@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/database/prisma";
 
 import { seedDatabase } from "@/tests/_seed_";
 import { Router } from "express";

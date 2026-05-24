@@ -1,7 +1,7 @@
 import request from "supertest"
 import app from "@/serve"
 import { cleanAllDb,createUserStoreAndProducts } from "@/tests/__mocks__"
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/database/prisma'
 import { generateAccessToken } from '@/helpers/AuthTokens'
 
 

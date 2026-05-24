@@ -1,9 +1,9 @@
 import request from 'supertest'
-import {ImageUploadService} from "../../../../services/ImageUploadService"
+import {ImageUploadService} from "../../../../config/imageUpload/ImageUploadService"
 import app from "../../../../serve"
 import path from "path"
 import jwt from "jsonwebtoken"
-import { prisma } from "../../../../lib/prisma"
+import { prisma } from "../../../../database/prisma"
 import { cleanAllDb, deleteProduct, deleteStore } from '../../../__mocks__'
 
 

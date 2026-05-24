@@ -6,7 +6,7 @@ import request from 'supertest'
 import app from '../../../serve'
 import { couponsDatas } from "../../__fixtures__/coupons"
 import { generateAccessToken } from "../../../helpers/AuthTokens"
-import { prisma } from "../../../lib/prisma"
+import { prisma } from "../../../database/prisma"
 import { products } from "../../__fixtures__/products"
 import {applyDiscount} from '../../../helpers/applyDiscount'
 import {Order} from '../../../modules/orders/types/order.types'

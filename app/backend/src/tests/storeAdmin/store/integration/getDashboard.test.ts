@@ -2,7 +2,7 @@ import request from "supertest"
 
 import app from "@/serve"
 
-import { prisma } from "@/lib/prisma"
+import { prisma } from "@/database/prisma"
 import { cleanAllDb, createOrders, createUserStoreAndProducts, createViews, deleteOrders,deleteViews } from "@/tests/__mocks__"
 import { generateAccessToken } from '@/helpers/AuthTokens'
 import { orders } from "@/tests/__fixtures__/orders"

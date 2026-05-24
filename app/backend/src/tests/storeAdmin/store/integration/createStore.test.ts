@@ -1,8 +1,8 @@
 import request from "supertest"
-import { ImageUploadService } from "@/services/ImageUploadService"
+import { ImageUploadService } from "@/config/imageUpload/ImageUploadService"
 import app from "@/serve"
 import path from "path"
-import { prisma } from "@/lib/prisma"
+import { prisma } from "@/database/prisma"
 import { cleanAllDb, deleteStore, deleteUser } from "@/tests/__mocks__"
 import { generateAccessToken } from '@/helpers/AuthTokens'
 

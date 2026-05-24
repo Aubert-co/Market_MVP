@@ -1,4 +1,4 @@
-import { prisma } from "../../../lib/prisma";
+import { prisma } from "../../../database/prisma";
 import { addCouponUsage, cleanAllDb, cleanCoupons,
     createCoupons,createUserStoreAndProducts,oneStore,users } from "../../__mocks__";
 import request from "supertest";

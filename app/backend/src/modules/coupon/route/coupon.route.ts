@@ -3,7 +3,7 @@ import { CouponController } from "../controller/coupon.controller"
 import { CouponRepository } from "../repository/coupon.repository"
 import { CouponServices } from "../services/coupon.services"
 import { Request,Response,NextFunction, Router } from "express"
-import { prisma } from "../../../lib/prisma"
+import { prisma } from "../../../database/prisma"
 
 import { Auth } from "../../../middleware/auth"
 

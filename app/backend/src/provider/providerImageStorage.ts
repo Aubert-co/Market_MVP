@@ -1,4 +1,4 @@
-import { IImageUploadService } from "@/services/ImageUploadService";
+import { IImageUploadService } from "@/config/imageUpload/ImageUploadService";
 import { UploadFile, UploadImageResult } from "@/types/storageImages.types";
 
 export class ImageUploadProvier implements IImageUploadService{

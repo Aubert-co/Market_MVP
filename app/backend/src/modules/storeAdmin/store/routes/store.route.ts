@@ -3,9 +3,9 @@ import { StoreAdminController } from '../controller/storeAdmin.controller'
 import { ValidateImageAndFields } from '../../../../middleware/validateImgAndFiles'
 import { Auth } from '../../../../middleware/auth'
 import { StoreService } from '../services/store.services'
-import { prisma } from '../../../../lib/prisma'
+import { prisma } from '../../../../database/prisma'
 import { StoreRepository } from '../repository/store.repository'
-import { fileUpload } from '../../../../lib/fileUpload'
+import { fileUpload } from '../../../../config/imageUpload/fileUpload'
 import { makeVerifyStoreMiddle } from '../../../../factory/makeVerifyStoreMiddle'
 
 const validateImageAndFields = new  ValidateImageAndFields

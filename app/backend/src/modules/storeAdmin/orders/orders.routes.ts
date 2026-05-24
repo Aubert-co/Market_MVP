@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/database/prisma";
 import { Auth } from "@/middleware/auth";
 
 import { makeVerifyStoreMiddle } from "@/factory/makeVerifyStoreMiddle";
