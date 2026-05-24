@@ -12,12 +12,11 @@
     "build": "tsc --project ./tsconfig.build.json",
     "test": "npx jest /src/tests --detectOpenHandles --runInBand --forceExit",
     "unit": "npx jest /*.spec.ts --watchAll --logHeapUsage",
-    "build:e2e":"tsc --project ./tsconfig.e2e.build.json"
+    "build:e2e": "tsc --project ./tsconfig.e2e.build.json"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1009.0",
     "@aws-sdk/s3-request-presigner": "^3.1009.0",
-    "@google-cloud/storage": "^7.17.1",
     "@prisma/adapter-pg": "^7.6.0",
     "@prisma/client": "^7.6.0",
     "bcrypt": "^6.0.0",
@@ -41,7 +40,6 @@
     "@types/cookie-parser": "^1.4.9",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
-    "@types/google-cloud__storage": "^2.3.1",
     "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.0.0",
