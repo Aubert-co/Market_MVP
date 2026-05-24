@@ -12,7 +12,9 @@
     "paths": {
       "@/*":["src/*"],
       "@/modules":["src/modules/*"],
-      "@/tests":["src/tests/*"]
+      "@/tests":["src/tests/*"],
+      "@/config":["src/config/*"],
+      "@/database":["src/database/*"]
     },
     "typeRoots": ["./node_modules/@types", "./src/types"]
 
