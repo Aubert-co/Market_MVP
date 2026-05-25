@@ -1,25 +1,12 @@
 import { PrismaClient ,Prisma} from "@prisma/client";
 import { ErrorMessage, getPrismaError } from "@/helpers/ErrorMessage";
 import { now } from "@/helpers/dates";
-import { Coupon, CouponUsage, CouponUsageInfoDto,DiscountType } from "../types/coupon.types";
+import { Coupon, CouponUsage, CouponUsageInfoDto } from "../types/coupon.types";
 
 
 
-export type StoreCreateCoupon = {
-    storeId:number,
-    quantity:number,
-    expiresAt:Date,
-    discount:number,
-    discountType:DiscountType,
-    code:string
-}
 export interface ICouponRepository {
-    storeCreateCoupon({
-        storeId,quantity,expiresAt,code,discount,discountType
-    }:StoreCreateCoupon):Promise<void>,
     userAddCoupon(userId:number,couponId:number):Promise<void>,
-    storeGetCoupons(storeId:number,limit:number,skip:number):Promise<Coupon[]>,
-    countStoreCoupons(storeId:number):Promise<number>,
     countCouponUsage(userId:number):Promise<number>,
     getCouponById(couponId:number):Promise<Coupon | null>,
     availableCoupons(limit:number,skip:number):Promise<Coupon[]>,
@@ -27,7 +14,6 @@ export interface ICouponRepository {
     countAvailableCoupons():Promise<number>,
     decreaseCouponQuantity(couponId:number,value:number):Promise<void>,
     doesUserHaveCoupon(userId:number,couponId:number):Promise<boolean>,
-    checkCouponByCode(code:string):Promise<boolean>,
     userAddCouponUsage({userId,couponId,quantity}:UserAddCoupon):Promise<void>,
     isUserUsedCoupon(userId:number,couponId:number):Promise<boolean>
 }
@@ -61,53 +47,8 @@ export class CouponRepository implements ICouponRepository{
             })
         }
     }
-    public async storeCreateCoupon({
-        storeId,quantity,expiresAt,code,discount,discountType
-    }:StoreCreateCoupon):Promise<void>{
-        try{
-            await this.prisma.coupon.create({
-            data:{
-                storeId,
-                quantity,
-                expiresAt,
-                discount,
-                discountType,
-                code
-            }
-        })
-        }catch(err:unknown){
-            
-            const prismaError = getPrismaError(err)
-            throw new ErrorMessage({
-                message:"Failed to create a coupon.",
-                status:500,
-                prismaError,
-                service:"CouponRepository",
-                action:"storeCreateCoupon",
-                context:{
-                    storeId
-                }
-            })
-        }
-    }
-    public async checkCouponByCode(code:string):Promise<boolean>{
-        try{
-            const coupon = await this.prisma.coupon.findFirst({
-                where:{code}
-            })
-            if(coupon)return true
-            return false
-        }catch(err:unknown){
-            const prismaError = getPrismaError(err)
-            throw new ErrorMessage({
-                message:"Failed to verify the coupon",
-                status:500,
-                service:"CouponRepository",
-                action:"checkCouponByCode",
-                prismaError
-            })
-        }
-    }
+    
+    
     public async userAddCoupon(userId:number,couponId:number):Promise<void>{
             try{
                 await this.prisma.couponUsage.create({
@@ -152,30 +93,7 @@ export class CouponRepository implements ICouponRepository{
             })
         }
     }
-    public async storeGetCoupons(storeId:number,limit:number=5,skip:number):Promise<Coupon[]>{
-        try{
-            return await this.prisma.coupon.findMany({
-                where:{
-                    storeId,
-                    expiresAt:{
-                        gt:now
-                    }
-                },
-                take:limit,
-                skip
-            })
-        }catch(err:unknown){
-            const prismaError = getPrismaError(err)
-        
-            throw new ErrorMessage({
-                message:"Failed to get coupons",
-                status:500,
-                service:"CouponRepository",
-                prismaError,
-                action:"storeGetCoupons"
-            })
-        }
-    }
+    
     
     public async countCouponUsage(userId:number):Promise<number>{
         try{
@@ -337,23 +255,7 @@ export class CouponRepository implements ICouponRepository{
             })
         }
     }
-    public async countStoreCoupons(storeId:number):Promise<number>{
-        try{
-            return await this.prisma.coupon.count({
-                where:{storeId}
-            })
-        }catch(err:unknown){
-          
-            const prismaError = getPrismaError(err)
-            throw new ErrorMessage({
-                message:"Failed to count store coupon.",
-                status:500,
-                action:"countStoreCoupons",
-                service:"CouponRepository",
-                prismaError
-            })
-        }
-    }
+    
     public async userAddCouponUsage({userId,couponId,quantity}:UserAddCoupon):Promise<void>{
         await this.prisma.$transaction(async(tx:Prisma.TransactionClient)=>{
             await tx.couponUsage.create({
