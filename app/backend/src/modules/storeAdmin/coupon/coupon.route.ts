@@ -1,7 +1,5 @@
-
-
-import { CouponRepository } from "@/modules/coupon/repository/coupon.repository"
-import { CouponStore } from "./coupon.services"
+import { StoreCouponRep } from "./coupon.repository"
+import { CouponStoreService } from "./coupon.services"
 import { Request,Response,NextFunction, Router } from "express"
 import { prisma } from "@/database/prisma"
 import { CouponStoreController } from "./coupon.controller"
@@ -9,8 +7,8 @@ import { Auth } from "@/middleware/auth"
 import { makeVerifyStoreMiddle } from "@/factory/makeVerifyStoreMiddle"
 
 const route = Router()
-const couponRepository = new CouponRepository(prisma)
-const couponService = new CouponStore(couponRepository)
+const couponRepository = new StoreCouponRep(prisma)
+const couponService = new CouponStoreService(couponRepository)
 
 const verifyStoreOwnershipMiddle = makeVerifyStoreMiddle()
 

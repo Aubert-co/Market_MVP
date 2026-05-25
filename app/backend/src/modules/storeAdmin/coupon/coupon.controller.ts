@@ -1,10 +1,10 @@
-import { ICouponStore } from "./coupon.services";
+import { ICouponStoreService } from "./coupon.services";
 import { NextFunction, Request, Response } from "express";
 import { checkIsAValidNumber, checkisAValidString } from "@/helpers/checkIsValid";
 import { convertStringToDate, validDates } from "@/helpers/dates";
 
 export class CouponStoreController {
-    constructor(protected coupon:ICouponStore){}
+    constructor(protected coupon:ICouponStoreService){}
     public async storeGetCoupons(req:Request,res:Response,next:NextFunction):Promise<any>{
         try{
             const storeId = Number(req.params.storeId)

@@ -1,20 +1,20 @@
 import { ErrorMessage } from "@/helpers/ErrorMessage";
 import { pagination } from "@/helpers/pagination";
-import { ICouponRepository, StoreCreateCoupon } from "@/modules/coupon/repository/coupon.repository";
 import {  GetAvailableCoupons} from "@/modules/coupon/types/coupon.types";
+import { IStoreCouponRep, StoreCreateCouponDTO } from "./coupon.repository";
 
 
-export interface ICouponStore{
+export interface ICouponStoreService{
     storeCreateCoupon({quantity,expiresAt,
         storeId,discountType,discount,code
-    }:StoreCreateCoupon):Promise<void>,
+    }:StoreCreateCouponDTO):Promise<void>,
     storeSelectCoupon(storeId:number,limit:number,skip:number):Promise<GetAvailableCoupons>,
 }
-export class CouponStore implements ICouponStore{
-    constructor(protected coupon:ICouponRepository){}
+export class CouponStoreService implements ICouponStoreService{
+    constructor(protected coupon:IStoreCouponRep){}
      public async storeCreateCoupon({quantity,expiresAt,
             storeId,discountType,discount,code
-        }:StoreCreateCoupon):Promise<void>{
+        }:StoreCreateCouponDTO):Promise<void>{
             const countStoreCoupons = await this.coupon.countStoreCoupons(storeId)
             code = code.toUpperCase()
             if (countStoreCoupons > 5) {
@@ -48,14 +48,11 @@ export class CouponStore implements ICouponStore{
             
             const totalItems = await this.coupon.countStoreCoupons(storeId)
             if (totalItems === 0) {
-                
-                throw new ErrorMessage({
-                    message:"here are no available coupons for this store.",
-                    status:404,
-                    action:"storeSelectCoupon",
-                    service:"CouponServices",
-                    context:{storeId}
-                })
+                return {
+                    datas:[],
+                    totalPages:1,
+                    currentPage:1
+                }
             }
     
             const {skip,currentPage,totalPages} =  pagination({
