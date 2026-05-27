@@ -88,23 +88,33 @@ export class ProductAdminRepository  implements IProductAdminRepository{
            
         })
     }
-    public async getStoreProducts({storeId,search,category,orderBy="desc",take,skip}:GetStoreProductsDTO):Promise<StoreProductsResults>{
+    public async getStoreProducts({storeId,search,category,orderBy="desc",take,skip,stockOrderBy}:GetStoreProductsDTO):Promise<StoreProductsResults>{
         const where:Prisma.ProductWhereInput =  {
             storeId,
             ...(category && { category }),
             ...(search && {
-                name: {
-                contains: search,
-                mode: 'insensitive'
+                    name: {
+                    contains: search,
+                    mode: 'insensitive'
                 }
-            })
+            }),
+    
         }
         const [products,totalItems] = await Promise.all([
             this.prisma.product.findMany({
                 where,
-                orderBy: {
-                    createdAt: orderBy
-                },
+                orderBy:[        
+                    {
+                        createdAt: 'desc'
+                    },
+                    {
+                        stock: 'desc'
+                    },
+                    {
+                        price: 'desc'
+                    }
+                ] ,
+            
                 take,
                 skip
             }),
