@@ -1,0 +1,65 @@
+import { calcSkipPages, pagination } from "@/helpers/pagination";
+import { IAdminOrderRep } from "../repository/orders.repository";
+import { LastOrdersPayload, SearchOrdersDTO, SearchOrdersResponse } from "../types/orders.types";
+import { ErrorMessage, getPrismaError } from "@/helpers/ErrorMessage";
+
+export type SearchOrderWithPage = Omit<SearchOrdersDTO, "pagination"> & {
+    page:number,
+    limit:number
+}
+export interface IAdminOrderService {
+    searchOrders({storeId,searchByOrderId,status,page,orderBy,limit}:SearchOrderWithPage):Promise<SearchOrdersResponse>
+    getLastOrders(storeId:number):Promise<LastOrdersPayload[]>
+}
+export class AdminOrderService implements IAdminOrderService{
+    constructor(protected orderRep:IAdminOrderRep){}
+
+   
+    async searchOrders({storeId,status,limit,orderBy="desc",page,searchByOrderId}:SearchOrderWithPage):Promise<SearchOrdersResponse>{
+         try{
+            const skip = calcSkipPages(page,limit)
+            
+            const {datas,pageInfo} =  await this.orderRep.search({
+                searchByOrderId,status,storeId,orderBy,pagination:{skip,limit}
+            })
+           
+            const {skip:skipPage,currentPage,totalPages} = pagination({
+                totalItems:pageInfo.totalItems,
+                page,limit
+            })
+
+        return {
+            datas,pagination:{
+                currentPage,skip:skipPage,totalPages
+            }
+        }
+        }catch(err:unknown){
+            
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to search orders.",
+                status:500,
+                prismaError,
+                service:"OrdersServices",
+                action:"searchOrders"
+            })
+        }
+    }
+    async getLastOrders(storeId:number):Promise<LastOrdersPayload[]>{
+        try{
+            const datas =  await this.orderRep.getLastOrders(storeId)
+            return datas
+        }catch(err:unknown){
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Failed to get store last orders.",
+                status:500,
+                service:"OrdersServices",
+                action:"getLastOrders",
+                prismaError
+            })
+        }
+    }
+    
+    
+}
