@@ -19,9 +19,10 @@ describe("ProductAdminRepository getStoresProducts",()=>{
     it("should return only products from the correct store",async()=>{
         const result = await admin.getStoreProducts({
             storeId:stores[0].id,
-            orderBy:'desc',
+            priceOrder:'desc',
             take:5,
-            skip:0
+            skip:0,
+            stockOrderBy:"desc"
         })
         expect(result).toHaveProperty('datas')
         expect(result).toHaveProperty('pageInfo')
@@ -35,11 +36,12 @@ describe("ProductAdminRepository getStoresProducts",()=>{
     it("should return only the product with the given name",async()=>{
         const result = await admin.getStoreProducts({
             storeId:stores[0].id,
-            orderBy:'desc',
+            priceOrder:'desc',
             take:5,
             skip:0,
-            search:productsByStore[0].name
-        })
+            search:productsByStore[0].name,
+            stockOrderBy:'asc'
+            })
         expect(result).toHaveProperty('datas')
         expect(result).toHaveProperty('pageInfo')
         
@@ -50,10 +52,11 @@ describe("ProductAdminRepository getStoresProducts",()=>{
     it("should return an empty array when no values match the criteria",async()=>{
           const result = await admin.getStoreProducts({
             storeId:stores[0].id,
-            orderBy:'desc',
+            priceOrder:'desc',
             take:5,
             skip:0,
-            search:'lotem irpsue te'
+            search:'lotem irpsue te',
+            stockOrderBy:"desc"
         })
         expect(result).toHaveProperty('datas')
         expect(result).toHaveProperty('pageInfo')
@@ -65,10 +68,11 @@ describe("ProductAdminRepository getStoresProducts",()=>{
     it("should return only products that match the categories",async()=>{
           const result = await admin.getStoreProducts({
             storeId:stores[0].id,
-            orderBy:'desc',
+            priceOrder:'desc',
             take:5,
             skip:0,
-            category:productsByStore[0].category
+            category:productsByStore[0].category,
+            stockOrderBy:"desc"
         })
         expect(result).toHaveProperty('datas')
         expect(result).toHaveProperty('pageInfo')

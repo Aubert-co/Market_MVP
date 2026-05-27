@@ -16,7 +16,7 @@ describe("getStoreProducts",()=>{
     })
     it("should call the service with all query params correctly",async()=>{
         const response = await supertest(app)
-        .get('/api/stores/1/products?page=15&search=shirt&category=Roupas&orderBy=asc&limit=10')
+        .get('/api/stores/1/products?page=15&search=shirt&category=Roupas&priceOrder=asc&limit=10&stockOrder=asc')
         .set('Cookie', [`token=${cookies}`])
 
         expect(response.body.message).toEqual('Success')
@@ -24,10 +24,11 @@ describe("getStoreProducts",()=>{
         expect(spyService).toHaveBeenCalledWith({
             search: "shirt",
             category: "Roupas",
-            orderBy: "asc",
+            priceOrder: "asc",
             take: 10,
             page: 15,
-            storeId:1
+            storeId:1,
+            stockOrderBy: "asc",
         })
     }) 
     it("should call the service correctly when no query params are provided",async()=>{
@@ -47,10 +48,11 @@ describe("getStoreProducts",()=>{
         expect(spyService).toHaveBeenCalledWith({
             search: undefined, 
             category: undefined,
-            orderBy: "desc",
+            priceOrder: "desc",
             take: 5,
             page: 1,
-            storeId:1
+            storeId:1,
+            stockOrderBy: "asc",
         })
     }) 
      it("should return an error when an invalid category is provided",async()=>{

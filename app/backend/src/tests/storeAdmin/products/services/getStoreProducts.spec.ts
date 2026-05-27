@@ -7,8 +7,8 @@ import { GetStoreProductsPage } from "@/modules/storeAdmin/products/products.typ
 
 describe("service getStoreProducts",()=>{
     const datas = {
-        storeId:3,category:"shirt",orderBy:"desc",search:"name",
-        take:5,page:2
+        storeId:3,category:"shirt",priceOrder:"desc",search:"name",
+        take:5,page:2,stockOrderBy:"asc"
     } satisfies GetStoreProductsPage
     const returnDatas = ["test"]
     it("should successfully call the repository and return the data and pagination correctly",async()=>{
@@ -24,7 +24,8 @@ describe("service getStoreProducts",()=>{
 
         expect(mockProductAdminRep.getStoreProducts).toHaveBeenCalledTimes(1)
         expect(mockProductAdminRep.getStoreProducts).toHaveBeenCalledWith({
-            storeId:3,category:"shirt",orderBy:"desc",search:"name",take:5,skip:5
+            storeId:3,category:"shirt",priceOrder:"desc",search:"name",take:5,skip:5,
+            stockOrderBy:"asc"
         })
         expect(result.datas).toEqual(returnDatas)
         expect(result.pagination.totalPages).toEqual(30/5)
