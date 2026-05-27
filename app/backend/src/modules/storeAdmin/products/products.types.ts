@@ -5,7 +5,7 @@ import { Prisma } from "@prisma/client";
 export type GetStoreProductsDTO = {
     storeId:number,
     category?:string,
-    orderBy:Orderby,
+    priceOrder:Orderby,
     search?:string,
     take:number,
     skip:number,
