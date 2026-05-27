@@ -1,13 +1,15 @@
 import { Products } from "@/modules/products/types/product.types";
+import { Orderby } from "@/types/global.types";
 import { Prisma } from "@prisma/client";
 
 export type GetStoreProductsDTO = {
     storeId:number,
     category?:string,
-    orderBy:"asc" | "desc",
+    orderBy:Orderby,
     search?:string,
     take:number,
-    skip:number
+    skip:number,
+    stockOrderBy?:Orderby
 }
 export type StoreProductsResults ={
     datas:StoreProducts[],
