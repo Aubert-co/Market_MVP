@@ -1,4 +1,4 @@
-import {  ProductAdminService } from "@/modules/storeAdmin/products/products.services"
+import {  ProductAdminService } from "@/modules/storeAdmin/products/services/products.services"
 import * as compress from "@/helpers/compressImages"
 
 

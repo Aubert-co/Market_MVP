@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { IProductService } from "../services/product.services";
 import {  checkIsAValidInteger } from "../../../helpers/checkIsValid";
-import { ErrorMessage } from "../../../helpers/ErrorMessage";
 import { getPage } from "@/helpers";
-import { validateFilterProducts } from "@/validators/index.validators";
+import { validateFilterProducts } from "../validators/products.validators";
 
 
 export class ProductsController{

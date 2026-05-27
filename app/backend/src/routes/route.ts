@@ -3,7 +3,7 @@ import products from '@/modules/products/routes/products.route'
 import storeRoute from '@/modules/storeAdmin/store/routes/store.route'
 import userCartRoute from '@/modules/userCart/routes/userCart.route'
 
-import productAdminRoute from '@/modules/storeAdmin/products/products.route'
+import productAdminRoute from '@/modules/storeAdmin/products/routes/products.route'
 import orderRoute from '@/modules/orders/route/order.route'
 import couponRoute from '@/modules/coupon/route/coupon.route'
 import reviewsRoute from '@/modules/reviews/routes/reviews.route'
@@ -11,7 +11,7 @@ import reviewsRoute from '@/modules/reviews/routes/reviews.route'
 import { makeUploadFile } from "@/config/imageUpload/uploadFIles";
 import { httpLogger } from "@/middleware/loggerHttp";
 import CouponStore from "@/modules/storeAdmin/coupon/coupon.route"
-import orderAdminRoute from "@/modules/storeAdmin/orders/orders.routes"
+import orderAdminRoute from "@/modules/storeAdmin/orders/routes/orders.routes"
 import Auth from "@/modules/auth/route/auth.route"
 import RouteTest from "./testes"
 const imageUpload = makeUploadFile()

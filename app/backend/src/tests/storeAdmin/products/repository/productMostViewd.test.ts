@@ -1,5 +1,5 @@
 import { prisma } from "@/database/prisma"
-import { ProductAdminRepository } from "@/modules/storeAdmin/products/products.repository"
+import { ProductAdminRepository } from "@/modules/storeAdmin/products/repository/products.repository"
 import { stores } from "@/tests/__fixtures__/stores"
 import { cleanAllDb, createViews, creatManyUsersStoresAndProducts, deleteViews } from "@/tests/__mocks__"
 

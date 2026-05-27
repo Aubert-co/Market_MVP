@@ -1,5 +1,5 @@
 import { Router,Request,Response,NextFunction } from "express"
-import { ValidateCredentials } from "@/middleware/validateCredentials"
+import { ValidateCredentials } from "@/modules/auth/middleware/validateCredentials"
 import { AuthUserController } from "../controller/auth.controller"
 import { UserService } from "../service/auth.service"
 import { UserRepository } from "../repository/auth.repository"

@@ -2,7 +2,7 @@ import app from "@/serve"
 import supertest from "supertest"
 import { VerifyStoreOwnership } from "@/middleware/verifyStoreOwnership"
 import { generateAccessToken } from "@/helpers/AuthTokens"
-import { ProductAdminRepository } from "@/modules/storeAdmin/products/products.repository"
+import { ProductAdminRepository } from "@/modules/storeAdmin/products/repository/products.repository"
 let checkStore = jest.spyOn(VerifyStoreOwnership.prototype,'handler')
 const cookies =  generateAccessToken(1)
 

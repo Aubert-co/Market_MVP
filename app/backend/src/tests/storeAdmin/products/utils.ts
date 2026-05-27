@@ -1,4 +1,4 @@
-import { IProductAdminRepository } from "@/modules/storeAdmin/products/products.repository";
+import { IProductAdminRepository } from "@/modules/storeAdmin/products/repository/products.repository";
 import { IImageUploadService } from "@/config/imageUpload/ImageUploadService";
 
 export const mockProductAdminRep = {

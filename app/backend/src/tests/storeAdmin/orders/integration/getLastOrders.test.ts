@@ -5,7 +5,7 @@ import request from 'supertest'
 import { manyUsers } from '@/tests/__fixtures__/users'
 import { stores } from '@/tests/__fixtures__/stores'
 import { orders } from '@/tests/__fixtures__/orders'
-import { AdminOrderService } from '@/modules/storeAdmin/orders/orders.services'
+import { AdminOrderService } from '@/modules/storeAdmin/orders/services/orders.services'
 import { VerifyStoreOwnership } from '@/middleware/verifyStoreOwnership'
 import { NextFunction, Request, Response } from 'express'
 

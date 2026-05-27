@@ -1,6 +1,6 @@
-import {  ProductAdminService } from "@/modules/storeAdmin/products/products.services"
+import {  ProductAdminService } from "@/modules/storeAdmin/products/services/products.services"
 import { mockImgUpload, mockProductAdminRep } from "../utils"
-import { GetStoreProductsPage } from "@/modules/storeAdmin/products/products.types"
+import { GetStoreProductsPage } from "@/modules/storeAdmin/products/types/products.types"
 
 
 

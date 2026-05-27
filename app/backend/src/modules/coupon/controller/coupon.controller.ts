@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ICouponService } from "../services/coupon.services";
 import { checkIsAValidNumber } from "@/helpers/checkIsValid";
+import { ErrorMessage } from "@/helpers/ErrorMessage";
 
 
 
@@ -13,9 +14,13 @@ export class CouponController{
         try{
             const couponId = req.body?.couponId
             if(!checkIsAValidNumber(couponId)){
-                return res.status(400).send({
-                    message: "Invalid coupon ID. It must be a valid number."
-                });
+                throw new ErrorMessage({
+                    message:"Invalid coupon ID. It must be a valid number.",
+                    status:400,
+                    action:"userAddCoupon",
+                    service:"CouponController"
+                })
+               
             }
             const userId = req.user
             await this.coupon.userAddCoupon(couponId,userId)

@@ -1,6 +1,6 @@
 import { ErrorMessage } from "@/helpers/ErrorMessage"
 import { prisma } from "@/database/prisma"
-import { ProductAdminRepository } from "@/modules/storeAdmin/products/products.repository"
+import { ProductAdminRepository } from "@/modules/storeAdmin/products/repository/products.repository"
 import { stores } from "@/tests/__fixtures__/stores"
 import { createOneStore, createOneUser, creatManyUsersStoresAndProducts, deleteProduct, deleteStore, deleteUser } from "@/tests/__mocks__"
 

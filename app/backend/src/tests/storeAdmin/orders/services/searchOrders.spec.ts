@@ -1,6 +1,6 @@
 import { ErrorMessage } from "@/helpers/ErrorMessage";
-import { AdminOrderService } from "@/modules/storeAdmin/orders/orders.services";
-import { SearchOrdersDTO } from "@/modules/storeAdmin/orders/orders.types";
+import { AdminOrderService } from "@/modules/storeAdmin/orders/services/orders.services";
+import { SearchOrdersDTO } from "@/modules/storeAdmin/orders/types/orders.types";
 
 
 const mockRepository = {

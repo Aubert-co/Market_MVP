@@ -1,5 +1,5 @@
 import { prisma } from "@/database/prisma";
-import { AdminOrderRep } from "@/modules/storeAdmin/orders/orders.repository";
+import { AdminOrderRep } from "@/modules/storeAdmin/orders/repository/orders.repository";
 import { cleanAllDb, createManyOrders, deleteOrders, createCoupons, creatManyUsersStoresAndProducts, cleanCoupons } from "@/tests/__mocks__";
 import { orders } from "@/tests/__fixtures__/orders";
 import { couponsDatas } from "@/tests/__fixtures__/coupons";

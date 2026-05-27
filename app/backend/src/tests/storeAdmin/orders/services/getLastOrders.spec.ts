@@ -1,5 +1,5 @@
 import { ErrorMessage } from "@/helpers/ErrorMessage";
-import { AdminOrderService } from "@/modules/storeAdmin/orders/orders.services";
+import { AdminOrderService } from "@/modules/storeAdmin/orders/services/orders.services";
 
 
 const mockRepository = {

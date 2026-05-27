@@ -1,55 +1,17 @@
-import { checkIsAValidNumber, checkIsAValidInteger } from "../../../helpers/checkIsValid";
-import { ErrorMessage } from "../../../helpers/ErrorMessage";
 import { OrderService } from "../../orders/services/order.services";
-import { OrderProductInput } from "../types/order.types";
 import { NextFunction, Request, Response } from "express";
+import { orderValidator } from "../validators/order.validators";
 
 export class OrdersController{
     constructor(protected order:OrderService){}
 
     public async userCreateOrder(req:Request,res:Response,next:NextFunction):Promise<any>{
 
-        const order = req.body?.order
-
-        if (!Array.isArray(order) || order.length === 0) {
-     
-            throw new ErrorMessage({
-                message:"Invalid order payload: expected a non-empty array of items.",
-                status:400,
-                action:"userCreateOrder",
-                service:"OrdersController",
-            })
-        }
-
-        const items = order.map((val:any)=>{
-            if (!checkIsAValidInteger(val.productId) || !checkIsAValidInteger(val.quantity)) {
-               throw new ErrorMessage({
-                    message:"Invalid product ID or quantity. Both must be valid numbers.",
-                    status:400,
-                    action:"userCreateOrder",
-                    service:"OrdersController", 
-                })
-            }
-
-            if (val.couponId && !checkIsAValidInteger(val.couponId)) {
-            
-                 throw new ErrorMessage({
-                    message:"Invalid coupon ID. It must be a valid number.",
-                    status:400,
-                    action:"userCreateOrder",
-                    service:"OrdersController", 
-                })
-            }
-            if(!val.couponId){
-                return{ productId:Number(val.productId),quantity:Number(val.quantity)}
-            }
-            return {productId:Number(val.productId),quantity:Number(val.quantity),
-                ...(val.couponId && { couponId: Number(val.couponId) })
-            }
-        }) as OrderProductInput[]
+        
         const userId = req.user
         try{
-            await this.order.createOrder({userId,items})
+            const {ordersInput} = orderValidator(req)
+            await this.order.createOrder({userId,items:ordersInput})
             res.status(201).send({message:'Sucess'})
         }catch(err:any){
             next(err)

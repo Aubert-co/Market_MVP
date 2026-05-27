@@ -1,7 +1,7 @@
 import app from "@/serve";
 import supertest from "supertest";
 import { generateAccessToken } from "@/helpers/AuthTokens";
-import { ProductAdminService } from "@/modules/storeAdmin/products/products.services";
+import { ProductAdminService } from "@/modules/storeAdmin/products/services/products.services";
 import { VerifyStoreOwnership } from "@/middleware/verifyStoreOwnership"
 const cookies =  generateAccessToken(1)
 const spyService = jest.spyOn(ProductAdminService.prototype,'getStoreProducts')
