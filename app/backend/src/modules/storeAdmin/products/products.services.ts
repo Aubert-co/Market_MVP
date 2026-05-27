@@ -15,7 +15,7 @@ export interface IProductAdminService{
         stock ,fileBuffer,originalName ,mimeType }:CreateProductDTO
     ): Promise<void>
     productMostViewed(storeId:number):Promise<productMostViewedResult[]>
-   getStoreProducts({storeId,search,category,orderBy,take,page}:GetStoreProductsPage ):Promise<GetStoreProductResult>
+   getStoreProducts({storeId,search,category,priceOrder,take,page}:GetStoreProductsPage ):Promise<GetStoreProductResult>
 }
 
 
@@ -24,11 +24,11 @@ export class ProductAdminService  implements IProductAdminService{
     constructor(protected product:IProductAdminRepository ,protected storage:IImageUploadService){
         
     }
-    public async getStoreProducts({ storeId, search, category, orderBy, take ,page}: GetStoreProductsPage): Promise<GetStoreProductResult> {
+    public async getStoreProducts({ storeId, search, category, priceOrder, take ,page,stockOrderBy}: GetStoreProductsPage): Promise<GetStoreProductResult> {
        try{
         const skip = calcSkipPages(page,take)
         const {datas,pageInfo} =  await this.product.getStoreProducts({
-            storeId,skip,search,category,orderBy,take,
+            storeId,skip,search,category,priceOrder,take,stockOrderBy
         })
         const {skip:skipPage,currentPage,totalPages}=pagination({
             totalItems:pageInfo.totalItems,page,limit:take

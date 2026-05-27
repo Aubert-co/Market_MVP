@@ -9,7 +9,7 @@ export interface IProductAdminRepository{
     }):Promise<number>,
     desactiveProduct(storeId:number,productId:number):Promise<void>,
     countStoreProducts(storeId:number):Promise<number>
-    getStoreProducts({storeId,orderBy,search,category}:GetStoreProductsDTO):Promise<StoreProductsResults>
+    getStoreProducts({storeId,priceOrder,search,category}:GetStoreProductsDTO):Promise<StoreProductsResults>
     productMostViewed(storeId:number):Promise<productMostViewedResult[]>,
     deleteProduct(productId:number):Promise<void>
 }
@@ -88,7 +88,7 @@ export class ProductAdminRepository  implements IProductAdminRepository{
            
         })
     }
-    public async getStoreProducts({storeId,search,category,orderBy="desc",take,skip,stockOrderBy}:GetStoreProductsDTO):Promise<StoreProductsResults>{
+    public async getStoreProducts({storeId,search,category,priceOrder,take,skip,stockOrderBy}:GetStoreProductsDTO):Promise<StoreProductsResults>{
         const where:Prisma.ProductWhereInput =  {
             storeId,
             ...(category && { category }),
@@ -108,10 +108,10 @@ export class ProductAdminRepository  implements IProductAdminRepository{
                         createdAt: 'desc'
                     },
                     {
-                        stock: 'desc'
+                        stock: stockOrderBy
                     },
                     {
-                        price: 'desc'
+                        price: priceOrder
                     }
                 ] ,
             
