@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { StatusOrder } from '../../orders/types/order.types'
+import { StatusOrder } from '@/modules/orders/types/order.types'
 
 
 export type LastOrdersPayload = Prisma.OrderGetPayload<{
