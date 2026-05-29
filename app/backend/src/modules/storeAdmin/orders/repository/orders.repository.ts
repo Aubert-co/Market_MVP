@@ -1,11 +1,12 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import {  LastOrdersPayload, SearchOrdersDTO , SearchOrdersReturn} from "../types/orders.types";
+import { StatusOrder } from "@/modules/orders/types/order.types";
 
 
 
 export interface IAdminOrderRep{
    search({searchByOrderId,storeId,status,orderBy,pagination}:SearchOrdersDTO):Promise<SearchOrdersReturn>
-   getLastOrders(storeId:number):Promise<LastOrdersPayload[]>
+   getLastOrders(storeId:number,status?:StatusOrder):Promise<LastOrdersPayload[]>
 }
 
 export class AdminOrderRep implements IAdminOrderRep{
@@ -65,10 +66,11 @@ export class AdminOrderRep implements IAdminOrderRep{
             } 
     } 
     
-    public async getLastOrders(storeId:number):Promise<LastOrdersPayload[]>{
+    public async getLastOrders(storeId:number,status?:StatusOrder):Promise<LastOrdersPayload[]>{
         return await this.prisma.order.findMany({
             where:{
-                product:{storeId}
+                product:{storeId},
+                ...(status && { status })
             },
         orderBy:{
             createdAt:'desc'
