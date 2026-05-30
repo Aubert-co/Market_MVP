@@ -9,7 +9,7 @@ export interface IStoreRepository{
     findByName(storeName:string):Promise<any>,
     selectUserStores(userId:number):Promise<Store[] >,
     getProductsByStoreId(storeId:number,skip:number,limit:number):Promise< ProductWithCountsAndRatings[] >
-    countProductStore(storeId:number):Promise<number >,
+    countProductStore(storeId:number,isActive?:boolean):Promise<number >,
 }
 
 
@@ -91,10 +91,13 @@ export class StoreRepository implements IStoreRepository{
             })
         }
     }
-    public async countProductStore(storeId:number):Promise<number>{
+    public async countProductStore(storeId:number,isActive?:boolean):Promise<number>{
         try{
             return await this.prisma.product.count({
-                where:{storeId}
+                where:{
+                    storeId,
+                    ...(isActive && {isActive})
+                },
             })
         }catch(err:unknown){
             const prismaError = getPrismaError("err")
@@ -110,4 +113,5 @@ export class StoreRepository implements IStoreRepository{
             })
         }
     }
+    
 }
