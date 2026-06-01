@@ -52,7 +52,12 @@ export class StoreCouponRep implements IStoreCouponRep{
     public async countStoreCoupons(storeId:number):Promise<number>{
             try{
                 return await this.prisma.coupon.count({
-                    where:{storeId}
+                    where:{
+                        storeId,
+                        expiresAt:{
+                            gt:now
+                        }
+                    }
                 })
             }catch(err:unknown){
                 
