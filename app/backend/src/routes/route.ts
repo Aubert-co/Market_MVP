@@ -7,7 +7,7 @@ import productAdminRoute from '@/modules/storeAdmin/products/routes/products.rou
 import orderRoute from '@/modules/orders/route/order.route'
 import couponRoute from '@/modules/coupon/route/coupon.route'
 import reviewsRoute from '@/modules/reviews/routes/reviews.route'
-//import storeDashboard from '@/modules/storeAdmin/store/routes/storeDash.route'
+import storeDashboard from "@/modules/storeAdmin/store/routes/storeDash.route"
 import { makeUploadFile } from "@/config/imageUpload/uploadFIles";
 import { httpLogger } from "@/middleware/loggerHttp";
 import CouponStore from "@/modules/storeAdmin/coupon/coupon.route"
@@ -31,9 +31,9 @@ if(isTestE2E){
   console.log("testes e2e estao lgiados")
   route.use(RouteTest)
 }
-//route.use(storeDashboard)
-route.use('/api',CouponStore)
 
+route.use('/api',CouponStore)
+route.use('/api',storeDashboard)
 route.get('/images/:filename', async (req, res) => {
   const { filename } = req.params;
 
