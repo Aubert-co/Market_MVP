@@ -1,7 +1,9 @@
 import { prisma } from "../../database/prisma"
 import { Order } from "../../modules/orders/types/order.types"
+import { manyCartItems } from "../__fixtures__/cart"
 import { orders } from "../__fixtures__/orders"
 import { products, productsByStore } from "../__fixtures__/products"
+import { manyReviews } from "../__fixtures__/reviews"
 import { stores } from "../__fixtures__/stores"
 import { manyUsers } from "../__fixtures__/users"
 import { views } from "../__fixtures__/views"
@@ -75,7 +77,11 @@ export const cleanOrders = async():Promise<void>=>{
         }
     })
 }
-
+export const createManyCartItems = async():Promise<void>=>{
+    await prisma.cartitem.createMany({
+        data:manyCartItems
+    })
+}
 export const createOrder = async({productId,price,id,userId,total,quantity,status}:CreateOrderDto):Promise<void>=>{
     await prisma.order.create({
         data:{
@@ -137,7 +143,11 @@ export const addCouponUsage = async(data:ParamCouponUsage[]):Promise<DatasCoupon
         data
     })
 }
-
+export const createManyReviews = async()=>{
+    await prisma.review.createMany({
+        data:manyReviews
+    })
+}
 export const deleteReviewAndComments = async():Promise<void>=>{
     await prisma.review.deleteMany({
         where:{
