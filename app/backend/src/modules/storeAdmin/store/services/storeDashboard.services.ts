@@ -1,48 +1,60 @@
-/*import { IOrdersRepository } from "../../orders/orders.repository"
-import { IStoreDashboardRep } from "../repository/storeDashboard.repository"
-import { StoreDashOrders } from "../types/storedashboard.types"
+import { IStoreCouponRep } from "../../coupon/coupon.repository";
+import { IAdminOrderRep } from "../../orders/repository/orders.repository";
+import { LastOrdersPayload } from "../../orders/types/orders.types";
+import { IStoreRepository } from "../repository/store.repository";
+import { IStoreDashboardRep } from "../repository/storeDashboard.repository";
 
-
-export interface IStoreDashoard {
-    getDashboard(storeId:number):Promise<GetDashboard>
+type MetricResult<T> = {
+    value:T,
+    hasError:boolean
 }
-type GetDashboard = {
-    orders:{
-        completed:number | null,
-        pending:number | null ,
-        cancelled:number | null ,
-        lastPending:StoreDashOrders[] |  []
+export type DashboardResult = {
+    views: MetricResult<number>;
+    revenue: MetricResult<number>;
+    openOrders: MetricResult<LastOrdersPayload[]>;
+    countActiveProducts:MetricResult<number>,
+    totalActiveCoupons:MetricResult<number>,
+    reviews:{
+        averageRating:MetricResult<number>,
+        totalReviews:MetricResult<number>
     },
-    views:{
-        total:number | null
-    }
+    productsInCart:MetricResult<number>
 }
-export class StoreDashboardService implements IStoreDashoard{
-    constructor(protected storeDashboard:IOrdersRepository){}
+export interface IStoreDashboardService  {
+    dashboard(storeId:number):Promise<DashboardResult>
+}
+export class StoreDashboardService {
+    constructor(
+        protected order: IAdminOrderRep,
+        protected storeDashboard: IStoreDashboardRep,
+        protected storeAdmin:IStoreRepository,
+        protected couponsAdmin:IStoreCouponRep
+    ) {}
 
-    public async getDashboard(storeId:number):Promise<GetDashboard>{
-        const   [ countCompletedOrders,countPendingOrders,
-                countCancelledOrders,getTotalViews,pendingOrders
-            ] =
-            await Promise.allSettled([
-                this.storeDashboard.countOrders('completed',storeId),
-                this.storeDashboard.countOrders('pending',storeId),
-                this.storeDashboard.countOrders('cancelled',storeId),
-                this.storeDashboard.getTotalViews(storeId),
-                this.storeDashboard.getStoreOrders('pending',storeId)
-            ]);
-           
+    async dashboard(storeId: number): Promise<DashboardResult> {
+        const [totalViews, monthlyRevenue, openOrders,countActiveProducts,countCoupons,averageReviews,countReviews,productsInCart] =
+         await Promise.allSettled([
+            this.storeDashboard.getTotalViews(storeId),
+            this.storeDashboard.getMonthlyRevenue(storeId),
+            this.order.getLastOrders(storeId, "pending"),
+            this.storeAdmin.countProductStore(storeId,true),
+            this.couponsAdmin.countStoreCoupons(storeId),
+            this.storeDashboard.averageReviews(storeId),
+            this.storeDashboard.countReviews(storeId),
+            this.storeDashboard.countUserProductsInCart(storeId)
+        ]);
         
         return {
-             orders: {
-                completed: countCompletedOrders.status==="fulfilled" ?countCompletedOrders.value : 0,
-                pending: countPendingOrders.status === "fulfilled" ? countPendingOrders.value : 0,
-                cancelled: countCancelledOrders.status === "fulfilled" ? countCancelledOrders.value : 0,
-                lastPending: pendingOrders.status ==="fulfilled" ? pendingOrders.value : [],
+            views: totalViews.status === "fulfilled" ? {value:totalViews.value,hasError:false} : {value:0,hasError:true},
+            revenue: monthlyRevenue.status === "fulfilled" ? {value:monthlyRevenue.value,hasError:false} : {value:0,hasError:true},
+            openOrders: openOrders.status === "fulfilled" ? {value:openOrders.value,hasError:false} : {value:[],hasError:true},
+            countActiveProducts:countActiveProducts.status === "fulfilled" ? {value:countActiveProducts.value,hasError:false} :{ value:0,hasError:true},
+            totalActiveCoupons:countCoupons.status==="fulfilled" ? {value:countCoupons.value,hasError:false}:{value:0,hasError:true},
+            reviews:{
+                averageRating:averageReviews.status==="fulfilled" ? {value:averageReviews.value,hasError:false} : {value:0,hasError:true},
+                totalReviews:countReviews.status==="fulfilled" ? {value:countReviews.value,hasError:false} : {value:0,hasError:true}
             },
-            views: {
-                total: getTotalViews.status === "fulfilled" ? getTotalViews.value :0 ,
-            },
-        }
+            productsInCart:productsInCart.status === "fulfilled" ? {value:productsInCart.value,hasError:false} : {value:0,hasError:true}
+        };
     }
-}*/
+}
