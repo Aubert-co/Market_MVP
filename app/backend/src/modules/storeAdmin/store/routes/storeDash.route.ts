@@ -1,23 +1,26 @@
-/*import { StoreDashboardRep } from "../repository/storeDashboard.repository";
+import { makeVerifyStoreMiddle } from "@/factory/makeVerifyStoreMiddle";
+import { Auth } from "@/middleware/auth";
+import { NextFunction, Request, Response, Router } from "express";
+import { StoreDashboardController } from "../controller/storeDash.controller";
 import { StoreDashboardService } from "../services/storeDashboard.services";
-import { StoreDashController } from "../controller/storeDash.controller";
-import { prisma } from "../../../../lib/prisma";
-import { NextFunction, Response, Router,Request } from "express";
-import { Auth } from "../../../../middleware/auth";
-import { makeVerifyStoreMiddle } from "../../../../factory/makeVerifyStoreMiddle";
+import { StoreDashboardRep } from "../repository/storeDashboard.repository";
+import { prisma } from "@/database/prisma";
+import { AdminOrderRep } from "../../orders/repository/orders.repository";
+import { StoreRepository } from "../repository/store.repository";
+import { StoreCouponRep } from "../../coupon/coupon.repository";
 
-const dashboardRepository = new StoreDashboardRep(prisma)
-
-
-const dashboardService = new StoreDashboardService(dashboardRepository)
-const dashboardController = new StoreDashController( dashboardService )
-const verifyStoreOwnership = makeVerifyStoreMiddle()
 const route = Router()
 
-route.get('/store/dashboard/:storeId',
-    [Auth,
-        (req:Request,res:Response,next:NextFunction)=>verifyStoreOwnership.handler(req,res,next)],
-    (req:Request,res:Response,next:NextFunction)=>dashboardController.getDashboard(req,res,next)
-)
+const orderAdminRep = new AdminOrderRep(prisma)
+const storeDashboardRep = new StoreDashboardRep(prisma)
+const storeAdminRep = new StoreRepository(prisma)
+const couponsAdmin  =new StoreCouponRep(prisma)
+const storeService = new StoreDashboardService(orderAdminRep,storeDashboardRep,storeAdminRep,couponsAdmin)
+const storeDashboard = new StoreDashboardController(storeService)
+route.use(Auth)
+route.get('/store/dashboard/:storeId',[(req:Request,res:Response,next:NextFunction)=>makeVerifyStoreMiddle().handler(req,res,next)]
+,[
+    (req:Request,res:Response,next:NextFunction)=>storeDashboard.dashboard(req,res,next)
+])
 
-export default route */
+export default route
