@@ -3,7 +3,7 @@ import app from '../../../serve'
 import *as database from '../../../database/prisma'
 
 import { categories } from '../../../helpers'
-jest.useFakeTimers()
+
 const mock = jest.spyOn(database.prisma.product,'findMany')
 const endpoint = "/api/product/search"
  const datas = [{
@@ -65,6 +65,15 @@ describe("POST /product/filter - when user sends invalid inputs",()=>{
 
         expect( response.status).toEqual(400)
         expect( response.body.message).toEqual("Invalid minimum price value")
+        expect( mock ).not.toHaveBeenCalled()
+    })
+     it("should return an error when the minPrice is greater than maxPrice",async()=>{
+        const response = await supertest(app)
+        .get(`${endpoint}?minPrice=500&maxPrice=100`)
+        
+
+        expect( response.status).toEqual(400)
+        expect( response.body.message).toEqual("Minimum price cannot be greater than maximum price")
         expect( mock ).not.toHaveBeenCalled()
     })
     it("should return 'Invalid category provided' error when all inputs are invalid",async()=>{
