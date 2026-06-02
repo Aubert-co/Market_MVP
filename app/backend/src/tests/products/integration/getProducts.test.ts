@@ -165,10 +165,10 @@ describe("db errors",()=>{
         jest.spyOn(prisma,'$transaction').mockRejectedValueOnce(new Error('Simulated DB error: Connection lost.'));
         
         const response = await request(app)
-        .get('/product/page/1')
-        
+        .get('/api/product?page=1')
+         expect(response.body.message).toEqual('An unexpected error occurred. Please try again later.')
         expect(response.status).toEqual(500)
-        expect(response.body.message).toEqual('An unexpected error occurred. Please try again later.')
+       
        
         
     })
