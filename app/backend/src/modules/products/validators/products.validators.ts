@@ -24,7 +24,7 @@ export const validateFilterProducts = (req:Request):FilterProductsInput=>{
             action:"filterProducts"
         })
     }
-    if(nameStr && !checkisAValidString(name)){
+    if(nameStr && !checkisAValidString(nameStr)){
         throw new ErrorMessage({
             message:"Invalid name format",
             status:400,
@@ -46,6 +46,18 @@ export const validateFilterProducts = (req:Request):FilterProductsInput=>{
             status:400,
             service:"ValidatorfilterProducts",
             action:"filterProducts"
+        })
+    }
+    if (
+        minPrice &&
+        maxPrice &&
+        Number(minPrice) > Number(maxPrice)
+    ) {
+        throw new ErrorMessage({
+            message: "Minimum price cannot be greater than maximum price",
+            status: 400,
+            service: "ValidatorfilterProducts",
+            action: "filterProducts"
         })
     }
     return {
