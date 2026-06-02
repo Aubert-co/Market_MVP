@@ -12,7 +12,7 @@ import { calcSkipPages, pagination } from "@/helpers/pagination";
 export interface IProductAdminService{
     createProduct( {category, name, description,
         storeId, price, 
-        stock ,fileBuffer,originalName ,mimeType }:CreateProductDTO
+        stock ,fileBuffer ,mimeType }:CreateProductDTO
     ): Promise<void>
     productMostViewed(storeId:number):Promise<productMostViewedResult[]>
    getStoreProducts({storeId,search,category,priceOrder,take,page}:GetStoreProductsPage ):Promise<GetStoreProductResult>
@@ -68,7 +68,7 @@ export class ProductAdminService  implements IProductAdminService{
     }
     public async createProduct( {category, name, description,
         storeId, price, 
-        stock ,fileBuffer,originalName ,mimeType }:CreateProductDTO
+        stock ,fileBuffer ,mimeType }:CreateProductDTO
     ): Promise<void> {
         
         const countProducts = await this.product.countStoreProducts(storeId)
@@ -83,7 +83,7 @@ export class ProductAdminService  implements IProductAdminService{
                 }
             })
         }
-        const imageUrl = generateImgPath(originalName)
+        const imageUrl = generateImgPath()
         
         const compressBuff:FuncReturn<Buffer> = await retry({
             func:compressImage,

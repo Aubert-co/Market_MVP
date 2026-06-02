@@ -1,6 +1,8 @@
 import { NextFunction, Response,Request } from "express";
 import { StoreService } from "../services/store.services";
 import { checkIsAValidInteger } from "../../../../helpers/checkIsValid";
+import { checkIsValidImage } from "@/helpers/checkIsValidImage";
+import { ErrorMessage } from "@/helpers/ErrorMessage";
 
 
 
@@ -32,17 +34,30 @@ export class StoreAdminController{
     }
     public async CreateStore(req:Request,res:Response,next:NextFunction):Promise<any>{
         try{
-            if (!req.file ){
-                return res.status(422).send({message:"Invalid or missing image file."});
+            
+            if (
+                !req.file ||
+                !checkIsValidImage({
+                    fileBuffer: req.file.buffer,
+                    mimeType: req.file.mimetype,
+                    originalFileName: req.file.originalname,
+                })
+                ) {
+                    throw new ErrorMessage({
+                        message:"Invalid or missing image file.",
+                        status:422,
+                        action:"CreateStore",
+                        service:"StoreAdminController"
+                    })
             }
  
         
             const {name,description} = req.body
             const userId = req.user;
-            const {buffer,originalname,mimetype} = req.file
+            const {buffer,mimetype} = req.file
             
             await this.storeService.createStore({name,description,
-                userId,buffer,originalName:originalname,mimeType:mimetype
+                userId,fileBuffer:buffer,mimeType:mimetype
             })
             res.status(201).send({message:"Store sucessfully created"})
         }catch(error:any){

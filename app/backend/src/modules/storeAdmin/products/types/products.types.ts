@@ -42,7 +42,6 @@ export type productMostViewedResult = Prisma.ProductGetPayload<{
 export type CreateProductDTO = Products & {
     mimeType:string,
     fileBuffer:Buffer,
-    originalName:string
 }
 export type GetStoreProductsPage = Omit<GetStoreProductsDTO,"skip"> &{
     page:number,
