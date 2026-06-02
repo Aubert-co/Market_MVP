@@ -43,12 +43,10 @@ export class ProductsController{
     public async filterProducts(req:Request,res:Response,next:NextFunction):Promise<any>{
         try{
             const {name,category,maxPrice,minPrice,orderBy} = validateFilterProducts(req)
-          
             const datas = await this.products.filterProduct({
                 name,category,maxPrice,minPrice,take:10,
                 skip:0,orderBy
             })
-       
             res.status(200).send({message:'Sucess',datas})
         }catch(err:unknown){
             next(err)

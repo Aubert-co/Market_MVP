@@ -5,12 +5,14 @@ import { IStoreRepository } from "../repository/store.repository"
 import { Store } from "../types/store.types";
 import { Product } from "../../../products/types/product.types";
 import { makeUploadFile } from "../../../../config/imageUpload/uploadFIles";
+import { compressImage } from "@/helpers/compressImages";
+import { FuncReturn, retry } from "@/helpers/retry";
 
 
 
 const storage = makeUploadFile()
 export interface IStoreService{
-    createStore({userId,name,description,buffer,originalName,mimeType}:CreateStoreParams): Promise<void>,
+    createStore({userId,name,description,fileBuffer,mimeType}:CreateStoreParams): Promise<void>,
     checkOwnerShip(storeId:number,userId:number):Promise<boolean>,
     findByName(storeName:string):Promise<boolean>,
     selectUserStores(userId:number):Promise<Store[]>,
@@ -21,8 +23,8 @@ type CreateStoreParams = {
     userId:number,
     name:string,
     description:string,
-    buffer:Buffer,
-    originalName:string,
+    fileBuffer:Buffer,
+ 
     mimeType:string
 }
 type GetProductByStore ={
@@ -34,11 +36,11 @@ export class StoreService implements IStoreService{
    
     constructor(protected storeRepository:IStoreRepository){}
   
-    public async createStore ({name,description,userId,buffer,
-        originalName,mimeType
+    public async createStore ({name,description,userId,fileBuffer,
+        mimeType
     }:CreateStoreParams):Promise<void>{
        
-        const newUrlPath = generateImgPath(originalName)
+        const newUrlPath = generateImgPath()
         
         const existsStoreName = await this.storeRepository.findByName( name )
         if(existsStoreName){
@@ -58,19 +60,39 @@ export class StoreService implements IStoreService{
             })
             
         }
-        
-        await this.storeRepository.createStore({
+        const compressBuff:FuncReturn<Buffer> = await retry({
+            func:compressImage,
+            body:{fileBuffer},
+            retries:2
+        })
+        if(!compressBuff.success || compressBuff.data===undefined ){
+            throw new ErrorMessage({
+                message:"Failed to compress.",
+                action:"compressImage",
+                service:"ProductAdminService",
+                status:500
+            })
+        }
+        const storeId = await this.storeRepository.createStore({
             storeName:name,
             userId,
             photo:newUrlPath,
             description
         })
-        await storage.uploadImage({
-            fileBuffer:buffer,
+        const isFileUpload = await storage.uploadImage({
+            fileBuffer:compressBuff.data,
             urlPath:newUrlPath,
             mimeType
         })
-       
+        if(!isFileUpload.success){
+            await this.storeRepository.deleteStore(storeId)
+            throw new ErrorMessage({
+                message:"Failed to save image.",
+                service:"ProductAdminService",
+                action:"uploadImage",
+                status:500
+            })
+        }
     }
     public async findByName(storeName:string):Promise<boolean>{
         try{
