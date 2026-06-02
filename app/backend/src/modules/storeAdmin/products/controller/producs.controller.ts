@@ -42,7 +42,6 @@ export class ProductAdminController{
                 stock:Number(stock),
                 storeId:Number(storeId),
                 fileBuffer:buffer,
-                originalName:originalname,
                 mimeType:mimetype,
             })
 
