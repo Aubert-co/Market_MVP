@@ -4,12 +4,13 @@ import { ErrorMessage, getPrismaError } from "../../../../helpers/ErrorMessage";
 import {  ProductWithCountsAndRatings } from "../../../products/types/product.types";
 
 export interface IStoreRepository{
-    createStore(data:{storeName:string,userId:number,description:string,photo:string}):Promise<void>,
+    createStore(data:{storeName:string,userId:number,description:string,photo:string}):Promise<number>,
     checkStoreOwnerShip(storeId:number):Promise<any>,
     findByName(storeName:string):Promise<any>,
     selectUserStores(userId:number):Promise<Store[] >,
     getProductsByStoreId(storeId:number,skip:number,limit:number):Promise< ProductWithCountsAndRatings[] >
     countProductStore(storeId:number,isActive?:boolean):Promise<number >,
+    deleteStore(storeId:number):Promise<void>
 }
 
 
@@ -17,16 +18,17 @@ export class StoreRepository implements IStoreRepository{
     
     constructor(protected prisma:PrismaClient){}
  
-    public async createStore(data:{storeName:string,userId:number,description:string,photo:string}):Promise<void>{
+    public async createStore(data:{storeName:string,userId:number,description:string,photo:string}):Promise<number>{
        
        try{
-            await this.prisma.store.create(
+            const store = await this.prisma.store.create(
                 {data:{
                 name:data.storeName,
                 userId:data.userId,
                 description:data.description,
                 photo:data.photo
             }})  
+            return store.id
        }catch(err:unknown){
       
             const prismaError = getPrismaError(err)
@@ -43,6 +45,13 @@ export class StoreRepository implements IStoreRepository{
         }
        
     } 
+    public async deleteStore(storeId:number):Promise<void>{
+        await this.prisma.store.delete({
+            where:{
+                id:storeId
+            }
+        })
+    }
     public async checkStoreOwnerShip(storeId:number):Promise<any>{
         
         const datas =  await this.prisma.store.findUnique({
