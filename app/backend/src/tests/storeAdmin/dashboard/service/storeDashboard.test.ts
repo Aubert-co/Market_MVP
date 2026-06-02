@@ -22,7 +22,8 @@ const spyStoreAdmin = {
     checkStoreOwnerShip:jest.fn(),
     createStore:jest.fn(),
     findByName:jest.fn(),
-    getProductsByStoreId:jest.fn()
+    getProductsByStoreId:jest.fn(),
+    deleteStore:jest.fn()
 } as IStoreRepository
 const spyCouponsAdmin ={
 storeCreateCoupon:jest.fn(),
