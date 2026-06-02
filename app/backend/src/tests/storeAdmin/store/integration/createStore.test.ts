@@ -5,16 +5,17 @@ import path from "path"
 import { prisma } from "@/database/prisma"
 import { cleanAllDb, deleteStore, deleteUser } from "@/tests/__mocks__"
 import { generateAccessToken } from '@/helpers/AuthTokens'
-
+import * as compressImage from "@/helpers/compressImages"
 const cookies =  generateAccessToken(1)
 const cookieWithouStore = generateAccessToken(2)
-
+const  spyCompress=jest.spyOn(compressImage,'compressImage')
 const checkExistsStore = async()=>{
     const count = await prisma.store.count()
     return count
 }
 const endpoint = "/api/stores"
 const spyFileUpload = jest.spyOn(ImageUploadService.prototype,'uploadImage')
+
 const IMAGEJPG =  path.join(process.cwd(), 'src/tests/assets/tmp/image.jpg')
 const LARGEIMAGE = path.join(process.cwd(),'src/tests/assets/tmp/large-image.jpg')
 const IMAGEPDF = path.join(process.cwd(),'src/tests/assets/tmp/image.pdf')
@@ -43,19 +44,25 @@ describe("Post:/stores try to create a store without token",()=>{
 })
 
 describe("Post:/stores  DB actions",()=>{
-    
     const data = { id:1,name:'lucas',password:'123456',email:'lucas@gmail.com'}
     beforeAll(async ()=>{
-      
         await deleteStore()
         await prisma.user.create({data})
-        spyFileUpload.mockResolvedValue({success:true})
+     
     })
      afterAll(async()=>{
         await deleteStore()
         await deleteUser()
+        jest.clearAllMocks()
+        jest.resetAllMocks()
+        jest.restoreAllMocks()
+     })
+     beforeEach(async()=>{
+        await deleteStore()
+        
      })
      it("should sucessfully create a new store",async()=>{  
+        spyFileUpload.mockResolvedValue({success:true})
         const name = 'Minha Loja'
         const description = 'Lorem iptus testing'
         const response = await request(app)
@@ -75,6 +82,76 @@ describe("Post:/stores  DB actions",()=>{
         expect( selectStore ).toHaveLength(1)
         expect( newStore.name).toEqual(name)
         expect( newStore.description ).toEqual( description )
+    })
+    it("should successfully create a new store when image compression fails once and succeeds on retry",async()=>{  
+      
+        spyFileUpload.mockResolvedValueOnce({success:true})
+        spyCompress.mockResolvedValueOnce({success:false,data:Buffer.alloc(1)})
+        spyCompress.mockResolvedValueOnce({success:true,data:Buffer.alloc(1)})
+        const name = 'Minha Loja'
+        const description = 'Lorem iptus testing'
+        const response = await request(app)
+        .post(endpoint)
+        .set('Cookie', [`token=${cookies}`])
+        .field('name', name)
+        .field('description', description)
+        .attach('image', IMAGEJPG); 
+        
+        expect(response.statusCode).toEqual(201)
+        expect(response.body.message).toEqual('Store sucessfully created')
+    
+        expect(spyFileUpload).toHaveBeenCalledTimes(1)
+        expect(spyCompress).toHaveBeenCalledTimes(2)
+        const selectStore = await prisma.store.findMany({where:{userId:data.id}})
+        expect( selectStore ).toHaveLength(1)
+      
+    })
+     it("should return an error when image compression fails twice",async()=>{  
+        spyCompress.mockResolvedValue({success:false})
+   
+        spyFileUpload.mockResolvedValue({success:true})
+        const name = 'Minha Loja'
+        const description = 'Lorem iptus testing'
+        const response = await request(app)
+        .post(endpoint)
+        .set('Cookie', [`token=${cookies}`])
+        .field('name', name)
+        .field('description', description)
+        .attach('image', IMAGEJPG); 
+        
+        expect(response.statusCode).toEqual(500)
+        expect(response.body.message).toEqual('Failed to compress.')
+        
+        expect(spyCompress).toHaveBeenCalledTimes(2)
+        expect(spyFileUpload).toHaveBeenCalledTimes(0)
+
+        const selectStore = await prisma.store.findMany({where:{userId:data.id}})
+        expect( selectStore ).toHaveLength(0)
+      
+    })
+    it("should rollback store creation when image upload fails",async()=>{  
+        const spyDelete= jest.spyOn(prisma.store,'delete')
+        spyCompress.mockResolvedValue({success:true,data:Buffer.alloc(1)})
+   
+        spyFileUpload.mockResolvedValue({success:false})
+        const name = 'Minha Loja'
+        const description = 'Lorem iptus testing'
+        const response = await request(app)
+        .post(endpoint)
+        .set('Cookie', [`token=${cookies}`])
+        .field('name', name)
+        .field('description', description)
+        .attach('image', IMAGEJPG); 
+        
+        expect(response.statusCode).toEqual(500)
+        expect(response.body.message).toEqual('Failed to save image.')
+        
+        expect(spyCompress).toHaveBeenCalledTimes(1)
+        expect(spyFileUpload).toHaveBeenCalledTimes(1)
+        expect(spyDelete).toHaveBeenCalledTimes(1)
+        const selectStore = await prisma.store.findMany({where:{userId:data.id}})
+        expect( selectStore ).toHaveLength(0)
+      
     })
 })
 
@@ -229,13 +306,14 @@ describe("Post:/stores - Invalid image",()=>{
     })
 })
 
-describe("Post:/stores - db actions",()=>{
+describe("Post:/stores - when user already have a store",()=>{
     const data = [{ id:1,name:'lucas',password:'123456',email:'lucas@gmail.com'},{ id:2,name:'joseff',password:'123456',email:'lucas@gmail.com.br'}]
     const storeData = {id:111,name:'stores',description:'description',userId:1}
     
     beforeEach(()=>{
         spyFileUpload.mockResolvedValue({success:true})
         jest.clearAllMocks()
+        jest.resetAllMocks()
     })
     beforeAll(async ()=>{
         await cleanAllDb()
@@ -265,9 +343,9 @@ describe("Post:/stores - db actions",()=>{
         expect(response.statusCode).toEqual(409)
         expect(spyFileUpload).not.toHaveBeenCalled()
     })
-    it("should return an error when the database throws an error and not call google storage",async()=>{
+    it("should return an error when the database throws an error and not call the file upload",async()=>{
         jest.spyOn(prisma.store,'create').mockRejectedValueOnce(new Error('Simulated DB error: Connection lost.'));
-     
+    
         
         const response = await request(app)
         .post(endpoint)
