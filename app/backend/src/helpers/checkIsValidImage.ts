@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 
 
 
@@ -32,6 +33,6 @@ export const checkIsValidImage = (files:{
     }
     return true
 }
-export const generateImgPath = (originalFileName:string):string=>{
-    return Date.now() + '_' + originalFileName
+export const generateImgPath = ():string=>{
+    return `${randomUUID()}.jpeg`
 }

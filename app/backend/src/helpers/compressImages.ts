@@ -1,6 +1,4 @@
 import sharp from "sharp";
-import { ErrorMessage } from "./ErrorMessage";
-
 
 export type CompressImageResult = {
     data?:Buffer,
