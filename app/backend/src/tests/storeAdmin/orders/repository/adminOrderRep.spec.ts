@@ -8,7 +8,7 @@ import {checkSearchReturn,checkLastOrdersReturn,isProductFromStore} from "./util
 const admin = new AdminOrderRep(prisma)
 export const storeId = 1
 
-describe.only('AdminOrderRep search',()=>{
+describe('AdminOrderRep search',()=>{
     beforeAll(async()=>{
         const {validCoupons} = couponsDatas(2)
         
