@@ -34,13 +34,6 @@ if(isTestE2E){
 
 route.use('/api',CouponStore)
 route.use('/api',storeDashboard)
-route.get('/images/:filename', async (req, res) => {
-  const { filename } = req.params;
-
-  const signedUrl = await imageUpload.generateSignedUrl(filename);
-  res.set('Content-Type', 'image/png');
-  res.redirect(signedUrl);
-}); 
 
  
 
