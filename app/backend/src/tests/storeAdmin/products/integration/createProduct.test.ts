@@ -116,7 +116,7 @@ describe("When try to create a product with an invalid category",()=>{
         expect(response.body.message).toEqual('Invalid category. Please check and try again.')
         expect(response.statusCode).toEqual(422)
     })
-    it.skip("should return 422 when the product category is smaller than 4",async()=>{
+    it("should return 422 when the product category is smaller than 4",async()=>{
         
  
         const response = await request(app)
@@ -397,7 +397,7 @@ describe("db actions",()=>{
         
         
     })
-    it.only("should return an error when the db throwns an error",async()=>{
+    it("should return an error when the db throwns an error",async()=>{
         imageUpload.mockResolvedValue({success:true})
         prismaProductCreate.mockRejectedValueOnce(()=>new Error('something went wrong'))
         const response = await request(app)
