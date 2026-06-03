@@ -3,6 +3,7 @@ import { IAdminOrderRep } from "../../orders/repository/orders.repository";
 import { LastOrdersPayload } from "../../orders/types/orders.types";
 import { IStoreRepository } from "../repository/store.repository";
 import { IStoreDashboardRep } from "../repository/storeDashboard.repository";
+import { ProductMostViewed,ProductMostViewedService  } from "../types/storedashboard.types";
 
 type MetricResult<T> = {
     value:T,
@@ -18,11 +19,15 @@ export type DashboardResult = {
         averageRating:MetricResult<number>,
         totalReviews:MetricResult<number>
     },
-    productsInCart:MetricResult<number>
+    productsInCart:MetricResult<number>,
+    topViewedProducts:MetricResult<ProductMostViewedService[]>
 }
 export interface IStoreDashboardService  {
     dashboard(storeId:number):Promise<DashboardResult>
 }
+const refactorDatas = (datas:ProductMostViewed[])=>datas.map(({_count,...val})=>{
+    return {...val,view:_count.views}
+})
 export class StoreDashboardService {
     constructor(
         protected order: IAdminOrderRep,
@@ -32,7 +37,8 @@ export class StoreDashboardService {
     ) {}
 
     async dashboard(storeId: number): Promise<DashboardResult> {
-        const [totalViews, monthlyRevenue, openOrders,countActiveProducts,countCoupons,averageReviews,countReviews,productsInCart] =
+        const [totalViews, monthlyRevenue, openOrders,countActiveProducts,
+            countCoupons,averageReviews,countReviews,productsInCart,topViewedProducts] =
          await Promise.allSettled([
             this.storeDashboard.getTotalViews(storeId),
             this.storeDashboard.getMonthlyRevenue(storeId),
@@ -41,7 +47,8 @@ export class StoreDashboardService {
             this.couponsAdmin.countStoreCoupons(storeId),
             this.storeDashboard.averageReviews(storeId),
             this.storeDashboard.countReviews(storeId),
-            this.storeDashboard.countUserProductsInCart(storeId)
+            this.storeDashboard.countUserProductsInCart(storeId),
+            this.storeDashboard.topViewedProducts(storeId)
         ]);
         
         return {
@@ -54,7 +61,8 @@ export class StoreDashboardService {
                 averageRating:averageReviews.status==="fulfilled" ? {value:averageReviews.value,hasError:false} : {value:0,hasError:true},
                 totalReviews:countReviews.status==="fulfilled" ? {value:countReviews.value,hasError:false} : {value:0,hasError:true}
             },
-            productsInCart:productsInCart.status === "fulfilled" ? {value:productsInCart.value,hasError:false} : {value:0,hasError:true}
+            productsInCart:productsInCart.status === "fulfilled" ? {value:productsInCart.value,hasError:false} : {value:0,hasError:true},
+            topViewedProducts:topViewedProducts.status==="fulfilled" ? {value:refactorDatas(topViewedProducts.value),hasError:false} : {value:[],hasError:true}
         };
     }
 }
