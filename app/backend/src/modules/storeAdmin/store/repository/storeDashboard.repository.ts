@@ -1,4 +1,5 @@
-import {  PrismaClient } from "@prisma/client";
+import {   PrismaClient } from "@prisma/client";
+import {  ProductMostViewed } from "../types/storedashboard.types";
 
 
 
@@ -7,7 +8,8 @@ export interface IStoreDashboardRep {
     getMonthlyRevenue(storeId:number): Promise<number>
     countReviews(storeId:number):Promise<number>,
     averageReviews(storeId:number):Promise<number>,
-    countUserProductsInCart(storeId:number):Promise<number>
+    countUserProductsInCart(storeId:number):Promise<number>,
+    topViewedProducts(storeId:number):Promise<ProductMostViewed[]>
 }
 
 export class StoreDashboardRep   implements IStoreDashboardRep {
@@ -85,5 +87,29 @@ export class StoreDashboardRep   implements IStoreDashboardRep {
         return result._sum.total || 0;
      
     }
-
+    public async topViewedProducts(storeId:number):Promise<ProductMostViewed[]>{
+        return await this.prisma.product.findMany({
+            where:{
+                storeId
+            },
+            orderBy:{
+                views:{
+                    _count:'desc'
+                }
+            },
+            take:5,
+            select:{
+                id:true,
+                name:true,
+                imageUrl:true,
+                _count:{
+                    select:{
+                        views:true
+                    }
+                }
+            }
+            
+        })
+        
+    }
 }
