@@ -13,7 +13,7 @@ export class StoreDashboardController{
             
             res.status(200).send({
                 message:"Success",
-                ...datas
+                datas
             })
         }catch(err:unknown){
             console.log(err)
