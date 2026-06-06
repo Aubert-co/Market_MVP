@@ -14,7 +14,8 @@ const spyStoreDash = {
     countReviews:jest.fn(),
     getTotalViews:jest.fn(),
     getMonthlyRevenue:jest.fn(),
-    countUserProductsInCart:jest.fn()
+    countUserProductsInCart:jest.fn(),
+    topViewedProducts:jest.fn()
 } as IStoreDashboardRep
 const spyStoreAdmin = {
     countProductStore:jest.fn(),
@@ -40,6 +41,7 @@ describe("StoreDashboard service",()=>{
     const totalViews = 1000
     const getMonthlyRevenue = 1000
     const countUserProductsInCart = 3000
+   
     it("should not affect other dashboard metrics when one service throws an error",async()=>{
         
         jest.spyOn(spyCouponsAdmin,'countStoreCoupons').mockRejectedValue(new Error("failed"))
@@ -50,6 +52,7 @@ describe("StoreDashboard service",()=>{
         jest.spyOn(spyStoreDash,'getTotalViews').mockResolvedValue(totalViews)
         jest.spyOn(spyStoreDash,'getMonthlyRevenue').mockResolvedValue(getMonthlyRevenue)
         jest.spyOn(spyStoreDash,'countUserProductsInCart').mockResolvedValue(countUserProductsInCart)
+        jest.spyOn(spyStoreDash,'topViewedProducts').mockResolvedValue([])
         const response =  await service.dashboard(storeId)
         
         expect(response.totalActiveCoupons).toEqual({
@@ -79,6 +82,9 @@ describe("StoreDashboard service",()=>{
         expect(response.productsInCart).toEqual({
             value:countUserProductsInCart,hasError:false
         })
+        expect(response.topViewedProducts).toEqual({
+            value:[],hasError:false
+        })
     })
     it("should return hasError true for all metrics when all services fail", async () => {
     jest.spyOn(spyCouponsAdmin, 'countStoreCoupons').mockRejectedValue(new Error("failed"))
@@ -89,6 +95,7 @@ describe("StoreDashboard service",()=>{
     jest.spyOn(spyStoreDash, 'getTotalViews').mockRejectedValue(new Error("failed"))
     jest.spyOn(spyStoreDash, 'getMonthlyRevenue').mockRejectedValue(new Error("failed"))
     jest.spyOn(spyStoreDash,'countUserProductsInCart').mockRejectedValue(new Error("failed"))
+    jest.spyOn(spyStoreDash,'topViewedProducts').mockRejectedValue(new Error("error"))
     const response = await service.dashboard(storeId)
 
     expect(response.totalActiveCoupons).toEqual({
@@ -128,6 +135,10 @@ describe("StoreDashboard service",()=>{
     expect(response.productsInCart).toEqual({
         value: 0,
         hasError: true
+    })
+    expect(response.topViewedProducts).toEqual({
+        value:[],
+        hasError:true
     })
 })
 })

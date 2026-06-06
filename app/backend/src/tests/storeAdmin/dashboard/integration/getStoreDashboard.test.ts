@@ -6,6 +6,7 @@ import { couponsDatas } from "@/tests/__fixtures__/coupons"
 import { orders } from "@/tests/__fixtures__/orders"
 import { cartItems, countViews, expectedRevenue, lastOrders, reviews, storeProductIds } from "../utils"
 import {prisma} from "@/database/prisma"
+
 const storeId = 1
 const cookies  = generateAccessToken(storeId)
 const coupons = couponsDatas(storeId)
@@ -34,8 +35,7 @@ describe("GET /api/store/dashboard/{storeid}",()=>{
         .set('Cookie', [`token=${cookies}`])
 
         expect(response.status).toEqual(200)
-        expect(response.body).toStrictEqual({
-            message:"Success",
+        expect(response.body.datas).toStrictEqual({
             views: expect.any(Object),
             revenue: expect.any(Object),
             openOrders: expect.any(Object),
@@ -45,38 +45,47 @@ describe("GET /api/store/dashboard/{storeid}",()=>{
             reviews: {
                 averageRating: expect.any(Object),
                 totalReviews: expect.any(Object)
-            }
+            },
+            topViewedProducts:expect.any(Object)
         })
 
-        expect(response.body.productsInCart).toEqual({
+        expect(response.body.datas.productsInCart).toEqual({
             value: cartItems, hasError:false
         })
-        expect(response.body.views).toEqual({
+        expect(response.body.datas.views).toEqual({
             value:countViews,hasError:false
         })
-        expect(response.body.countActiveProducts).toEqual({
+        expect(response.body.datas.countActiveProducts).toEqual({
             value:storeProductIds.size,hasError:false
         })
-        expect(response.body.totalActiveCoupons).toEqual({
+        expect(response.body.datas.totalActiveCoupons).toEqual({
             value:coupons.validCoupons.length,hasError:false
         })
-        expect(response.body.reviews.totalReviews).toEqual({
+        expect(response.body.datas.reviews.totalReviews).toEqual({
             value:reviews.totalReviews,hasError:false
         })
-        expect(response.body.reviews.averageRating).toEqual({
+        expect(response.body.datas.reviews.averageRating).toEqual({
             value:reviews.totalRating/reviews.totalReviews,hasError:false
         })
-        expect(response.body.revenue).toEqual({
+        expect(response.body.datas.revenue).toEqual({
             value:expectedRevenue,hasError:false
         })
        
-        expect(response.body.openOrders.hasError).toBeFalsy()
-        const bodyOrders = response.body.openOrders.value
-
-        expect(bodyOrders).toHaveLength(lastOrders.length)
-
+        expect(response.body.datas.openOrders.hasError).toBeFalsy()
+        const datasOrders = response.body.datas.openOrders.value
+        const topViewedProducts = response.body.datas.topViewedProducts.value
+        expect(datasOrders).toHaveLength(lastOrders.length)
+        expect(topViewedProducts).toHaveLength(5)
         
-        bodyOrders.forEach((val:any)=>{
+        topViewedProducts.forEach((val:any)=>{
+            expect(val).toStrictEqual({
+                id:expect.any(Number),
+                name:expect.any(String),
+                imageUrl:expect.any(String),
+                view:expect.any(Number)
+            })
+        })
+        datasOrders.forEach((val:any)=>{
            expect(val).toStrictEqual({
                 id: expect.any(Number),
                 productId: expect.any(Number),
@@ -88,7 +97,8 @@ describe("GET /api/store/dashboard/{storeid}",()=>{
                 product: {
                     name: expect.any(String),
                     imageUrl: expect.any(String)
-                }
+                },
+              
             })
         })
     })
@@ -98,8 +108,7 @@ describe("GET /api/store/dashboard/{storeid}",()=>{
         .get(`/api/store/dashboard/${storeId}`)
         .set('Cookie', [`token=${cookies}`])
 
-        expect(response.body).toStrictEqual({
-            message:"Success",
+        expect(response.body.datas).toStrictEqual({
             views: expect.any(Object),
             revenue: expect.any(Object),
             openOrders: expect.any(Object),
@@ -109,35 +118,36 @@ describe("GET /api/store/dashboard/{storeid}",()=>{
             reviews: {
                 averageRating: expect.any(Object),
                 totalReviews: expect.any(Object)
-            }
+            },
+            topViewedProducts:expect.any(Object)
         })
 
-        expect(response.body.productsInCart).toEqual({
+        expect(response.body.datas.productsInCart).toEqual({
             value: cartItems, hasError:false
         })
-        expect(response.body.views).toEqual({
+        expect(response.body.datas.views).toEqual({
             value:countViews,hasError:false
         })
-        expect(response.body.countActiveProducts).toEqual({
+        expect(response.body.datas.countActiveProducts).toEqual({
             value:storeProductIds.size,hasError:false
         })
-        expect(response.body.totalActiveCoupons).toEqual({
+        expect(response.body.datas.totalActiveCoupons).toEqual({
             value:0,hasError:true
         })
-        expect(response.body.reviews.totalReviews).toEqual({
+        expect(response.body.datas.reviews.totalReviews).toEqual({
             value:reviews.totalReviews,hasError:false
         })
-        expect(response.body.reviews.averageRating).toEqual({
+        expect(response.body.datas.reviews.averageRating).toEqual({
             value:reviews.totalRating/reviews.totalReviews,hasError:false
         })
-        expect(response.body.revenue).toEqual({
+        expect(response.body.datas.revenue).toEqual({
             value:expectedRevenue,hasError:false
         })
-       
-        expect(response.body.openOrders.hasError).toBeFalsy()
-        const bodyOrders = response.body.openOrders.value
+        
+        expect(response.body.datas.openOrders.hasError).toBeFalsy()
+        const datasOrders = response.body.datas.openOrders.value
 
-        expect(bodyOrders).toHaveLength(lastOrders.length)
+        expect(datasOrders).toHaveLength(lastOrders.length)
 
         
      
@@ -155,8 +165,8 @@ describe("GET /api/store/dashboard/{storeid}",()=>{
         .get(`/api/store/dashboard/${storeId}`)
         .set('Cookie', [`token=${cookies}`])
 
-        expect(response.body).toStrictEqual({
-            message:"Success",
+        expect(response.body.datas).toStrictEqual({
+           
             views: expect.any(Object),
             revenue: expect.any(Object),
             openOrders: expect.any(Object),
@@ -166,31 +176,32 @@ describe("GET /api/store/dashboard/{storeid}",()=>{
             reviews: {
                 averageRating: expect.any(Object),
                 totalReviews: expect.any(Object)
-            }
+            },
+            topViewedProducts:expect.any(Object)
         })
 
-        expect(response.body.productsInCart).toEqual({
+        expect(response.body.datas.productsInCart).toEqual({
             value: 0, hasError:true
         })
-        expect(response.body.views).toEqual({
+        expect(response.body.datas.views).toEqual({
             value:0,hasError:true
         })
-        expect(response.body.countActiveProducts).toEqual({
+        expect(response.body.datas.countActiveProducts).toEqual({
             value:0,hasError:true
         })
-        expect(response.body.totalActiveCoupons).toEqual({
+        expect(response.body.datas.totalActiveCoupons).toEqual({
             value:0,hasError:true
         })
-        expect(response.body.reviews.totalReviews).toEqual({
+        expect(response.body.datas.reviews.totalReviews).toEqual({
             value:0,hasError:true
         })
-        expect(response.body.reviews.averageRating).toEqual({
+        expect(response.body.datas.reviews.averageRating).toEqual({
             value:0,hasError:true
         })
-        expect(response.body.revenue).toEqual({
+        expect(response.body.datas.revenue).toEqual({
             value:0,hasError:true
         })
-        expect(response.body.openOrders).toEqual({
+        expect(response.body.datas.openOrders).toEqual({
             value:[],hasError:true
         })
     })
