@@ -14,3 +14,20 @@ export type StoreDashOrders = Prisma.OrderGetPayload<{
     },
     
 }>
+
+export type ProductMostViewed = Prisma.ProductGetPayload<{
+    select:{
+        id:true,
+        name:true,
+        imageUrl:true,
+        _count:{
+            select:{
+                views:true
+            }
+        }
+    }
+}>
+
+export type ProductMostViewedService = Omit<ProductMostViewed,'_count'> & {
+    view:number
+}
