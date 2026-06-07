@@ -20,4 +20,8 @@ export abstract class BaseRedisServices {
         const datas = JSON.stringify(data)
         await this.redis.saveItemInCache(key,datas,expirationTime)
     }
+    
+    protected async incrementCache(key:string){
+        await this.redis.redisIncrement(key)
+    }
 }
