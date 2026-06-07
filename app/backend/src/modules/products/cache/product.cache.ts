@@ -1,9 +1,9 @@
 import { BaseRedisServices } from "../../../config/cache/BaseRedis.service";
 import { SelectedProduct } from "../types/product.types";
 
-const keyCachedPageProduct = (page:number)=>`product:page:${page}`
+const keyCachedPageProduct = (page:number,version:number)=>`products:v${version}:page:${page}`
 const COUNT_ALL_PRODUCTS = "count:all:products"
-
+const VERSION_PAGE = "list-version"
 export interface ICacheProducts {
     saveProductsInCache(data:SelectedProduct[],page:number):Promise<void>
     getProductsInCache(page:number):Promise<SelectedProduct[] | null>
@@ -14,20 +14,29 @@ export class CacheProducts extends BaseRedisServices implements ICacheProducts{
     
     async saveProductsInCache(data:SelectedProduct[],page:number){
         try{
-            const key = keyCachedPageProduct(page)
-
+            
+            let version = await this.getCacheByKey<number>(VERSION_PAGE)
+            if(!version){
+                version=1
+            }
+            const key = keyCachedPageProduct(page,version)
             await this.saveItemsInCache<SelectedProduct[]>({
                 data,
                 key,
                 expirationTime:3600
             })
+            await this.incrementCache(VERSION_PAGE)
         }catch{
             return
         }
     }
     async getProductsInCache(page:number):Promise<SelectedProduct[] | null>{
        try{
-            const key = keyCachedPageProduct(page)
+            let version = await this.getCacheByKey<number>(VERSION_PAGE)
+            if(!version){
+                version = 1
+            }
+            const key = keyCachedPageProduct(page,version)
             return await this.getCacheByKey<SelectedProduct[]>(key)
        }catch{
             return null
@@ -52,5 +61,12 @@ export class CacheProducts extends BaseRedisServices implements ICacheProducts{
         }catch{
             return null
         }
+    }
+    async incrementCacheVersion(): Promise<void> {
+        try{
+            await this.incrementCache(VERSION_PAGE)
+        }   catch{
+            return 
+        } 
     }
 } 
