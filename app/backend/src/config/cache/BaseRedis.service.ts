@@ -24,4 +24,7 @@ export abstract class BaseRedisServices {
     protected async incrementCache(key:string){
         await this.redis.redisIncrement(key)
     }
+    protected async deleteCache(key:string){
+        await this.redis.deleteCacheKey(key)
+    }
 }

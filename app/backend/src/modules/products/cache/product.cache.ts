@@ -8,7 +8,8 @@ export interface ICacheProducts {
     saveProductsInCache(data:SelectedProduct[],page:number):Promise<void>
     getProductsInCache(page:number):Promise<SelectedProduct[] | null>
     saveCountAllProducts(data:number):Promise<void>
-    getCountAllProducts():Promise<null | number>
+    getCountAllProducts():Promise<null | number>,
+    cleanProductsCache():Promise<void>
 }
 export class CacheProducts extends BaseRedisServices implements ICacheProducts{
     
@@ -62,11 +63,21 @@ export class CacheProducts extends BaseRedisServices implements ICacheProducts{
             return null
         }
     }
-    async incrementCacheVersion(): Promise<void> {
+    async incrementCacheVersion(key:string): Promise<void> {
         try{
-            await this.incrementCache(VERSION_PAGE)
+            await this.incrementCache(key)
         }   catch{
             return 
         } 
+    }
+    async cleanProductsCache():Promise<void>{
+        try{
+            await Promise.all([
+                this.incrementCache(VERSION_PAGE),
+                this.deleteCache(COUNT_ALL_PRODUCTS)
+            ])
+        }catch{
+            return
+        }
     }
 } 
