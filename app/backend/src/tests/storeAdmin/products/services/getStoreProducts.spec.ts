@@ -1,6 +1,7 @@
 import {  ProductAdminService } from "@/modules/storeAdmin/products/services/products.services"
 import { mockImgUpload, mockProductAdminRep } from "../utils"
 import { GetStoreProductsPage } from "@/modules/storeAdmin/products/types/products.types"
+import { mockCacheProducts } from "./createProduct.spec"
 
 
 
@@ -18,7 +19,7 @@ describe("service getStoreProducts",()=>{
                 totalItems:30
             }
         })
-        const v = new ProductAdminService(mockProductAdminRep,mockImgUpload)
+        const v = new ProductAdminService(mockProductAdminRep,mockImgUpload,mockCacheProducts)
         
         const result = await v.getStoreProducts(datas)
 
@@ -34,7 +35,7 @@ describe("service getStoreProducts",()=>{
     })
     it("should handle an error correctly",async()=>{
         mockProductAdminRep.getStoreProducts.mockReturnValue(new Error("hi"))
-        const v = new ProductAdminService(mockProductAdminRep,mockImgUpload)
+        const v = new ProductAdminService(mockProductAdminRep,mockImgUpload,mockCacheProducts)
         
         try{
             await v.getStoreProducts(datas)

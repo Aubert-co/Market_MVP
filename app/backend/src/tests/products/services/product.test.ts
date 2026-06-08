@@ -10,11 +10,12 @@ const mockRepository = {
     deleteProduct:jest.fn(),
     filterProducts:jest.fn()
 }
-const mockRedisService:ICacheProducts = {
-    getCountAllProducts:jest.fn(),
-    saveCountAllProducts:jest.fn(),
-    getProductsInCache:jest.fn(),
-    saveProductsInCache:jest.fn()
+const mockRedisService: ICacheProducts = {
+  saveProductsInCache: jest.fn(),
+  getProductsInCache: jest.fn(),
+  saveCountAllProducts: jest.fn(),
+  getCountAllProducts: jest.fn(),
+  cleanProductsCache: jest.fn()
 }
 const productService = new ProductService( mockRepository ,mockRedisService)
 

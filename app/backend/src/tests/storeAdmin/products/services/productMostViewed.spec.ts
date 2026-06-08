@@ -1,12 +1,13 @@
 import { ProductAdminService } from "@/modules/storeAdmin/products/services/products.services"
 import { mockImgUpload, mockProductAdminRep } from "../utils"
 import { ErrorMessage } from "@/helpers/ErrorMessage"
+import { mockCacheProducts } from "./createProduct.spec"
 
 describe("service productMostViewed",()=>{
     const storeId = 3
     it("should return the most viewed product correctly",async()=>{
         mockProductAdminRep.productMostViewed.mockResolvedValue(["values"])
-        const service = new ProductAdminService(mockProductAdminRep,mockImgUpload)
+        const service = new ProductAdminService(mockProductAdminRep,mockImgUpload,mockCacheProducts)
 
         const getMost = await  service.productMostViewed(storeId)
 
@@ -16,7 +17,7 @@ describe("service productMostViewed",()=>{
     })
     it("should handle an error correctly",async()=>{
         mockProductAdminRep.productMostViewed.mockRejectedValue(new Error("error"))
-        const service = new ProductAdminService(mockProductAdminRep,mockImgUpload)
+        const service = new ProductAdminService(mockProductAdminRep,mockImgUpload,mockCacheProducts)
 
         try{
             const getMost = await  service.productMostViewed(storeId)
