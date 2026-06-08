@@ -6,6 +6,7 @@ import { compressImage } from "@/helpers/compressImages";
 import { FuncReturn, retry } from "@/helpers/retry";
 import {  productMostViewedResult, GetStoreProductResult,GetStoreProductsPage, CreateProductDTO } from "../types/products.types";
 import { calcSkipPages, pagination } from "@/helpers/pagination";
+import { ICacheProducts } from "@/modules/products/cache/product.cache";
 
 
 
@@ -21,7 +22,9 @@ export interface IProductAdminService{
 
 export class ProductAdminService  implements IProductAdminService{
     
-    constructor(protected product:IProductAdminRepository ,protected storage:IImageUploadService){
+    constructor(protected product:IProductAdminRepository ,protected storage:IImageUploadService,
+        protected cache:ICacheProducts
+    ){
         
     }
     public async getStoreProducts({ storeId, search, category, priceOrder, take ,page,stockOrderBy}: GetStoreProductsPage): Promise<GetStoreProductResult> {
@@ -120,6 +123,7 @@ export class ProductAdminService  implements IProductAdminService{
                 status:500
             })
         }
+        await this.cache.cleanProductsCache()
     }
    
     

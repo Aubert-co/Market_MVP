@@ -7,10 +7,15 @@ import { ProductAdminRepository } from "../repository/products.repository";
 import { ProductAdminService } from "../services/products.services";
 import { makeVerifyStoreMiddle } from "@/factory/makeVerifyStoreMiddle";
 import { makeUploadFile } from "@/config/imageUpload/uploadFIles";
+import { RedisRepository } from "@/config/cache/redis.repository";
+import redis from "@/config/cache/redis";
+import { CacheProducts } from "@/modules/products/cache/product.cache";
 
 const uploadImage = makeUploadFile()
 const productAdminRepository = new ProductAdminRepository(prisma)
-const productAdminService = new ProductAdminService(productAdminRepository,uploadImage)
+const cache = new RedisRepository(redis)
+const cacheProducts = new CacheProducts(cache)
+const productAdminService = new ProductAdminService(productAdminRepository,uploadImage,cacheProducts)
 
 
 const verifyStoreOwnershipMiddle = makeVerifyStoreMiddle()
