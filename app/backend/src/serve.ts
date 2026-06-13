@@ -13,7 +13,8 @@ if(!process.env.NODE_ENV){
   throw new Error("NO NODE_ENV")
 }
 const NODE_ENV =process.env.NODE_ENV;
-
+const PORT = Number(process.env.PORT) || 3000;
+const isDev = NODE_ENV !== "production"
 
 const app = express()
 
@@ -25,8 +26,11 @@ app.use(
     contentSecurityPolicy: {
       useDefaults: true,
       directives: {
-        imgSrc: ["'self'", "data:", "https://storage.googleapis.com"],
-        connectSrc:["'self'",'http://localhost:5173']
+        defaultSrc: ["'self'"],
+        connectSrc: ["'self'", "https://market.aubertbarbosa.com"],
+        imgSrc: ["'self'", "data:", "https://aubertbarbosa.com"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
       },
     },
   })
@@ -34,9 +38,12 @@ app.use(
 
 app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials:true,
-  origin: 'http://localhost:5173'
+  credentials: true,
+  origin: isDev
+    ? 'http://localhost:5173'
+    : 'https://market.aubertbarbosa.com'
 }));
+
 
 app.use(cookieParser())
 app.use(express.json())
@@ -52,7 +59,9 @@ const startServer = async()=>{
         await connectRedis();
        
         if(NODE_ENV === "production" || NODE_ENV==="test-e2e"){
-            app.listen(process.env.PORT,()=>{console.log('server running'+process.env.PORT)});
+            app.listen(PORT, '0.0.0.0', () => {
+              console.log(`server running on port ${PORT}`);
+            });
         }
     } catch (err:any) {
         console.error('Erro ao iniciar servidor:', err);
