@@ -1,0 +1,40 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const products_route_1 = __importDefault(require("@/modules/products/routes/products.route"));
+const store_route_1 = __importDefault(require("@/modules/storeAdmin/store/routes/store.route"));
+const userCart_route_1 = __importDefault(require("@/modules/userCart/routes/userCart.route"));
+const products_route_2 = __importDefault(require("@/modules/storeAdmin/products/routes/products.route"));
+const order_route_1 = __importDefault(require("@/modules/orders/route/order.route"));
+const coupon_route_1 = __importDefault(require("@/modules/coupon/route/coupon.route"));
+const reviews_route_1 = __importDefault(require("@/modules/reviews/routes/reviews.route"));
+const storeDash_route_1 = __importDefault(require("@/modules/storeAdmin/store/routes/storeDash.route"));
+const uploadFIles_1 = require("@/config/imageUpload/uploadFIles");
+const loggerHttp_1 = require("@/middleware/loggerHttp");
+const coupon_route_2 = __importDefault(require("@/modules/storeAdmin/coupon/coupon.route"));
+const orders_routes_1 = __importDefault(require("@/modules/storeAdmin/orders/routes/orders.routes"));
+const auth_route_1 = __importDefault(require("@/modules/auth/route/auth.route"));
+const testes_1 = __importDefault(require("./testes"));
+const imageUpload = (0, uploadFIles_1.makeUploadFile)();
+const route = (0, express_1.Router)();
+const isTestE2E = process.env.NODE_ENV === "test-e2e";
+route.use(loggerHttp_1.httpLogger);
+route.use('/api', auth_route_1.default);
+route.use('/api', products_route_1.default);
+route.use('/api', store_route_1.default);
+route.use('/api', userCart_route_1.default);
+route.use('/api', products_route_2.default);
+route.use('/api', order_route_1.default);
+route.use('/api', coupon_route_1.default);
+route.use('/api', reviews_route_1.default);
+route.use('/api', orders_routes_1.default);
+if (isTestE2E) {
+    console.log("testes e2e estao lgiados");
+    route.use(testes_1.default);
+}
+route.use('/api', coupon_route_2.default);
+route.use('/api', storeDash_route_1.default);
+exports.default = route;

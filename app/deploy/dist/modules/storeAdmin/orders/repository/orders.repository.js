@@ -1,0 +1,77 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AdminOrderRep = void 0;
+class AdminOrderRep {
+    constructor(prisma) {
+        this.prisma = prisma;
+    }
+    async search({ searchByOrderId, storeId, status, orderBy, pagination }) {
+        const where = {
+            product: { storeId },
+            ...(status && { status }),
+            ...(searchByOrderId && {
+                id: searchByOrderId
+            })
+        };
+        const [orders, total] = await Promise.all([
+            this.prisma.order.findMany({
+                select: {
+                    user: {
+                        select: { name: true, id: true }
+                    },
+                    coupon: {
+                        select: {
+                            discount: true,
+                            discountType: true,
+                            code: true
+                        },
+                    },
+                    product: {
+                        select: {
+                            price: true,
+                            name: true, imageUrl: true
+                        }
+                    },
+                    total: true, status: true, id: true,
+                    quantity: true, price: true, createdAt: true, productId: true,
+                    couponId: false,
+                },
+                where,
+                skip: pagination.skip,
+                take: pagination.limit,
+                orderBy: { createdAt: orderBy }
+            }),
+            this.prisma.order.count({ where })
+        ]);
+        return {
+            datas: orders,
+            pageInfo: {
+                totalItems: total
+            }
+        };
+    }
+    async getLastOrders(storeId, status) {
+        return await this.prisma.order.findMany({
+            where: {
+                product: { storeId },
+                ...(status && { status })
+            },
+            orderBy: {
+                createdAt: 'desc'
+            },
+            take: 5,
+            include: {
+                product: {
+                    select: {
+                        name: true,
+                        imageUrl: true
+                    }
+                },
+            },
+            omit: {
+                couponId: true, userId: true
+            }
+        });
+    }
+}
+exports.AdminOrderRep = AdminOrderRep;

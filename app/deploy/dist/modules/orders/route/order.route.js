@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const order_controller_1 = require("../controller/order.controller");
+const prisma_1 = require("../../../database/prisma");
+const auth_1 = require("../../../middleware/auth");
+const coupon_repository_1 = require("../../coupon/repository/coupon.repository");
+const order_repository_1 = require("../repository/order.repository");
+const order_services_1 = require("../services/order.services");
+const route = (0, express_1.Router)();
+const couponRepository = new coupon_repository_1.CouponRepository(prisma_1.prisma);
+const orderRepository = new order_repository_1.OrderRepository(prisma_1.prisma, couponRepository);
+const orderService = new order_services_1.OrderService(orderRepository);
+const orderController = new order_controller_1.OrdersController(orderService);
+route.post('/orders', [auth_1.Auth], (req, res, next) => orderController.userCreateOrder(req, res, next));
+route.get('/orders', [auth_1.Auth], (req, res, next) => orderController.getUserOrders(req, res, next));
+exports.default = route;

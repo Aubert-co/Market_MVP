@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const validateCredentials_1 = require("@/modules/auth/middleware/validateCredentials");
+const auth_controller_1 = require("../controller/auth.controller");
+const auth_service_1 = require("../service/auth.service");
+const auth_repository_1 = require("../repository/auth.repository");
+const prisma_1 = require("@/database/prisma");
+const validateCredentials = new validateCredentials_1.ValidateCredentials();
+const userRepository = new auth_repository_1.UserRepository(prisma_1.prisma);
+const userService = new auth_service_1.UserService(userRepository);
+const authUser = new auth_controller_1.AuthUserController(userService);
+const route = (0, express_1.Router)();
+route.post('/register', [validateCredentials.handler], (req, res, next) => authUser.Register(req, res, next));
+route.post('/login', [validateCredentials.handler], (req, res, next) => authUser.Login(req, res, next));
+exports.default = route;

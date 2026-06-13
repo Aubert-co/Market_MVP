@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const prisma_1 = require("@/database/prisma");
+const product_repository_1 = require("../repository/product.repository");
+const product_services_1 = require("../services/product.services");
+const express_1 = require("express");
+const products_controller_1 = require("../controller/products.controller");
+const product_cache_1 = require("../cache/product.cache");
+const redis_repository_1 = require("@/config/cache/redis.repository");
+const redis_1 = __importDefault(require("@/config/cache/redis"));
+const userSession_middeware_1 = require("@/middleware/userSession.middeware");
+const productRepository = new product_repository_1.ProductRepository(prisma_1.prisma);
+const redisRepository = new redis_repository_1.RedisRepository(redis_1.default);
+const cacheProducts = new product_cache_1.CacheProducts(redisRepository);
+const productService = new product_services_1.ProductService(productRepository, cacheProducts);
+const productsController = new products_controller_1.ProductsController(productService);
+const route = (0, express_1.Router)();
+route.get('/product/search', (req, res, next) => productsController.filterProducts(req, res, next));
+route.get('/product', (req, res, next) => productsController.GetProducts(req, res, next));
+route.get('/product/:id/details', [(req, res, next) => (0, userSession_middeware_1.userSessionMiddleware)(req, res, next)], (req, res, next) => productsController.GetOneProduct(req, res, next));
+exports.default = route;

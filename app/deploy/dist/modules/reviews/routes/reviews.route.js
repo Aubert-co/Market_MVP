@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const reviews_controller_1 = require("../controller/reviews.controller");
+const auth_1 = require("../../../middleware/auth");
+const express_1 = require("express");
+const reviews_repository_1 = require("../repository/reviews.repository");
+const prisma_1 = require("../../../database/prisma");
+const reviews_services_1 = require("../services/reviews.services");
+const order_repository_1 = require("../../orders/repository/order.repository");
+const coupon_repository_1 = require("../../coupon/repository/coupon.repository");
+const reviewsRepository = new reviews_repository_1.ReviewsRepository(prisma_1.prisma);
+const couponRepository = new coupon_repository_1.CouponRepository(prisma_1.prisma);
+const orderRepository = new order_repository_1.OrderRepository(prisma_1.prisma, couponRepository);
+const reviewsService = new reviews_services_1.ReviewsService(reviewsRepository, orderRepository);
+const reviewsController = new reviews_controller_1.ReviewsController(reviewsService);
+const route = (0, express_1.Router)();
+route.post('/reviews', [auth_1.Auth], (req, res, next) => reviewsController.addReview(req, res, next));
+exports.default = route;

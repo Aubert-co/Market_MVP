@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const prisma_1 = require("@/database/prisma");
+const auth_1 = require("@/middleware/auth");
+const makeVerifyStoreMiddle_1 = require("@/factory/makeVerifyStoreMiddle");
+const orders_repository_1 = require("../repository/orders.repository");
+const orders_services_1 = require("../services/orders.services");
+const orders_controller_1 = require("../controller/orders.controller");
+const route = (0, express_1.Router)();
+const ordersRepository = new orders_repository_1.AdminOrderRep(prisma_1.prisma);
+const ordersService = new orders_services_1.AdminOrderService(ordersRepository);
+const ordersController = new orders_controller_1.AdminOrdersControl(ordersService);
+route.use(auth_1.Auth);
+route.get('/stores/:storeId/orders', [(req, res, next) => (0, makeVerifyStoreMiddle_1.makeVerifyStoreMiddle)().handler(req, res, next)], (req, res, next) => ordersController.searchOrders(req, res, next));
+route.get('/stores/:storeId/orders/latest', [(req, res, next) => (0, makeVerifyStoreMiddle_1.makeVerifyStoreMiddle)().handler(req, res, next)], (req, res, next) => ordersController.getLastOrders(req, res, next));
+exports.default = route;

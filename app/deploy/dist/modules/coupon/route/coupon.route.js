@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const coupon_controller_1 = require("../controller/coupon.controller");
+const coupon_repository_1 = require("../repository/coupon.repository");
+const coupon_services_1 = require("../services/coupon.services");
+const express_1 = require("express");
+const prisma_1 = require("../../../database/prisma");
+const auth_1 = require("../../../middleware/auth");
+const route = (0, express_1.Router)();
+const couponRepository = new coupon_repository_1.CouponRepository(prisma_1.prisma);
+const couponService = new coupon_services_1.CouponServices(couponRepository);
+const couponController = new coupon_controller_1.CouponController(couponService);
+route.post('/coupons', [auth_1.Auth], (req, res, next) => couponController.userAddCoupon(req, res, next));
+route.get('/coupons', [auth_1.Auth], (req, res, next) => couponController.userListCoupons(req, res, next));
+route.get('/coupons/available', (req, res, next) => couponController.getAvailableCoupons(req, res, next));
+exports.default = route;
