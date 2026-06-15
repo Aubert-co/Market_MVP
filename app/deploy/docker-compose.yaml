@@ -3,14 +3,26 @@ services:
     build:
       context: .
       dockerfile: dockerfile
-
+    logging:
+      driver: json-file
     ports:
       - "3000:3000"
     command: sh -c "npx prisma migrate deploy && node dist/server.js"
     env_file:
       - .env
     
-
+  alloy:
+    image: grafana/alloy:latest
+    ports:
+      - "12345:12345"
+    volumes:
+      - ./alloy/config.alloy:/etc/alloy/config.alloy
+      - /var/run/docker.sock:/var/run/docker.sock
+    command:
+      - run
+      - /etc/alloy/config.alloy
+      - --server.http.listen-addr=0.0.0.0:12345
+   
   nginx:
     image: nginx:alpine
     ports:
