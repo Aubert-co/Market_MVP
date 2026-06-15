@@ -18,6 +18,7 @@ const coupon_route_2 = __importDefault(require("@/modules/storeAdmin/coupon/coup
 const orders_routes_1 = __importDefault(require("@/modules/storeAdmin/orders/routes/orders.routes"));
 const auth_route_1 = __importDefault(require("@/modules/auth/route/auth.route"));
 const testes_1 = __importDefault(require("./testes"));
+const metrics_1 = require("@/metrics");
 const imageUpload = (0, uploadFIles_1.makeUploadFile)();
 const route = (0, express_1.Router)();
 const isTestE2E = process.env.NODE_ENV === "test-e2e";
@@ -37,4 +38,5 @@ if (isTestE2E) {
 }
 route.use('/api', coupon_route_2.default);
 route.use('/api', storeDash_route_1.default);
+route.use('/metrics', metrics_1.metricsRoute);
 exports.default = route;

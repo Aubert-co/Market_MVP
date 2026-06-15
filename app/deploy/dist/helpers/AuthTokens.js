@@ -30,7 +30,7 @@ const cookieConfig = () => {
     if (isProduction) {
         return {
             ...baseConfig,
-            domain: '.aubertdev.com.br'
+            domain: '.aubertbarbosa.com'
         };
     }
     return baseConfig;

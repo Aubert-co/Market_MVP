@@ -12,6 +12,7 @@ const cors_1 = __importDefault(require("cors"));
 const redis_1 = require("@/config/cache/redis");
 const helmet_1 = __importDefault(require("helmet"));
 const globalLimiter_1 = require("@/middleware/globalLimiter");
+const metrics_1 = require("./metrics");
 if (!process.env.NODE_ENV) {
     throw new Error("NO NODE_ENV");
 }
@@ -41,6 +42,17 @@ app.use((0, cors_1.default)({
 }));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
+app.use((req, res, next) => {
+    res.on("finish", () => {
+        if (res.statusCode !== 429) {
+            metrics_1.rateLimitAllowed.inc({
+                route: req.path,
+                method: req.method
+            });
+        }
+    });
+    next();
+});
 app.use(globalLimiter_1.globalLimiter);
 app.use(route_1.default);
 app.use((error, req, res, next) => (0, error_middleware_1.ErrorMiddleware)(error, req, res, next));

@@ -4,7 +4,7 @@ exports.AuthUserController = void 0;
 const checkIsValid_1 = require("@/helpers/checkIsValid");
 const AuthTokens_1 = require("@/helpers/AuthTokens");
 const isProduction = process.env.NODE_ENV === 'production';
-const domain = isProduction && '.aubertdev.com.br';
+const domain = isProduction && '.aubertbarbosa.com';
 class AuthUserController {
     constructor(user) {
         this.user = user;
@@ -19,7 +19,7 @@ class AuthUserController {
                 secure: isProduction,
                 maxAge: 7 * 24 * 60 * 60 * 1000,
                 path: '/',
-                domain: '.aubertdev.com.br',
+                domain: '.aubertbarbosa.com',
                 sameSite: 'none'
             });
             res.status(201).json({ message: "Login successfully" });
