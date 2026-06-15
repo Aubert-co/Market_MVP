@@ -14,6 +14,7 @@ import CouponStore from "@/modules/storeAdmin/coupon/coupon.route"
 import orderAdminRoute from "@/modules/storeAdmin/orders/routes/orders.routes"
 import Auth from "@/modules/auth/route/auth.route"
 import RouteTest from "./testes"
+import { metricsRoute } from "@/metrics";
 const imageUpload = makeUploadFile()
 const route = Router();
 const isTestE2E = process.env.NODE_ENV ==="test-e2e"
@@ -34,7 +35,7 @@ if(isTestE2E){
 
 route.use('/api',CouponStore)
 route.use('/api',storeDashboard)
-
+route.use('/metrics',metricsRoute)
  
 
 export default route

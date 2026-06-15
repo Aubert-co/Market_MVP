@@ -7,6 +7,7 @@ import cors from 'cors'
 import { connectRedis } from '@/config/cache/redis'
 import helmet from 'helmet'
 import { globalLimiter } from '@/middleware/globalLimiter'
+import { rateLimitAllowed } from './metrics'
 
 
 if(!process.env.NODE_ENV){
@@ -47,7 +48,18 @@ app.use(cors({
 
 app.use(cookieParser())
 app.use(express.json())
+app.use((req, res, next) => {
+  res.on("finish", () => {
+    if (res.statusCode !== 429) {
+      rateLimitAllowed.inc({
+        route: req.path,
+        method: req.method
+      });
+    }
+  });
 
+  next();
+});
 app.use( globalLimiter )
 app.use( route )
 
