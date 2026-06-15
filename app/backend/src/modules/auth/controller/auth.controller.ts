@@ -5,7 +5,7 @@ import { cookieConfig } from '@/helpers/AuthTokens';
 
 
 const isProduction = process.env.NODE_ENV === 'production';
-const domain =  isProduction && '.aubertdev.com.br'
+const domain =  isProduction && '.aubertbarbosa.com'
 export class AuthUserController{
     constructor(private user:IUserService){}
     public async Login(req:Request,res:Response,next:NextFunction):Promise<any>{
@@ -20,7 +20,7 @@ export class AuthUserController{
                 secure: isProduction,
                 maxAge: 7 * 24 * 60 * 60 * 1000, 
                 path: '/',
-                domain:'.aubertdev.com.br',
+                domain:'.aubertbarbosa.com',
                 sameSite:'none'
             });
           
