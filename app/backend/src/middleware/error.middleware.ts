@@ -32,7 +32,7 @@ export function ErrorMiddleware  (error:any,req:Request,res:Response,next:NextFu
                 context:error.context,
                 prismaError:error.prismaError,
                 status:error.status,
-                service:error.service,
+                class_ser:error.service,
                 action:error.action,
                 message:error.message
             })
