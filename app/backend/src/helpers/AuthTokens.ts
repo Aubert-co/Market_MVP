@@ -31,7 +31,7 @@ export const cookieConfig = (): CookieOptions => {
   if (isProduction) {
     return {
       ...baseConfig,
-      domain: '.aubertdev.com.br'
+      domain: '.aubertbarbosa.com'
     }
   }
 
