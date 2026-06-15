@@ -1,0 +1,46 @@
+logging {
+  level = "info"
+}
+
+loki.source.docker "containers" {
+  host = "unix:///var/run/docker.sock"
+
+  targets = discovery.docker.containers.targets     
+
+  forward_to = [loki.write.grafana.receiver]
+}
+
+loki.write "grafana" {
+  endpoint {
+    url = "loki-url"
+
+    basic_auth {
+      username = ""
+      password = ""
+    }
+  }
+}
+discovery.docker "containers" {
+  host = "unix:///var/run/docker.sock"
+}
+
+prometheus.scrape "api" {
+  targets = [
+    {"__address__" = "server:3000"},
+  ]
+
+  metrics_path = "/metrics"
+
+  forward_to = [prometheus.remote_write.grafana.receiver]
+}
+
+prometheus.remote_write "grafana" {
+  endpoint {
+    url = ""
+
+    basic_auth {
+      username = ""
+      password = ""
+    }
+  }
+}
