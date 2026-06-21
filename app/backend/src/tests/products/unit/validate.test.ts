@@ -19,7 +19,7 @@ describe("validateFilterProducts",()=>{
     })
     it("should render the correct maxPrice and minPrice when valid values are provided",async()=>{
         const query = {
-            name:"",category:"Roupas",maxPrice:"35.99",
+            name:"test",category:"Roupas",maxPrice:"35.99",
             minPrice:"3.99"
 
         }
@@ -28,7 +28,7 @@ describe("validateFilterProducts",()=>{
         
         expect(orderBy).toEqual("asc")
         expect(category).toEqual(req.query.category)
-        expect(name).toBeUndefined()
+        expect(name).toEqual(req.query.name)
         expect(maxPrice).toBe(Number(query.maxPrice))
         expect(minPrice).toBe(Number(query.minPrice))
     })
@@ -108,6 +108,19 @@ describe("validateFilterProducts",()=>{
          }catch(err:any){
             expect(err).toBeInstanceOf(ErrorMessage)
             expect(err.message).toEqual("Invalid name format")
+        }
+    })
+      it("should throw an error when category is provided but the value is invalid",async()=>{
+        const query = {
+            name:"camisa",category:"invalid category",
+        }
+         const req = {query} as unknown as Request
+         
+         try{
+            validateFilterProducts(req)
+         }catch(err:any){
+            expect(err).toBeInstanceOf(ErrorMessage)
+            expect(err.message).toEqual("Invalid category provided")
         }
     })
 })
