@@ -9,9 +9,10 @@ export const validateFilterProducts = (
 ): FilterProductsInput => {
   const { name, orderBy, category, minPrice, maxPrice } = req.query
 
-  let nameStr = getValidString(name)
-  let categoryStr = getValidString(category)
-
+  let nameStr = getString(name) 
+  nameStr = nameStr === "" ? undefined : nameStr
+  let categoryStr = getString(category)
+  categoryStr = categoryStr === "" ? undefined : categoryStr
 
 
   const minPriceNum =
@@ -37,8 +38,7 @@ export const validateFilterProducts = (
       action: "filterProducts"
     })
   }
-
-  if (nameStr && !checkisAValidString(nameStr)) {
+  if (nameStr && checkisAValidString(nameStr)) {
     throw new ErrorMessage({
       message: "Invalid name format",
       status: 400,
