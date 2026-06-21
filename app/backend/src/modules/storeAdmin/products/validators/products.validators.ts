@@ -1,4 +1,4 @@
-import { getString } from "@/helpers";
+import { getString, getValidString } from "@/helpers";
 import { checkIsAValidCategory, checkIsAValidInteger, checkIsAValidNumber, checkisAValidString, checkOrderBy } from "@/helpers/checkIsValid";
 import { checkIsValidImage } from "@/helpers/checkIsValidImage";
 import { ErrorMessage } from "@/helpers/ErrorMessage";
@@ -90,41 +90,57 @@ export const createProductValidator = (req:Request)=>{
     }
 }
 
-export const getStoreProductValidator = (req:Request)=>{
-    let {page,search,category,priceOrder,limit,stockOrder} = req.query
-    const {storeId} = req.params
+export const getStoreProductValidator = (req: Request) => {
+    let { page, search, category, priceOrder, limit, stockOrder } = req.query
+    const { storeId } = req.params
 
-    const pageNumber = checkIsAValidInteger(page)  ? Number(page) : 1
-    const priceOrderStr: Orderby = checkOrderBy(priceOrder) ? (priceOrder as Orderby) : "desc"
-    const stockOrderBy:Orderby = checkOrderBy(stockOrder) ? (stockOrder as Orderby) : "asc"
-    const limitNumber = checkIsAValidInteger(limit) ? Number(limit) : 5
-    const searchString = getString(search)
-    const categoryString = getString(category)
-
-    if( searchString && !checkisAValidString(searchString)){
+    if (!checkIsAValidInteger(storeId)) {
         throw new ErrorMessage({
-            message:"Invalid search. Please check and try again.",
-            status:422,
-            service:"controller",
-            action:"getStoreProduct"
-        })
-    
-    }
-    if(categoryString && !checkIsAValidCategory(categoryString)){
-            throw new ErrorMessage({
-            message:"Invalid category. Please check and try again.",
-            status:422,
-            service:"controller",
-            action:"getStoreProduct"
+            message: "Invalid storeId. Please check and try again.",
+            status: 422,
+            service: "controller",
+            action: "getStoreProduct"
         })
     }
+
+    const pageNumber = checkIsAValidInteger(page) ? Number(page) : 1
+    const limitNumber = checkIsAValidInteger(limit) ? Number(limit) : 5
+
+    const priceOrderStr: Orderby =
+        checkOrderBy(priceOrder) ? (priceOrder as Orderby) : "asc"
+
+    const stockOrderBy: Orderby =
+        checkOrderBy(stockOrder) ? (stockOrder as Orderby) : "asc"
+
+    let searchString = getString(search)
+    let categoryString = getString(category)
+    searchString = searchString === "" ? undefined : searchString
+    categoryString = categoryString === "" ? undefined : categoryString
+    if (searchString && checkisAValidString(searchString)) {
+        throw new ErrorMessage({
+            message: "Invalid search. Please check and try again.",
+            status: 422,
+            service: "controller",
+            action: "getStoreProduct"
+        })
+    }
+
+    if (categoryString && !checkIsAValidCategory(categoryString)) {
+        throw new ErrorMessage({
+            message: "Invalid category. Please check and try again.",
+            status: 422,
+            service: "controller",
+            action: "getStoreProduct"
+        })
+    }
+
     return {
-        storeId:Number(storeId),
-        page:pageNumber,
-        priceOrder:priceOrderStr,
-        search:searchString,
-        limit:limitNumber,
-        stockOrder:stockOrderBy,
-        category:categoryString
+        storeId: Number(storeId),
+        page: pageNumber,
+        priceOrder: priceOrderStr,
+        search: searchString,
+        limit: limitNumber,
+        stockOrder: stockOrderBy,
+        category: categoryString
     }
 }
