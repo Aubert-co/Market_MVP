@@ -107,11 +107,8 @@ export class ProductAdminService  implements IProductAdminService{
             price,imageUrl
         })
         
-        const uploadImage =await retry({
-            func:this.storage.uploadImage,
-            body:{mimeType,urlPath:imageUrl,fileBuffer:compressBuff.data},
-            retries:2
-        })
+        const uploadImage =await this.storage.uploadImage({mimeType,urlPath:imageUrl,fileBuffer:compressBuff.data})
+           
     
         if(!uploadImage.success){
             await this.product.deleteProduct(productId)
