@@ -8,7 +8,7 @@ const spyService = jest.spyOn(ProductAdminService.prototype,'getStoreProducts')
 let checkStore = jest.spyOn(VerifyStoreOwnership.prototype,'handler')
 
 
-describe.skip("getStoreProducts",()=>{
+describe("getStoreProducts",()=>{
       beforeEach(()=>{
         checkStore.mockImplementation(async(req, res, next) => {
             next(); 
@@ -22,7 +22,7 @@ describe.skip("getStoreProducts",()=>{
         expect(response.body.message).toEqual('Success')
         expect(response.status).toEqual(200)
         expect(spyService).toHaveBeenCalledWith({
-            search: "shirt",
+            search: "shirte",
             category: "Roupas",
             priceOrder: "asc",
             take: 10,
@@ -66,7 +66,7 @@ describe.skip("getStoreProducts",()=>{
     }) 
       it("should return an error when an invalid search is provided",async()=>{
         const response = await supertest(app)
-        .get('/api/stores/1/products?category=roupas')
+        .get('/api/stores/1/products?search=<script>&category=roupas')
         .set('Cookie', [`token=${cookies}`])
 
         expect(response.body.message).toEqual('Invalid search. Please check and try again.')

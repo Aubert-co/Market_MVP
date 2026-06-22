@@ -32,11 +32,28 @@ export const checkIsAValidInteger = (value: unknown): boolean => {
 
   return true;
 };
-export const checkisAValidString =(value:any,maxLength:number = 15,minLength=4):boolean=>{
-    if(!value || typeof value !== 'string' )return false;
+type StringValidationOptions = {
+  minLength?: number
+  maxLength?: number
+}
+export const isValidString = (
+  value: unknown,
+  {
+    minLength = 4,
+    maxLength = 15,
+  }: StringValidationOptions = {},
+): boolean =>{
+   if (typeof value !== 'string') return false
 
-    if(value.length <= minLength || value.length >= maxLength)return false;
-    return true;
+  const trimmed = value.trim()
+
+  if (trimmed.length === 0) return false
+  if (trimmed.length < minLength) return false
+  if (trimmed.length > maxLength) return false
+
+  if (! /^[\p{L}\p{N}\s,.:;!()'"%-]+$/u.test(trimmed)) return false
+
+  return true
 }
 
 export const checkisValidEmail = (email:any):boolean=>{

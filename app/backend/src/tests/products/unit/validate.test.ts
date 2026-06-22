@@ -100,7 +100,7 @@ describe("validateFilterProducts",()=>{
   
      it("should throw an error when name is provided but the value is invalid",async()=>{
         const query = {
-            name:"a",category:"Roupas",
+            name:"<>a",category:"Roupas",
         }
          const req = {query} as unknown as Request
          

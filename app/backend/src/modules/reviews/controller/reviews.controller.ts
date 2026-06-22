@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IRewviewsService } from "../../reviews/services/reviews.services";
-import { checkIsAValidNumber, checkisAValidString,checkIsAValidInteger } from "../../../helpers/checkIsValid";
+import { checkIsAValidNumber, isValidString,checkIsAValidInteger } from "../../../helpers/checkIsValid";
 import { ErrorMessage } from "@/helpers/ErrorMessage";
 
 export class ReviewsController{
@@ -27,7 +27,7 @@ export class ReviewsController{
                     action:"addReview"
                 })
             }
-            if(!checkisAValidString(content,150)){
+            if(!isValidString(content,{maxLength:150})){
                 throw new ErrorMessage({
                     message:"Content must be between 5 and 150 characters long.",
                     status:400,

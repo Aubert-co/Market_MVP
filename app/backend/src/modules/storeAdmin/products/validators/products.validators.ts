@@ -1,5 +1,5 @@
 import { getString, getValidString } from "@/helpers";
-import { checkIsAValidCategory, checkIsAValidInteger, checkIsAValidNumber, checkisAValidString, checkOrderBy } from "@/helpers/checkIsValid";
+import { checkIsAValidCategory, checkIsAValidInteger, checkIsAValidNumber, isValidString, checkOrderBy } from "@/helpers/checkIsValid";
 import { checkIsValidImage } from "@/helpers/checkIsValidImage";
 import { ErrorMessage } from "@/helpers/ErrorMessage";
 import { Orderby } from "@/types/global.types";
@@ -30,7 +30,7 @@ export const createProductValidator = (req:Request)=>{
                     })
             }
         
-        if(!checkisAValidString(name,50)){
+        if(!isValidString(name,{maxLength:50})){
             throw new ErrorMessage({
                 message:"Invalid name. Please check and try again.",
                 service:"ProductAdminController",
@@ -40,7 +40,7 @@ export const createProductValidator = (req:Request)=>{
           
             
         }
-        if(!checkisAValidString(description , 1000)){
+        if(!isValidString(description , {maxLength:2000,minLength:20})){
             throw new ErrorMessage({
                 message:"Invalid description. Please check and try again.",
                 status:422,
@@ -116,7 +116,7 @@ export const getStoreProductValidator = (req: Request) => {
     let categoryString = getString(category)
     searchString = searchString === "" ? undefined : searchString
     categoryString = categoryString === "" ? undefined : categoryString
-    if (searchString && checkisAValidString(searchString)) {
+    if (searchString && !isValidString(searchString)) {
         throw new ErrorMessage({
             message: "Invalid search. Please check and try again.",
             status: 422,

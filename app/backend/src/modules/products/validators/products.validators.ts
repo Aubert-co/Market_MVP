@@ -1,5 +1,5 @@
 import {  getString, getValidString } from "@/helpers";
-import { checkIsAValidCategory, checkIsAValidNumber, checkisAValidString, checkIsValidStatus, checkOrderBy } from "@/helpers/checkIsValid";
+import { checkIsAValidCategory, checkIsAValidNumber, isValidString } from "@/helpers/checkIsValid";
 import { ErrorMessage } from "@/helpers/ErrorMessage";
 import { FilterProductsInput } from "@/modules/products/types/product.types";
 import { Orderby } from "@/types/global.types";
@@ -38,7 +38,7 @@ export const validateFilterProducts = (
       action: "filterProducts"
     })
   }
-  if (nameStr && !checkisAValidString(nameStr,15,1)) {
+  if (nameStr && !isValidString(nameStr,{minLength:1})) {
     
     throw new ErrorMessage({
       message: "Invalid name format",

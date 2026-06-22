@@ -1,6 +1,6 @@
 import {NextFunction, Request,Response} from 'express'
 import { IUserService } from "../service/auth.service";
-import { checkisAValidString } from '@/helpers/checkIsValid';
+import { isValidString } from '@/helpers/checkIsValid';
 import { cookieConfig } from '@/helpers/AuthTokens';
 
 
@@ -31,7 +31,7 @@ export class AuthUserController{
     }
     public async Register(req:Request,res:Response,next:NextFunction):Promise<any>{
         try{
-            if(!checkisAValidString(req.body.name)){
+            if(!isValidString(req.body.name)){
                 return res.status(422).send({message:"Invalid name. Please check and try again."});
             }
            

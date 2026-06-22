@@ -1,4 +1,4 @@
-import { checkIsAValidInteger, checkisAValidString } from "./checkIsValid";
+import { checkIsAValidInteger, isValidString } from "./checkIsValid";
 
 export const categories = [
   "Roupas",
@@ -45,7 +45,7 @@ export const getInteger = (value:unknown):number | undefined=>{
 }
 
 export const getValidString = (value:unknown):string|undefined=>{
-  if(checkisAValidString(value) && typeof value === "string")return value
+  if(isValidString(value) && typeof value === "string")return value
 
   return undefined
 }

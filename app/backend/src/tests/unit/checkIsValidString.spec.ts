@@ -1,37 +1,93 @@
-import { checkisAValidString } from "../../helpers/checkIsValid";
+import { isValidString } from "../../helpers/checkIsValid";
 
 
-describe("function checkisAValidString",()=>{
-    test("When the name is smaller than 4 or equal 4 should return false",()=>{
-        const name = "A".repeat(4)
-        expect(checkisAValidString(name)).toBeFalsy()
-        
-    })
-    test("should return falsy when the maxLenght is 200 and send 200 caracteres",()=>{
-        const maxLength = 200
-        const value = 'a'.repeat(maxLength)
-        expect(checkisAValidString(value ,maxLength )).toBeFalsy()
-    })
-    test("When the name is a empty string should return false",()=>{
-        expect(checkisAValidString("")).toBeFalsy()
-    })
-    test("When the name is null should return false",()=>{
-        expect(checkisAValidString("")).toBeFalsy()
-    })
-    test("When the name is greater than 15 should return false",()=>{
-        const name = "a".repeat(16)
-        expect( checkisAValidString(name)).toBeFalsy()
-    })
-     test("When the name is equal than 15 should return false",()=>{
-        const name = "a".repeat(15)
-        expect( checkisAValidString(name)).toBeFalsy()
-    })
-    test("When the name is a type diferent from string should return false",()=>{
-        expect( checkisAValidString(false)).toBeFalsy()
-        expect( checkisAValidString(true)).toBeFalsy()
-        expect( checkisAValidString(undefined)).toBeFalsy()
-        expect(checkisAValidString(1234)).toBeFalsy()
-        expect(checkisAValidString([])).toBeFalsy()
-        expect(checkisAValidString({})).toBeFalsy()
-    })
+describe("when value length is smaller than minLength", () => {
+  test.each([
+    ["", 4],
+    ["A", 4],
+    ["AB", 4],
+    ["ABC", 4],
+    ["Test", 5],
+    ["Hello", 10],
+  ])(
+    'should return false for "%s" when minLength is %i',
+    (value, minLength) => {
+      expect(
+        isValidString(value, {
+          minLength,
+          maxLength: 20,
+        }),
+      ).toBeFalsy()
+    },
+  )
+})
+describe("when value length is greater than maxLength", () => {
+  test.each([
+    "ABCDE",
+    "ABCDEF",
+    "A".repeat(10),
+    "A".repeat(100),
+  ])('should return false for "%s"', (value) => {
+    expect(
+      isValidString(value, {
+        minLength: 1,
+        maxLength: 4,
+      }),
+    ).toBeFalsy()
+  })
+})
+
+describe("when value contains invalid strings", () => {
+  test.each([
+    "",
+    " ",
+    "    ",
+    "\t",
+    "\n",
+    "<>",
+    "</>",
+    "<script>",
+    "<script>alert('xss')</script>",
+    "<img src=x onerror=alert(1)>",
+    "{name:lucas}",
+    "[testing]",
+    "///",
+    "\\",
+    "&&&",
+    "###",
+    "@@@",
+    `lorem itpstu qetqe testing my name is lorem itpsu <scrip/>`
+  ])('should return false for "%s"', (value) => {
+    expect(
+      isValidString(value, {
+        minLength: 1,
+        maxLength: 100,
+      }),
+    ).toBeFalsy()
+  })
+})
+
+describe("when value is a valid string", () => {
+  test.each([
+    "Mouse Gamer",
+    "Teclado mecânico",
+    "Câmera profissional",
+    "Notebook, Dell Inspiron",
+    "Fone: Bluetooth JBL",
+    "Smartphone - Galaxy A54",
+    "Produto incrível!",
+    "Áudio de alta qualidade",
+    "Descrição com acentos e vírgulas, bem formatada",
+    "Café premium 100% arábica",
+    "Monitor 24 polegadas (Full HD)",
+    "Suporte técnico: rápido e eficiente",
+    ' testando o "name"'
+  ])('should return true for "%s"', (value) => {
+    expect(
+      isValidString(value, {
+        minLength: 4,
+        maxLength: 100,
+      }),
+    ).toBeTruthy()
+  })
 })

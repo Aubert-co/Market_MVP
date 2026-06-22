@@ -292,14 +292,14 @@ describe("When try to create a product with an invalid description",()=>{
         expect(response.body.message).toEqual('Invalid description. Please check and try again.')
         expect(response.statusCode).toEqual(422)
     })
-    it("should return 422 when the product description is smaller than 4",async()=>{
+    it("should return 422 when the product description is smaller than 20",async()=>{
         
         
         const response = await request(app)
         .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
-        .field('description', 'curt')
+        .field('description', 'a'.repeat(19))
         .field('price',199.99)
         .field('stock',-15)
         .field('category','Eletrônicos')
@@ -314,7 +314,7 @@ describe("When try to create a product with an invalid description",()=>{
         .post(endpoint)
         .set('Cookie', [`token=${cookies}`])
         .field('name', 'abcdee')
-        .field('description', 'a'.repeat(1001))
+        .field('description', 'a'.repeat(2001))
         .field('price',199.99)
         .field('stock','')
         .field('category','Eletrônicos')
