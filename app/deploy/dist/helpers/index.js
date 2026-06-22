@@ -41,7 +41,7 @@ const getInteger = (value) => {
 };
 exports.getInteger = getInteger;
 const getValidString = (value) => {
-    if ((0, checkIsValid_1.checkisAValidString)(value) && typeof value === "string")
+    if ((0, checkIsValid_1.isValidString)(value) && typeof value === "string")
         return value;
     return undefined;
 };

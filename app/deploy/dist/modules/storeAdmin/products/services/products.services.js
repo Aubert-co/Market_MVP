@@ -85,11 +85,7 @@ class ProductAdminService {
             description, name, stock, storeId, category,
             price, imageUrl
         });
-        const uploadImage = await (0, retry_1.retry)({
-            func: this.storage.uploadImage,
-            body: { mimeType, urlPath: imageUrl, fileBuffer: compressBuff.data },
-            retries: 2
-        });
+        const uploadImage = await this.storage.uploadImage({ mimeType, urlPath: imageUrl, fileBuffer: compressBuff.data });
         if (!uploadImage.success) {
             await this.product.deleteProduct(productId);
             throw new ErrorMessage_1.ErrorMessage({

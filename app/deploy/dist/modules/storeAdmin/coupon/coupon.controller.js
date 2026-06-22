@@ -40,7 +40,7 @@ class CouponStoreController {
                     message: "Percentage discount cannot exceed 60%."
                 });
             }
-            if (!(0, checkIsValid_1.checkisAValidString)(code)) {
+            if (!(0, checkIsValid_1.isValidString)(code)) {
                 return res.status(400).send({
                     message: "Invalid coupon code. Please provide a valid string."
                 });

@@ -17,7 +17,7 @@ class BaseRedisServices {
         await this.redis.saveItemInCache(key, datas, expirationTime);
     }
     async incrementCache(key) {
-        await this.redis.redisIncrement(key);
+        return await this.redis.redisIncrement(key);
     }
     async deleteCache(key) {
         await this.redis.deleteCacheKey(key);

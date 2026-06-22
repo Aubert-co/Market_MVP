@@ -20,7 +20,7 @@ class RedisRepository {
         await this.redis.del(key);
     }
     async redisIncrement(key) {
-        await this.redis.incr(key);
+        return await this.redis.incr(key);
     }
 }
 exports.RedisRepository = RedisRepository;

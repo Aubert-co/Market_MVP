@@ -28,7 +28,7 @@ class ReviewsController {
                     action: "addReview"
                 });
             }
-            if (!(0, checkIsValid_1.checkisAValidString)(content, 150)) {
+            if (!(0, checkIsValid_1.isValidString)(content, { maxLength: 150 })) {
                 throw new ErrorMessage_1.ErrorMessage({
                     message: "Content must be between 5 and 150 characters long.",
                     status: 400,

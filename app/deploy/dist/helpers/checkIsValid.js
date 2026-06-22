@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkOrderBy = exports.checkIsAValidCategory = exports.checkisValidEmail = exports.checkisAValidString = exports.checkIsAValidInteger = exports.checkIsAValidNumber = void 0;
+exports.checkOrderBy = exports.checkIsAValidCategory = exports.checkisValidEmail = exports.isValidString = exports.checkIsAValidInteger = exports.checkIsAValidNumber = void 0;
 exports.checkIsValidStatus = checkIsValidStatus;
 const index_1 = require("./index");
 const checkIsAValidNumber = (value) => {
@@ -35,14 +35,21 @@ const checkIsAValidInteger = (value) => {
     return true;
 };
 exports.checkIsAValidInteger = checkIsAValidInteger;
-const checkisAValidString = (value, maxLength = 15) => {
-    if (!value || typeof value !== 'string')
+const isValidString = (value, { minLength = 4, maxLength = 15, } = {}) => {
+    if (typeof value !== 'string')
         return false;
-    if (value.length <= 4 || value.length >= maxLength)
+    const trimmed = value.trim();
+    if (trimmed.length === 0)
+        return false;
+    if (trimmed.length < minLength)
+        return false;
+    if (trimmed.length > maxLength)
+        return false;
+    if (!/^[\p{L}\p{N}\s,.:;!()'"%-]+$/u.test(trimmed))
         return false;
     return true;
 };
-exports.checkisAValidString = checkisAValidString;
+exports.isValidString = isValidString;
 const checkisValidEmail = (email) => {
     const emailRegex = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
     return emailRegex.test(email);

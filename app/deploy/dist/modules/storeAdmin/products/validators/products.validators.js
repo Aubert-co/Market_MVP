@@ -25,7 +25,7 @@ const createProductValidator = (req) => {
             service: "controller"
         });
     }
-    if (!(0, checkIsValid_1.checkisAValidString)(name, 50)) {
+    if (!(0, checkIsValid_1.isValidString)(name, { maxLength: 50 })) {
         throw new ErrorMessage_1.ErrorMessage({
             message: "Invalid name. Please check and try again.",
             service: "ProductAdminController",
@@ -33,7 +33,7 @@ const createProductValidator = (req) => {
             status: 422
         });
     }
-    if (!(0, checkIsValid_1.checkisAValidString)(description, 1000)) {
+    if (!(0, checkIsValid_1.isValidString)(description, { maxLength: 2000, minLength: 20 })) {
         throw new ErrorMessage_1.ErrorMessage({
             message: "Invalid description. Please check and try again.",
             status: 422,
@@ -82,13 +82,23 @@ exports.createProductValidator = createProductValidator;
 const getStoreProductValidator = (req) => {
     let { page, search, category, priceOrder, limit, stockOrder } = req.query;
     const { storeId } = req.params;
+    if (!(0, checkIsValid_1.checkIsAValidInteger)(storeId)) {
+        throw new ErrorMessage_1.ErrorMessage({
+            message: "Invalid storeId. Please check and try again.",
+            status: 422,
+            service: "controller",
+            action: "getStoreProduct"
+        });
+    }
     const pageNumber = (0, checkIsValid_1.checkIsAValidInteger)(page) ? Number(page) : 1;
-    const priceOrderStr = (0, checkIsValid_1.checkOrderBy)(priceOrder) ? priceOrder : "desc";
-    const stockOrderBy = (0, checkIsValid_1.checkOrderBy)(stockOrder) ? stockOrder : "asc";
     const limitNumber = (0, checkIsValid_1.checkIsAValidInteger)(limit) ? Number(limit) : 5;
-    const searchString = (0, helpers_1.getString)(search);
-    const categoryString = (0, helpers_1.getString)(category);
-    if (searchString && !(0, checkIsValid_1.checkisAValidString)(searchString)) {
+    const priceOrderStr = (0, checkIsValid_1.checkOrderBy)(priceOrder) ? priceOrder : "asc";
+    const stockOrderBy = (0, checkIsValid_1.checkOrderBy)(stockOrder) ? stockOrder : "asc";
+    let searchString = (0, helpers_1.getString)(search);
+    let categoryString = (0, helpers_1.getString)(category);
+    searchString = searchString === "" ? undefined : searchString;
+    categoryString = categoryString === "" ? undefined : categoryString;
+    if (searchString && !(0, checkIsValid_1.isValidString)(searchString)) {
         throw new ErrorMessage_1.ErrorMessage({
             message: "Invalid search. Please check and try again.",
             status: 422,

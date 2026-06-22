@@ -30,7 +30,7 @@ class AuthUserController {
     }
     async Register(req, res, next) {
         try {
-            if (!(0, checkIsValid_1.checkisAValidString)(req.body.name)) {
+            if (!(0, checkIsValid_1.isValidString)(req.body.name)) {
                 return res.status(422).send({ message: "Invalid name. Please check and try again." });
             }
             const { email, name, password } = req.body;

@@ -8,17 +8,13 @@ const VERSION_PAGE = "list-version";
 class CacheProducts extends BaseRedis_service_1.BaseRedisServices {
     async saveProductsInCache(data, page) {
         try {
-            let version = await this.getCacheByKey(VERSION_PAGE);
-            if (!version) {
-                version = 1;
-            }
+            const version = await this.incrementCache(VERSION_PAGE);
             const key = keyCachedPageProduct(page, version);
             await this.saveItemsInCache({
                 data,
                 key,
                 expirationTime: 3600
             });
-            await this.incrementCache(VERSION_PAGE);
         }
         catch {
             return;

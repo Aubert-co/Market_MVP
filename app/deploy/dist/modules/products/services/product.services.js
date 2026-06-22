@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductService = void 0;
 const pagination_1 = require("../../../helpers/pagination");
 const ErrorMessage_1 = require("../../../helpers/ErrorMessage");
+const logger_1 = require("@/config/logger/logger");
+const logger = (0, logger_1.startLogger)();
 class ProductService {
     constructor(product, redis) {
         this.product = product;
@@ -39,6 +41,13 @@ class ProductService {
                 totalPages, currentPage, fromCache: true
             };
         }
+        logger.info({
+            event: "cache_miss",
+            hit: false,
+            service: "redis-cache",
+            layer: "cache",
+            message: "Redis cache miss"
+        });
         const datas = await this.product.getProducts(limit, skip);
         if (datas.length > 0)
             await this.redis.saveProductsInCache(datas, currentPage);
