@@ -16,17 +16,15 @@ export class CacheProducts extends BaseRedisServices implements ICacheProducts{
     async saveProductsInCache(data:SelectedProduct[],page:number){
         try{
             
-            let version = await this.getCacheByKey<number>(VERSION_PAGE)
-            if(!version){
-                version=1
-            }
-            const key = keyCachedPageProduct(page,version)
-            await this.saveItemsInCache<SelectedProduct[]>({
+           const version = await this.incrementCache(VERSION_PAGE)
+
+            const key = keyCachedPageProduct(page, version)
+
+            await this.saveItemsInCache({
                 data,
                 key,
-                expirationTime:3600
+                expirationTime: 3600
             })
-            await this.incrementCache(VERSION_PAGE)
         }catch{
             return
         }
