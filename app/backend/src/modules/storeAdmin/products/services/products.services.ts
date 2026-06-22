@@ -106,7 +106,7 @@ export class ProductAdminService  implements IProductAdminService{
             description,name,stock,storeId,category,
             price,imageUrl
         })
-        console.log("not pass")
+        
         const uploadImage =await this.storage.uploadImage({mimeType,urlPath:imageUrl,fileBuffer:compressBuff.data})
            
         
