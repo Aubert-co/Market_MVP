@@ -21,8 +21,8 @@ export abstract class BaseRedisServices {
         await this.redis.saveItemInCache(key,datas,expirationTime)
     }
     
-    protected async incrementCache(key:string){
-        await this.redis.redisIncrement(key)
+    protected async incrementCache(key:string):Promise<number>{
+        return await this.redis.redisIncrement(key)
     }
     protected async deleteCache(key:string){
         await this.redis.deleteCacheKey(key)
