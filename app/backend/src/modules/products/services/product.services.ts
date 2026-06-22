@@ -3,7 +3,7 @@ import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage";
 import {  IProductRepository } from "../repository/product.repository";
 import {   SelectedProduct ,GetProductById, FilteredProduct,FilterProductsInput} from "../types/product.types";
 import { ICacheProducts } from "../cache/product.cache";
-
+import { startLogger } from "@/config/logger/logger";
 
 export interface IProductService{
     getProducts(page:number):Promise<GetProducts>,
@@ -19,6 +19,7 @@ type GetProducts = {
     totalPages:number,
     fromCache:boolean
 }
+const logger = startLogger()
 export class ProductService  implements IProductService{
     
     constructor(protected product:IProductRepository,protected redis:ICacheProducts){
@@ -61,7 +62,13 @@ export class ProductService  implements IProductService{
                 totalPages,currentPage,fromCache:true
             }
         }
- 
+        logger.info({
+            event: "cache_miss",
+            hit: false,
+            service: "redis-cache",
+            layer: "cache",
+            message: "Redis cache miss"
+        })
         const datas = await this.product.getProducts(limit,skip)
         if(datas.length >0)await this.redis.saveProductsInCache( datas,currentPage )
 
