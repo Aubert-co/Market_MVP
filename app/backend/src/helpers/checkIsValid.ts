@@ -32,10 +32,10 @@ export const checkIsAValidInteger = (value: unknown): boolean => {
 
   return true;
 };
-export const checkisAValidString =(value:any,maxLength:number = 15):boolean=>{
+export const checkisAValidString =(value:any,maxLength:number = 15,minLength=4):boolean=>{
     if(!value || typeof value !== 'string' )return false;
 
-    if(value.length <= 4 || value.length >= maxLength)return false;
+    if(value.length <= minLength || value.length >= maxLength)return false;
     return true;
 }
 
