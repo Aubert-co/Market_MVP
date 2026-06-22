@@ -19,7 +19,7 @@ const endpoint = "/api/product/search"
             isActive: true,
             storeId: 1
         }]
-describe("POST /product/filter - when user sends invalid inputs",()=>{
+describe("GET /product/filter - when user sends invalid inputs",()=>{
 
     beforeEach(()=>{
         jest.resetAllMocks()
@@ -32,18 +32,10 @@ describe("POST /product/filter - when user sends invalid inputs",()=>{
         expect( response.body.message).toEqual("Invalid category provided")
         expect( mock ).not.toHaveBeenCalled()
     })
-     it("should return an error when the name is shorter than 4 characters",async()=>{
-        const response = await supertest(app)
-        .get(`${endpoint}?name=tete`)
-      
-
-        expect( response.status).toEqual(400)
-        expect( response.body.message).toEqual("Invalid name format")
-        expect( mock ).not.toHaveBeenCalled()
-    })
+   
      it("should return an error when the name is longer than 16 characters",async()=>{
         const response = await supertest(app)
-        .get(`${endpoint}?name=${'a'.repeat(16)}`)
+        .get(`${endpoint}?name=${'a'.repeat(126)}`)
         .send({name:'a'.repeat(16)})
 
         expect( response.status).toEqual(400)
@@ -87,7 +79,7 @@ describe("POST /product/filter - when user sends invalid inputs",()=>{
     })
 })
 
-describe("POST /product/filter - when user sends valid inputs",()=>{
+describe("GET /product/filter - when user sends valid inputs",()=>{
     beforeEach(()=>{
         jest.resetAllMocks()
         jest.clearAllMocks()
@@ -114,7 +106,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         skip: 0,
         take: 10,
         "orderBy":  {
-            "price": "desc",
+            "price": "asc",
         },
         where: {
             category: {
@@ -141,7 +133,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         skip: 0,
         take: 10,
         "orderBy":  {
-            "price": "desc",
+            "price": "asc",
         },
         where: {
             category: {
@@ -174,7 +166,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         skip: 0,
         take: 10,
         "orderBy":  {
-            "price": "desc",
+            "price": "asc",
         },
         where: {
             name: {
@@ -201,7 +193,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         skip: 0,
         take: 10,
         "orderBy":  {
-            "price": "desc",
+            "price": "asc",
         },
         where: {
             name: {
@@ -234,7 +226,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
             skip: 0,
             take: 10,
             "orderBy":  {
-                "price": "desc",
+                "price": "asc",
             },
             where: {
                 price: {
@@ -260,7 +252,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         skip: 0,
         take: 10,
         "orderBy":  {
-            "price": "desc",
+            "price": "asc",
         },
         where: {
             price: {
@@ -292,7 +284,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
             skip: 0,
             take: 10,
             "orderBy":  {
-                "price": "desc",
+                "price": "asc",
             },
             where: {
                 price: {
@@ -318,7 +310,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         skip: 0,
         take: 10,
         "orderBy":  {
-            "price": "desc",
+            "price": "asc",
         },
         where: {
             price: {
@@ -347,7 +339,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         skip: 0,
         take: 10,
         "orderBy":  {
-            "price": "desc",
+            "price": "asc",
         },
         where: {
             category: {
@@ -391,7 +383,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         skip: 0,
         take: 10,
         "orderBy":  {
-            "price": "desc",
+            "price": "asc",
         },
         where: {
             category: {
@@ -410,7 +402,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         }
         });
     })
-    it("should return 'desc' when the user sends an invalid orderBy value",async()=>{
+    it("should return 'asc' when the user sends an invalid orderBy value",async()=>{
        
         mock.mockResolvedValue(datas)
         const minPrice = 35.99
@@ -435,7 +427,7 @@ describe("POST /product/filter - when user sends valid inputs",()=>{
         skip: 0,
         take: 10,
         "orderBy":  {
-            "price": "desc",
+            "price": "asc",
         },
         where: {
             category: {

@@ -38,7 +38,8 @@ export const validateFilterProducts = (
       action: "filterProducts"
     })
   }
-  if (nameStr && checkisAValidString(nameStr)) {
+  if (nameStr && !checkisAValidString(nameStr,15,1)) {
+    
     throw new ErrorMessage({
       message: "Invalid name format",
       status: 400,
@@ -46,7 +47,6 @@ export const validateFilterProducts = (
       action: "filterProducts"
     })
   }
-
   if (
     minPriceNum !== undefined &&
     !checkIsAValidNumber(minPriceNum)

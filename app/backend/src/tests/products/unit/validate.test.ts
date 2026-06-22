@@ -19,7 +19,7 @@ describe("validateFilterProducts",()=>{
     })
     it("should render the correct maxPrice and minPrice when valid values are provided",async()=>{
         const query = {
-            name:"test",category:"Roupas",maxPrice:"35.99",
+            name:"te",category:"Roupas",maxPrice:"35.99",
             minPrice:"3.99"
 
         }
@@ -97,30 +97,23 @@ describe("validateFilterProducts",()=>{
             expect(err).toBeInstanceOf(ErrorMessage)
         }
     })
-    it("should throw an error when name is provided but the value is invalid",async()=>{
+  
+     it("should throw an error when name is provided but the value is invalid",async()=>{
         const query = {
-            name:"cami||te",category:"Roupas",
+            name:"a",category:"Roupas",
         }
          const req = {query} as unknown as Request
          
-         try{
-            validateFilterProducts(req)
-         }catch(err:any){
-            expect(err).toBeInstanceOf(ErrorMessage)
-            expect(err.message).toEqual("Invalid name format")
-        }
+        expect(() => validateFilterProducts(req)).toThrow("Invalid name format")
     })
       it("should throw an error when category is provided but the value is invalid",async()=>{
         const query = {
             name:"camisa",category:"invalid category",
         }
-         const req = {query} as unknown as Request
+        const req = {query} as unknown as Request
          
-         try{
-            validateFilterProducts(req)
-         }catch(err:any){
-            expect(err).toBeInstanceOf(ErrorMessage)
-            expect(err.message).toEqual("Invalid category provided")
-        }
+     
+        expect(()=>validateFilterProducts(req)).toThrow("Invalid category provided")
+         
     })
 })
