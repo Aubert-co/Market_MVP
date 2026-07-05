@@ -5,7 +5,6 @@ import { IStoreRepository } from "../repository/store.repository"
 import { Store } from "../types/store.types";
 import { Product } from "../../../products/types/product.types";
 import { makeUploadFile } from "../../../../config/imageUpload/uploadFIles";
-import { compressImage } from "@/helpers/compressImages";
 import { FuncReturn, retry } from "@/helpers/retry";
 
 
@@ -40,8 +39,8 @@ export class StoreService implements IStoreService{
         mimeType
     }:CreateStoreParams):Promise<void>{
        
-        const newUrlPath = generateImgPath()
-        
+        const imagePath = generateImgPath()
+        const imageUrl = `tmp/market/${imagePath}`
         const existsStoreName = await this.storeRepository.findByName( name )
         if(existsStoreName){
             throw new ErrorMessage({message:"A store with this name already exists.",
@@ -60,28 +59,16 @@ export class StoreService implements IStoreService{
             })
             
         }
-        const compressBuff:FuncReturn<Buffer> = await retry({
-            func:compressImage,
-            body:{fileBuffer},
-            retries:2
-        })
-        if(!compressBuff.success || compressBuff.data===undefined ){
-            throw new ErrorMessage({
-                message:"Failed to compress.",
-                action:"compressImage",
-                service:"ProductAdminService",
-                status:500
-            })
-        }
+      
         const storeId = await this.storeRepository.createStore({
             storeName:name,
             userId,
-            photo:newUrlPath,
+            photo:imageUrl,
             description
         })
         const isFileUpload = await storage.uploadImage({
-            fileBuffer:compressBuff.data,
-            urlPath:newUrlPath,
+            fileBuffer,
+            urlPath:imageUrl,
             mimeType
         })
         if(!isFileUpload.success){

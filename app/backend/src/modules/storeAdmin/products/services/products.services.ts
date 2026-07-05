@@ -2,7 +2,6 @@ import { generateImgPath } from "@/helpers/checkIsValidImage";
 import { ErrorMessage, getPrismaError } from "@/helpers/ErrorMessage";
 import {  IProductAdminRepository } from "../repository/products.repository";
 import { IImageUploadService } from "@/config/imageUpload/ImageUploadService";
-import { compressImage } from "@/helpers/compressImages";
 import { FuncReturn, retry } from "@/helpers/retry";
 import {  productMostViewedResult, GetStoreProductResult,GetStoreProductsPage, CreateProductDTO } from "../types/products.types";
 import { calcSkipPages, pagination } from "@/helpers/pagination";
@@ -86,28 +85,15 @@ export class ProductAdminService  implements IProductAdminService{
                 }
             })
         }
-        const imageUrl = generateImgPath()
-        
-        const compressBuff:FuncReturn<Buffer> = await retry({
-            func:compressImage,
-            body:{fileBuffer},
-            retries:2
-        })
-
-        if(!compressBuff.success || compressBuff.data===undefined ){
-            throw new ErrorMessage({
-                message:"Failed to compress.",
-                action:"compressImage",
-                service:"ProductAdminService",
-                status:500
-            })
-        }
+        const imagePath = generateImgPath()
+        const imageUrl = `tmp/market/${imagePath}`
+       
         const productId = await this.product.createProduct({
             description,name,stock,storeId,category,
             price,imageUrl
         })
         
-        const uploadImage =await this.storage.uploadImage({mimeType,urlPath:imageUrl,fileBuffer:compressBuff.data})
+        const uploadImage =await this.storage.uploadImage({mimeType,urlPath:imageUrl,fileBuffer})
            
         
         if(!uploadImage.success){

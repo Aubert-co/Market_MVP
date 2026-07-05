@@ -5,10 +5,10 @@ import path from "path"
 import { prisma } from "@/database/prisma"
 import { cleanAllDb, deleteStore, deleteUser } from "@/tests/__mocks__"
 import { generateAccessToken } from '@/helpers/AuthTokens'
-import * as compressImage from "@/helpers/compressImages"
+
 const cookies =  generateAccessToken(1)
 const cookieWithouStore = generateAccessToken(2)
-const  spyCompress=jest.spyOn(compressImage,'compressImage')
+
 const checkExistsStore = async()=>{
     const count = await prisma.store.count()
     return count
@@ -86,8 +86,7 @@ describe("Post:/stores  DB actions",()=>{
     it("should successfully create a new store when image compression fails once and succeeds on retry",async()=>{  
       
         spyFileUpload.mockResolvedValueOnce({success:true})
-        spyCompress.mockResolvedValueOnce({success:false,data:Buffer.alloc(1)})
-        spyCompress.mockResolvedValueOnce({success:true,data:Buffer.alloc(1)})
+        
         const name = 'Minha Loja'
         const description = 'Lorem iptus testing'
         const response = await request(app)
@@ -101,37 +100,15 @@ describe("Post:/stores  DB actions",()=>{
         expect(response.body.message).toEqual('Store sucessfully created')
     
         expect(spyFileUpload).toHaveBeenCalledTimes(1)
-        expect(spyCompress).toHaveBeenCalledTimes(2)
+     
         const selectStore = await prisma.store.findMany({where:{userId:data.id}})
         expect( selectStore ).toHaveLength(1)
       
     })
-     it("should return an error when image compression fails twice",async()=>{  
-        spyCompress.mockResolvedValue({success:false})
-   
-        spyFileUpload.mockResolvedValue({success:true})
-        const name = 'Minha Loja'
-        const description = 'Lorem iptus testing'
-        const response = await request(app)
-        .post(endpoint)
-        .set('Cookie', [`token=${cookies}`])
-        .field('name', name)
-        .field('description', description)
-        .attach('image', IMAGEJPG); 
-        
-        expect(response.statusCode).toEqual(500)
-        expect(response.body.message).toEqual('Failed to compress.')
-        
-        expect(spyCompress).toHaveBeenCalledTimes(2)
-        expect(spyFileUpload).toHaveBeenCalledTimes(0)
-
-        const selectStore = await prisma.store.findMany({where:{userId:data.id}})
-        expect( selectStore ).toHaveLength(0)
-      
-    })
+  
     it("should rollback store creation when image upload fails",async()=>{  
         const spyDelete= jest.spyOn(prisma.store,'delete')
-        spyCompress.mockResolvedValue({success:true,data:Buffer.alloc(1)})
+     
    
         spyFileUpload.mockResolvedValue({success:false})
         const name = 'Minha Loja'
@@ -145,8 +122,7 @@ describe("Post:/stores  DB actions",()=>{
         
         expect(response.statusCode).toEqual(500)
         expect(response.body.message).toEqual('Failed to save image.')
-        
-        expect(spyCompress).toHaveBeenCalledTimes(1)
+
         expect(spyFileUpload).toHaveBeenCalledTimes(1)
         expect(spyDelete).toHaveBeenCalledTimes(1)
         const selectStore = await prisma.store.findMany({where:{userId:data.id}})
