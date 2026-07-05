@@ -5,15 +5,30 @@ logging {
 loki.source.docker "containers" {
   host = "unix:///var/run/docker.sock"
 
-  targets = discovery.docker.containers.targets     
+  targets = discovery.docker.containers.targets
+
+  forward_to = [loki.process.logs.receiver]
+}
+
+loki.process "logs" {
+  stage.json {
+    expressions = {
+      service = "service",
+    }
+  }
+
+  stage.labels {
+    values = {
+      service_name = "service",
+    }
+  }
 
   forward_to = [loki.write.grafana.receiver]
 }
 
 loki.write "grafana" {
   endpoint {
-    url = "loki-url"
-
+    url = ""
     basic_auth {
       username = ""
       password = ""
@@ -26,7 +41,7 @@ discovery.docker "containers" {
 
 prometheus.scrape "api" {
   targets = [
-    {"__address__" = "server:3000"},
+    {"__address__" = "app_test:8080"},
   ]
 
   metrics_path = "/metrics"
