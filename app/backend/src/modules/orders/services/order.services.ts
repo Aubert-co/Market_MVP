@@ -1,3 +1,4 @@
+import { startLogger } from "@/config/logger/logger";
 import { ErrorMessage, getPrismaError } from "../../../helpers/ErrorMessage";
 import { IOrderRepository } from "../repository/order.repository";
 import { DatasCreateOrderDto, GetOrder } from "../types/order.types";
@@ -7,11 +8,21 @@ interface IOrderServices  {
     createOrder({userId,items}:DatasCreateOrderDto):Promise<void>,
 }
 export class OrderService implements IOrderServices{
+    private readonly logger = startLogger();
     constructor(protected order:IOrderRepository
     ){}
 
     public async createOrder({userId,items}:DatasCreateOrderDto): Promise<void> {
-        await this.order.createOrder({userId,items})       
+        await this.order.createOrder({userId,items})      
+        this.logger.info({
+            event: "order_created",
+            message: "Order created successfully.",
+            status: 201,
+            action: "createOrder",
+            service: "OrderService",
+            userId,
+            itemsCount: items.length,
+        }) 
     }
   
     public async getUserOrder(userId:number):Promise<GetOrder[]>{

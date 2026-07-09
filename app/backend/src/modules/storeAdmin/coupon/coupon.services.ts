@@ -2,6 +2,7 @@ import { ErrorMessage } from "@/helpers/ErrorMessage";
 import { pagination } from "@/helpers/pagination";
 import {  GetAvailableCoupons} from "@/modules/coupon/types/coupon.types";
 import { IStoreCouponRep, StoreCreateCouponDTO } from "./coupon.repository";
+import { startLogger } from "@/config/logger/logger";
 
 
 export interface ICouponStoreService{
@@ -11,6 +12,7 @@ export interface ICouponStoreService{
     storeSelectCoupon(storeId:number,limit:number,skip:number):Promise<GetAvailableCoupons>,
 }
 export class CouponStoreService implements ICouponStoreService{
+    private readonly logger = startLogger();
     constructor(protected coupon:IStoreCouponRep){}
      public async storeCreateCoupon({quantity,expiresAt,
             storeId,discountType,discount,code
@@ -41,6 +43,19 @@ export class CouponStoreService implements ICouponStoreService{
             }
             await this.coupon.storeCreateCoupon({
                 quantity,expiresAt,storeId,discount,discountType,code
+            })
+            this.logger.info({
+                event: "coupon_created",
+                message: "Coupon created successfully.",
+                status: 201,
+                action: "storeCreateCoupon",
+                service: "CouponServices",
+                storeId,
+                code,
+                quantity,
+                discount,
+                discountType,
+                expiresAt,
             })
         }
 

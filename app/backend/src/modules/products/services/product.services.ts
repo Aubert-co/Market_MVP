@@ -19,9 +19,9 @@ type GetProducts = {
     totalPages:number,
     fromCache:boolean
 }
-const logger = startLogger()
+
 export class ProductService  implements IProductService{
-    
+    private readonly logger = startLogger()
     constructor(protected product:IProductRepository,protected redis:ICacheProducts){
     }
 
@@ -62,16 +62,29 @@ export class ProductService  implements IProductService{
                 totalPages,currentPage,fromCache:true
             }
         }
-        logger.info({
-            event: "cache_miss",
+        this.logger.info({
+            event: "products_cache_miss",
+            message: "Products list cache miss.",
+            status: 200,
+            action: "getProducts",
+            service: "ProductService",
+            module: "products",
+            provider: "redis",
             hit: false,
-            service: "redis-cache",
-            layer: "cache",
-            message: "Redis cache miss"
         })
         const datas = await this.product.getProducts(limit,skip)
         if(datas.length >0)await this.redis.saveProductsInCache( datas,currentPage )
-
+        
+        this.logger.info({
+            event: "products_listed",
+            message: "Products listed successfully.",
+            status: 200,
+            action: "getProducts",
+            service: "ProductService",
+            module: "products",
+            page,
+            itemsReturned: datas.length,
+        })
         return{
             datas,totalPages,currentPage,fromCache:false
         }
@@ -79,7 +92,15 @@ export class ProductService  implements IProductService{
     public async getProductById(id:number):Promise<GetProductById>{
         try{
             const datas = await this.product.getProductById(id);
-            
+            this.logger.info({
+                event: "product_get_by_id_success",
+                message: "Product retrieved successfully.",
+                status: 200,
+                action: "getProductById",
+                service: "ProductService",
+                module: "products",
+                productId: id,
+            })
             return datas
         }catch(err:unknown){
        
@@ -116,10 +137,28 @@ export class ProductService  implements IProductService{
    
     public async filterProduct({name,category,maxPrice,minPrice,take,skip,orderBy}:FilterProductsInput):Promise<FilteredProduct[]>{
         try{
-         
-            return await this.product.filterProducts({
+            
+            const products =  await this.product.filterProducts({
                 name,category,maxPrice,minPrice,take,skip,orderBy
             })
+            this.logger.info({
+                event: "products_filtered_success",
+                message: "Products filtered successfully.",
+                status: 200,
+                action: "filterProduct",
+                service: "ProductService",
+                filters: {
+                    name,
+                    category,
+                    maxPrice,
+                    minPrice,
+                    take,
+                    skip,
+                    orderBy,
+                },
+                itemsReturned: products.length,
+            })
+            return products
         }catch(err:unknown){
         
             const prismaError = getPrismaError(err)

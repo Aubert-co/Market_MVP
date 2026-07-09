@@ -1,11 +1,11 @@
 import { generateImgPath } from "../../../../helpers/checkIsValidImage";
 import { ErrorMessage, getPrismaError } from "../../../../helpers/ErrorMessage"
-
 import { IStoreRepository } from "../repository/store.repository"
 import { Store } from "../types/store.types";
 import { Product } from "../../../products/types/product.types";
 import { makeUploadFile } from "../../../../config/imageUpload/uploadFIles";
-import { FuncReturn, retry } from "@/helpers/retry";
+import { startLogger } from "@/config/logger/logger";
+
 
 
 
@@ -32,7 +32,7 @@ type GetProductByStore ={
     totalPages:number
 }
 export class StoreService implements IStoreService{
-   
+    private readonly logger = startLogger()
     constructor(protected storeRepository:IStoreRepository){}
   
     public async createStore ({name,description,userId,fileBuffer,
@@ -80,6 +80,16 @@ export class StoreService implements IStoreService{
                 status:500
             })
         }
+        this.logger.info({
+            event: "store_created_success",
+            message: "Store created successfully.",
+            status: 201,
+            action: "createStore",
+            service: "StoreService",
+            storeId,
+            userId,
+            imageKey: imageUrl,
+        })
     }
     public async findByName(storeName:string):Promise<boolean>{
         try{
@@ -117,6 +127,15 @@ export class StoreService implements IStoreService{
             const datas = await this.storeRepository.selectUserStores(userId)
             
 
+            this.logger.info({
+                event: "user_stores_selected",
+                message: "User stores retrieved successfully.",
+                status: 200,
+                action: "selectUserStores",
+                service: "StoreService",
+                userId,
+                totalStores: datas.length,
+            })
             return datas ;
         }catch(err:unknown){
             const prismaError  =getPrismaError(err)
@@ -156,6 +175,16 @@ export class StoreService implements IStoreService{
         
         const skip = (page -1 )* limit
         const datas = await this.storeRepository.getProductsByStoreId(storeId,skip,limit)
+        
+        this.logger.info({
+            event: "store_products_listed",
+            message: "Store products retrieved successfully.",
+            status: 200,
+            action: "getProductsByStoreId",
+            service: "StoreService",
+            storeId,
+            totalProducts: countProducts,
+        })
         return {
             datas,
             totalPages,

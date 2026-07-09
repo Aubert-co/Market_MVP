@@ -2,6 +2,7 @@ import { ErrorMessage } from "../../../helpers/ErrorMessage";
 import { ICouponRepository } from "../repository/coupon.repository";
 import { CouponUsage, GetAvailableCoupons } from "../types/coupon.types";
 import { pagination } from "../../../helpers/pagination";
+import { startLogger } from "@/config/logger/logger";
 
 export interface ICouponService{
     userAddCoupon(couponId:number,userId:number):Promise<any>,
@@ -10,6 +11,7 @@ export interface ICouponService{
 }
 
 export class CouponServices implements ICouponService{ 
+    private readonly logger = startLogger()
     constructor(protected coupon:ICouponRepository){}
 
    
@@ -52,6 +54,16 @@ export class CouponServices implements ICouponService{
         const quantity = coupon.quantity-1
         try{
             await this.coupon.userAddCouponUsage({quantity,userId,couponId})
+            this.logger.info({
+                event: "user_coupon_added",
+                message: "Coupon added to user successfully.",
+                status: 201,
+                action: "userAddCoupon",
+                service: "CouponServices",
+                userId,
+                couponId,
+                remainingQuantity: quantity,
+            })
         }catch(err:any){
        
              throw new ErrorMessage({

@@ -2,10 +2,10 @@ import { generateImgPath } from "@/helpers/checkIsValidImage";
 import { ErrorMessage, getPrismaError } from "@/helpers/ErrorMessage";
 import {  IProductAdminRepository } from "../repository/products.repository";
 import { IImageUploadService } from "@/config/imageUpload/ImageUploadService";
-import { FuncReturn, retry } from "@/helpers/retry";
 import {  productMostViewedResult, GetStoreProductResult,GetStoreProductsPage, CreateProductDTO } from "../types/products.types";
 import { calcSkipPages, pagination } from "@/helpers/pagination";
 import { ICacheProducts } from "@/modules/products/cache/product.cache";
+import { startLogger } from "@/config/logger/logger";
 
 
 
@@ -20,7 +20,7 @@ export interface IProductAdminService{
 
 
 export class ProductAdminService  implements IProductAdminService{
-    
+    private readonly logger = startLogger()
     constructor(protected product:IProductAdminRepository ,protected storage:IImageUploadService,
         protected cache:ICacheProducts
     ){
@@ -106,7 +106,33 @@ export class ProductAdminService  implements IProductAdminService{
                 status:500
             })
         }
+        this.logger.info({
+            event: "product_created",
+            message: "Product created successfully.",
+            status: 201,
+            action: "createProduct",
+            service: "ProductAdminService",
+            productId,
+            storeId,
+            category,
+            price,
+            stock,
+            imageKey:imageUrl,
+            mimeType,
+        })
+
         await this.cache.cleanProductsCache()
+
+        this.logger.info({
+            event: "products_cache_cleaned",
+            message: "Products cache cleaned successfully.",
+            status: 200,
+            action: "cleanProductsCache",
+            service: "ProductAdminService",
+            storeId,
+            productId,
+        })
+
     }
    
     
