@@ -3,9 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CouponStoreService = void 0;
 const ErrorMessage_1 = require("@/helpers/ErrorMessage");
 const pagination_1 = require("@/helpers/pagination");
+const logger_1 = require("@/config/logger/logger");
 class CouponStoreService {
     constructor(coupon) {
         this.coupon = coupon;
+        this.logger = (0, logger_1.startLogger)();
     }
     async storeCreateCoupon({ quantity, expiresAt, storeId, discountType, discount, code }) {
         const countStoreCoupons = await this.coupon.countStoreCoupons(storeId);
@@ -33,6 +35,19 @@ class CouponStoreService {
         }
         await this.coupon.storeCreateCoupon({
             quantity, expiresAt, storeId, discount, discountType, code
+        });
+        this.logger.info({
+            event: "coupon_created",
+            message: "Coupon created successfully.",
+            status: 201,
+            action: "storeCreateCoupon",
+            service: "CouponServices",
+            storeId,
+            code,
+            quantity,
+            discount,
+            discountType,
+            expiresAt,
         });
     }
     async storeSelectCoupon(storeId, limit = 5, page) {

@@ -4,11 +4,11 @@ exports.ProductService = void 0;
 const pagination_1 = require("../../../helpers/pagination");
 const ErrorMessage_1 = require("../../../helpers/ErrorMessage");
 const logger_1 = require("@/config/logger/logger");
-const logger = (0, logger_1.startLogger)();
 class ProductService {
     constructor(product, redis) {
         this.product = product;
         this.redis = redis;
+        this.logger = (0, logger_1.startLogger)();
     }
     async getProducts(page) {
         const limit = 10;
@@ -41,16 +41,29 @@ class ProductService {
                 totalPages, currentPage, fromCache: true
             };
         }
-        logger.info({
-            event: "cache_miss",
+        this.logger.info({
+            event: "products_cache_miss",
+            message: "Products list cache miss.",
+            status: 200,
+            action: "getProducts",
+            service: "ProductService",
+            module: "products",
+            provider: "redis",
             hit: false,
-            service: "redis-cache",
-            layer: "cache",
-            message: "Redis cache miss"
         });
         const datas = await this.product.getProducts(limit, skip);
         if (datas.length > 0)
             await this.redis.saveProductsInCache(datas, currentPage);
+        this.logger.info({
+            event: "products_listed",
+            message: "Products listed successfully.",
+            status: 200,
+            action: "getProducts",
+            service: "ProductService",
+            module: "products",
+            page,
+            itemsReturned: datas.length,
+        });
         return {
             datas, totalPages, currentPage, fromCache: false
         };
@@ -58,6 +71,15 @@ class ProductService {
     async getProductById(id) {
         try {
             const datas = await this.product.getProductById(id);
+            this.logger.info({
+                event: "product_get_by_id_success",
+                message: "Product retrieved successfully.",
+                status: 200,
+                action: "getProductById",
+                service: "ProductService",
+                module: "products",
+                productId: id,
+            });
             return datas;
         }
         catch (err) {
@@ -91,9 +113,27 @@ class ProductService {
     }
     async filterProduct({ name, category, maxPrice, minPrice, take, skip, orderBy }) {
         try {
-            return await this.product.filterProducts({
+            const products = await this.product.filterProducts({
                 name, category, maxPrice, minPrice, take, skip, orderBy
             });
+            this.logger.info({
+                event: "products_filtered_success",
+                message: "Products filtered successfully.",
+                status: 200,
+                action: "filterProduct",
+                service: "ProductService",
+                filters: {
+                    name,
+                    category,
+                    maxPrice,
+                    minPrice,
+                    take,
+                    skip,
+                    orderBy,
+                },
+                itemsReturned: products.length,
+            });
+            return products;
         }
         catch (err) {
             const prismaError = (0, ErrorMessage_1.getPrismaError)(err);

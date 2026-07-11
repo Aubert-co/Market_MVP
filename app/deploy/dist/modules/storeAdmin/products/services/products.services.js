@@ -3,14 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductAdminService = void 0;
 const checkIsValidImage_1 = require("@/helpers/checkIsValidImage");
 const ErrorMessage_1 = require("@/helpers/ErrorMessage");
-const compressImages_1 = require("@/helpers/compressImages");
-const retry_1 = require("@/helpers/retry");
 const pagination_1 = require("@/helpers/pagination");
+const logger_1 = require("@/config/logger/logger");
 class ProductAdminService {
     constructor(product, storage, cache) {
         this.product = product;
         this.storage = storage;
         this.cache = cache;
+        this.logger = (0, logger_1.startLogger)();
     }
     async getStoreProducts({ storeId, search, category, priceOrder, take, page, stockOrderBy }) {
         try {
@@ -67,25 +67,13 @@ class ProductAdminService {
                 }
             });
         }
-        const imageUrl = (0, checkIsValidImage_1.generateImgPath)();
-        const compressBuff = await (0, retry_1.retry)({
-            func: compressImages_1.compressImage,
-            body: { fileBuffer },
-            retries: 2
-        });
-        if (!compressBuff.success || compressBuff.data === undefined) {
-            throw new ErrorMessage_1.ErrorMessage({
-                message: "Failed to compress.",
-                action: "compressImage",
-                service: "ProductAdminService",
-                status: 500
-            });
-        }
+        const imagePath = (0, checkIsValidImage_1.generateImgPath)();
+        const imageUrl = `tmp/market/${imagePath}`;
         const productId = await this.product.createProduct({
             description, name, stock, storeId, category,
             price, imageUrl
         });
-        const uploadImage = await this.storage.uploadImage({ mimeType, urlPath: imageUrl, fileBuffer: compressBuff.data });
+        const uploadImage = await this.storage.uploadImage({ mimeType, urlPath: imageUrl, fileBuffer });
         if (!uploadImage.success) {
             await this.product.deleteProduct(productId);
             throw new ErrorMessage_1.ErrorMessage({
@@ -95,7 +83,30 @@ class ProductAdminService {
                 status: 500
             });
         }
+        this.logger.info({
+            event: "product_created",
+            message: "Product created successfully.",
+            status: 201,
+            action: "createProduct",
+            service: "ProductAdminService",
+            productId,
+            storeId,
+            category,
+            price,
+            stock,
+            imageKey: imageUrl,
+            mimeType,
+        });
         await this.cache.cleanProductsCache();
+        this.logger.info({
+            event: "products_cache_cleaned",
+            message: "Products cache cleaned successfully.",
+            status: 200,
+            action: "cleanProductsCache",
+            service: "ProductAdminService",
+            storeId,
+            productId,
+        });
     }
 }
 exports.ProductAdminService = ProductAdminService;

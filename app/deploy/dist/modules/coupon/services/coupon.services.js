@@ -3,9 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CouponServices = void 0;
 const ErrorMessage_1 = require("../../../helpers/ErrorMessage");
 const pagination_1 = require("../../../helpers/pagination");
+const logger_1 = require("@/config/logger/logger");
 class CouponServices {
     constructor(coupon) {
         this.coupon = coupon;
+        this.logger = (0, logger_1.startLogger)();
     }
     async userAddCoupon(couponId, userId) {
         const coupon = await this.coupon.getCouponById(couponId);
@@ -41,6 +43,16 @@ class CouponServices {
         const quantity = coupon.quantity - 1;
         try {
             await this.coupon.userAddCouponUsage({ quantity, userId, couponId });
+            this.logger.info({
+                event: "user_coupon_added",
+                message: "Coupon added to user successfully.",
+                status: 201,
+                action: "userAddCoupon",
+                service: "CouponServices",
+                userId,
+                couponId,
+                remainingQuantity: quantity,
+            });
         }
         catch (err) {
             throw new ErrorMessage_1.ErrorMessage({

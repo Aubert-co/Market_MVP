@@ -4,15 +4,16 @@ exports.StoreService = void 0;
 const checkIsValidImage_1 = require("../../../../helpers/checkIsValidImage");
 const ErrorMessage_1 = require("../../../../helpers/ErrorMessage");
 const uploadFIles_1 = require("../../../../config/imageUpload/uploadFIles");
-const compressImages_1 = require("@/helpers/compressImages");
-const retry_1 = require("@/helpers/retry");
+const logger_1 = require("@/config/logger/logger");
 const storage = (0, uploadFIles_1.makeUploadFile)();
 class StoreService {
     constructor(storeRepository) {
         this.storeRepository = storeRepository;
+        this.logger = (0, logger_1.startLogger)();
     }
     async createStore({ name, description, userId, fileBuffer, mimeType }) {
-        const newUrlPath = (0, checkIsValidImage_1.generateImgPath)();
+        const imagePath = (0, checkIsValidImage_1.generateImgPath)();
+        const imageUrl = `tmp/market/${imagePath}`;
         const existsStoreName = await this.storeRepository.findByName(name);
         if (existsStoreName) {
             throw new ErrorMessage_1.ErrorMessage({ message: "A store with this name already exists.",
@@ -30,28 +31,15 @@ class StoreService {
                 action: "createStore"
             });
         }
-        const compressBuff = await (0, retry_1.retry)({
-            func: compressImages_1.compressImage,
-            body: { fileBuffer },
-            retries: 2
-        });
-        if (!compressBuff.success || compressBuff.data === undefined) {
-            throw new ErrorMessage_1.ErrorMessage({
-                message: "Failed to compress.",
-                action: "compressImage",
-                service: "ProductAdminService",
-                status: 500
-            });
-        }
         const storeId = await this.storeRepository.createStore({
             storeName: name,
             userId,
-            photo: newUrlPath,
+            photo: imageUrl,
             description
         });
         const isFileUpload = await storage.uploadImage({
-            fileBuffer: compressBuff.data,
-            urlPath: newUrlPath,
+            fileBuffer,
+            urlPath: imageUrl,
             mimeType
         });
         if (!isFileUpload.success) {
@@ -63,6 +51,16 @@ class StoreService {
                 status: 500
             });
         }
+        this.logger.info({
+            event: "store_created_success",
+            message: "Store created successfully.",
+            status: 201,
+            action: "createStore",
+            service: "StoreService",
+            storeId,
+            userId,
+            imageKey: imageUrl,
+        });
     }
     async findByName(storeName) {
         try {
@@ -100,6 +98,15 @@ class StoreService {
     async selectUserStores(userId) {
         try {
             const datas = await this.storeRepository.selectUserStores(userId);
+            this.logger.info({
+                event: "user_stores_selected",
+                message: "User stores retrieved successfully.",
+                status: 200,
+                action: "selectUserStores",
+                service: "StoreService",
+                userId,
+                totalStores: datas.length,
+            });
             return datas;
         }
         catch (err) {
@@ -139,6 +146,15 @@ class StoreService {
             page = totalPages;
         const skip = (page - 1) * limit;
         const datas = await this.storeRepository.getProductsByStoreId(storeId, skip, limit);
+        this.logger.info({
+            event: "store_products_listed",
+            message: "Store products retrieved successfully.",
+            status: 200,
+            action: "getProductsByStoreId",
+            service: "StoreService",
+            storeId,
+            totalProducts: countProducts,
+        });
         return {
             datas,
             totalPages,

@@ -1,13 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderService = void 0;
+const logger_1 = require("@/config/logger/logger");
 const ErrorMessage_1 = require("../../../helpers/ErrorMessage");
 class OrderService {
     constructor(order) {
         this.order = order;
+        this.logger = (0, logger_1.startLogger)();
     }
     async createOrder({ userId, items }) {
         await this.order.createOrder({ userId, items });
+        this.logger.info({
+            event: "order_created",
+            message: "Order created successfully.",
+            status: 201,
+            action: "createOrder",
+            service: "OrderService",
+            userId,
+            itemsCount: items.length,
+        });
     }
     async getUserOrder(userId) {
         try {

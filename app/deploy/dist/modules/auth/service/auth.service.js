@@ -7,9 +7,11 @@ exports.UserService = void 0;
 const AuthTokens_1 = require("@/helpers/AuthTokens");
 const ErrorMessage_1 = require("@/helpers/ErrorMessage");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const logger_1 = require("@/config/logger/logger");
 class UserService {
     constructor(user) {
         this.user = user;
+        this.logger = (0, logger_1.startLogger)();
     }
     async loginUser(email, password) {
         const user = await this.user.findByEmail(email);
@@ -33,6 +35,14 @@ class UserService {
         }
         const accessToken = (0, AuthTokens_1.generateAccessToken)(user.id);
         const refreshToken = (0, AuthTokens_1.generateRefreshToken)(user.id);
+        this.logger.info({
+            event: "user_login_success",
+            message: "User logged in successfully.",
+            status: 200,
+            action: "loginUser",
+            service: "UserService",
+            userId: user.id,
+        });
         return {
             userId: user.id,
             accessToken,
@@ -51,6 +61,13 @@ class UserService {
         }
         const hashedPassword = await bcrypt_1.default.hash(password, 10);
         await this.user.createUserAccount({ email, password: hashedPassword, name });
+        this.logger.info({
+            event: "user_account_created",
+            message: "User account created successfully.",
+            status: 201,
+            action: "createUserAccount",
+            service: "UserService",
+        });
     }
 }
 exports.UserService = UserService;
