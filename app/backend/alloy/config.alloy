@@ -28,10 +28,10 @@ loki.process "logs" {
 
 loki.write "grafana" {
   endpoint {
-    url = ""
+    url = sys.env("LOKI_URL")
     basic_auth {
-      username = ""
-      password = ""
+      username = sys.env("LOKI_USERNAME")
+      password = sys.env("LOKI_PASSWORD")
     }
   }
 }
@@ -51,11 +51,11 @@ prometheus.scrape "api" {
 
 prometheus.remote_write "grafana" {
   endpoint {
-    url = ""
+    url = sys.env("PROMETHEUS_URL")
 
     basic_auth {
-      username = ""
-      password = ""
+      username =  sys.env("PROMETHEUS_USERNAME")
+      password = sys.env("PROMETHEUS_PASSWORD")
     }
   }
 }
