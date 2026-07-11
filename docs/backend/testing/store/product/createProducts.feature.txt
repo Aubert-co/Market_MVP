@@ -42,4 +42,62 @@ E o banco de dados retorna um erro durante a criação
 Quando o usuário envia uma requisição POST para "/product"
 Então a API deve retornar o status 500
 E a resposta deve conter a mensagem "An unexpected error occurred while creating the product."
-E o serviço de upload para o Google Cloud Storage não deve ser chamado
+E o serviço de upload para o Storage não deve ser chamado
+
+
+Cenário: Erro ao criar produto devido a falha no upload da imagem para o S3
+
+Dado que a API de criação de produto está disponível
+E o usuário preencheu os dados do produto corretamente
+E o banco de dados cria o produto com sucesso
+E o serviço de upload para o AWS S3 retorna uma falha
+Quando o usuário envia uma requisição POST para "/product"
+Então a API deve retornar o status 500
+E a resposta deve conter a mensagem "Failed to save image."
+E a criação do produto deve ser revertida no banco de dados
+E o produto criado anteriormente deve ser removido do banco de dados
+
+Cenário: Erro ao criar produto em uma loja pertencente a outro usuário
+
+Dado que a API de criação de produto está disponível
+E o usuário está autenticado
+E existe uma loja cadastrada pertencente a outro usuário
+E o usuário preencheu os dados do produto corretamente
+Quando o usuário envia uma requisição POST para "/product" informando o id da loja de outro usuário
+Então a API deve retornar o status 403
+E a resposta deve conter a mensagem "You do not have permission to access this store."
+E o produto não deve ser criado
+
+
+Cenário: Erro ao criar produto devido a falha no upload da imagem para o storage
+
+Dado que a API de criação de produto está disponível
+E o usuário está autenticado
+E o usuário preencheu os dados do produto corretamente
+E a loja ainda não atingiu o limite máximo de produtos
+E o banco de dados cria o produto com sucesso
+E o serviço de upload para o storage retorna uma falha
+Quando o usuário envia uma requisição POST para "/product"
+Então a API deve retornar o status 500
+E a resposta deve conter a mensagem "Failed to create product."
+E o serviço de upload para o storage deve ser chamado uma vez
+E a criação do produto deve ser revertida no banco de dados
+E o produto criado anteriormente deve ser removido do banco de dados
+E o cache de produtos não deve ser limpo
+
+Cenário: Erro ao criar produto devido a falha no upload da imagem e falha ao reverter o produto no banco de dados
+
+Dado que a API de criação de produto está disponível
+E o usuário está autenticado
+E o usuário preencheu os dados do produto corretamente
+E a loja ainda não atingiu o limite máximo de produtos
+E o banco de dados cria o produto com sucesso
+E o serviço de upload para o storage retorna uma falha
+E o banco de dados retorna um erro ao tentar remover o produto criado
+Quando o usuário envia uma requisição POST para "/product"
+Então a API deve retornar o status 500
+E a resposta deve conter a mensagem "Failed to create product."
+E o serviço de upload para o storage deve ser chamado uma vez
+E a criação do produto deve tentar ser revertida no banco de dados
+E o banco de dados deve ser chamado para remover o produto criado anteriormente
+E o cache de produtos não deve ser limpo
