@@ -41,6 +41,7 @@ export class StoreService implements IStoreService{
        
         const imagePath = generateImgPath()
         const imageUrl = `tmp/market/${imagePath}`
+        const photo = `market/${imagePath}`
         const existsStoreName = await this.storeRepository.findByName( name )
         if(existsStoreName){
             throw new ErrorMessage({message:"A store with this name already exists.",
@@ -63,7 +64,7 @@ export class StoreService implements IStoreService{
         const storeId = await this.storeRepository.createStore({
             storeName:name,
             userId,
-            photo:imageUrl,
+            photo,
             description
         })
         const isFileUpload = await storage.uploadImage({
@@ -85,7 +86,6 @@ export class StoreService implements IStoreService{
             message: "Store created successfully.",
             status: 201,
             action: "createStore",
-            service: "StoreService",
             storeId,
             userId,
             imageKey: imageUrl,
@@ -132,7 +132,6 @@ export class StoreService implements IStoreService{
                 message: "User stores retrieved successfully.",
                 status: 200,
                 action: "selectUserStores",
-                service: "StoreService",
                 userId,
                 totalStores: datas.length,
             })
@@ -181,7 +180,6 @@ export class StoreService implements IStoreService{
             message: "Store products retrieved successfully.",
             status: 200,
             action: "getProductsByStoreId",
-            service: "StoreService",
             storeId,
             totalProducts: countProducts,
         })

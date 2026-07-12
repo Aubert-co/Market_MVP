@@ -11,7 +11,7 @@ export class ImageUploadService implements IImageUploadService {
     public async uploadImage({fileBuffer,urlPath,mimeType}:UploadFile):Promise<UploadImageResult>{
      
       return await this.storage.upload({
-        fileBuffer,urlPath:"market/"+urlPath,mimeType
+        fileBuffer,urlPath,mimeType
       })
     }
    public async generateSignedUrl(imageName:string):Promise<string>{

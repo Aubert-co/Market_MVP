@@ -87,10 +87,10 @@ export class ProductAdminService  implements IProductAdminService{
         }
         const imagePath = generateImgPath()
         const imageUrl = `tmp/market/${imagePath}`
-       
+        const dbImageUrl = `market/${imagePath}`
         const productId = await this.product.createProduct({
             description,name,stock,storeId,category,
-            price,imageUrl
+            price,imageUrl:dbImageUrl
         })
         
         const uploadImage =await this.storage.uploadImage({mimeType,urlPath:imageUrl,fileBuffer})
@@ -111,7 +111,6 @@ export class ProductAdminService  implements IProductAdminService{
             message: "Product created successfully.",
             status: 201,
             action: "createProduct",
-            service: "ProductAdminService",
             productId,
             storeId,
             category,
@@ -128,7 +127,6 @@ export class ProductAdminService  implements IProductAdminService{
             message: "Products cache cleaned successfully.",
             status: 200,
             action: "cleanProductsCache",
-            service: "ProductAdminService",
             storeId,
             productId,
         })
