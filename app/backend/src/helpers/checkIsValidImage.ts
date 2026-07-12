@@ -34,5 +34,5 @@ export const checkIsValidImage = (files:{
     return true
 }
 export const generateImgPath = ():string=>{
-    return `${randomUUID()}.jpeg`
+    return `${randomUUID()}`
 }
