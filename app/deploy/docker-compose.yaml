@@ -7,7 +7,7 @@ services:
       driver: json-file
     ports:
       - "3000:3000"
-    command: sh -c "npx prisma migrate deploy && node dist/server.js"
+    command: sh -c "npx prisma migrate deploy && node dist/serve.js"
     env_file:
       - .env
     
