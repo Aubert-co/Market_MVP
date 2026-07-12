@@ -41,7 +41,6 @@ class CouponStoreService {
             message: "Coupon created successfully.",
             status: 201,
             action: "storeCreateCoupon",
-            service: "CouponServices",
             storeId,
             code,
             quantity,

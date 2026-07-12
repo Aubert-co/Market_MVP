@@ -7,7 +7,7 @@ class ImageUploadService {
     }
     async uploadImage({ fileBuffer, urlPath, mimeType }) {
         return await this.storage.upload({
-            fileBuffer, urlPath: "market/" + urlPath, mimeType
+            fileBuffer, urlPath, mimeType
         });
     }
     async generateSignedUrl(imageName) {

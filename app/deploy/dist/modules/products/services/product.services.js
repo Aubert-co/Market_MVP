@@ -46,7 +46,6 @@ class ProductService {
             message: "Products list cache miss.",
             status: 200,
             action: "getProducts",
-            service: "ProductService",
             module: "products",
             provider: "redis",
             hit: false,
@@ -59,7 +58,6 @@ class ProductService {
             message: "Products listed successfully.",
             status: 200,
             action: "getProducts",
-            service: "ProductService",
             module: "products",
             page,
             itemsReturned: datas.length,
@@ -76,7 +74,6 @@ class ProductService {
                 message: "Product retrieved successfully.",
                 status: 200,
                 action: "getProductById",
-                service: "ProductService",
                 module: "products",
                 productId: id,
             });
@@ -121,7 +118,6 @@ class ProductService {
                 message: "Products filtered successfully.",
                 status: 200,
                 action: "filterProduct",
-                service: "ProductService",
                 filters: {
                     name,
                     category,

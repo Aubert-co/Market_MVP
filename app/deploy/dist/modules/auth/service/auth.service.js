@@ -40,7 +40,6 @@ class UserService {
             message: "User logged in successfully.",
             status: 200,
             action: "loginUser",
-            service: "UserService",
             userId: user.id,
         });
         return {
@@ -66,7 +65,6 @@ class UserService {
             message: "User account created successfully.",
             status: 201,
             action: "createUserAccount",
-            service: "UserService",
         });
     }
 }
