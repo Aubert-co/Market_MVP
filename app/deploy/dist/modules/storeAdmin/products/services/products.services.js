@@ -69,7 +69,7 @@ class ProductAdminService {
         }
         const imagePath = (0, checkIsValidImage_1.generateImgPath)();
         const imageUrl = `tmp/market/${imagePath}`;
-        const dbImageUrl = `market/${imagePath}`;
+        const dbImageUrl = `${imagePath}.webp`;
         const productId = await this.product.createProduct({
             description, name, stock, storeId, category,
             price, imageUrl: dbImageUrl

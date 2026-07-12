@@ -14,7 +14,7 @@ class StoreService {
     async createStore({ name, description, userId, fileBuffer, mimeType }) {
         const imagePath = (0, checkIsValidImage_1.generateImgPath)();
         const imageUrl = `tmp/market/${imagePath}`;
-        const photo = `market/${imagePath}`;
+        const photo = `${imagePath}.webp`;
         const existsStoreName = await this.storeRepository.findByName(name);
         if (existsStoreName) {
             throw new ErrorMessage_1.ErrorMessage({ message: "A store with this name already exists.",
