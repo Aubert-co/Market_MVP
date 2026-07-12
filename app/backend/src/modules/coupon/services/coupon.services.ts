@@ -59,7 +59,6 @@ export class CouponServices implements ICouponService{
                 message: "Coupon added to user successfully.",
                 status: 201,
                 action: "userAddCoupon",
-                service: "CouponServices",
                 userId,
                 couponId,
                 remainingQuantity: quantity,

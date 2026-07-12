@@ -19,7 +19,6 @@ export class OrderService implements IOrderServices{
             message: "Order created successfully.",
             status: 201,
             action: "createOrder",
-            service: "OrderService",
             userId,
             itemsCount: items.length,
         }) 

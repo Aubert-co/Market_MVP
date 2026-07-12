@@ -67,7 +67,6 @@ export class ProductService  implements IProductService{
             message: "Products list cache miss.",
             status: 200,
             action: "getProducts",
-            service: "ProductService",
             module: "products",
             provider: "redis",
             hit: false,
@@ -80,7 +79,6 @@ export class ProductService  implements IProductService{
             message: "Products listed successfully.",
             status: 200,
             action: "getProducts",
-            service: "ProductService",
             module: "products",
             page,
             itemsReturned: datas.length,
@@ -97,7 +95,6 @@ export class ProductService  implements IProductService{
                 message: "Product retrieved successfully.",
                 status: 200,
                 action: "getProductById",
-                service: "ProductService",
                 module: "products",
                 productId: id,
             })
@@ -146,7 +143,6 @@ export class ProductService  implements IProductService{
                 message: "Products filtered successfully.",
                 status: 200,
                 action: "filterProduct",
-                service: "ProductService",
                 filters: {
                     name,
                     category,
