@@ -21,7 +21,7 @@ export const mockCacheProducts: ICacheProducts = {
 const datas = {
     stock:5,storeId:1,category:"shoes",description:"lorem",
     fileBuffer:Buffer.alloc(1),mimeType:"img/png",name:"shirt",
-    originalName:"image",price:55,imageUrl:"market/testing",
+    originalName:"image",price:55,imageUrl:"testing",
 } 
 const returnGeneratePath = "testing"
 describe("when create a product",()=>{
@@ -77,7 +77,7 @@ describe("when create a product",()=>{
   
         expect(mockImgUpload.uploadImage).toHaveBeenCalledTimes(1)
         expect(mockImgUpload.uploadImage).toHaveBeenCalledWith({
-            fileBuffer:expect.any(Buffer),urlPath:"tmp/"+datas.imageUrl,
+            fileBuffer:expect.any(Buffer),urlPath:"tmp/market/"+datas.imageUrl,
             mimeType:datas.mimeType
         })
         expect(mockProductAdminRep.createProduct).toHaveBeenCalledTimes(1)
@@ -89,7 +89,7 @@ describe("when create a product",()=>{
                 storeId: 1,
                 category: "shoes",
                 description: "lorem",
-                imageUrl: datas.imageUrl
+                imageUrl: datas.imageUrl+".webp"
             })
         );
         expect(deleteProduct).not.toHaveBeenCalled()

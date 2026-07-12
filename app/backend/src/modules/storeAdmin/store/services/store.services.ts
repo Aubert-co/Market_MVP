@@ -41,7 +41,7 @@ export class StoreService implements IStoreService{
        
         const imagePath = generateImgPath()
         const imageUrl = `tmp/market/${imagePath}`
-        const photo = `market/${imagePath}`
+        const photo = `${imagePath}.webp`
         const existsStoreName = await this.storeRepository.findByName( name )
         if(existsStoreName){
             throw new ErrorMessage({message:"A store with this name already exists.",
