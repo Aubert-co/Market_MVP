@@ -9,7 +9,7 @@ COPY package.json ./
 
 RUN npm install --omit=dev --no-audit --no-fund
 
-USER node
+
 COPY dist ./dist
 COPY prisma.config.ts ./
 COPY prisma ./prisma
@@ -17,3 +17,5 @@ COPY prisma ./prisma
 RUN npx prisma generate
 
 CMD ["sh", "-c", "npx prisma migrate deploy && node dist/serve.js"]
+
+USER node
