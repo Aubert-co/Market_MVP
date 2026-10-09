@@ -43,4 +43,15 @@ export class AuthUserController{
           next(error)
         }
     }
+
+    public async AuthMe(req:Request,res:Response,next:NextFunction):Promise<void>{
+        try{
+            const userId = req.user
+            const user = await this.user.getUserInformation(userId)
+
+            res.status(200).json({message:'success',datas:user})
+        }catch(error:unknown){
+            next(error)
+        }
+    }
 }
