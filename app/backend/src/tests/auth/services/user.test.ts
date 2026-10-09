@@ -129,7 +129,40 @@ describe("method createUserAccount",()=>{
             expect(err.status).toEqual(409)
             expect(err.message).toEqual("User already exists")
         }
+    
+    })
 
+    describe("method getUserInformation",()=>{
+        beforeEach(()=>{
+            jest.clearAllMocks()
+        })
+
+        it("should return the user information when the user is found",async()=>{
+            const userInfo = {
+                id:34,
+                name:"jose",
+                email:"lorem@ipstu.com"
+            }
+            mockUserRep.findUserById.mockResolvedValue(userInfo)
+
+            await expect(user.getUserInformation(userInfo.id)).resolves.toStrictEqual(userInfo)
+            expect(mockUserRep.findUserById).toHaveBeenCalledTimes(1)
+            expect(mockUserRep.findUserById).toHaveBeenCalledWith(userInfo.id)
+        })
+
+        it("should throw an error when the user is not found",async()=>{
+            const id = 34
+            mockUserRep.findUserById.mockResolvedValue(null)
+
+            await expect(user.getUserInformation(id)).rejects.toMatchObject({
+                message:"User not found",
+                status:404,
+                service:"UserService",
+                action:"getUserInformation"
+            })
+            expect(mockUserRep.findUserById).toHaveBeenCalledTimes(1)
+            expect(mockUserRep.findUserById).toHaveBeenCalledWith(id)
+        })
     })
     
 })
