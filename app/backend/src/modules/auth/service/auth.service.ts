@@ -2,13 +2,14 @@ import { generateAccessToken, generateRefreshToken } from "@/helpers/AuthTokens"
 import { ErrorMessage } from "@/helpers/ErrorMessage";
 import { IUserRepository } from "../repository/auth.repository";
 import bcrypt from 'bcrypt'
-import { LoginUserResult, User } from "../types/auth.types";
+import { LoginUserResult, User, UserInfo } from "../types/auth.types";
 import { startLogger } from "@/config/logger/logger";
 
 type CreateAccountDTO= Omit<User,'id'>
 export interface IUserService  {
     createUserAccount({email,password,name}:CreateAccountDTO):Promise<void>,
     loginUser(email:string,password:string):Promise<LoginUserResult>,
+    getUserInformation(id:number):Promise<UserInfo >
 }
 
 
@@ -79,6 +80,17 @@ export class UserService implements IUserService {
             action: "createUserAccount",
         })
     }
- 
+    public async getUserInformation(id:number):Promise<UserInfo >{
+        const user =  await this.user.findUserById(id)
+        if(!user){
+            throw new ErrorMessage({
+                message:"User not found",
+                status:404,
+                service:"UserService",
+                action:"getUserInformation",
+            })
+        }
+        return user
+    }
    
 }
