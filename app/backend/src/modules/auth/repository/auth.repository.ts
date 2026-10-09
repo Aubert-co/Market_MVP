@@ -1,11 +1,11 @@
 import { PrismaClient } from "@prisma/client"
 import { ErrorMessage, getPrismaError } from "@/helpers/ErrorMessage"
-import { User } from "../types/auth.types"
+import { User, UserInfo } from "../types/auth.types"
 
 export interface IUserRepository{
     findByEmail(email:string): Promise< User | null>,
     createUserAccount(datas:{email:string,password:string,name:string}):Promise<void>
-    findUserById(userId:number):Promise<User|null>
+    findUserById(userId:number):Promise<UserInfo|null>
 }
 
 
@@ -44,11 +44,16 @@ export class UserRepository implements IUserRepository {
           
         }
     }
-    public async findUserById(userId:number):Promise<User|null>{
+    public async findUserById(userId:number):Promise<UserInfo|null>{
         try{
-            return await this.prisma.user.findUnique({
-                where:{id:userId}
-            })
+           return await this.prisma.user.findUnique({
+                where: { id: userId },
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                },
+            });
         }catch(err:unknown){
             const prismaError = getPrismaError(err)
             throw new ErrorMessage({
