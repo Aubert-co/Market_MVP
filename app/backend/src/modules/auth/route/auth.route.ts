@@ -4,6 +4,7 @@ import { AuthUserController } from "../controller/auth.controller"
 import { UserService } from "../service/auth.service"
 import { UserRepository } from "../repository/auth.repository"
 import { prisma } from "@/database/prisma"
+import { Auth } from "@/middleware/auth"
 const validateCredentials = new ValidateCredentials()
 
 const userRepository =  new UserRepository(prisma)
@@ -17,4 +18,6 @@ route.post('/register',[validateCredentials.handler],
 route.post('/login',[validateCredentials.handler],
     (req:Request,res:Response,next:NextFunction)=>authUser.Login(req,res,next))
 
+route.get('/auth/me',[Auth],
+    (req:Request,res:Response,next:NextFunction)=>authUser.AuthMe(req,res,next))
 export default route
