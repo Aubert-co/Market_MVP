@@ -4,7 +4,7 @@ export type User = {
     password:string,
     email:string
 }
-
+export type UserInfo = Omit<User,'password'>
 export type LoginUserResult = {
     userId:number,
     accessToken:string,
