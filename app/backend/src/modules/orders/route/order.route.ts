@@ -22,4 +22,8 @@ route.get('/orders',
     [Auth],
     (req:Request,res:Response,next:NextFunction)=>orderController.getUserOrders(req,res,next)
 )
+route.get('/orders/:id/details',
+    [Auth],
+    (req:Request,res:Response,next:NextFunction)=>orderController.getOrderDetails(req,res,next)
+)
 export default route
