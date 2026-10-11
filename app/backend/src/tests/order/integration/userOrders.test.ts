@@ -6,6 +6,7 @@ import request from 'supertest'
 import { couponsDatas } from "../../__fixtures__/coupons"
 import { prisma } from "../../../database/prisma"
 import { manyUsers } from "@/tests/__fixtures__/users"
+import { orderInfo } from "@/tests/__fixtures__/orderInfo"
 
 const user =manyUsers[2]
 const {validCoupons} = couponsDatas( oneStore.id )
@@ -42,7 +43,10 @@ describe("Api get /orders",()=>{
         
         expect( response.status).toEqual(200)
         expect( response.body.datas).toHaveLength( 5 )
-        
+        expect(response.body.datas).toContainEqual(expect.objectContaining({
+            ...orderInfo,
+            createdAt: orderInfo.createdAt.toISOString(),
+        }))
     })
 })
 
