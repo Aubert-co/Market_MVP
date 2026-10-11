@@ -6,6 +6,8 @@ import { DatasCreateOrderDto, GetOrder } from "../types/order.types";
 
 interface IOrderServices  {
     createOrder({userId,items}:DatasCreateOrderDto):Promise<void>,
+    getUserOrder(userId:number):Promise<GetOrder[]>,
+    getOrderDetails(orderId:number,userId:number):Promise<GetOrder | null>
 }
 export class OrderService implements IOrderServices{
     private readonly logger = startLogger();
@@ -23,7 +25,7 @@ export class OrderService implements IOrderServices{
             itemsCount: items.length,
         }) 
     }
-  
+    
     public async getUserOrder(userId:number):Promise<GetOrder[]>{
         try{
             const datas = await this.order.getOrder( userId )
@@ -34,9 +36,28 @@ export class OrderService implements IOrderServices{
              throw new ErrorMessage({
                 message:"Database error while fetching user orders.",
                 status:500,
-                action:"getCouponById",
+                action:"getUserOrder",
                 service:"OrderRepository",
                 context:{
+                    userId
+                },
+                prismaError
+            })
+        }
+    }
+
+    public async getOrderDetails(orderId:number,userId:number):Promise<GetOrder | null>{
+        try{
+            return await this.order.getOrderInfo(orderId,userId)
+        }catch(err:unknown){
+            const prismaError = getPrismaError(err)
+            throw new ErrorMessage({
+                message:"Database error while fetching order details.",
+                status:500,
+                action:"getOrderDetails",
+                service:"OrderRepository",
+                context:{
+                    orderId,
                     userId
                 },
                 prismaError
