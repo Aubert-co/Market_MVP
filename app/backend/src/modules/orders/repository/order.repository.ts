@@ -10,7 +10,8 @@ export interface IOrderRepository {
     getOrder(userId:number):Promise<GetOrder[]>,
     getOrderItems(orderId:number):Promise<Order[]>,
     storeGetOrderItems(storeId:number):Promise<Order[]>,
-    getOrderItemByIdAndUserId(userId:number,orderItemId:number,status:StatusOrder):Promise<Order | null>
+    getOrderItemByIdAndUserId(userId:number,orderItemId:number,status:StatusOrder):Promise<Order | null>,
+    getOrderInfo(orderId:number,userId:number):Promise<GetOrder | null>
 }
 
 export class OrderRepository implements IOrderRepository{
@@ -93,6 +94,31 @@ export class OrderRepository implements IOrderRepository{
     public async getOrderItemByIdAndUserId(userId:number,orderId:number,status:StatusOrder):Promise<Order| null>{
         return await this.prisma.order.findUnique({
             where:{id:orderId, userId,status},
+        })
+    }
+    public async getOrderInfo(orderId:number,userId:number):Promise<GetOrder | null>{
+        return await this.prisma.order.findUnique({
+            where:{id:orderId,userId},
+             select:{
+                id:true,
+                total:true,
+                quantity:true,
+                status:true,
+                price:true,
+                createdAt:true,
+                coupon:{
+                    select:{
+                        discount:true,
+                        discountType:true
+                    }
+                },
+                product:{
+                    select:{
+                        name:true,
+                        imageUrl:true
+                    }
+                }
+            },
         })
     }
     public async createOrder({userId,items}:DatasCreateOrderDto):Promise<void>{
